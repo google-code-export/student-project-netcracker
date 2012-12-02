@@ -17,5 +17,6 @@ public class Test_SVN {
         System.out.println("FFFFFFF_________SHUREG TEST CHANGE");
         System.out.println("fffffff");
         System.out.println("FINAL COMMIT TO ARTEM");
+        System.out.println("ALEX WAS HERE");
     }
 }
