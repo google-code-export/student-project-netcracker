@@ -19,5 +19,6 @@ public class Test_SVN {
         System.out.println("FINAL COMMIT TO ARTEM");
         System.out.println("ALEX WAS HERE");
         System.out.println("NOT BAD BRI");
+        // IT`S NEW COMMENT. TESTING DUAL CHANGE.
     }
 }
