@@ -23,6 +23,32 @@
       <version>2.1</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.2.5.ga</version>
+      <exclusions>
+        <exclusion>
+          <artifactId>jta</artifactId>
+          <groupId>javax.transaction</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>3.3.2.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>ejb3-persistence</artifactId>
+      <version>1.0.1.GA</version>
+    </dependency>
+    <dependency>
+      <groupId>unknown.binary</groupId>
+      <artifactId>mysql-connector-java-5.1.18-bin</artifactId>
+      <version>SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -38,7 +64,14 @@
       </plugin>
     </plugins>
   </build>
-    <properties>
+  <repositories>
+    <repository>
+      <id>unknown-jars-temp-repo</id>
+      <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
+      <url>file:${project.basedir}/lib</url>
+    </repository>
+  </repositories>
+  <properties>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 </project>
