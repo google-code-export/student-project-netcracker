@@ -5,7 +5,7 @@
 <head >
     <title>DB Connection</title>
 </head>
-<center>Test Table !!!</center>
+<center>Test Table !!!!</center>
 <form method="post" name="form">
     <center><input type="button" value="Back to Index Page" onclick="location.href='index.jsp'" /></center>
     <table border="1" align="center" background-color="090341" >
