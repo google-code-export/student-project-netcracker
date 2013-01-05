@@ -1,0 +1,52 @@
+<project name="interview" default="deploy">
+
+    <property environment="env"/>
+    <property name="tomcat.home.dir" location="${env.CATALINA_HOME}" />
+
+    <path id="compile.classpath">
+        <fileset dir="${basedir}/src/main/webapp"/>
+        <fileset dir="${basedir}/src/main/java"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${basedir}/dist/${ant.project.name}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${basedir}/dist/${ant.project.name}" />
+    </target>
+
+    <target name="compile" depends="init">
+        <mkdir dir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" />
+        <javac destdir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" debug="true" srcdir="src">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <copy todir="${basedir}/dist/${ant.project.name}">
+            <fileset dir="${basedir}/src/main/webapp"/>
+        </copy>
+    </target>
+
+    <target name="war" depends="compile">
+        <war destfile="${tomcat.home.dir}/webapps/${ant.project.name}.war" webxml="${basedir}/src/main/webapp/WEB-INF/web.xml">
+            <fileset dir="${basedir}/dist/interview"/>
+        </war>
+    </target>
+
+    <target name="tomcat-start">
+        <property name="tomcat.home.dir" location="${env.CATALINA_HOME}" />
+        <java jar="${tomcat.home.dir}/bin/bootstrap.jar" fork="true">
+            <jvmarg value="-Dcatalina.home=${tomcat.home.dir}"/>
+        </java>
+    </target>
+
+    <target name="tomcat-stop">
+        <java jar="${tomcat.home.dir}/bin/bootstrap.jar" fork="true">
+            <jvmarg value="-Dcatalina.home=${tomcat.home.dir}"/>
+            <arg line="stop"/>
+        </java>
+    </target>
+
+    <target name="deploy" depends="tomcat-stop, clean, war, tomcat-start" >
+    </target>
+
+</project>
