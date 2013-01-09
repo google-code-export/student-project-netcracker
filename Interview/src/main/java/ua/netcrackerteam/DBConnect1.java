@@ -1,5 +1,6 @@
 package ua.netcrackerteam;
 
+import ua.netcrackerteam.DAO.DbConnectionSingleton;
 import java.io.*;
 import java.sql.*;
 import java.util.*;
