@@ -14,7 +14,7 @@
             <td>ID</td>
             <td>Name</td>
             <td>Surname</td>
-            <td>Name RU</td>
+            <td>Name RU </td>
         </tr>
         </thead>
         <tbody>
