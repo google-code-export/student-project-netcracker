@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Observable;
 
 /**
- * Класс Interview  
+ * Класс Interview отслеживает наблюдателей - Анкеты 
  * Функции:
  *      Записаться на собеседование
  *      Изменить время собеседования
