@@ -33,4 +33,32 @@
         %>
         </tbody>
     </table>
+    
+    
+    <center>Table using class DBConnecitonSingleton</center>
+    <table border="1" align="center" background-color="090341" >
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Surname</td>
+            <td>Name RU </td>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            List list1 = DBConnect.GetEmp();
+            Iterator<String> it1 = list1.iterator();
+            while (it1.hasNext()) {
+                out.print("<tr>");
+                for (int i = 0; i < 4; i++) {
+                    out.print("<td>");
+                    out.print(it1.next());
+                    out.print("</td>");
+                }
+                out.print("</tr>");
+            }
+        %>
+        </tbody>
+    </table>
 </form>
