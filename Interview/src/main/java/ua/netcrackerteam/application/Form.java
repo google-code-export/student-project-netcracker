@@ -12,6 +12,8 @@ import java.util.Observer;
  * @author tanya
  */
 public class Form implements Observer{
+    
+    private int id_form;
 
     @Override
     public void update(Observable o, Object arg) {
