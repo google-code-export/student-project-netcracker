@@ -1,4 +1,4 @@
-package ua.netcrackerteam;
+package ua.netcrackerteam.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
