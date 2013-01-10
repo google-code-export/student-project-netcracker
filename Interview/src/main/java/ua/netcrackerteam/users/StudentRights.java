@@ -1,9 +1,9 @@
 package ua.netcrackerteam.users;
 
 import java.util.Observable;
-import ua.netcrackerteam.application.*;
 
 /**
+ * author tanya
  */
 public interface StudentRights {
     /**
