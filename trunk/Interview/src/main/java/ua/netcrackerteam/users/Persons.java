@@ -1,10 +1,15 @@
 package ua.netcrackerteam.users;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
 /**
  * author tanya
  */
 public class Persons {
-    
+   
+       
     /**
      * Авторизация на сайте
      * @param userName - логин пользователя
