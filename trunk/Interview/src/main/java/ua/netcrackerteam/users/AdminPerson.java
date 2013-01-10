@@ -1,7 +1,5 @@
 package ua.netcrackerteam.users;
 
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * author tanya
