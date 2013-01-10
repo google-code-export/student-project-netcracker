@@ -16,7 +16,7 @@ public class Form implements Observer{
     /**
      * Уникальный индификатор анкеты
      */
-    private int id_form;
+    public int id_form;
     
     /**
      * Вызывается Interview 
