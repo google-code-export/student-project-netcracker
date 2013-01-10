@@ -2,5 +2,5 @@ package ua.netcrackerteam.users;
 
 /**
  */
-public class StudentPerson implements StudentRights{
+public class StudentPerson extends Persons implements StudentRights{
 }

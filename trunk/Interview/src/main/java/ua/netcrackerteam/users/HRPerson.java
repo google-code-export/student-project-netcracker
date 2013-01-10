@@ -2,5 +2,5 @@ package ua.netcrackerteam.users;
 
 /**
  */
-public class HRPerson implements HRRights{
+public class HRPerson extends Persons implements HRRights{
 }
