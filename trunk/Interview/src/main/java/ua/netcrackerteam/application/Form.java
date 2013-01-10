@@ -13,11 +13,13 @@ import java.util.Observer;
  */
 public class Form implements Observer{
     
+    /**
+     * Уникальный индификатор анкеты
+     */
     private int id_form;
     
     /**
-     * Вызывается Interview при редактировании времени собеседований HR
-     * @param 
+     * Вызывается Interview 
      */
     @Override
     public void update(Observable o, Object arg) {
@@ -26,10 +28,24 @@ public class Form implements Observer{
     
     /**
      * Проверка заполнения полей анкеты
-     * @return boolean check
+     * @return true/false
      */
     public boolean checkFields(){
         return true;
+    }
+    /**
+     * Проверка фотографии на ограничение по размеру
+     * @return true/false
+     */
+    public boolean checkSizePhoto(){
+        return true;
+    }
+    
+    /**
+     * Формирование анкеты в формате pdf
+     */
+    public void generateFormPDF(){
+        
     }
  
     
