@@ -16,7 +16,7 @@ public class Form implements Observer{
     /**
      * Уникальный индификатор анкеты
      */
-    public int id_form;
+    public int idForm;
     /**
      * Назначенное собеседование
      */
