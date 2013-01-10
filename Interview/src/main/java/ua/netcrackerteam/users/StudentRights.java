@@ -2,5 +2,5 @@ package ua.netcrackerteam.users;
 
 /**
  */
-public interface StudentRights extends Persons {
+public interface StudentRights {
 }
