@@ -60,9 +60,9 @@ public class Interview extends Observable{
     
     /**
      * Установка максимального количества студентов на период времени
-     * @param max_students 
+     * @param maxStudents 
      */
-    public void setMax_students(int maxStudents) {
+    public void setMaxStudents(int maxStudents) {
         this.maxStudents = maxStudents;
     }
     
