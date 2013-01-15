@@ -8,58 +8,57 @@ import java.util.Date;
 import java.util.Observable;
 
 /**
- * Класс Interview отслеживает наблюдателей - Анкеты 
  * @author tanya
  */
 
 public class Interview extends Observable{
     
- 
+    
     private Date dateTimeStart;
     private Date dateTimeEnd;
     private int maxStudents;
     
      /**
-     * Получение времени начала собеседования
-     * @return Date date_time_start
+     * Get date and time start of the interview
+     * @return Date dateTimeStart
      */
     public Date getDateTimeStart() {
         return dateTimeStart;
     }
     /**
-     * Получение времени окончания собеседования
-     * @return Date date_time_end
+     * Get date and time end of the interview
+     * @return Date dateTimeEnd
      */
     public Date getDateTimeEnd() {
         return dateTimeEnd;
     }
     
     /**
-     * Получение максимального количества студентов на период времени
-     * @return max_students
+     * Get max students of the interview
+     * @return maxStudents
      */
     public int getMaxStudents() {
         return maxStudents;
     }
     
     /**
-     * Установка времени начала собеседования 
-     * @param date_time_start 
+     * Set date and time start of the interview 
+     * @param dateTimeStart 
      */
     public void setDateTimeStart(Date dateTimeStart) {
         this.dateTimeStart = dateTimeStart;
     }
     
      /**
-     * Установка времени окончания собеседования 
-     * @param date_time_start 
+     * Set date and time end of the interview
+     * @param dateTimeStart 
      */
     public void setDateTimeEnd(Date dateTimeEnd) {
         this.dateTimeEnd = dateTimeEnd;
     }
     
     /**
-     * Установка максимального количества студентов на период времени
+     * Set max students of the interview
      * @param maxStudents 
      */
     public void setMaxStudents(int maxStudents) {

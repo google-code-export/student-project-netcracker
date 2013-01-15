@@ -8,35 +8,35 @@ import ua.netcrackerteam.application.*;
 public class StudentPerson extends Persons implements StudentRights{
     
     /**
-     * Заполненая анкета студента
+     * Fill student's form
      */
     public Form form;
     
      /**
-     * Регистрация студента на собеседование
-     * @param interview - интервью на определенный день и время
+     * Registration for interview
+     * @param interview
      */
     @Override
     public void registrationToInterview(Observable interview) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     /**
-     * Отмена регистрации студента на собеседование
+     * De-registering for an interview
      */
     @Override
     public void deleteRegistrationToInterview() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     /**
-     * Перезапись студента на другое собеседование
-     * @param interview - интервью на определенный день и время
+     * Rewrite to another interview
+     * @param interview
      */
     @Override
     public void changeRegistrationToInterview(Observable interview) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     /**
-     * Запрос на изменение анкеты
+     * Request to change the form
      */
     @Override
     public void requestToChangeForm() {

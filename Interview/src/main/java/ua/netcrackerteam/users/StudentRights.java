@@ -7,21 +7,21 @@ import java.util.Observable;
  */
 public interface StudentRights {
     /**
-     * Регистрация студента на собеседование
-     * @param interview - интервью на определенный день и время
+     * Registration for interview
+     * @param interview
      */
     public void registrationToInterview(Observable interview);
      /**
-     * Отмена регистрации студента на собеседование
+     * De-registering for an interview
      */
     public void deleteRegistrationToInterview();
     /**
-     * Перезапись студента на другое собеседование
-     * @param interview - интервью на определенный день и время
+     * Rewrite to another interview
+     * @param interview
      */
     public void changeRegistrationToInterview(Observable interview);
     /**
-     * Запрос на изменение анкеты
+     * Request to change the form
      */
     public void requestToChangeForm();
 }

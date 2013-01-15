@@ -6,20 +6,20 @@ package ua.netcrackerteam.users;
 public interface AdminRights  {
     
     /**
-     * Удаление пользователя
-     * @param userName логин пользователя 
+     * Deleting a user
+     * @param userName
      */
     public void removeUser(String userName);
     /**
-     * Добавление полльзователя
-     * @param userName - логин пользователя
-     * @param rights - набор прав пользователя
+     * Adding a user
+     * @param userName
+     * @param rights
      */
     public void addUser(String userName, String rights);
     /**
-     * Сброс пароля пользователя
-     * @param userName - логин пользователя
-     * @param password - новый пароль пользователя
+     * Resetting a user's password
+     * @param userName
+     * @param password
      */
     public void changePasswordUser(String userName, String password);
     
