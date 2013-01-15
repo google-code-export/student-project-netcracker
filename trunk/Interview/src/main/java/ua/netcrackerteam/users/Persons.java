@@ -8,40 +8,40 @@ public class Persons {
    
        
     /**
-     * Авторизация на сайте
-     * @param userName - логин пользователя
-     * @param password - пароль пользователя 
+     * Authorization
+     * @param userName 
+     * @param password
      */
     public void login(String userName, String password){
             
     }
     
      /**
-     * Деавторизация пользователя
-     * @param userName - логин пользователя  
+     * UnAuthorization
+     * @param userName 
      */
     public void logout(String userName){
         
     }
     /**
-     * Проверка правельности введенных пароля и логина
-     * @param userName - логин пользователя
-     * @param password - пароль пользователя
+     * Check the password and login
+     * @param userName
+     * @param password
      * @return true/false
      */
     public final boolean passwordValid(String userName, String password){
         return true;
     }  
     
-     /** Восстановление пароля - пароль высылается на email
-     * @param email - пароль пользователя
+     /** Recover password  - password send to the email
+     * @param email 
      */
     public void recoverPassword(String email){
         
     }
     
     /**
-     * Проверка правельности введенного email для восстановления пароля на сайте
+     * Check the email for recover email
      * @param email
      * @return true/false
      */

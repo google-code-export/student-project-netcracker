@@ -14,16 +14,16 @@ import java.util.Observer;
 public class Form implements Observer{
     
     /**
-     * Уникальный индификатор анкеты
+     * Unique identifier for form
      */
     public int idForm;
     /**
-     * Назначенное собеседование
+     * interview
      */
     public Observable interview;
     
     /**
-     * Вызывается Interview 
+     * Called when the interview was changed by hr
      */
     @Override
     public void update(Observable o, Object arg) {
@@ -31,14 +31,14 @@ public class Form implements Observer{
     }
     
     /**
-     * Проверка заполнения полей анкеты
+     * Checking the filling of fields
      * @return true/false
      */
     public boolean checkFields(){
         return true;
     }
-    /**
-     * Проверка фотографии на ограничение по размеру
+    /**    
+     * Check size photo (max size 300 kb)
      * @return true/false
      */
     public boolean checkSizePhoto(){
@@ -46,7 +46,7 @@ public class Form implements Observer{
     }
     
     /**
-     * Формирование анкеты в формате pdf
+     * Create from (pdf-format)
      */
     public void generateFormPDF(){
         
