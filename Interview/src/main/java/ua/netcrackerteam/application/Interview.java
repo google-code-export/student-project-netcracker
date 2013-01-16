@@ -51,7 +51,7 @@ public class Interview extends Observable{
     
      /**
      * Set date and time end of the interview
-     * @param dateTimeStart 
+     * @param dateTimeEnd
      */
     public void setDateTimeEnd(Date dateTimeEnd) {
         this.dateTimeEnd = dateTimeEnd;
