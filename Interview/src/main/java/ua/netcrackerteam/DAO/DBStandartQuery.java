@@ -12,6 +12,7 @@ public class DBStandartQuery {
 
     /**
      * Method perform Select query to database using DbConnectionSingleton for connect to DB.
+     * "SELECT fields FROM tables WHERE condition"
      * @param tableName - input variable number of table names.
      * @param tableFields - input variable number of table fields.
      * @param whereCondition - input variable number of where conditions in query.

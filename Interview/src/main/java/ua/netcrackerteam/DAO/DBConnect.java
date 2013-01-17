@@ -33,9 +33,9 @@ public class DBConnect
         ResultSet rz = null;
         try {
             list = new ArrayList();
-            rz = DBStandartQuery.SelectQuery("first_name, middle_name, last_name",
-                    "form",
-                    "first_name = 'Дмитрий'");
+            rz = DBStandartQuery.SelectQuery("f.first_name, f.middle_name, f.last_name, con.info",
+                    "form form f, contact con",
+                    "con.id_form = f.id_form");
             countColumns = rz.getMetaData().getColumnCount();
             while(rz.next())
             {
