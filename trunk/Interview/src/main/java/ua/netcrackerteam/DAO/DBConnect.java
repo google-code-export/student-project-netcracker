@@ -29,21 +29,14 @@ public class DBConnect
      */
     public static List GetFIOFromForm() {
         List list = null;
-        int countColumns = 0;
         ResultSet rz = null;
         try {
-            list = new ArrayList();
             rz = DBStandartQuery.SelectQuery("f.first_name, f.middle_name, f.last_name, con.info",
                     "form form f, contact con",
                     "con.id_form = f.id_form");
-            countColumns = rz.getMetaData().getColumnCount();
-            while(rz.next())
-            {
-                for (int i = 1; i <= countColumns; i++)
-                list.add(rz.getString(i));
-            }
-        } catch (SQLException er) {
-            System.out.println("SELECT is wrong!");
+            list = DBStandartQuery.ResultSetHandler(rz);
+        } catch (NullPointerException er) {
+            System.out.println("Error occurred in method GetFIOFromForm");
             System.out.println(er.getMessage());
         }
         return list;
