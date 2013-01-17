@@ -2,6 +2,8 @@ package ua.netcrackerteam.DAO;
 
 import java.lang.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Static class contains methods which perform standard database queries: Insert, Update, Select, Delete
@@ -36,5 +38,27 @@ public class DBStandartQuery {
             er.printStackTrace();
         }
         return rz;
+    }
+
+    /**
+     * Method for handling Result Set of Select Queries
+     * @param rz - input Result Set
+     * @return list - query result in collection ArrayList
+     */
+    public static List ResultSetHandler(ResultSet rz){
+        List list = null;
+        int countColumns = 0;
+        try {
+            countColumns = rz.getMetaData().getColumnCount();
+            list = new ArrayList();
+            while (rz.next()) {
+                for (int i = 1; i <= countColumns; i++)
+                    list.add(rz.getString(i));
+            }
+        } catch (SQLException er) {
+            System.out.println("Error occurred in Result Set Handler");
+            System.out.println(er.getMessage());
+        }
+        return list;
     }
 }
