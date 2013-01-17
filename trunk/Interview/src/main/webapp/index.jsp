@@ -20,7 +20,7 @@
         </thead>
         <tbody>
         <%
-            List list = DBStandartQuery.GetEmp();
+            List list = DBConnect.GetEmp();
             Iterator<String> it = list.iterator();
             while (it.hasNext()) {
                 out.print("<tr>");

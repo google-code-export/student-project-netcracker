@@ -3,33 +3,13 @@ package ua.netcrackerteam.DAO;
 import java.lang.*;
 import java.sql.*;
 import java.util.*;
+import ua.netcrackerteam.DAO.*;
 
 /**
  * Static class contains methods which perform standart database queries: Insert, Update, Select, Delete
  * @author krygin
  */
 public class DBStandartQuery {
-
-    /**
-     * Debugging method
-     * @param
-     */
-    public static List GetEmp() {
-        List list = new LinkedList();
-        ResultSet rz = DBStandartQuery.SelectQuery("form", "first_name, middle_name, last_name");
-        try {
-            while(rz.next())
-            {
-                list.add(rz.getString(1));
-                list.add(rz.getString(2));
-                list.add(rz.getString(3));
-            }
-        } catch (SQLException er) {
-            System.out.println("SELECT is wrong!");
-            System.out.println(er.getMessage());
-        }
-        return list;
-    }
 
     /**
      * Method perform Select query to database using DbConnectionSingleton for connect to DB.
