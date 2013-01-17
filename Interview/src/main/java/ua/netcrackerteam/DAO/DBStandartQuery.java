@@ -2,38 +2,29 @@ package ua.netcrackerteam.DAO;
 
 import java.lang.*;
 import java.sql.*;
-import java.util.*;
-import ua.netcrackerteam.DAO.*;
 
 /**
- * Static class contains methods which perform standart database queries: Insert, Update, Select, Delete
- * @author krygin
+ * Static class contains methods which perform standard database queries: Insert, Update, Select, Delete
+ * Use class DbConnectionSingleton for get connections to DB.
+ * @author krygin, maxym, Filipenko
  */
 public class DBStandartQuery {
 
     /**
      * Method perform Select query to database using DbConnectionSingleton for connect to DB.
-     * @param tableName - input table name
-     * @param tableFields - input variable number of table fields
-     * @return list - select result in collection ArrayList<String>()
+     * @param tableName - input variable number of table names.
+     * @param tableFields - input variable number of table fields.
+     * @param whereCondition - input variable number of where conditions in query.
+     * @return rz - resultset for using in another classes for get list of values of query.
      */
-    public static ResultSet SelectQuery(String tableName, String ... tableFields){
-        List<String> list = null;
+    public static ResultSet SelectQuery(String[] tableFields, String[] tableName, String[] whereCondition){
         Connection con = null;
         String query = null;
-        String newString = null;
         Statement stm = null;
         ResultSet rz = null;
-        int k = 1;
         try
         {
-            newString = tableFields[0];
-            while (newString.indexOf(",") != -1)  {
-                newString = newString.substring(newString.indexOf(",")+1, newString.length());
-                k++;
-            }
-            query = "select " + tableFields[0] + " from " + tableName;
-            list = new ArrayList<String>();
+            query = "select " + tableFields[0] + " from " + tableName[0] + " where " + whereCondition[0];
             con = DbConnectionSingleton.getInstance().getConn();
             stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             rz = stm.executeQuery(query);
