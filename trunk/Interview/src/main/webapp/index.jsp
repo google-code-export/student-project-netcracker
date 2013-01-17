@@ -4,7 +4,7 @@
 <head >
     <title>DB Connection</title>
 </head>
-<center>Test Table !!!!! and one more !</center>
+<center>Test Table !!!!! and one more !!!</center>
 <form method="post" name="form">
     <center><input type="button" value="Back to Index Page" onclick="location.href='index.jsp'" /></center>
     <table border="1" align="center" background-color="090341" >
@@ -14,6 +14,7 @@
             <td>Name</td>
             <td>Middle Name</td>
             <td>Last Name</td>
+            <td>Contact</td>
         </tr>
         </thead>
         <tbody>
@@ -22,7 +23,7 @@
             Iterator<String> it = list.iterator();
             while (it.hasNext()) {
                 out.print("<tr>");
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 4; i++) {
                     out.print("<td>");
                     out.print(it.next());
                     out.print("</td>");
