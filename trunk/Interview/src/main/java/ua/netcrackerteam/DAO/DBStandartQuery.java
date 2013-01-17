@@ -17,14 +17,14 @@ public class DBStandartQuery {
      * @param whereCondition - input variable number of where conditions in query.
      * @return rz - resultset for using in another classes for get list of values of query.
      */
-    public static ResultSet SelectQuery(String[] tableFields, String[] tableName, String[] whereCondition){
+    public static ResultSet SelectQuery(String tableFields, String tableName, String whereCondition){
         Connection con = null;
         String query = null;
         Statement stm = null;
         ResultSet rz = null;
         try
         {
-            query = "select " + tableFields[0] + " from " + tableName[0] + " where " + whereCondition[0];
+            query = "select " + tableFields + " from " + tableName + " where " + whereCondition;
             con = DbConnectionSingleton.getInstance().getConn();
             stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             rz = stm.executeQuery(query);

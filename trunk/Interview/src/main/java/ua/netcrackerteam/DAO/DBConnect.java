@@ -1,13 +1,12 @@
-package main.java.ua.netcrackerteam.DAO;
+package ua.netcrackerteam.DAO;
 
 import java.io.*;
 import java.sql.*;
 import java.util.*;
-import ua.netcrackerteam.DAO.*;
 
 /**
  * Test debugging class for testing methods from DBStandartQuery class
- * @author krygin, maksym
+ * @author krygin, maksym, Filipenko
  */
 public class DBConnect
 {
@@ -25,21 +24,23 @@ public class DBConnect
     }
 
     /**
-     * Test debugging method for testing methods from DBStandartQuery class
+     * Test debugging method for using methods from DBStandartQuery class
      * @return list - query result in ArrayList collection
      */
     public static List GetFIOFromForm() {
-        List list = new ArrayList();
-        String[] fields = {"first_name, middle_name, last_name"};
-        String[] tables = {"form"};
-        String[] whereCondition = {"first_name = 'Дмитрий'"};
-        ResultSet rz = DBStandartQuery.SelectQuery(fields, tables, whereCondition);
+        List list = null;
+        int countColumns = 0;
+        ResultSet rz = null;
         try {
+            list = new ArrayList();
+            rz = DBStandartQuery.SelectQuery("first_name, middle_name, last_name",
+                    "form",
+                    "first_name = 'Дмитрий'");
+            countColumns = rz.getMetaData().getColumnCount();
             while(rz.next())
             {
-                list.add(rz.getString(1));
-                list.add(rz.getString(2));
-                list.add(rz.getString(3));
+                for (int i = 1; i <= countColumns; i++)
+                list.add(rz.getString(i));
             }
         } catch (SQLException er) {
             System.out.println("SELECT is wrong!");
