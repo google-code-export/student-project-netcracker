@@ -1,7 +1,5 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import ="java.sql.*" %>
 <%@ page import="java.util.*" %>
-<%@ page import="ua.netcrackerteam.*" %>
 <%@ page import="ua.netcrackerteam.DAO.*" %>
 <head >
     <title>DB Connection</title>
@@ -20,7 +18,7 @@
         </thead>
         <tbody>
         <%
-            List list = DBConnect.GetEmp();
+            List list = DBConnect.GetFIOFromForm();
             Iterator<String> it = list.iterator();
             while (it.hasNext()) {
                 out.print("<tr>");

@@ -1,12 +1,10 @@
 package ua.netcrackerteam.DAO;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Locale;
 
 /**
- *
+ * Pattern Singelton. For creating connection to database and one access point in project
  * @author maksym
  */
 public class DbConnectionSingleton
@@ -45,15 +43,11 @@ public class DbConnectionSingleton
      */
     private Connection getConnection() throws SQLException
     {
-        // URL for native driver        
         String url="jdbc:oracle:thin:@85.238.104.112:1521:XE";
         String username="netcracker";
         String password="oracle";
-        
-        // get driver
         try
         {
-            //get native-driver
             Class.forName("oracle.jdbc.driver.OracleDriver");
         }
         catch(java.lang.ClassNotFoundException er)
@@ -63,11 +57,9 @@ public class DbConnectionSingleton
             er.printStackTrace();
             System.exit(0);
         }
-        
         Locale locale = Locale.getDefault();
         Locale.setDefault(Locale.ENGLISH);
-        //open connection
-        Connection conn=DriverManager.getConnection(url,username,password);
+        conn = DriverManager.getConnection(url,username,password);
         System.out.println("Connection is OK!");
         Locale.setDefault(locale);
         return conn;
