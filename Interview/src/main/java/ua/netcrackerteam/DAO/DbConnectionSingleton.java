@@ -14,7 +14,7 @@ public class DbConnectionSingleton
     
     private DbConnectionSingleton() {
         try	{
-            conn = getConnection();
+            this.conn = getConnection();
         }
         catch (SQLException e)
         {
@@ -44,11 +44,17 @@ public class DbConnectionSingleton
     private Connection getConnection() throws SQLException
     {
         String url="jdbc:oracle:thin:@85.238.104.112:1521:XE";
+        String jdbcDriver = "oracle.jdbc.driver.OracleDriver";
         String username="netcracker";
         String password="oracle";
         try
         {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Class.forName(jdbcDriver);
+            Locale locale = Locale.getDefault();
+            Locale.setDefault(Locale.ENGLISH);
+            this.conn = DriverManager.getConnection(url, username, password);
+            System.out.println("Connection is OK!");
+            Locale.setDefault(locale);
         }
         catch(java.lang.ClassNotFoundException er)
         {
@@ -57,12 +63,7 @@ public class DbConnectionSingleton
             er.printStackTrace();
             System.exit(0);
         }
-        Locale locale = Locale.getDefault();
-        Locale.setDefault(Locale.ENGLISH);
-        conn = DriverManager.getConnection(url,username,password);
-        System.out.println("Connection is OK!");
-        Locale.setDefault(locale);
-        return conn;
+        return this.conn;
     }
     
     /**
@@ -71,6 +72,6 @@ public class DbConnectionSingleton
      */
     public Connection getConn()
     {
-        return conn;
+        return this.conn;
     }
 }
