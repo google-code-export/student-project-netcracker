@@ -1,8 +1,7 @@
 package ua.netcrackerteam.DAO;
 
-import java.io.*;
-import java.sql.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Test debugging class for testing methods from DBStandartQuery class
@@ -17,7 +16,7 @@ public class DBConnect
      */
     public static void main(String args[])  throws IOException
     {
-        List list = DBConnect.GetFIOFromForm();
+        List list = GetFIOFromForm();
         for (int i = 0; i < list.size(); i++){
             System.out.println(list.get(i));
         }
@@ -25,16 +24,14 @@ public class DBConnect
 
     /**
      * Test debugging method for using methods from DBStandartQuery class
-     * @return list - query result in ArrayList collection
+     * @return list - query result in ArrayList collection                                             `
      */
     public static List GetFIOFromForm() {
         List list = null;
-        ResultSet rz = null;
         try {
-            rz = DBStandartQuery.SelectQuery("f.first_name, f.middle_name, f.last_name, con.info",
-                    "form form f, contact con",
+            list = DBStandartQuery.SelectQuery("f.first_name, f.middle_name, f.last_name, con.info",
+                    "form f, contact con",
                     "con.id_form = f.id_form");
-            list = DBStandartQuery.ResultSetHandler(rz);
         } catch (NullPointerException er) {
             System.out.println("Error occurred in method GetFIOFromForm");
             System.out.println(er.getMessage());

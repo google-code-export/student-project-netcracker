@@ -18,26 +18,35 @@ public class DBStandartQuery {
      * @param tableName - input variable number of table names.
      * @param tableFields - input variable number of table fields.
      * @param whereCondition - input variable number of where conditions in query.
-     * @return rz - resultset for using in another classes for get list of values of query.
+     * @return list - query result in collection ArrayList
      */
-    public static ResultSet SelectQuery(String tableFields, String tableName, String whereCondition){
+    public static List SelectQuery(String tableFields, String tableName, String whereCondition){
+        List list = null;
+        int countColumns = 0;
         Connection con = null;
         String query = null;
         Statement stm = null;
         ResultSet rz = null;
         try
         {
+            list = new ArrayList();
             query = "select " + tableFields + " from " + tableName + " where " + whereCondition;
+            System.out.println(query);
             con = DbConnectionSingleton.getInstance().getConn();
             stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             rz = stm.executeQuery(query);
+            countColumns = rz.getMetaData().getColumnCount();
+            while (rz.next()) {
+                for (int i = 1; i <= countColumns; i++)
+                    list.add(rz.getString(i));
+            }
         } catch (SQLException er) {
             System.out.println("SELECT is wrong!");
             System.out.println(er.getMessage());
         } catch (IndexOutOfBoundsException er){
             er.printStackTrace();
         }
-        return rz;
+        return list;
     }
 
     /**
@@ -45,7 +54,7 @@ public class DBStandartQuery {
      * @param rz - input Result Set
      * @return list - query result in collection ArrayList
      */
-    public static List ResultSetHandler(ResultSet rz){
+    /*public static List ResultSetHandler(ResultSet rz){
         List list = null;
         int countColumns = 0;
         try {
@@ -60,5 +69,5 @@ public class DBStandartQuery {
             System.out.println(er.getMessage());
         }
         return list;
-    }
+    }*/
 }
