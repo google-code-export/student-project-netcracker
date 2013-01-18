@@ -31,14 +31,15 @@ public class DBStandartQuery {
         {
             list = new ArrayList();
             query = "select " + tableFields + " from " + tableName + " where " + whereCondition;
-            System.out.println(query);
             con = DbConnectionSingleton.getInstance().getConn();
             stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             rz = stm.executeQuery(query);
-            countColumns = rz.getMetaData().getColumnCount();
-            while (rz.next()) {
-                for (int i = 1; i <= countColumns; i++)
-                    list.add(rz.getString(i));
+            if (rz != null) {
+                countColumns = rz.getMetaData().getColumnCount();
+                while (rz.next()) {
+                    for (int i = 1; i <= countColumns; i++)
+                        list.add(rz.getString(i));
+                }
             }
         } catch (SQLException er) {
             System.out.println("SELECT is wrong!");
