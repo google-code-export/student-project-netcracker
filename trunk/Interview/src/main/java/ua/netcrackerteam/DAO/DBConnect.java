@@ -1,5 +1,7 @@
 package ua.netcrackerteam.DAO;
 
+import ua.netcrackerteam.configuration.InterviewLogger;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class DBConnect
         for (int i = 0; i < list.size(); i++){
             System.out.println(list.get(i));
         }
+        InterviewLogger.info("DBConnect","main");
     }
 
     /**
@@ -32,6 +35,7 @@ public class DBConnect
             list = DBStandartQuery.SelectQuery("f.first_name, f.middle_name, f.last_name, con.info",
                     "form f, contact con",
                     "con.id_form = f.id_form");
+            InterviewLogger.info("DBConnect", "GetFIOFromForm");
         } catch (NullPointerException er) {
             System.out.println("Error occurred in method GetFIOFromForm");
             System.out.println(er.getMessage());
