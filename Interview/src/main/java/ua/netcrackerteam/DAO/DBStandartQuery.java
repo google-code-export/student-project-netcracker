@@ -1,5 +1,7 @@
 package ua.netcrackerteam.DAO;
 
+import ua.netcrackerteam.configuration.InterviewLogger;
+
 import java.lang.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class DBStandartQuery {
                         list.add(rz.getString(i));
                 }
             }
+            InterviewLogger.info("DBStandartQuery", "SelectQuery(3 parameters)");
         } catch (SQLException er) {
             System.out.println("SELECT is wrong!");
             System.out.println(er.getMessage());
@@ -48,6 +51,11 @@ public class DBStandartQuery {
             er.printStackTrace();
         }
         return list;
+    }
+
+    public static List SelectQuery(String tableFields, String tableName){
+        InterviewLogger.info("DBStandartQuery", "SelectQuery(simple, 2 parameters)");
+        return SelectQuery(tableFields, tableName, "");
     }
 
     /**
