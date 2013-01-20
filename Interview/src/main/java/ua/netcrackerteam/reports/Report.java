@@ -10,7 +10,10 @@ import java.util.ArrayList;
  *
  * @author tanya
  */
-public abstract class Report {
+public class Report {
+    
+     TypeOfViewReport report;
+     
     /**
      * Search in a report on the set field and value , return result of search
      * @param field
