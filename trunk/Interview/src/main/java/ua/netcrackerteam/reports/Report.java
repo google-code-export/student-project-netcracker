@@ -10,25 +10,34 @@ import java.util.ArrayList;
  *
  * @author tanya
  */
-public interface AdditionalFunctions {
-    
+public abstract class Report {
     /**
      * Search in a report on the set field and value , return result of search
      * @param field
      * @param value
      * @return ArrayList
      */
-    public ArrayList search(String field, String value);
+    public ArrayList search(String field, String value){
+        return new ArrayList();
+    }
     /**
      * Sort in a report on the set field in ascenting or decrease, return result of search
      * @param typeOfSort
      * @return ArrayList
      */
-    public ArrayList sort (String field, SortingTypes typeOfSort);
+    public ArrayList sort (String field, SortingTypes typeOfSort){
+        return new ArrayList();
+    }
     /**
-     * Reflection of information of report
-     * @param dataForView 
+     * To print a report 
      */
-    public void viewReport(ArrayList dataForView);
-    
+    public void print(){
+        
+    }
+      /**
+     * To export a report 
+     */
+    public void export(){
+        
+    }
 }
