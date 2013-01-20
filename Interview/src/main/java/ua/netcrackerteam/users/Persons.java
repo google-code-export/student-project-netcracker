@@ -48,4 +48,14 @@ public class Persons {
     public final boolean emailValid(String email) {
         return true;
     }
+    /**
+     * Changing of password
+     * @param exsistPassword
+     * @param newPassword
+     * @return true/false
+     */
+    public final boolean changePassword(String exsistPassword, String newPassword){
+        return true;
+    }
+            
 }
