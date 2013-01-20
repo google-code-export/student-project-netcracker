@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author tanya
  */
-public interface TypesOfViewReport {
+public interface TypeOfViewReport {
      /**
      * Reflection of information of report
      * @param dataForView 
