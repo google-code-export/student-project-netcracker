@@ -1,5 +1,7 @@
 package ua.netcrackerteam.DAO;
 
+import ua.netcrackerteam.configuration.InterviewLoggerSingleton;
+
 import java.sql.*;
 import java.util.Locale;
 
@@ -22,6 +24,7 @@ public class DbConnectionSingleton
             {
                 System.out.println("" + e);
                 e = e.getNextException();
+                InterviewLoggerSingleton.getInstance().error(e);
             }
         }
     }
@@ -59,6 +62,7 @@ public class DbConnectionSingleton
         catch(java.lang.ClassNotFoundException er)
         {
             System.out.print("JDBC-Driver is wrong!\n");
+            InterviewLoggerSingleton.getInstance().error(er);
             System.out.println(er.getMessage());
             er.printStackTrace();
             System.exit(0);
