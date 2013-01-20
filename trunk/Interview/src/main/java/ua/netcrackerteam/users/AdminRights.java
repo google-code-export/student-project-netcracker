@@ -23,4 +23,11 @@ public interface AdminRights  {
      */
     public void changePasswordUser(String userName, String password);
     
+    /**
+     * Changing a user's login
+     * @param userName
+     * @param newUserName 
+     */
+    public void changeLoginUser(String userName, String newUserName);
+    
 }

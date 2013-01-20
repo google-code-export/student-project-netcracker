@@ -11,7 +11,7 @@ public class AdminPerson extends Persons implements AdminRights{
      * @param userName
      */
     @Override
-    public void removeUser(String userName) {
+    public final void removeUser(String userName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     /**
@@ -20,7 +20,7 @@ public class AdminPerson extends Persons implements AdminRights{
      * @param rights
      */
     @Override
-    public void addUser(String userName, String rights) {
+    public final void addUser(String userName, String rights) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
      /**
@@ -29,7 +29,16 @@ public class AdminPerson extends Persons implements AdminRights{
      * @param password
      */
     @Override
-    public void changePasswordUser(String userName, String password) {
+    public final void changePasswordUser(String userName, String password) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    /**
+     * Changing a user's login
+     * @param userName
+     * @param newUserName 
+     */
+    public void changeLoginUser(String userName, String newUserName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
