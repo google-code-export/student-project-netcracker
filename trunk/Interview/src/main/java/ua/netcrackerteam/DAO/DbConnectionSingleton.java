@@ -57,7 +57,10 @@ public class DbConnectionSingleton
             Locale locale = Locale.getDefault();
             Locale.setDefault(Locale.ENGLISH);
             this.conn = DriverManager.getConnection(url, username, password);
+            this.conn.setAutoCommit(true);
+            System.out.println("Connection is OK!");
             logger.info();
+
             Locale.setDefault(locale);
         }
         catch(java.lang.ClassNotFoundException er)

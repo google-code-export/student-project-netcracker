@@ -48,6 +48,9 @@ public class DBConnect implements Logable {
         } catch (NullPointerException er) {
             logger.error(er);
         }
+        //DBStandartQuery.updateQuery(" form ", " first_name=\'Максим\', last_name=\'Жоха\' ", " id_form=9 ");
         return list;
     }
+    
+    
 }
