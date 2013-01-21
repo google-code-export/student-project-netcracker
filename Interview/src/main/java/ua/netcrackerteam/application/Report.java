@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.reports;
+package ua.netcrackerteam.application;
 
 import java.util.ArrayList;
-import ua.netcrackerteam.application.*;
 
 /**
  *
