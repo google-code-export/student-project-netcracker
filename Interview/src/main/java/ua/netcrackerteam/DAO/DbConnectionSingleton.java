@@ -11,6 +11,7 @@ import java.util.Locale;
  */
 public class DbConnectionSingleton
 {
+    protected static InterviewLoggerSingleton logger = InterviewLoggerSingleton.getInstance();
     private static DbConnectionSingleton uniqueInstance;
     private Connection conn;
     
@@ -24,7 +25,7 @@ public class DbConnectionSingleton
             {
                 System.out.println("" + e);
                 e = e.getNextException();
-                InterviewLoggerSingleton.getInstance().error(e);
+                logger.error(e);
             }
         }
     }
@@ -56,13 +57,13 @@ public class DbConnectionSingleton
             Locale locale = Locale.getDefault();
             Locale.setDefault(Locale.ENGLISH);
             this.conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection is OK!");
+            logger.info();
             Locale.setDefault(locale);
         }
         catch(java.lang.ClassNotFoundException er)
         {
             System.out.print("JDBC-Driver is wrong!\n");
-            InterviewLoggerSingleton.getInstance().error(er);
+            logger.error(er);
             System.out.println(er.getMessage());
             er.printStackTrace();
             System.exit(0);

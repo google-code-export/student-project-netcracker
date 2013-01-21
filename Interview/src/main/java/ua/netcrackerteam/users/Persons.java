@@ -1,61 +1,27 @@
 package ua.netcrackerteam.users;
 
-
 /**
- * author tanya
+ * @author tanya
  */
-public class Persons {
-   
-       
+public interface Persons {
     /**
      * Authorization
-     * @param userName 
-     * @param password
-     */
-    public void login(String userName, String password){
-            
-    }
-    
-     /**
-     * UnAuthorization
-     * @param userName 
-     */
-    public void logout(String userName){
-        
-    }
-    /**
-     * Check the password and login
      * @param userName
      * @param password
-     * @return true/false
      */
-    public final boolean passwordValid(String userName, String password){
-        return true;
-    }  
-    
-     /** Recover password  - password send to the email
-     * @param email 
-     */
-    public void recoverPassword(String email){
-        
-    }
-    
+    public void login(String userName, String password);
+
     /**
-     * Check the email for recover email
-     * @param email
-     * @return true/false
+     * UnAuthorization
+     * @param userName
      */
-    public final boolean emailValid(String email) {
-        return true;
-    }
+    public void logout(String userName);
+
     /**
      * Changing of password
      * @param exsistPassword
      * @param newPassword
      * @return true/false
      */
-    public final boolean changePassword(String exsistPassword, String newPassword){
-        return true;
-    }
-            
+    public boolean changePassword(String exsistPassword, String newPassword);
 }

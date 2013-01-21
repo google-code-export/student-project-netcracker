@@ -5,7 +5,7 @@ import ua.netcrackerteam.application.*;
 /**
  * author tanya
  */
-public class StudentPerson extends Persons implements StudentRights{
+public class StudentPerson implements StudentRights{
     
     /**
      * Fill student's form
@@ -42,6 +42,21 @@ public class StudentPerson extends Persons implements StudentRights{
     public void requestToChangeForm() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    
+
+    @Override
+    public void login(String userName, String password) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void logout(String userName) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean changePassword(String exsistPassword, String newPassword) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }

@@ -4,13 +4,15 @@
  */
 package ua.netcrackerteam.reports;
 
+import ua.netcrackerteam.application.TypeOfViewReport;
+
 import java.util.ArrayList;
 
 /**
  *
  * @author tanya
  */
-public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
+public class ReportAdvertisingEfficiency implements TypeOfViewReport {
 
     public void viewReport(ArrayList dataForView) {
         throw new UnsupportedOperationException("Not supported yet.");
