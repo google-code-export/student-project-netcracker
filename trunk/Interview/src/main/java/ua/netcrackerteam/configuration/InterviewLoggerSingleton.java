@@ -10,7 +10,7 @@ public class InterviewLoggerSingleton{
     private static InterviewLoggerSingleton instance = null;
     protected static final Logger log = Logger.getLogger(InterviewLoggerSingleton.class);
     private static final String infoMsg = "has successfully executed";
-    private static final String warningMsg = "has generate warning";
+    private static final String warningMsg = "warning detected";
     private static final String errorMsg = "error occurred";
 
     private InterviewLoggerSingleton() {}

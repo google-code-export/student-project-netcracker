@@ -1,6 +1,7 @@
 package ua.netcrackerteam.DAO;
 
 import ua.netcrackerteam.configuration.InterviewLoggerSingleton;
+import ua.netcrackerteam.configuration.Logable;
 import java.lang.*;
 import java.sql.*;
 import java.util.*;
@@ -10,7 +11,7 @@ import java.util.*;
  * Use class DbConnectionSingleton for get connections to DB.
  * @author krygin, maxym, Filipenko
  */
-public class DBStandartQuery {
+public class DBStandartQuery implements Logable {
 
     /**
      * Method perform Select query to database using DbConnectionSingleton for connect to DB.
@@ -21,8 +22,8 @@ public class DBStandartQuery {
      * @return list - query result in collection ArrayList
      */
     public static List SelectQuery(String tableFields, String tableName, String whereCondition){
-        List list = null;
         int countColumns = 0;
+        List list = null;
         Connection con = null;
         String query = null;
         Statement stm = null;
@@ -41,13 +42,14 @@ public class DBStandartQuery {
                         list.add(rz.getString(i));
                 }
             }
-            InterviewLoggerSingleton.getInstance().info();
+            logger.info();
         } catch (SQLException er) {
-            InterviewLoggerSingleton.getInstance().error(er);
+            logger.error(er);
             System.out.println("SELECT is wrong!");
             System.out.println(er.getMessage());
         } catch (IndexOutOfBoundsException er){
             er.printStackTrace();
+            logger.error(er);
         }
         return list;
     }

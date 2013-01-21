@@ -4,7 +4,7 @@ package ua.netcrackerteam.users;
 /**
  * author tanya
  */
-public class AdminPerson extends Persons implements AdminRights{
+public class AdminPerson implements AdminRights{
     
      /**
      * Deleting a user
@@ -41,7 +41,19 @@ public class AdminPerson extends Persons implements AdminRights{
     public void changeLoginUser(String userName, String newUserName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
- 
-    
+
+    @Override
+    public void login(String userName, String password) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void logout(String userName) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean changePassword(String exsistPassword, String newPassword) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

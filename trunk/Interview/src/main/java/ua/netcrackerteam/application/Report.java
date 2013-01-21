@@ -5,14 +5,15 @@
 package ua.netcrackerteam.reports;
 
 import java.util.ArrayList;
+import ua.netcrackerteam.application.*;
 
 /**
  *
  * @author tanya
  */
 public class Report {
-    
-     TypeOfViewReport report;
+
+     private TypeOfViewReport report;
      
     /**
      * Search in a report on the set field and value , return result of search
