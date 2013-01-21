@@ -58,4 +58,21 @@ public class DBStandartQuery implements Logable {
         InterviewLoggerSingleton.getInstance().info();
         return SelectQuery(tableFields, tableName, "");
     }
+    
+    public static int updateQuery(String tableName, String tableFieldsWithValues, String whereCondition)
+    {
+        String query = "UPDATE " + tableName + " SET " + tableFieldsWithValues + " WHERE " + whereCondition;
+        Connection con = DbConnectionSingleton.getInstance().getConn();
+        int rs=0;
+        try
+        {
+            Statement stm = con.createStatement();
+            rs = stm.executeUpdate(query);
+            
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return rs;        
+    }
 }
