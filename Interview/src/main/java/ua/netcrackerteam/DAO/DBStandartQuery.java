@@ -21,6 +21,41 @@ public class DBStandartQuery implements Logable {
      * @param whereCondition - input variable number of where conditions in query.
      * @return list - query result in collection ArrayList
      */
+
+    public static List SelectQuery(String tableFields, String tableName, String whereCondition, String orderCondition){
+        int countColumns = 0;
+        List list = null;
+        Connection con  = null;
+        String query    = null;
+        Statement stm   = null;
+        ResultSet rz    = null;
+        try
+        {
+            list = new ArrayList();
+            query = "select " + tableFields + " from " + tableName + " where " + whereCondition + " order by " + orderCondition;
+            con = DbConnectionSingleton.getInstance().getConn();
+            stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            rz = stm.executeQuery(query);
+            if (rz != null) {
+                countColumns = rz.getMetaData().getColumnCount();
+                while (rz.next()) {
+                    for (int i = 1; i <= countColumns; i++)
+                        list.add(rz.getString(i));
+                }
+            }
+            logger.info();
+        } catch (SQLException er) {
+            logger.error(er);
+            System.out.println("SELECT is wrong!");
+            System.out.println(er.getMessage());
+        } catch (IndexOutOfBoundsException er){
+            er.printStackTrace();
+            logger.error(er);
+        }
+        return list;
+    }
+
+
     public static List SelectQuery(String tableFields, String tableName, String whereCondition){
         int countColumns = 0;
         List list = null;
@@ -74,5 +109,56 @@ public class DBStandartQuery implements Logable {
             e.printStackTrace();
         }
         return rs;        
+    }
+
+    public static Boolean DeleteQuery(String tableName, String whereCondition) {
+        String query    = null;
+        Boolean result  = false;
+        Connection con  = null;
+        Statement stm   = null;
+        ResultSet rz    = null;
+        try
+        {
+            query = "delete from" + tableName + " where " + whereCondition;
+            con = DbConnectionSingleton.getInstance().getConn();
+            stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            rz = stm.executeQuery(query);
+            result = true;
+            return result;
+        } catch (SQLException er) {
+            logger.error(er);
+            System.out.println("SELECT is wrong!");
+            System.out.println(er.getMessage());
+        } catch (IndexOutOfBoundsException er){
+            er.printStackTrace();
+            logger.error(er);
+        }
+        return result;
+    }
+
+
+    public static Boolean insertQuery(String tableName, String values) {
+        String query    = null;
+        Boolean result  = false;
+        Connection con  = null;
+        Statement stm   = null;
+        ResultSet rz    = null;
+        try
+        {
+            query = "insert into" + tableName + " values " + values;
+            con = DbConnectionSingleton.getInstance().getConn();
+            stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+            rz = stm.executeQuery(query);
+            result = true;
+            return result;
+        } catch (SQLException er) {
+            logger.error(er);
+            System.out.println("SELECT is wrong!");
+            System.out.println(er.getMessage());
+        } catch (IndexOutOfBoundsException er){
+            er.printStackTrace();
+            logger.error(er);
+        }
+        return result;
     }
 }
