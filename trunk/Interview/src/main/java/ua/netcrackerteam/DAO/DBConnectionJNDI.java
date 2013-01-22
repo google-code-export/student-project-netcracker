@@ -61,7 +61,10 @@ public class DBConnectionJNDI {
         Context envContext = null;
         
         Connection con = null;
-        try{            
+        try{ 
+                java.util.Properties env = new java.util.Properties();
+                env.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.naming.java.javaURLContextFactory");                
+                
                 initContext = new InitialContext();
                 envContext  = (Context)initContext.lookup("java:/comp/env");
                 DataSource ds = (DataSource)envContext.lookup("jdbc/DBOracle");
@@ -73,6 +76,7 @@ public class DBConnectionJNDI {
         finally{
             try {
                 initContext.close();
+                envContext.close();
             } catch (NamingException ex) {
                 Logger.getLogger(DBConnectionJNDI.class.getName()).log(Level.SEVERE, null, ex);
             }

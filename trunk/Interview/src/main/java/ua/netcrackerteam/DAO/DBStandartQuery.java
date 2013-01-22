@@ -67,7 +67,7 @@ public class DBStandartQuery implements Logable {
         {
             list = new ArrayList();
             query = "select " + tableFields + " from " + tableName + " where " + whereCondition;
-            con = DBConnectionJNDI.getInstance().getConn();
+            con = DbConnectionSingleton.getInstance().getConn();
             stm = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
             rz = stm.executeQuery(query);
             if (rz != null) {
