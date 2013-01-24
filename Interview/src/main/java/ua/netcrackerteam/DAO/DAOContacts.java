@@ -14,7 +14,7 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name="Contact")
+@Table(name="CONTACT")
 public class DAOContacts implements Serializable {
     @Id
     @Column(name= "ID_FORM")

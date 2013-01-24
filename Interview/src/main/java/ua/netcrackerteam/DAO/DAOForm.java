@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name="Form")
+@Table(name="FORM")
 public class DAOForm implements Serializable {
     @Id
     @Column(name= "ID_FORM")
