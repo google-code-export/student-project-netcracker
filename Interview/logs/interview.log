@@ -39,3 +39,30 @@ java.sql.SQLException: ORA-00904: "CON"."ID_FORM": invalid identifier
 19:48:51,079  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
 19:48:51,079  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
 19:48:51,080  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
+21:17:26,850  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:17:27,515  WARN main RootClass:checkCompositeIdentifier:288 - HHH000038: Composite-id class does not override equals(): ua.netcrackerteam.DAO.DAOContacts
+21:17:27,516  WARN main RootClass:checkCompositeIdentifier:289 - HHH000039: Composite-id class does not override hashCode(): ua.netcrackerteam.DAO.DAOContacts
+21:21:44,249  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:21:44,824  WARN main RootClass:checkCompositeIdentifier:288 - HHH000038: Composite-id class does not override equals(): ua.netcrackerteam.DAO.DAOForm
+21:21:44,824  WARN main RootClass:checkCompositeIdentifier:289 - HHH000039: Composite-id class does not override hashCode(): ua.netcrackerteam.DAO.DAOForm
+21:23:03,456  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:23:04,084  WARN main ConnectionProviderInitiator:initiateService:143 - HHH000181: No appropriate connection provider encountered, assuming application will be supplying connections
+21:32:46,911  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:32:49,787  WARN main JdbcServicesImpl:configure:169 - HHH000342: Could not obtain connection to query metadata : ORA-00604: error occurred at recursive SQL level 1
+ORA-12705: Cannot access NLS data files or invalid environment specified
+
+21:32:49,867  WARN main Oracle9Dialect:<init>:60 - HHH000063: The Oracle9Dialect dialect has been deprecated; use either Oracle9iDialect or Oracle10gDialect instead
+21:32:49,871  WARN main OracleDialect:<init>:48 - HHH000064: The OracleDialect dialect has been deprecated; use Oracle8iDialect instead
+21:34:04,130  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:34:05,995  WARN main JdbcServicesImpl:configure:169 - HHH000342: Could not obtain connection to query metadata : ORA-00604: error occurred at recursive SQL level 1
+ORA-12705: Cannot access NLS data files or invalid environment specified
+
+21:43:57,071  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:47:10,049  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:48:05,738  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:48:25,922  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:49:07,383  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:49:42,727  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:50:05,809  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+21:57:20,067  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
+22:01:27,950  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
