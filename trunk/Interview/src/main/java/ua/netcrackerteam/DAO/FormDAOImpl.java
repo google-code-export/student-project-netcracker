@@ -20,7 +20,7 @@ public class FormDAOImpl implements NewDAOForm, Logable {
     @Override
     public Collection GetNamesAndContacts() throws SQLException {
         Session session = null;
-        Collection<String> queryResult = new ArrayList<String>();
+        List queryResult = new ArrayList();
         Query re = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -30,7 +30,8 @@ public class FormDAOImpl implements NewDAOForm, Logable {
 //                    " select f.first_name, f.middle_name, f.last_name, con.info "
 //                    + " from Form f left join Contact con");
             re = session.createSQLQuery("select f.first_name, f.middle_name, f.last_name, con.info "+
-                                                                    " from form f left join contact con on f.id_form = con.id_form");
+                    " from form f left join contact con on f.id_form = con.id_form");
+            queryResult = re.list();
 
         } catch (Exception e) {
             System.out.println(e);
@@ -43,7 +44,7 @@ public class FormDAOImpl implements NewDAOForm, Logable {
     }
 
     public static void main (String[] args) throws SQLException{
-
+        Locale.setDefault(Locale.ENGLISH);
         Collection firstselect = Factory.getInstance().getFormDAO().GetNamesAndContacts();
         Iterator newIt = firstselect.iterator();
         System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANSE FIRST QUERY !!!");
