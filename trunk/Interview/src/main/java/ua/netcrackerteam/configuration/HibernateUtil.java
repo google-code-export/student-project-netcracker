@@ -1,4 +1,4 @@
-package ua.netcrackerteam.DAO;
+package ua.netcrackerteam.configuration;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,16 +12,20 @@ import org.hibernate.SessionFactory;
 
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
-    static {
+
+    static{
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
-        } catch (Throwable ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
+        } catch (Throwable e) {
+            throw new ExceptionInInitializerError(e);
         }
     }
 
-    public static SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory(){
         return sessionFactory;
+    }
+
+    public static void shutDown(){
+        getSessionFactory().close();
     }
 }
