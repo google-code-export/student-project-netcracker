@@ -2,21 +2,17 @@ package ua.netcrackerteam.DAO;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import ua.netcrackerteam.configuration.Factory;
+import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.Logable;
 
 import java.sql.SQLException;
 import java.util.*;
 
-import ua.netcrackerteam.DAO.*;
-
 /**
- * Created with IntelliJ IDEA.
- * User: Bri
- * Date: 24.01.13
- * Time: 20:27
- * To change this template use File | Settings | File Templates.
+ * @author
  */
-public class FormDAOImpl implements NewDAOForm, Logable {
+public class DAOImpl implements DAOInterface, Logable {
     @Override
     public Collection GetNamesAndContacts() throws SQLException {
         Session session = null;
@@ -50,10 +46,10 @@ public class FormDAOImpl implements NewDAOForm, Logable {
         System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANSE FIRST QUERY !!!");
         System.out.println("=====================================================================");
         while (newIt.hasNext()) {
-            DAOForm newDAOForm = (DAOForm)newIt.next();
-            System.out.println("First name " + newDAOForm.getFIRST_NAME() +
-                                ", middle name " + newDAOForm.getMIDDLE_NAME() +
-                                ", last name " + newDAOForm.getLAST_NAME());
+            TableForm newTableForm = (TableForm)newIt.next();
+            System.out.println("First name " + newTableForm.getFirstName() +
+                                ", middle name " + newTableForm.getMiddleName() +
+                                ", last name " + newTableForm.getLastName());
         }
 
     }

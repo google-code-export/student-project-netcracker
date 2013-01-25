@@ -1,15 +1,13 @@
-package ua.netcrackerteam.DAO;
+package ua.netcrackerteam.configuration;
+
+import ua.netcrackerteam.DAO.DAOImpl;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Bri
- * Date: 24.01.13
- * Time: 20:35
- * To change this template use File | Settings | File Templates.
+ * @author
  */
 public class Factory {
 
-    private static FormDAOImpl formDAO = null;
+    private static DAOImpl formDAO = null;
     private static Factory instance = null;
 
     public static synchronized Factory getInstance(){
@@ -19,9 +17,9 @@ public class Factory {
         return instance;
     }
 
-    public FormDAOImpl getFormDAO(){
+    public DAOImpl getFormDAO(){
         if (formDAO == null){
-            formDAO = new FormDAOImpl();
+            formDAO = new DAOImpl();
         }
         return formDAO;
     }
