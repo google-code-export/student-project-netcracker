@@ -1,18 +1,15 @@
 package ua.netcrackerteam.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.File;
-import java.sql.Date;
+import javax.persistence.*;
+import java.io.*;
+import java.sql.*;
 
 /**
  * @author
  */
 @Entity
 @Table(name="FORM")
-public class TableForm {
+public class TableForm implements Serializable {
     @Id
     @Column(name= "ID_FORM")
     private Long idForm;
@@ -68,23 +65,18 @@ public class TableForm {
     @Column(name= "PHOTO")
     private File photo;
 
-    @Id
     @Column(name= "ID_STATUS")
     private Long idStatus;
 
-    @Id
     @Column(name= "ID_INSTITUTE")
     private Long idInstitute;
 
-    @Id
     @Column(name= "ID_SCHOOL")
     private Long idSchool;
 
-    @Id
     @Column(name= "ID_USER")
     private Long idUser;
 
-    @Id
     @Column(name= "ID_INTERVIEW")
     private Long idInterview;
 
@@ -273,5 +265,78 @@ public class TableForm {
 
     public void setIdInterview(Long idInterview) {
         this.idInterview = idInterview;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableForm tableForm = (TableForm) o;
+
+        if (avgLast != null ? !avgLast.equals(tableForm.avgLast) : tableForm.avgLast != null) return false;
+        if (avgScore != null ? !avgScore.equals(tableForm.avgScore) : tableForm.avgScore != null) return false;
+        if (execProject != null ? !execProject.equals(tableForm.execProject) : tableForm.execProject != null)
+            return false;
+        if (extraInfo != null ? !extraInfo.equals(tableForm.extraInfo) : tableForm.extraInfo != null) return false;
+        if (extraKnowledge != null ? !extraKnowledge.equals(tableForm.extraKnowledge) : tableForm.extraKnowledge != null)
+            return false;
+        if (firstName != null ? !firstName.equals(tableForm.firstName) : tableForm.firstName != null) return false;
+        if (idForm != null ? !idForm.equals(tableForm.idForm) : tableForm.idForm != null) return false;
+        if (idInstitute != null ? !idInstitute.equals(tableForm.idInstitute) : tableForm.idInstitute != null)
+            return false;
+        if (idInterview != null ? !idInterview.equals(tableForm.idInterview) : tableForm.idInterview != null)
+            return false;
+        if (idSchool != null ? !idSchool.equals(tableForm.idSchool) : tableForm.idSchool != null) return false;
+        if (idStatus != null ? !idStatus.equals(tableForm.idStatus) : tableForm.idStatus != null) return false;
+        if (idUser != null ? !idUser.equals(tableForm.idUser) : tableForm.idUser != null) return false;
+        if (instituteGradYear != null ? !instituteGradYear.equals(tableForm.instituteGradYear) : tableForm.instituteGradYear != null)
+            return false;
+        if (instituteYear != null ? !instituteYear.equals(tableForm.instituteYear) : tableForm.instituteYear != null)
+            return false;
+        if (interestSoftware != null ? !interestSoftware.equals(tableForm.interestSoftware) : tableForm.interestSoftware != null)
+            return false;
+        if (interestStudy != null ? !interestStudy.equals(tableForm.interestStudy) : tableForm.interestStudy != null)
+            return false;
+        if (interestTelecom != null ? !interestTelecom.equals(tableForm.interestTelecom) : tableForm.interestTelecom != null)
+            return false;
+        if (interestWork != null ? !interestWork.equals(tableForm.interestWork) : tableForm.interestWork != null)
+            return false;
+        if (lastName != null ? !lastName.equals(tableForm.lastName) : tableForm.lastName != null) return false;
+        if (middleName != null ? !middleName.equals(tableForm.middleName) : tableForm.middleName != null) return false;
+        if (photo != null ? !photo.equals(tableForm.photo) : tableForm.photo != null) return false;
+        if (reason != null ? !reason.equals(tableForm.reason) : tableForm.reason != null) return false;
+        if (schoolGradYear != null ? !schoolGradYear.equals(tableForm.schoolGradYear) : tableForm.schoolGradYear != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idForm != null ? idForm.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (execProject != null ? execProject.hashCode() : 0);
+        result = 31 * result + (reason != null ? reason.hashCode() : 0);
+        result = 31 * result + (extraInfo != null ? extraInfo.hashCode() : 0);
+        result = 31 * result + (instituteYear != null ? instituteYear.hashCode() : 0);
+        result = 31 * result + (instituteGradYear != null ? instituteGradYear.hashCode() : 0);
+        result = 31 * result + (schoolGradYear != null ? schoolGradYear.hashCode() : 0);
+        result = 31 * result + (extraKnowledge != null ? extraKnowledge.hashCode() : 0);
+        result = 31 * result + (interestStudy != null ? interestStudy.hashCode() : 0);
+        result = 31 * result + (interestWork != null ? interestWork.hashCode() : 0);
+        result = 31 * result + (interestSoftware != null ? interestSoftware.hashCode() : 0);
+        result = 31 * result + (interestTelecom != null ? interestTelecom.hashCode() : 0);
+        result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
+        result = 31 * result + (avgLast != null ? avgLast.hashCode() : 0);
+        result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        result = 31 * result + (idStatus != null ? idStatus.hashCode() : 0);
+        result = 31 * result + (idInstitute != null ? idInstitute.hashCode() : 0);
+        result = 31 * result + (idSchool != null ? idSchool.hashCode() : 0);
+        result = 31 * result + (idUser != null ? idUser.hashCode() : 0);
+        result = 31 * result + (idInterview != null ? idInterview.hashCode() : 0);
+        return result;
     }
 }

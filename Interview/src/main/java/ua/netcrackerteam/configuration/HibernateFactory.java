@@ -5,14 +5,14 @@ import ua.netcrackerteam.DAO.DAOImpl;
 /**
  * @author
  */
-public class Factory {
+public class HibernateFactory {
 
     private static DAOImpl formDAO = null;
-    private static Factory instance = null;
+    private static HibernateFactory instance = null;
 
-    public static synchronized Factory getInstance(){
+    public static synchronized HibernateFactory getInstance(){
         if (instance == null){
-            instance = new Factory();
+            instance = new HibernateFactory();
         }
         return instance;
     }
