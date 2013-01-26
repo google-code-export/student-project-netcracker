@@ -1,30 +1,35 @@
 package ua.netcrackerteam.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.*;
+import java.util.Set;
 
 /**
  * @author
  */
 @Entity
 @Table(name="CONTACT")
-public class TableContact {
+public class TableContact implements Serializable {
     @Id
-    @Column(name= "idForm")
+    @Column(name= "ID_CONTACT")
     private Long idContact;
 
     @Column(name= "INFO")
     private String info;
 
-    @Id
     @Column(name= "ID_CONTACT_CATEGORY")
     private Long idContactCategory;
 
-    @Id
-    @Column(name= "ID_FORM")
-    private long idForm;
+    @OneToMany(mappedBy = "ID_FORM", fetch = FetchType.LAZY)
+    private Set<TableForm> idFormList;
+
+    public Set<TableForm> getIdFormList() {
+        return idFormList;
+    }
+
+    public void setIdFormList(Set<TableForm> idFormList) {
+        this.idFormList = idFormList;
+    }
 
     public TableContact() {
     }
@@ -53,11 +58,26 @@ public class TableContact {
         this.idContactCategory = idContactCategory;
     }
 
-    public long getIdForm() {
-        return idForm;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableContact that = (TableContact) o;
+
+        if (idContact != null ? !idContact.equals(that.idContact) : that.idContact != null) return false;
+        if (idContactCategory != null ? !idContactCategory.equals(that.idContactCategory) : that.idContactCategory != null)
+            return false;
+        if (info != null ? !info.equals(that.info) : that.info != null) return false;
+
+        return true;
     }
 
-    public void setIdForm(long idForm) {
-        this.idForm = idForm;
+    @Override
+    public int hashCode() {
+        int result = idContact != null ? idContact.hashCode() : 0;
+        result = 31 * result + (info != null ? info.hashCode() : 0);
+        result = 31 * result + (idContactCategory != null ? idContactCategory.hashCode() : 0);
+        return result;
     }
 }
