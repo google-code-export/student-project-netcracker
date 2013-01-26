@@ -3,6 +3,7 @@ package ua.netcrackerteam.DAO;
 import javax.persistence.*;
 import java.io.*;
 import java.sql.*;
+import java.util.Set;
 
 /**
  * @author
@@ -10,6 +11,8 @@ import java.sql.*;
 @Entity
 @Table(name="FORM")
 public class TableForm implements Serializable {
+   // private static final long serialVersionUID = -3254406057751181181L;
+
     @Id
     @Column(name= "ID_FORM")
     private Long idForm;
@@ -62,8 +65,8 @@ public class TableForm implements Serializable {
     @Column(name= "AVG_LAST")
     private Double avgLast;
 
-    @Column(name= "PHOTO")
-    private File photo;
+    /*@Column(name= "PHOTO")
+    private String photo;*/
 
     @Column(name= "ID_STATUS")
     private Long idStatus;
@@ -79,6 +82,18 @@ public class TableForm implements Serializable {
 
     @Column(name= "ID_INTERVIEW")
     private Long idInterview;
+
+  //  @Transient
+    @OneToMany(mappedBy="currForm")
+    private Set<TableContact> contacts;
+
+    public Set<TableContact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Set<TableContact> contacts) {
+        this.contacts = contacts;
+    }
 
     public TableForm() {
     }
@@ -219,13 +234,13 @@ public class TableForm implements Serializable {
         this.avgLast = avgLast;
     }
 
-    public File getPhoto() {
+    /*public File getPhoto() {
         return photo;
     }
 
     public void setPhoto(File photo) {
         this.photo = photo;
-    }
+    }*/
 
     public Long getIdStatus() {
         return idStatus;
@@ -304,7 +319,7 @@ public class TableForm implements Serializable {
             return false;
         if (lastName != null ? !lastName.equals(tableForm.lastName) : tableForm.lastName != null) return false;
         if (middleName != null ? !middleName.equals(tableForm.middleName) : tableForm.middleName != null) return false;
-        if (photo != null ? !photo.equals(tableForm.photo) : tableForm.photo != null) return false;
+       // if (photo != null ? !photo.equals(tableForm.photo) : tableForm.photo != null) return false;
         if (reason != null ? !reason.equals(tableForm.reason) : tableForm.reason != null) return false;
         if (schoolGradYear != null ? !schoolGradYear.equals(tableForm.schoolGradYear) : tableForm.schoolGradYear != null)
             return false;
@@ -331,7 +346,7 @@ public class TableForm implements Serializable {
         result = 31 * result + (interestTelecom != null ? interestTelecom.hashCode() : 0);
         result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
         result = 31 * result + (avgLast != null ? avgLast.hashCode() : 0);
-        result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        //result = 31 * result + (photo != null ? photo.hashCode() : 0);
         result = 31 * result + (idStatus != null ? idStatus.hashCode() : 0);
         result = 31 * result + (idInstitute != null ? idInstitute.hashCode() : 0);
         result = 31 * result + (idSchool != null ? idSchool.hashCode() : 0);
@@ -339,4 +354,5 @@ public class TableForm implements Serializable {
         result = 31 * result + (idInterview != null ? idInterview.hashCode() : 0);
         return result;
     }
+
 }

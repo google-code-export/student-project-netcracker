@@ -10,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name="CONTACT")
 public class TableContact implements Serializable {
+
     @Id
     @Column(name= "ID_CONTACT")
     private Long idContact;
@@ -20,15 +21,16 @@ public class TableContact implements Serializable {
     @Column(name= "ID_CONTACT_CATEGORY")
     private Long idContactCategory;
 
-    @OneToMany(mappedBy = "ID_FORM", fetch = FetchType.LAZY)
-    private Set<TableForm> idFormList;
+    @ManyToOne
+    @JoinColumn(name = "ID_FORM")
+    private TableForm currForm;
 
-    public Set<TableForm> getIdFormList() {
-        return idFormList;
+    public TableForm getIdFormList() {
+        return currForm;
     }
 
-    public void setIdFormList(Set<TableForm> idFormList) {
-        this.idFormList = idFormList;
+    public void setIdFormList(TableForm idFormList) {
+        this.currForm = idFormList;
     }
 
     public TableContact() {
@@ -79,5 +81,13 @@ public class TableContact implements Serializable {
         result = 31 * result + (info != null ? info.hashCode() : 0);
         result = 31 * result + (idContactCategory != null ? idContactCategory.hashCode() : 0);
         return result;
+    }
+
+    public TableForm getCurrForm() {
+        return currForm;
+    }
+
+    public void setCurrForm(TableForm currForm) {
+        this.currForm = currForm;
     }
 }

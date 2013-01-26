@@ -14,22 +14,21 @@ import java.util.*;
  */
 public class DAOImpl implements DAOInterface, Logable {
     @Override
-    public Collection GetNamesAndContacts() throws SQLException {
+    public ArrayList<TableForm> GetNamesAndContacts() throws SQLException {
         Session session = null;
-        List queryResult = new ArrayList();
-        Query re = null;
+        //ArrayList <TableForm> queryResult = null;
+        //Query re = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-//            Query query = session.createQuery(
-//                    " select f.first_name, f.middle_name, f.last_name, con.info "
-//                    + " from Form f left join Contact con");
-            /*re = session.createSQLQuery("select f.first_name, f.middle_name, f.last_name, con.info "+
-                    " from form f left join contact con on f.id_form = con.id_form");*/
-            re = session.createQuery("from TableForm where idForm > 0");
-            queryResult = re.list();
-            System.out.println(re);
-            System.out.println(queryResult);
+            /*Query re = session.createQuery("select f.firstName, f.middleName, f.lastName, con.info " +
+                    "from TableForm as f left outer join f.contacts as con");*/
+            List<TableForm> listOfForms = re.list();
+            System.out.println(listOfForms);
+            for (TableForm currForm: listOfForms){
+                System.out.print("Last name " + currForm.getLastName());
+                System.out.println();
+            }
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -37,18 +36,21 @@ public class DAOImpl implements DAOInterface, Logable {
                 session.close();
             }
         }
-        return queryResult;
+        return null;
     }
 
     public static void main (String[] args) throws SQLException{
         Locale.setDefault(Locale.ENGLISH);
-        Collection firstSelect = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
-        /*Iterator newIt = firstSelect.iterator();
-        System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANSE FIRST QUERY !!!");
-        System.out.println("=====================================================================");
-        while (newIt.hasNext()) {
-            TableForm newTableForm = (TableForm) newIt.next();
-            System.out.println("First name " + newTableForm.getLastName());
-        }*/
+        Iterator iter = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts().iterator();
+        //Iterator newIt = firstSelect.iterator();
+        //System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANSE FIRST QUERY !!!");
+        //System.out.println("=====================================================================");
+//        for (TableForm currForm:firstSelect) {
+//            System.out.println(currForm.toString());
+//        }
+        //while (iter.hasNext()) {
+        //    Object currForm = iter.next();
+        //    System.out.println(currForm);
+        //}
     }
 }
