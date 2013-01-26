@@ -14,19 +14,27 @@ import java.util.*;
  */
 public class DAOImpl implements DAOInterface, Logable {
     @Override
-    public ArrayList<TableForm> GetNamesAndContacts() throws SQLException {
+    public List GetNamesAndContacts() throws SQLException {
         Session session = null;
-        //ArrayList <TableForm> queryResult = null;
-        //Query re = null;
+        Query re = null;
+        List listOfForms = null;
         try {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            /*Query re = session.createQuery("select f.firstName, f.middleName, f.lastName, con.info " +
-                    "from TableForm as f left outer join f.contacts as con");*/
-            List<TableForm> listOfForms = re.list();
+            re = session.createQuery("Select f from TableForm f left join f.contacts c");
+            listOfForms = re.list();
             System.out.println(listOfForms);
-            for (TableForm currForm: listOfForms){
-                System.out.print("Last name " + currForm.getLastName());
+            /*for (Object currForm : listOfForms) {
+                System.out.print(((TableForm)currForm).getLastName() +
+                        " " + ((TableForm)currForm).getFirstName() +
+                        " " + ((TableForm)currForm).getMiddleName() +
+                        " " + ((TableContact)currForm).getInfo());
+                System.out.println();
+            }*/
+            for (Object currForm : listOfForms) {
+                System.out.print(((TableForm)currForm).getLastName() +
+                        " " + ((TableForm)currForm).getFirstName() +
+                        " " + ((TableForm)currForm).getMiddleName());
                 System.out.println();
             }
         } catch (Exception e) {
@@ -36,12 +44,24 @@ public class DAOImpl implements DAOInterface, Logable {
                 session.close();
             }
         }
-        return null;
+        return listOfForms;
     }
 
     public static void main (String[] args) throws SQLException{
         Locale.setDefault(Locale.ENGLISH);
-        Iterator iter = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts().iterator();
+        List<TableForm> listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
+       /* System.out.println(listOfForms);
+        for (TableForm currForm : listOfForms) {
+            for (int i = 0; i < currForm.size(); i++)
+                System.out.println(currForm.getLastName());
+            //System.out.print("Last name " + currForm.getLastName());
+           // System.out.println();*/
+        //}
+
+        /*for (TableForm currForm: listOfForms){
+            System.out.print("Last name " + currForm.getLastName());
+            System.out.println();
+        }*/
         //Iterator newIt = firstSelect.iterator();
         //System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANSE FIRST QUERY !!!");
         //System.out.println("=====================================================================");

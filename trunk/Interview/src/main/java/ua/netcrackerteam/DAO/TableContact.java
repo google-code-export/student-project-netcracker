@@ -2,7 +2,6 @@ package ua.netcrackerteam.DAO;
 
 import javax.persistence.*;
 import java.io.*;
-import java.util.Set;
 
 /**
  * @author
@@ -23,14 +22,14 @@ public class TableContact implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ID_FORM")
-    private TableForm currForm;
+    private TableForm idForm;
 
     public TableForm getIdFormList() {
-        return currForm;
+        return idForm;
     }
 
     public void setIdFormList(TableForm idFormList) {
-        this.currForm = idFormList;
+        this.idForm = idFormList;
     }
 
     public TableContact() {
@@ -83,11 +82,11 @@ public class TableContact implements Serializable {
         return result;
     }
 
-    public TableForm getCurrForm() {
-        return currForm;
+    public TableForm getIdForm() {
+        return idForm;
     }
 
-    public void setCurrForm(TableForm currForm) {
-        this.currForm = currForm;
+    public void setIdForm(TableForm currForm) {
+        this.idForm = currForm;
     }
 }

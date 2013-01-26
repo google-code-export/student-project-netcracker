@@ -2,7 +2,6 @@ package ua.netcrackerteam.DAO;
 
 import javax.persistence.*;
 import java.io.*;
-import java.sql.*;
 import java.util.Set;
 
 /**
@@ -35,7 +34,7 @@ public class TableForm implements Serializable {
     @Column(name= "EXTRA_INFO")
     private String extraInfo;
 
-    @Column(name= "INSTITUTE_YEAR")
+   /* @Column(name= "INSTITUTE_YEAR")
     private Integer instituteYear;
 
     @Column(name= "INSTITUTE_GRAD_YEAR")
@@ -65,8 +64,8 @@ public class TableForm implements Serializable {
     @Column(name= "AVG_LAST")
     private Double avgLast;
 
-    /*@Column(name= "PHOTO")
-    private String photo;*/
+    *//*@Column(name= "PHOTO")
+    private String photo;*//*
 
     @Column(name= "ID_STATUS")
     private Long idStatus;
@@ -81,10 +80,10 @@ public class TableForm implements Serializable {
     private Long idUser;
 
     @Column(name= "ID_INTERVIEW")
-    private Long idInterview;
+    private Long idInterview;*/
 
   //  @Transient
-    @OneToMany(mappedBy="currForm")
+    @OneToMany(mappedBy= "idForm")
     private Set<TableContact> contacts;
 
     public Set<TableContact> getContacts() {
@@ -154,7 +153,7 @@ public class TableForm implements Serializable {
         this.extraInfo = extraInfo;
     }
 
-    public Integer getInstituteYear() {
+   /* public Integer getInstituteYear() {
         return instituteYear;
     }
 
@@ -232,7 +231,7 @@ public class TableForm implements Serializable {
 
     public void setAvgLast(Double avgLast) {
         this.avgLast = avgLast;
-    }
+    }*/
 
     /*public File getPhoto() {
         return photo;
@@ -242,7 +241,7 @@ public class TableForm implements Serializable {
         this.photo = photo;
     }*/
 
-    public Long getIdStatus() {
+   /* public Long getIdStatus() {
         return idStatus;
     }
 
@@ -281,7 +280,7 @@ public class TableForm implements Serializable {
     public void setIdInterview(Long idInterview) {
         this.idInterview = idInterview;
     }
-
+*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -289,21 +288,21 @@ public class TableForm implements Serializable {
 
         TableForm tableForm = (TableForm) o;
 
-        if (avgLast != null ? !avgLast.equals(tableForm.avgLast) : tableForm.avgLast != null) return false;
-        if (avgScore != null ? !avgScore.equals(tableForm.avgScore) : tableForm.avgScore != null) return false;
+       // if (avgLast != null ? !avgLast.equals(tableForm.avgLast) : tableForm.avgLast != null) return false;
+      //  if (avgScore != null ? !avgScore.equals(tableForm.avgScore) : tableForm.avgScore != null) return false;
         if (execProject != null ? !execProject.equals(tableForm.execProject) : tableForm.execProject != null)
             return false;
         if (extraInfo != null ? !extraInfo.equals(tableForm.extraInfo) : tableForm.extraInfo != null) return false;
-        if (extraKnowledge != null ? !extraKnowledge.equals(tableForm.extraKnowledge) : tableForm.extraKnowledge != null)
+       // if (extraKnowledge != null ? !extraKnowledge.equals(tableForm.extraKnowledge) : tableForm.extraKnowledge != null)
             return false;
-        if (firstName != null ? !firstName.equals(tableForm.firstName) : tableForm.firstName != null) return false;
-        if (idForm != null ? !idForm.equals(tableForm.idForm) : tableForm.idForm != null) return false;
-        if (idInstitute != null ? !idInstitute.equals(tableForm.idInstitute) : tableForm.idInstitute != null)
-            return false;
-        if (idInterview != null ? !idInterview.equals(tableForm.idInterview) : tableForm.idInterview != null)
-            return false;
-        if (idSchool != null ? !idSchool.equals(tableForm.idSchool) : tableForm.idSchool != null) return false;
-        if (idStatus != null ? !idStatus.equals(tableForm.idStatus) : tableForm.idStatus != null) return false;
+      //  if (firstName != null ? !firstName.equals(tableForm.firstName) : tableForm.firstName != null) return false;
+      //  if (idForm != null ? !idForm.equals(tableForm.idForm) : tableForm.idForm != null) return false;
+      //  if (idInstitute != null ? !idInstitute.equals(tableForm.idInstitute) : tableForm.idInstitute != null)
+      //      return false;
+       // if (idInterview != null ? !idInterview.equals(tableForm.idInterview) : tableForm.idInterview != null)
+        //    return false;
+     //   if (idSchool != null ? !idSchool.equals(tableForm.idSchool) : tableForm.idSchool != null) return false;
+   /*     if (idStatus != null ? !idStatus.equals(tableForm.idStatus) : tableForm.idStatus != null) return false;
         if (idUser != null ? !idUser.equals(tableForm.idUser) : tableForm.idUser != null) return false;
         if (instituteGradYear != null ? !instituteGradYear.equals(tableForm.instituteGradYear) : tableForm.instituteGradYear != null)
             return false;
@@ -321,10 +320,10 @@ public class TableForm implements Serializable {
         if (middleName != null ? !middleName.equals(tableForm.middleName) : tableForm.middleName != null) return false;
        // if (photo != null ? !photo.equals(tableForm.photo) : tableForm.photo != null) return false;
         if (reason != null ? !reason.equals(tableForm.reason) : tableForm.reason != null) return false;
-        if (schoolGradYear != null ? !schoolGradYear.equals(tableForm.schoolGradYear) : tableForm.schoolGradYear != null)
-            return false;
-
-        return true;
+        if (schoolGradYear != null ? !schoolGradYear.equals(tableForm.schoolGradYear) : tableForm.schoolGradYear != null)*/
+         //   return false;
+      //
+      //  return true;
     }
 
     @Override
@@ -336,7 +335,7 @@ public class TableForm implements Serializable {
         result = 31 * result + (execProject != null ? execProject.hashCode() : 0);
         result = 31 * result + (reason != null ? reason.hashCode() : 0);
         result = 31 * result + (extraInfo != null ? extraInfo.hashCode() : 0);
-        result = 31 * result + (instituteYear != null ? instituteYear.hashCode() : 0);
+       /* result = 31 * result + (instituteYear != null ? instituteYear.hashCode() : 0);
         result = 31 * result + (instituteGradYear != null ? instituteGradYear.hashCode() : 0);
         result = 31 * result + (schoolGradYear != null ? schoolGradYear.hashCode() : 0);
         result = 31 * result + (extraKnowledge != null ? extraKnowledge.hashCode() : 0);
@@ -351,7 +350,7 @@ public class TableForm implements Serializable {
         result = 31 * result + (idInstitute != null ? idInstitute.hashCode() : 0);
         result = 31 * result + (idSchool != null ? idSchool.hashCode() : 0);
         result = 31 * result + (idUser != null ? idUser.hashCode() : 0);
-        result = 31 * result + (idInterview != null ? idInterview.hashCode() : 0);
+        result = 31 * result + (idInterview != null ? idInterview.hashCode() : 0);*/
         return result;
     }
 
