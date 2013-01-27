@@ -14,5 +14,6 @@
 
       <mapping class="ua.netcrackerteam.DAO.TableForm" />
       <mapping class="ua.netcrackerteam.DAO.TableContact" />
+      <mapping class="ua.netcrackerteam.DAO.TableContactCategory" />
   </session-factory>
 </hibernate-configuration>
