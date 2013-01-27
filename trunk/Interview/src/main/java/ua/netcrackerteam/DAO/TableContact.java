@@ -9,6 +9,7 @@ import java.io.*;
 @Entity
 @Table(name="CONTACT")
 public class TableContact implements Serializable {
+    private static final long serialVersionUID = -3235406055681181451L;
 
     @Id
     @Column(name= "ID_CONTACT")
@@ -17,12 +18,21 @@ public class TableContact implements Serializable {
     @Column(name= "INFO")
     private String info;
 
-    @Column(name= "ID_CONTACT_CATEGORY")
-    private Long idContactCategory;
+    @ManyToOne
+    @JoinColumn(name="ID_CONTACT_CATEGORY")
+    private TableContactCategory contact;
 
     @ManyToOne
-    @JoinColumn(name = "ID_FORM")
+    @JoinColumn(name = "ID_FORM", nullable = true)
     private TableForm idForm;
+
+    public TableContactCategory getContact() {
+        return contact;
+    }
+
+    public void setContact(TableContactCategory contact) {
+        this.contact = contact;
+    }
 
     public TableForm getIdFormList() {
         return idForm;
@@ -51,14 +61,6 @@ public class TableContact implements Serializable {
         this.info = info;
     }
 
-    public Long getIdContactCategory() {
-        return idContactCategory;
-    }
-
-    public void setIdContactCategory(Long idContactCategory) {
-        this.idContactCategory = idContactCategory;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,8 +69,6 @@ public class TableContact implements Serializable {
         TableContact that = (TableContact) o;
 
         if (idContact != null ? !idContact.equals(that.idContact) : that.idContact != null) return false;
-        if (idContactCategory != null ? !idContactCategory.equals(that.idContactCategory) : that.idContactCategory != null)
-            return false;
         if (info != null ? !info.equals(that.info) : that.info != null) return false;
 
         return true;
@@ -78,7 +78,6 @@ public class TableContact implements Serializable {
     public int hashCode() {
         int result = idContact != null ? idContact.hashCode() : 0;
         result = 31 * result + (info != null ? info.hashCode() : 0);
-        result = 31 * result + (idContactCategory != null ? idContactCategory.hashCode() : 0);
         return result;
     }
 

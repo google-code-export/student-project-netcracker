@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.Logable;
-
 import java.sql.SQLException;
 import java.util.*;
 
@@ -19,24 +18,11 @@ public class DAOImpl implements DAOInterface, Logable {
         Query re = null;
         List listOfForms = null;
         try {
+            Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            re = session.createQuery("Select f from TableForm f left join f.contacts c");
+            re = session.createQuery("select cc, c, f from TableContact cc join cc.contact c join cc.idForm f");
             listOfForms = re.list();
-            System.out.println(listOfForms);
-            /*for (Object currForm : listOfForms) {
-                System.out.print(((TableForm)currForm).getLastName() +
-                        " " + ((TableForm)currForm).getFirstName() +
-                        " " + ((TableForm)currForm).getMiddleName() +
-                        " " + ((TableContact)currForm).getInfo());
-                System.out.println();
-            }*/
-            for (Object currForm : listOfForms) {
-                System.out.print(((TableForm)currForm).getLastName() +
-                        " " + ((TableForm)currForm).getFirstName() +
-                        " " + ((TableForm)currForm).getMiddleName());
-                System.out.println();
-            }
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -49,28 +35,19 @@ public class DAOImpl implements DAOInterface, Logable {
 
     public static void main (String[] args) throws SQLException{
         Locale.setDefault(Locale.ENGLISH);
-        List<TableForm> listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
-       /* System.out.println(listOfForms);
-        for (TableForm currForm : listOfForms) {
-            for (int i = 0; i < currForm.size(); i++)
-                System.out.println(currForm.getLastName());
-            //System.out.print("Last name " + currForm.getLastName());
-           // System.out.println();*/
-        //}
-
-        /*for (TableForm currForm: listOfForms){
-            System.out.print("Last name " + currForm.getLastName());
-            System.out.println();
-        }*/
-        //Iterator newIt = firstSelect.iterator();
-        //System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANSE FIRST QUERY !!!");
-        //System.out.println("=====================================================================");
-//        for (TableForm currForm:firstSelect) {
-//            System.out.println(currForm.toString());
-//        }
-        //while (iter.hasNext()) {
-        //    Object currForm = iter.next();
-        //    System.out.println(currForm);
-        //}
+        List<Object[]> listOfForms = null;
+        System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANS FIRST QUERY !!!!");
+        System.out.println("=====================================================================");
+        try{
+            listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
+            for (Object[] currForm : listOfForms) {
+                TableContact contactObjects = (TableContact) currForm[0];
+                TableContactCategory contactCategoryObjects = (TableContactCategory) currForm[1];
+                TableForm formObjects = (TableForm) currForm[2];
+                System.out.println(contactObjects.getInfo() + " " + contactCategoryObjects.getCategory() + " " +formObjects.getLastName());
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

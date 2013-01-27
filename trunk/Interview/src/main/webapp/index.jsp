@@ -1,6 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="ua.netcrackerteam.DAO.*" %>
+<%@ page import="ua.netcrackerteam.configuration.HibernateFactory" %>
 <head >
     <title>DB Connection</title>
 </head>
@@ -14,23 +15,28 @@
             <td>Name</td>
             <td>Middle Name</td>
             <td>Last Name</td>
+            <td>Contact Category</td>
             <td>Contact</td>
         </tr>
         </thead>
         <tbody>
         <%
-            List list = DBConnect.GetFIOFromForm();
-            Iterator<String> it = list.iterator();
-            while (it.hasNext()) {
-                out.print("<tr>");
-                for (int i = 0; i < 4; i++) {
-                    out.print("<td>");
-                    out.print(it.next());
-                    out.print("</td>");
+            List<Object[]> listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
+            for (Object[] currForm : listOfForms) {
+                TableContact contactObjects = (TableContact) currForm[0];
+                TableContactCategory contactCategoryObjects = (TableContactCategory) currForm[1];
+                TableForm formObjects = (TableForm) currForm[2];
+        %>
+                <tr>
+                    <td><%=formObjects.getFirstName()%></td>
+                    <td><%=formObjects.getMiddleName()%></td>
+                    <td><%=formObjects.getLastName()%></td>
+                    <td><%=contactCategoryObjects.getCategory()%></td>
+                    <td><%=contactObjects.getInfo()%></td>
+                </tr>
+        <%
                 }
-                out.print("</tr>");
-            }
-        %>      
+        %>
         </tbody>
     </table>
 </form>
