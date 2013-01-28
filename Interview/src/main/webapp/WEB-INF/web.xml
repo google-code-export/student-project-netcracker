@@ -14,7 +14,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VaadinApplication</servlet-name>
-        <url-pattern>/VAADIN/*</url-pattern>
+        <url-pattern>/WEB_INF/resourses/VAADIN/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
