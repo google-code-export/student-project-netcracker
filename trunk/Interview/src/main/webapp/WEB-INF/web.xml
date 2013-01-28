@@ -24,4 +24,14 @@
     <welcome-file-list>
         <welcome-file/>
     </welcome-file-list>
+   <!--Test servlet for testing session   url - http://localhost:8080/interview/time -->
+    <servlet>
+        <servlet-name>TimeSessionServlet</servlet-name>
+        <servlet-class>ua.netcrackerteam.test.TimeSessionServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TimeSessionServlet</servlet-name>
+        <url-pattern>/time</url-pattern>
+    </servlet-mapping>
 </web-app>
