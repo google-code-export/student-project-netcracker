@@ -43,13 +43,7 @@ public class MainPage extends Application implements Button.ClickListener{
         enter.addListener(this);
         registr.addListener(this);
         hlayout = new HeaderLayout(enter, registr);
-        try {
-            panel = new MainPanel(hlayout);
-        } catch (IOException ex) {
-            getMainWindow().showNotification(
-                        "Ошибка чтения файла!",
-                        Notification.TYPE_ERROR_MESSAGE);
-        }
+        panel = new MainPanel(hlayout);
         layoutfull.addComponent(panel);
         getMainWindow().setContent(layoutfull);
     }

@@ -14,8 +14,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,7 +30,7 @@ public class MainPanel extends Panel implements Button.ClickListener{
     private Button edit;
     private RichTextArea editor = new RichTextArea();
 
-    public MainPanel(HeaderLayout hlayout) throws IOException {
+    public MainPanel(HeaderLayout hlayout) {
         setStyleName(Reindeer.PANEL_LIGHT);
         setSizeFull();
         layout = (VerticalLayout) getContent();
@@ -36,13 +39,17 @@ public class MainPanel extends Panel implements Button.ClickListener{
         layout.setWidth("100%");
         layout.addComponent(hlayout);
         layout.setSpacing(true);
-        String s;
+        String s = "";
         FileInputStream in;
-        in = new FileInputStream("test_text.txt");
-        byte[] array = new byte[in.available()];
-        in.read(array);
-        s = new String(array);
-        in.close();
+        try {
+            in = new FileInputStream("test_text.txt");
+            byte[] array = new byte[in.available()];
+            in.read(array);
+            s = new String(array);
+            in.close();
+        } catch (IOException ex) {
+                System.out.println("File test_text.txt is not found");
+        }
         richText = new Label(s);
         richText.setContentMode(Label.CONTENT_XHTML);
         layout.addComponent(richText);
