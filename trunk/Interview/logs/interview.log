@@ -1,10 +1,10 @@
-19:15:23,308  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
-19:15:23,437  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
-19:15:23,438  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
-19:15:23,439  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
-19:15:57,597  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
+19:15:23,308  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
+19:15:23,437  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
+19:15:23,438  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
+19:15:23,439  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
+19:15:57,597  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
 19:15:57,670 ERROR main InterviewLoggerSingleton:error:55 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] error occurred
-java.sql.SQLException: ORA-00904: "CON"."ID_FORM": invalid identifier
+java.sql.SQLException: ORA-00904: "CON"."idForm": invalid identifier
 
 	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:440)
 	at oracle.jdbc.driver.T4CTTIoer.processError(T4CTTIoer.java:396)
@@ -28,23 +28,23 @@ java.sql.SQLException: ORA-00904: "CON"."ID_FORM": invalid identifier
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
 	at java.lang.reflect.Method.invoke(Method.java:597)
 	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:120)
-19:16:39,516  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
-19:16:39,657  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
-19:16:39,658  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
-19:16:39,659  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
-19:20:15,023  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.configuration.InterviewLoggerReader],[main] has successfully executed
-19:21:55,847  INFO main InterviewLoggerSingleton:info:44 - [ua.netcrackerteam.configuration.InterviewLoggerReader],[main] has successfully executed
-19:22:55,945  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.configuration.InterviewLoggerReader],[main] has successfully executed
-19:48:50,964  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
-19:48:51,079  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
-19:48:51,079  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
-19:48:51,080  INFO main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
+19:16:39,516  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
+19:16:39,657  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
+19:16:39,658  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
+19:16:39,659  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
+19:20:15,023  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.configuration.InterviewLoggerReader],[main] has successfully executed
+19:21:55,847  info main InterviewLoggerSingleton:info:44 - [ua.netcrackerteam.configuration.InterviewLoggerReader],[main] has successfully executed
+19:22:55,945  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.configuration.InterviewLoggerReader],[main] has successfully executed
+19:48:50,964  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DbConnectionSingleton],[getConnection] has successfully executed
+19:48:51,079  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBStandartQuery],[SelectQuery] has successfully executed
+19:48:51,079  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[GetFIOFromForm] has successfully executed
+19:48:51,080  info main InterviewLoggerSingleton:info:43 - [ua.netcrackerteam.DAO.DBConnect],[main] has successfully executed
 21:17:26,850  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
-21:17:27,515  WARN main RootClass:checkCompositeIdentifier:288 - HHH000038: Composite-id class does not override equals(): ua.netcrackerteam.DAO.DAOContacts
-21:17:27,516  WARN main RootClass:checkCompositeIdentifier:289 - HHH000039: Composite-id class does not override hashCode(): ua.netcrackerteam.DAO.DAOContacts
+21:17:27,515  WARN main RootClass:checkCompositeIdentifier:288 - HHH000038: Composite-id class does not override equals(): ua.netcrackerteam.DAO.TableContact
+21:17:27,516  WARN main RootClass:checkCompositeIdentifier:289 - HHH000039: Composite-id class does not override hashCode(): ua.netcrackerteam.DAO.TableContact
 21:21:44,249  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
-21:21:44,824  WARN main RootClass:checkCompositeIdentifier:288 - HHH000038: Composite-id class does not override equals(): ua.netcrackerteam.DAO.DAOForm
-21:21:44,824  WARN main RootClass:checkCompositeIdentifier:289 - HHH000039: Composite-id class does not override hashCode(): ua.netcrackerteam.DAO.DAOForm
+21:21:44,824  WARN main RootClass:checkCompositeIdentifier:288 - HHH000038: Composite-id class does not override equals(): ua.netcrackerteam.DAO.TableForm
+21:21:44,824  WARN main RootClass:checkCompositeIdentifier:289 - HHH000039: Composite-id class does not override hashCode(): ua.netcrackerteam.DAO.TableForm
 21:23:03,456  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
 21:23:04,084  WARN main ConnectionProviderInitiator:initiateService:143 - HHH000181: No appropriate connection provider encountered, assuming application will be supplying connections
 21:32:46,911  WARN main DTDEntityResolver:resolveEntity:74 - HHH000223: Recognized obsolete hibernate namespace http://hibernate.sourceforge.net/. Use namespace http://www.hibernate.org/dtd/ instead. Refer to Hibernate 3.6 Migration Guide!
