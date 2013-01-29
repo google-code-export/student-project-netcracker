@@ -11,23 +11,19 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
- *
- * @author akush_000
+ * Main panel with editable text 
+ * @author Anna Kushnirenko
  */
 public class MainPanel extends Panel implements Button.ClickListener{
     private final VerticalLayout layout;
     private Label richText;
-    private Button edit;
+    protected Button edit;
     private RichTextArea editor = new RichTextArea();
 
     public MainPanel(HeaderLayout hlayout) {
@@ -64,7 +60,7 @@ public class MainPanel extends Panel implements Button.ClickListener{
     public void buttonClick(ClickEvent event) {
         if("Редактировать".equals(edit.getCaption())) {
                 editor.setWidth("100%");
-                editor.setHeight("500");
+                editor.setHeight("600");
                 editor.setValue(richText.getValue());
                 layout.replaceComponent(richText, editor);
                 layout.setComponentAlignment(editor,Alignment.BOTTOM_CENTER);
@@ -83,9 +79,4 @@ public class MainPanel extends Panel implements Button.ClickListener{
                 }                 
             }
     }
-    
-    public void editButActive(boolean b) {
-        edit.setVisible(b);
-    } 
-
 }
