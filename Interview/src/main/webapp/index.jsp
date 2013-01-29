@@ -23,9 +23,9 @@
         <%
             List<Object[]> listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
             for (Object[] currForm : listOfForms) {
-                TableContact contactObjects = (TableContact) currForm[0];
-                TableContactCategory contactCategoryObjects = (TableContactCategory) currForm[1];
-                TableForm formObjects = (TableForm) currForm[2];
+                Contact contactObjects = (Contact) currForm[0];
+                ContactCategory contactCategoryObjects = (ContactCategory) currForm[1];
+                Form formObjects = (Form) currForm[2];
         %>
                 <tr>
                     <td><%=formObjects.getFirstName()%></td>

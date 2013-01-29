@@ -9,7 +9,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="CONTACT_CATEGORY")
-public class TableContactCategory implements Serializable {
+public class ContactCategory implements Serializable {
     private static final long serialVersionUID = -3235404536546181451L;
 
     @Id
@@ -20,17 +20,17 @@ public class TableContactCategory implements Serializable {
     private String category;
 
     @OneToMany(mappedBy="contact", fetch = FetchType.EAGER )
-    private Set<TableContact> contactCategory;
+    private Set<Contact> contactCategory;
 
-    public Set<TableContact> getContactCategory() {
+    public Set<Contact> getContactCategory() {
         return contactCategory;
     }
 
-    public void setContactCategory(Set<TableContact> contactCategory) {
+    public void setContactCategory(Set<Contact> contactCategory) {
         this.contactCategory = contactCategory;
     }
 
-    public TableContactCategory() {
+    public ContactCategory() {
     }
 
     public Long getIdContactCategory() {
