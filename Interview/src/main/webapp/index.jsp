@@ -35,7 +35,7 @@
                     <td><%=contactObjects.getInfo()%></td>
                 </tr>
         <%
-                }
+            }
         %>
         </tbody>
     </table>

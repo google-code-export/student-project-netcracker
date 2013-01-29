@@ -4,27 +4,35 @@
  * Created on 27 Январь 2013 г., 12:53
  */
  
-package ua.netcrackerteam.GUI;           
+package ua.netcrackerteam.GUI;
 
 import com.vaadin.Application;
-import com.vaadin.ui.*;
+import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.LoginForm;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.BaseTheme;
-import java.io.IOException;
-/** 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
  *
  * @author akush_000
  * @version 
  */
 
-public class MainPage extends Application implements Button.ClickListener{
+public class MainPage extends Application implements Button.ClickListener, HttpServletRequestListener {
+    private static ThreadLocal<MainPage> threadLocal = new ThreadLocal<MainPage>();
 
     private MainPanel panel;
     private Button registr;
     private Button enter;
     private HeaderLayout hlayout;
     private int mode = -1;
-    
+
     @Override
     public void init() {
 	buildMainLayout();
@@ -113,5 +121,26 @@ public class MainPage extends Application implements Button.ClickListener{
         registr.setVisible(true);
         enter.setCaption("Вход");
         panel.editButActive(false);
+    }
+
+    /*TEST VAADIN SESSION*/
+
+    public static MainPage getInstance() {
+        return threadLocal.get();
+    }
+
+    // Set the current application instance
+    public static void setInstance(MainPage application) {
+        threadLocal.set(application);
+    }
+
+    @Override
+    public void onRequestStart(HttpServletRequest request, HttpServletResponse response) {
+        MainPage.setInstance(this);
+    }
+
+    @Override
+    public void onRequestEnd(HttpServletRequest request, HttpServletResponse response) {
+        threadLocal.remove();
     }
 }
