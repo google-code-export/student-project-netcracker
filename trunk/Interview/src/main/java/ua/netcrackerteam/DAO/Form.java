@@ -10,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name="FORM")
-public class TableForm implements Serializable {
+public class Form implements Serializable {
     private static final long serialVersionUID = -3254406057751181181L;
 
     @Id
@@ -85,17 +85,17 @@ public class TableForm implements Serializable {
 
     //@Transient
     @OneToMany(mappedBy= "idForm", fetch = FetchType.EAGER )
-    private Set<TableContact> contacts;
+    private Set<Contact> contacts;
 
-    public Set<TableContact> getContacts() {
+    public Set<Contact> getContacts() {
         return contacts;
     }
 
-    public void setContacts(Set<TableContact> contacts) {
+    public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
     }
 
-    public TableForm() {
+    public Form() {
     }
 
     public Long getIdForm() {
@@ -287,41 +287,41 @@ public class TableForm implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TableForm tableForm = (TableForm) o;
+        Form form = (Form) o;
 
-        if (avgLast != null ? !avgLast.equals(tableForm.avgLast) : tableForm.avgLast != null) return false;
-        if (avgScore != null ? !avgScore.equals(tableForm.avgScore) : tableForm.avgScore != null) return false;
-        if (execProject != null ? !execProject.equals(tableForm.execProject) : tableForm.execProject != null)
+        if (avgLast != null ? !avgLast.equals(form.avgLast) : form.avgLast != null) return false;
+        if (avgScore != null ? !avgScore.equals(form.avgScore) : form.avgScore != null) return false;
+        if (execProject != null ? !execProject.equals(form.execProject) : form.execProject != null)
             return false;
-        if (extraInfo != null ? !extraInfo.equals(tableForm.extraInfo) : tableForm.extraInfo != null) return false;
-        if (extraKnowledge != null ? !extraKnowledge.equals(tableForm.extraKnowledge) : tableForm.extraKnowledge != null)
+        if (extraInfo != null ? !extraInfo.equals(form.extraInfo) : form.extraInfo != null) return false;
+        if (extraKnowledge != null ? !extraKnowledge.equals(form.extraKnowledge) : form.extraKnowledge != null)
             return false;
-        if (firstName != null ? !firstName.equals(tableForm.firstName) : tableForm.firstName != null) return false;
-        if (idForm != null ? !idForm.equals(tableForm.idForm) : tableForm.idForm != null) return false;
-        if (idInstitute != null ? !idInstitute.equals(tableForm.idInstitute) : tableForm.idInstitute != null)
+        if (firstName != null ? !firstName.equals(form.firstName) : form.firstName != null) return false;
+        if (idForm != null ? !idForm.equals(form.idForm) : form.idForm != null) return false;
+        if (idInstitute != null ? !idInstitute.equals(form.idInstitute) : form.idInstitute != null)
             return false;
-        if (idInterview != null ? !idInterview.equals(tableForm.idInterview) : tableForm.idInterview != null)
+        if (idInterview != null ? !idInterview.equals(form.idInterview) : form.idInterview != null)
             return false;
-        if (idSchool != null ? !idSchool.equals(tableForm.idSchool) : tableForm.idSchool != null) return false;
-        if (idStatus != null ? !idStatus.equals(tableForm.idStatus) : tableForm.idStatus != null) return false;
-        if (idUser != null ? !idUser.equals(tableForm.idUser) : tableForm.idUser != null) return false;
-        if (instituteGradYear != null ? !instituteGradYear.equals(tableForm.instituteGradYear) : tableForm.instituteGradYear != null)
+        if (idSchool != null ? !idSchool.equals(form.idSchool) : form.idSchool != null) return false;
+        if (idStatus != null ? !idStatus.equals(form.idStatus) : form.idStatus != null) return false;
+        if (idUser != null ? !idUser.equals(form.idUser) : form.idUser != null) return false;
+        if (instituteGradYear != null ? !instituteGradYear.equals(form.instituteGradYear) : form.instituteGradYear != null)
             return false;
-        if (instituteYear != null ? !instituteYear.equals(tableForm.instituteYear) : tableForm.instituteYear != null)
+        if (instituteYear != null ? !instituteYear.equals(form.instituteYear) : form.instituteYear != null)
             return false;
-        if (interestSoftware != null ? !interestSoftware.equals(tableForm.interestSoftware) : tableForm.interestSoftware != null)
+        if (interestSoftware != null ? !interestSoftware.equals(form.interestSoftware) : form.interestSoftware != null)
             return false;
-        if (interestStudy != null ? !interestStudy.equals(tableForm.interestStudy) : tableForm.interestStudy != null)
+        if (interestStudy != null ? !interestStudy.equals(form.interestStudy) : form.interestStudy != null)
             return false;
-        if (interestTelecom != null ? !interestTelecom.equals(tableForm.interestTelecom) : tableForm.interestTelecom != null)
+        if (interestTelecom != null ? !interestTelecom.equals(form.interestTelecom) : form.interestTelecom != null)
             return false;
-        if (interestWork != null ? !interestWork.equals(tableForm.interestWork) : tableForm.interestWork != null)
+        if (interestWork != null ? !interestWork.equals(form.interestWork) : form.interestWork != null)
             return false;
-        if (lastName != null ? !lastName.equals(tableForm.lastName) : tableForm.lastName != null) return false;
-        if (middleName != null ? !middleName.equals(tableForm.middleName) : tableForm.middleName != null) return false;
-        if (photo != null ? !photo.equals(tableForm.photo) : tableForm.photo != null) return false;
-        if (reason != null ? !reason.equals(tableForm.reason) : tableForm.reason != null) return false;
-        if (schoolGradYear != null ? !schoolGradYear.equals(tableForm.schoolGradYear) : tableForm.schoolGradYear != null)
+        if (lastName != null ? !lastName.equals(form.lastName) : form.lastName != null) return false;
+        if (middleName != null ? !middleName.equals(form.middleName) : form.middleName != null) return false;
+        if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
+        if (reason != null ? !reason.equals(form.reason) : form.reason != null) return false;
+        if (schoolGradYear != null ? !schoolGradYear.equals(form.schoolGradYear) : form.schoolGradYear != null)
             return false;
 
         return true;

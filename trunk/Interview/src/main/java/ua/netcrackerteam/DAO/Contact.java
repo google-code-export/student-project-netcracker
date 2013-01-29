@@ -8,7 +8,7 @@ import java.io.*;
  */
 @Entity
 @Table(name="CONTACT")
-public class TableContact implements Serializable {
+public class Contact implements Serializable {
     private static final long serialVersionUID = -3235406055681181451L;
 
     @Id
@@ -20,29 +20,29 @@ public class TableContact implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="ID_CONTACT_CATEGORY")
-    private TableContactCategory contact;
+    private ContactCategory contact;
 
     @ManyToOne
     @JoinColumn(name = "ID_FORM", nullable = true)
-    private TableForm idForm;
+    private Form idForm;
 
-    public TableContactCategory getContact() {
+    public ContactCategory getContact() {
         return contact;
     }
 
-    public void setContact(TableContactCategory contact) {
+    public void setContact(ContactCategory contact) {
         this.contact = contact;
     }
 
-    public TableForm getIdFormList() {
+    public Form getIdFormList() {
         return idForm;
     }
 
-    public void setIdFormList(TableForm idFormList) {
+    public void setIdFormList(Form idFormList) {
         this.idForm = idFormList;
     }
 
-    public TableContact() {
+    public Contact() {
     }
 
     public Long getIdContact() {
@@ -66,7 +66,7 @@ public class TableContact implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TableContact that = (TableContact) o;
+        Contact that = (Contact) o;
 
         if (idContact != null ? !idContact.equals(that.idContact) : that.idContact != null) return false;
         if (info != null ? !info.equals(that.info) : that.info != null) return false;
@@ -81,11 +81,11 @@ public class TableContact implements Serializable {
         return result;
     }
 
-    public TableForm getIdForm() {
+    public Form getIdForm() {
         return idForm;
     }
 
-    public void setIdForm(TableForm currForm) {
+    public void setIdForm(Form currForm) {
         this.idForm = currForm;
     }
 }

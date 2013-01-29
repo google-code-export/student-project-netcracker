@@ -14,7 +14,7 @@ import java.util.Locale;
  * @author
  */
 public class DAOImpl implements DAOInterface, Logable {
-    @Override
+
     public List GetNamesAndContacts() throws SQLException {
         Session session = null;
         Query re = null;
@@ -23,7 +23,7 @@ public class DAOImpl implements DAOInterface, Logable {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            re = session.createQuery("from TableContact");
+            re = session.createQuery("from Form f left join f.contacts c");
             listOfForms = re.list();
         } catch (Exception e) {
             System.out.println(e);
@@ -40,18 +40,16 @@ public class DAOImpl implements DAOInterface, Logable {
         System.out.println("OH MY GGGGGGGGGGGGOOOOOOOOOOOOD!!!! THIS IS SPARTANS FIRST QUERY !!!!");
         System.out.println("=====================================================================");
         try{
-            List<TableContact> listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
-            for (TableContact currForm : listOfForms) {
-                System.out.println(currForm.getInfo()+"  "+currForm.getContact().getCategory()+"  "+currForm.getIdForm().getFirstName());
-            }
-
-            /*for (Object[] currForm : listOfForms) {
-                String[] dsfsdf = (String[])currForm;
-                TableContact contactObjects = (TableContact) currForm[0];
-                TableContactCategory contactCategoryObjects = (TableContactCategory) currForm[1];
-                TableForm formObjects = (TableForm) currForm[2];
-                System.out.println(dsfsdf[0] + " " + dsfsdf[1] + " " +dsfsdf[2]);
+            List<Object[]> listOfForms = HibernateFactory.getInstance().getFormDAO().GetNamesAndContacts();
+            /*for (TableForm currForm : listOfForms) {
+                System.out.println(currForm.getContacts()+"  "+currForm.getFirstName()+"  "+currForm.getFirstName());
             }*/
+
+            for (Object[] currForm : listOfForms) {
+                Form formObjects  = (Form) currForm[0];
+                Contact contactObjects  = (Contact) currForm[1];
+                System.out.println(formObjects.getFirstName() + " " + contactObjects.getInfo());
+            }
         } catch (Exception e) {
             System.out.println(e);
         }
