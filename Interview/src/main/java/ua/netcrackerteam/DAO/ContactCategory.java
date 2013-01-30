@@ -20,7 +20,7 @@ public class ContactCategory implements Serializable {
     private String category;
 
     @OneToMany(mappedBy= "contactCategories", fetch = FetchType.EAGER )
-    private Set<Contact> contactCategory;
+    private Set<Contact> contactCategory;      //Sasha, maybe change this variable to contact or contacts? Cause you store a set of contact rows
 
     public Set<Contact> getContactCategory() {
         return contactCategory;
