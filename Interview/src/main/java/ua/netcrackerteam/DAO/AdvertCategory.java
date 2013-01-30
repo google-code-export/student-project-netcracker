@@ -35,7 +35,7 @@ public class AdvertCategory implements Serializable {
     private String description;
     
     @OneToMany(mappedBy="advertCategory", fetch = FetchType.EAGER)
-    private Set<Advert> advertCategory;
+    private Set<Advert> adverts;
 
     public Long getIdAdvertCategory() {
         return idAdvertCategory;
@@ -53,11 +53,11 @@ public class AdvertCategory implements Serializable {
         this.description = description;
     }
 
-    public Set<Advert> getAdvertCategory() {
-        return advertCategory;
+    public Set<Advert> getAdverts() {
+        return adverts;
     }
 
-    public void setAdvertCategory(Set<Advert> advertCategory) {
-        this.advertCategory = advertCategory;
-    }
+    public void setAdverts(Set<Advert> adverts) {
+        this.adverts = adverts;
+    }    
 }

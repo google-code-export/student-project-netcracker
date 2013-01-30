@@ -20,18 +20,18 @@ public class Contact implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="ID_CONTACT_CATEGORY")
-    private ContactCategory contactCategories;    //maybe change here to contactCategory(Cause it's one category for contact entity)
+    private ContactCategory contactCategory;    
 
     @ManyToOne
     @JoinColumn(name = "ID_FORM", nullable = true)
     private Form idForm;
 
-    public ContactCategory getContactCategories() {
-        return contactCategories;
+    public ContactCategory getContactCategory() {
+        return contactCategory;
     }
 
-    public void setContactCategories(ContactCategory contact) {
-        this.contactCategories = contact;
+    public void setContactCategory(ContactCategory contactCategory) {
+        this.contactCategory = contactCategory;
     }
 
     public Form getIdFormList() {
