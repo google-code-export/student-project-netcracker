@@ -19,7 +19,7 @@ public class ContactCategory implements Serializable {
     @Column(name= "CATEGORY")
     private String category;
 
-    @OneToMany(mappedBy= "contactCategories", fetch = FetchType.EAGER )
+    @OneToMany(mappedBy= "contactCategory", fetch = FetchType.EAGER )
     private Set<Contact> contacts;      
 
     public Set<Contact> getContacts() {
