@@ -20,7 +20,7 @@ public class Contact implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="ID_CONTACT_CATEGORY")
-    private ContactCategory contactCategories;
+    private ContactCategory contactCategories;    //maybe change here to contactCategory(Cause it's one category for contact entity)
 
     @ManyToOne
     @JoinColumn(name = "ID_FORM", nullable = true)
