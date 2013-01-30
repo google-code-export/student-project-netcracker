@@ -8,6 +8,10 @@
             <param-value>ua.netcrackerteam.GUI.MainPage</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>FillForm</servlet-name>
+        <servlet-class>ua.netcrackerteam.application.FillForm</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>VaadinApplication</servlet-name>
         <url-pattern>/*</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>VaadinApplication</servlet-name>
         <url-pattern>/VAADIN/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FillForm</servlet-name>
+        <url-pattern>/FillForm</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -24,12 +32,11 @@
     <welcome-file-list>
         <welcome-file/>
     </welcome-file-list>
-   <!--Test servlet for testing session   url - http://localhost:8080/interview/time -->
+    <!--Test servlet for testing session   url - http://localhost:8080/interview/time -->
     <servlet>
         <servlet-name>TimeSessionServlet</servlet-name>
         <servlet-class>ua.netcrackerteam.test.TimeSessionServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>TimeSessionServlet</servlet-name>
         <url-pattern>/time</url-pattern>
