@@ -1,17 +1,58 @@
 package ua.netcrackerteam.users;
 
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Observable;
+import java.util.Set;
+
+import ua.netcrackerteam.DAO.*;
+import ua.netcrackerteam.DAO.Form;
 import ua.netcrackerteam.application.*;
+import ua.netcrackerteam.configuration.HibernateFactory;
+
 /**
  * author tanya
  */
 public class StudentPerson implements StudentRights{
-    
-    /**
-     * Fill student's form
-     */
-    public Form form;
-    
+    private String name;
+    private String surname;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String currName) {
+        name = currName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String currSurname) {
+        surname = currSurname;
+    }
+
+    public Set<StudentPerson> setFIO() throws SQLException {
+        Set<StudentPerson> ss = null;
+        try{
+            ss = new HashSet<StudentPerson>();
+            List<Form> listOfForms = HibernateFactory.getInstance().getStudentDAO().GetNamesAndContacts();
+            for (Form currForm : listOfForms) {
+                String fName = currForm.getFirstName();
+                String lName = currForm.getLastName();
+                StudentPerson sp  = new StudentPerson();
+                sp.setName(fName);
+                sp.setSurname(lName);
+                ss.add(sp);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return ss;
+    }
+
      /**
      * Registration for interview
      * @param interview

@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="FACULTY")
 public class Faculty implements Serializable {
-    //private static final long serialVersionUID = ????
+    private static final long serialVersionUID = -3254400077751181181L;
     
     public Faculty() {        
     }
@@ -59,5 +59,26 @@ public class Faculty implements Serializable {
     public void setInstitute(Institute institute) {
         this.institute = institute;
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Faculty faculty = (Faculty) o;
+
+        if (idFaculty != null ? !idFaculty.equals(faculty.idFaculty) : faculty.idFaculty != null) return false;
+        if (institute != null ? !institute.equals(faculty.institute) : faculty.institute != null) return false;
+        if (name != null ? !name.equals(faculty.name) : faculty.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idFaculty != null ? idFaculty.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (institute != null ? institute.hashCode() : 0);
+        return result;
+    }
 }

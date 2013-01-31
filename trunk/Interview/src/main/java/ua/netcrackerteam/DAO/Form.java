@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name="FORM")
 public class Form implements Serializable {
-    private static final long serialVersionUID = -3254406057751181181L;
+    private static final long serialVersionUID = -3254406057751180001L;
 
     @Id
     @Column(name= "ID_FORM")
@@ -87,15 +87,15 @@ public class Form implements Serializable {
     @OneToMany(mappedBy= "idForm", fetch = FetchType.EAGER )
     private Set<Contact> contacts;
 
+    public Form() {
+    }
+
     public Set<Contact> getContacts() {
         return contacts;
     }
 
     public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
-    }
-
-    public Form() {
     }
 
     public Long getIdForm() {

@@ -23,7 +23,7 @@ public class Contact implements Serializable {
     private ContactCategory contactCategory;    
 
     @ManyToOne
-    @JoinColumn(name = "ID_FORM", nullable = true)
+    @JoinColumn(name = "ID_FORM")
     private Form idForm;
 
     public ContactCategory getContactCategory() {

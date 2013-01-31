@@ -1,13 +1,13 @@
 package ua.netcrackerteam.configuration;
 
-import ua.netcrackerteam.DAO.DAOImpl;
+import ua.netcrackerteam.DAO.*;
 
 /**
  * @author
  */
 public class HibernateFactory {
 
-    private static DAOImpl formDAO = null;
+    private static DAOStudentImpl studentDAO = null;
     private static HibernateFactory instance = null;
 
     public static synchronized HibernateFactory getInstance(){
@@ -17,10 +17,10 @@ public class HibernateFactory {
         return instance;
     }
 
-    public DAOImpl getFormDAO(){
-        if (formDAO == null){
-            formDAO = new DAOImpl();
+    public DAOStudentImpl getStudentDAO(){
+        if (studentDAO == null){
+            studentDAO = new DAOStudentImpl();
         }
-        return formDAO;
+        return studentDAO;
     }
 }
