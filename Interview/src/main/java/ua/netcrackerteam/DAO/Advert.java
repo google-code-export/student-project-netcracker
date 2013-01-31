@@ -16,8 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="ADVERT")
 public class Advert implements Serializable {
-    
-    //private static final long serialVersionUID = ????
+    private static final long serialVersionUID = -3299906777751181181L;
     
     public Advert() {        
     }
@@ -27,7 +26,7 @@ public class Advert implements Serializable {
     private Long idAdvert;
     
     @OneToOne
-    @JoinColumn(name="ID_FORM")                //how about nullable?
+    @JoinColumn(name="ID_FORM", nullable = true)
     private Form form;
     
     @ManyToOne
@@ -58,4 +57,26 @@ public class Advert implements Serializable {
         this.advertCategory = advertCategory;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Advert advert = (Advert) o;
+
+        if (advertCategory != null ? !advertCategory.equals(advert.advertCategory) : advert.advertCategory != null)
+            return false;
+        if (form != null ? !form.equals(advert.form) : advert.form != null) return false;
+        if (idAdvert != null ? !idAdvert.equals(advert.idAdvert) : advert.idAdvert != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idAdvert != null ? idAdvert.hashCode() : 0;
+        result = 31 * result + (form != null ? form.hashCode() : 0);
+        result = 31 * result + (advertCategory != null ? advertCategory.hashCode() : 0);
+        return result;
+    }
 }

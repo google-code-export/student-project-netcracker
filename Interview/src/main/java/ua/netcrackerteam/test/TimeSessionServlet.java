@@ -1,48 +1,35 @@
 package ua.netcrackerteam.test;
 
 import ua.netcrackerteam.GUI.MainPage;
+import ua.netcrackerteam.users.StudentPerson;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TimeSessionServlet extends HttpServlet {
     boolean flag = true;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, java.io.IOException {
-        response.setContentType("text/html");
+        response.setContentType("text/html; charset=windows-1251");
         java.io.PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
-        Date creationTime = new Date(session.getCreationTime());
-        Date lastAccessed = new Date(session.getLastAccessedTime());
-        Date now = new Date();
-        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Displaying the Session Creation and Last-Accessed Time</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<h2>Session Creation and Last-Accessed Time</h2>");
-        out.println("The time and date now is: " + formatter.format(now) + "<br><br>");
-        out.println("The session creation time: HttpSession.getCreationTime( ): " + formatter.format(creationTime) + "<br><br>");
-        out.println("The last time the session was accessed: HttpSession.getLastAccessedTime( ): " + formatter.format(lastAccessed));
-        out.println("</body>");
-        out.println("</html>");
         session.setMaxInactiveInterval(10);
         Integer count = (Integer) session.getAttribute("count");
-
         if (count == null) {
             count = new Integer(1);
         } else {
             count = new Integer(count.intValue() + 1);
         }
-
         session.setAttribute("count", count);
-        out.println("<html><head><title>SessionSnoop</title></head>");
+        out.println("<html><head><title>Test</title></head>");
         out.println("<body><h1>Session Details</h1>");
         out.println("You've visited this page " + count + ((count.intValue()== 1) ? " time." : " times.") + "<br/>");
         out.println("<h3>Details of this session:</h3>");
@@ -51,8 +38,36 @@ public class TimeSessionServlet extends HttpServlet {
         out.println("Timeout: " + session.getMaxInactiveInterval() + "<br/>");
         out.println("Creation time: " + new Date(session.getCreationTime()) + "<br/>");
         out.println("Last access time: " + new Date(session.getLastAccessedTime()) + "<br/>");
-        out.println("</body></html>");
 
+        out.println("<br>");
+
+        out.println("<table border = 1>");
+        out.println("<thead>");
+        out.println("<tr>");
+        out.println("<td>Name</td>");
+        out.println("<td>Last Name</td>");
+        out.println("</tr>");
+        out.println("</thead>");
+        StudentPerson studentPerson = new StudentPerson();
+        try {
+            Set<StudentPerson> studentPersonSet = studentPerson.setFIO();
+            for (StudentPerson studenPersonIterator : studentPersonSet){
+                out.println("<tbody>");
+                out.println("<tr>");
+                out.print("<td>");
+                out.println(studenPersonIterator.getName());
+                out.print("</td>");
+                out.print("<td>");
+                out.println(studenPersonIterator.getSurname());
+                out.print("</td>");
+                out.println("</tr>");
+                out.println("</tbody>");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        out.println("</table>");
+        out.println("</body></html>");
 
         //TimeSession.go(request, response, session);
     }
