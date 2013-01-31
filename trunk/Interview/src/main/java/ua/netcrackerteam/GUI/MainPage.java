@@ -8,8 +8,8 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
@@ -32,10 +32,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private HeaderLayout hlayoutGuest = null;
     private HeaderLayout hlayoutUser = null;
     private EnterWindow enterWindow = null;
-    private MainPanelAdmin panelAdmin = null;
-    private MainPanelStudent panelStudent = null;
-    private MainPanelHR panelHR = null;
     private VerticalLayout layoutfull = null;
+    private RegistrationForm regPanel = null;
 
     @Override
     public void init() {
@@ -52,11 +50,11 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         setMainWindow(new Window("Учебный Центр NetCracker"));
         enter = new Button("Вход");
         registr = new Button("Регистрация");
+        exit = new Button("Выход");
         enter.addListener(this);
         registr.addListener(this);
-        exit = new Button("Выход");
         exit.addListener(this);
-        hlayoutGuest = new HeaderLayout(enter, registr);
+        hlayoutGuest = new HeaderLayout(enter, registr, this);
         panel = new MainPanel(hlayoutGuest);
         layoutfull.addComponent(panel);
         getMainWindow().setContent(layoutfull);
@@ -71,6 +69,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             getMainWindow().addWindow(enterWindow);
         } else if (source == exit) {
             changeModeGuest();
+        } else if (source == registr) {
+            showRegistrationForm();
         }
     }
     /**
@@ -83,31 +83,50 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             case 0:getMainWindow().showNotification("Добро пожаловать, Админ!",Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(username); break;
             case 1:getMainWindow().showNotification("Добро пожаловать, HR!",Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(username); break;
             case 2:getMainWindow().showNotification("Добро пожаловать, Студент!",Notification.TYPE_TRAY_NOTIFICATION);changeModeStudent(username); break;
-            default: getMainWindow().showNotification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION); break;
+            default: {
+                Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION);
+                error.setPosition(Notification.POSITION_CENTERED);
+                getMainWindow().showNotification(error);
+            } break;
         }
     }
 
     private void changeModeAdmin(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
-        panelAdmin = new MainPanelAdmin(hlayoutUser);
-        layoutfull.replaceComponent(panel, panelAdmin);
+        hlayoutUser = new HeaderLayout(exit, username, this);
+        MainPanel oldPanel = panel;
+        panel = new MainPanelAdmin(hlayoutUser);
+        layoutfull.replaceComponent(oldPanel, panel);
     }
 
     private void changeModeHR(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
-        panelHR = new MainPanelHR(hlayoutUser);
-        layoutfull.replaceComponent(panel, panelHR);
+        hlayoutUser = new HeaderLayout(exit, username, this);
+        MainPanel oldPanel = panel;
+        panel = new MainPanelHR(hlayoutUser);
+        layoutfull.replaceComponent(oldPanel, panel);
     }
 
     private void changeModeStudent(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
-        panelStudent = new MainPanelStudent(hlayoutUser);
-        layoutfull.replaceComponent(panel, panelStudent);
+        hlayoutUser = new HeaderLayout(exit, username, this);
+        MainPanel oldPanel = panel;
+        panel = new MainPanelStudent(hlayoutUser);
+        layoutfull.replaceComponent(oldPanel, panel);
     }
 
     private void changeModeGuest() {
-        Component c = layoutfull.getComponent(0);
-        layoutfull.replaceComponent(c, panel);
+        MainPanel oldPanel = panel;
+        panel = new MainPanel(hlayoutGuest);
+        layoutfull.replaceComponent(oldPanel, panel);
+    }
+    
+    public void showMainPage() {
+        panel.returnMainPage();
+    }
+    
+    private void showRegistrationForm() {
+        VerticalLayout layout = panel.getClearField();
+        regPanel = new RegistrationForm();
+        layout.addComponent(regPanel);
+        layout.setComponentAlignment(regPanel, Alignment.TOP_CENTER);
     }
 
     /*TEST VAADIN SESSION*/
