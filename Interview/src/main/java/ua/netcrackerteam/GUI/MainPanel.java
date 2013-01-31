@@ -11,6 +11,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,15 +26,17 @@ public class MainPanel extends Panel implements Button.ClickListener{
     private Label richText;
     protected Button edit;
     private RichTextArea editor = new RichTextArea();
+    private HeaderLayout hlayout;
 
     public MainPanel(HeaderLayout hlayout) {
+        this.hlayout = hlayout;
         setStyleName(Reindeer.PANEL_LIGHT);
         setSizeFull();
         layout = (VerticalLayout) getContent();
         layout.setMargin(false);
         layout.setSpacing(true);
         layout.setWidth("100%");
-        layout.addComponent(hlayout);
+        layout.addComponent(this.hlayout);
         layout.setSpacing(true);
         String s = "";
         FileInputStream in;
@@ -44,7 +47,7 @@ public class MainPanel extends Panel implements Button.ClickListener{
             s = new String(array);
             in.close();
         } catch (IOException ex) {
-                System.out.println("File test_text.txt is not found");
+            System.out.println("File test_text.txt is not found");
         }
         richText = new Label(s);
         richText.setContentMode(Label.CONTENT_XHTML);
@@ -75,8 +78,25 @@ public class MainPanel extends Panel implements Button.ClickListener{
                     out.write(s.getBytes());
                     out.close();
                 } catch (IOException ex) {
-                    richText.setValue("Ошибка записи в файл!");
+                    Notification error = new Notification("Ошибка записи в файл!",Notification.TYPE_TRAY_NOTIFICATION);
+                    error.setPosition(Notification.POSITION_CENTERED);
+                    getWindow().showNotification(error);
                 }                 
             }
+    }
+    
+    public VerticalLayout getClearField() {
+        layout.removeAllComponents();
+        layout.addComponent(hlayout);
+        return layout;
+    }
+    
+    public void returnMainPage() {
+        layout.removeAllComponents();
+        layout.addComponent(hlayout);
+        layout.addComponent(richText);
+        layout.addComponent(edit);  
+        layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
+        layout.setComponentAlignment(edit,Alignment.BOTTOM_CENTER);
     }
 }

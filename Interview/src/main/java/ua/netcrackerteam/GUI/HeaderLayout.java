@@ -4,6 +4,8 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.event.MouseEvents.ClickEvent;
+import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -16,7 +18,9 @@ import com.vaadin.ui.themes.BaseTheme;
  * registration buttons
  * @author Anna Kushnirenko
  */
-public class HeaderLayout extends HorizontalLayout{
+public class HeaderLayout extends HorizontalLayout implements ClickListener{
+    private Embedded em = null;
+    private MainPage mainPage = null;
     
     {   
         setStyleName("header");
@@ -24,8 +28,9 @@ public class HeaderLayout extends HorizontalLayout{
         setHeight("150");
         setMargin(true);
         setSpacing(true);
-        Embedded em = new Embedded("", new ThemeResource("images/logo.png"));
+        em = new Embedded("", new ThemeResource("images/logo.png"));
         em.setStyleName("emblem");
+        em.addListener(this);
         addComponent(em);
         setComponentAlignment(em, Alignment.TOP_LEFT);
         setExpandRatio(em, 100);
@@ -35,7 +40,8 @@ public class HeaderLayout extends HorizontalLayout{
      * @param enter button
      * @param registr button
      */
-    public HeaderLayout(Button enter, Button registr) {
+    public HeaderLayout(Button enter, Button registr, MainPage mainPage) {
+        this.mainPage = mainPage;
         addComponent(enter);
         setComponentAlignment(enter, Alignment.BOTTOM_RIGHT);
         setExpandRatio(enter, 1);
@@ -52,7 +58,8 @@ public class HeaderLayout extends HorizontalLayout{
      * @param username string
      */
 
-    public HeaderLayout(Button exit, String username) {
+    public HeaderLayout(Button exit, String username, MainPage mainPage) {
+        this.mainPage = mainPage;
         Button greet = new Button(username);
         addComponent(greet);
         setComponentAlignment(greet, Alignment.BOTTOM_RIGHT);
@@ -62,6 +69,10 @@ public class HeaderLayout extends HorizontalLayout{
         setExpandRatio(exit, 1);
         greet.setStyleName(BaseTheme.BUTTON_LINK);
         exit.setStyleName(BaseTheme.BUTTON_LINK);
+    }
+
+    public void click(ClickEvent event) {
+        mainPage.showMainPage();
     }
 
 }
