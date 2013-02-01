@@ -8,7 +8,6 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -33,7 +32,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private HeaderLayout hlayoutUser = null;
     private EnterWindow enterWindow = null;
     private VerticalLayout layoutfull = null;
-    private RegistrationForm regPanel = null;
+    private RegistrationWindow regWindow = null;
 
     @Override
     public void init() {
@@ -70,7 +69,10 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         } else if (source == exit) {
             changeModeGuest();
         } else if (source == registr) {
-            showRegistrationForm();
+            if (regWindow == null) {
+                regWindow = new RegistrationWindow(this);
+            }
+            getMainWindow().addWindow(regWindow);
         }
     }
     /**
@@ -122,13 +124,6 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         panel.returnMainPage();
     }
     
-    private void showRegistrationForm() {
-        VerticalLayout layout = panel.getClearField();
-        regPanel = new RegistrationForm();
-        layout.addComponent(regPanel);
-        layout.setComponentAlignment(regPanel, Alignment.TOP_CENTER);
-    }
-
     /*TEST VAADIN SESSION*/
 
     public static MainPage getInstance() {
