@@ -8,16 +8,15 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 
 /**
- * Panel for Admin view
+ * Panel for Interviewer view
  * @author Anna Kushnirenko
  */
-public class MainPanelAdmin extends MainPanel {
+public class MainPanelInterviewer extends MainPanel{
     private VerticalLayout mainPageLo;
-    private VerticalLayout hrSettingsLo;
-    private VerticalLayout interSettingsLo;
+    private VerticalLayout interviewsLo;
     private VerticalLayout settingsLo;
-    
-    public MainPanelAdmin(HeaderLayout hlayout) {
+
+    public MainPanelInterviewer(HeaderLayout hlayout) {
         super(hlayout);
         hlayout.setStyleName("user");
         hlayout.setHeight("130");
@@ -29,26 +28,19 @@ public class MainPanelAdmin extends MainPanel {
         TabSheet tabSheet = new TabSheet();
         layout.addComponent(tabSheet);
         tabSheet.addTab(mainPageLo,"Главная");
-        hrSettingsLo = new VerticalLayout();
-        fillHRSetLayout();
-        tabSheet.addTab(hrSettingsLo, "Настройки HR");
-        interSettingsLo = new VerticalLayout();
-        fillInterSetLayout();
-        tabSheet.addTab(interSettingsLo, "Настройки интервьюеров");
+        interviewsLo = new VerticalLayout();
+        fillInterviewsLayout();
+        tabSheet.addTab(interviewsLo,"Собеседования");
         settingsLo = new VerticalLayout();
-        fillSetLayout();
-        tabSheet.addTab(settingsLo, "Настройки администратора");
+        fillSettingsLayout();
+        tabSheet.addTab(settingsLo,"Настройки");
     }
 
-    private void fillHRSetLayout() {
+    private void fillInterviewsLayout() {
         
     }
 
-    private void fillInterSetLayout() {
-        
-    }
-
-    private void fillSetLayout() {
+    private void fillSettingsLayout() {
         
     }
     
