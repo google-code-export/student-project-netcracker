@@ -21,11 +21,9 @@ import java.io.IOException;
  * Main panel with editable text 
  * @author Anna Kushnirenko
  */
-public class MainPanel extends Panel implements Button.ClickListener{
+public class MainPanel extends Panel {
     private final VerticalLayout layout;
-    private Label richText;
-    protected Button edit;
-    private RichTextArea editor = new RichTextArea();
+    protected Label richText;
     private HeaderLayout hlayout;
 
     public MainPanel(HeaderLayout hlayout) {
@@ -53,50 +51,11 @@ public class MainPanel extends Panel implements Button.ClickListener{
         richText.setContentMode(Label.CONTENT_XHTML);
         layout.addComponent(richText);
         layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
-        edit = new Button("Редактировать");
-        edit.setVisible(false);
-        edit.addListener((Button.ClickListener) this);
-        layout.addComponent(edit);
-        layout.setComponentAlignment(edit,Alignment.BOTTOM_CENTER);
     }
 
-    public void buttonClick(ClickEvent event) {
-        if("Редактировать".equals(edit.getCaption())) {
-                editor.setWidth("100%");
-                editor.setHeight("600");
-                editor.setValue(richText.getValue());
-                layout.replaceComponent(richText, editor);
-                layout.setComponentAlignment(editor,Alignment.BOTTOM_CENTER);
-                edit.setCaption("Сохранить");
-            } else if ("Сохранить".equals(edit.getCaption())){
-                richText.setValue(editor.getValue());
-                String s = (String) editor.getValue();
-                layout.replaceComponent(editor, richText);
-                edit.setCaption("Редактировать");
-                try {
-                    FileOutputStream out = new FileOutputStream("test_text.txt");
-                    out.write(s.getBytes());
-                    out.close();
-                } catch (IOException ex) {
-                    Notification error = new Notification("Ошибка записи в файл!",Notification.TYPE_TRAY_NOTIFICATION);
-                    error.setPosition(Notification.POSITION_CENTERED);
-                    getWindow().showNotification(error);
-                }                 
-            }
-    }
-    
     public VerticalLayout getClearField() {
         layout.removeAllComponents();
         layout.addComponent(hlayout);
         return layout;
-    }
-    
-    public void returnMainPage() {
-        layout.removeAllComponents();
-        layout.addComponent(hlayout);
-        layout.addComponent(richText);
-        layout.addComponent(edit);  
-        layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
-        layout.setComponentAlignment(edit,Alignment.BOTTOM_CENTER);
     }
 }

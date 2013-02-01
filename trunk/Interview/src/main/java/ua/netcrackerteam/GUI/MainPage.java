@@ -53,7 +53,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         enter.addListener(this);
         registr.addListener(this);
         exit.addListener(this);
-        hlayoutGuest = new HeaderLayout(enter, registr, this);
+        hlayoutGuest = new HeaderLayout(enter, registr);
         panel = new MainPanel(hlayoutGuest);
         layoutfull.addComponent(panel);
         getMainWindow().setContent(layoutfull);
@@ -85,8 +85,9 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             case 0:getMainWindow().showNotification("Добро пожаловать, Админ!",Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(username); break;
             case 1:getMainWindow().showNotification("Добро пожаловать, HR!",Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(username); break;
             case 2:getMainWindow().showNotification("Добро пожаловать, Студент!",Notification.TYPE_TRAY_NOTIFICATION);changeModeStudent(username); break;
+            case 3:getMainWindow().showNotification("Добро пожаловать, Интервьюер!",Notification.TYPE_TRAY_NOTIFICATION);changeModeInterviewer(username); break;
             default: {
-                Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION);
+                Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
                 error.setPosition(Notification.POSITION_CENTERED);
                 getMainWindow().showNotification(error);
             } break;
@@ -94,23 +95,30 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     }
 
     private void changeModeAdmin(String username) {
-        hlayoutUser = new HeaderLayout(exit, username, this);
+        hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
         panel = new MainPanelAdmin(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
     }
 
     private void changeModeHR(String username) {
-        hlayoutUser = new HeaderLayout(exit, username, this);
+        hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
         panel = new MainPanelHR(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
     }
 
     private void changeModeStudent(String username) {
-        hlayoutUser = new HeaderLayout(exit, username, this);
+        hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
         panel = new MainPanelStudent(hlayoutUser);
+        layoutfull.replaceComponent(oldPanel, panel);
+    }
+    
+    private void changeModeInterviewer(String username) {
+        hlayoutUser = new HeaderLayout(exit, username);
+        MainPanel oldPanel = panel;
+        panel = new MainPanelInterviewer(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
     }
 
@@ -119,11 +127,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         panel = new MainPanel(hlayoutGuest);
         layoutfull.replaceComponent(oldPanel, panel);
     }
-    
-    public void showMainPage() {
-        panel.returnMainPage();
-    }
-    
+  
     /*TEST VAADIN SESSION*/
 
     public static MainPage getInstance() {

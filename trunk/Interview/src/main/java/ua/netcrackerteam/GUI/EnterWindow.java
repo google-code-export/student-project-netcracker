@@ -18,6 +18,7 @@ class EnterWindow extends Window{
     static public final int MODE_ADMIN = 0;
     static public final int MODE_HR = 1;
     static public final int MODE_STUDENT = 2;
+    static public final int MODE_INTERVIEWER = 3;
     static public final int MODE_GUEST = -1;
     private int mode = MODE_GUEST;
     
@@ -58,6 +59,9 @@ class EnterWindow extends Window{
                 }
                 else if(login.equals(Integer.toString(MODE_STUDENT)) && pass.equals(Integer.toString(MODE_STUDENT))) {
                     return MODE_STUDENT;
+                }
+                else if(login.equals(Integer.toString(MODE_INTERVIEWER)) && pass.equals(Integer.toString(MODE_INTERVIEWER))) {
+                    return MODE_INTERVIEWER;
                 }
                 return MODE_GUEST;
                 }
