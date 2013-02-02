@@ -10,4 +10,10 @@ import java.util.Collection;
  */
 public interface DAOStudent {
     public Collection GetNamesAndContacts() throws SQLException;
+    public Form getFormById(Long idForm);
+    public void addForm(Form form);
+    public void updateFormById(Long idForm, Form form);
+    public Collection getAllForms();
+    public void deleteFormById(Long FormId);
+    
 }
