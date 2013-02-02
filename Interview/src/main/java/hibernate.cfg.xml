@@ -21,5 +21,12 @@
       <mapping class="ua.netcrackerteam.DAO.AdvertCategory" />
       <mapping class="ua.netcrackerteam.DAO.Cathedra" />
       <mapping class="ua.netcrackerteam.DAO.Faculty" />
+      <mapping class="ua.netcrackerteam.DAO.UserList" />
+      <mapping class="ua.netcrackerteam.DAO.UserCategory" />
+      <mapping class="ua.netcrackerteam.DAO.Branch" />
+      <mapping class="ua.netcrackerteam.DAO.Knowledge" />
+      <mapping class="ua.netcrackerteam.DAO.Interview" />
+      <mapping class="ua.netcrackerteam.DAO.InterviewRes" />
+      <mapping class="ua.netcrackerteam.DAO.Status" />
   </session-factory>
 </hibernate-configuration>

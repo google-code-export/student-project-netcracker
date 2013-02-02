@@ -19,7 +19,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "INTERVIEW_RES")
-public class Interview_res implements Serializable {
+public class InterviewRes implements Serializable {
 
     @Id
     @Column(name= "ID_INTERVIEW_RES")
