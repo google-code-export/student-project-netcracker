@@ -2,7 +2,7 @@ package ua.netcrackerteam.DAO;
 
 import javax.persistence.*;
 import java.io.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 /**
