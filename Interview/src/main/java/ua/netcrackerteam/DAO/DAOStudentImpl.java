@@ -109,7 +109,8 @@ public class DAOStudentImpl implements DAOStudent {
     }
 
     public static String passwordHashing(String pass){
-        String hashedPAss = String.valueOf("user" + (pass.hashCode() + pass.hashCode()) * 10 + "pass");
+        String hashedPAss = String.valueOf(("user".hashCode() * pass.hashCode() +
+                (pass.hashCode() + pass.hashCode()) * 10 + pass.hashCode() * "pass".hashCode()) * 10);
         return hashedPAss;
     }
 
@@ -119,14 +120,14 @@ public class DAOStudentImpl implements DAOStudent {
             String userName = null;
             String userPass = null;
             String hashedPass = null;
+            hashedPass = DAOStudentImpl.passwordHashing(pass);
             for (UserList currForm : listOfForms) {
                 userName = currForm.getUserName();
                 userPass = currForm.getPassword();
-                hashedPass = DAOStudentImpl.passwordHashing(userPass);
-                if (user.equals(userName) && hashedPass.equals(pass)){
+                if (user.equals(userName) && hashedPass.equals(userPass)){
                         return true;
                 }
-                break;
+                continue;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -135,7 +136,7 @@ public class DAOStudentImpl implements DAOStudent {
     }
 
     public static void main(String[] args) throws SQLException {
-        boolean check = HibernateFactory.getInstance().getStudentDAO().userEnteringCheck("admin", "adsgsdgsd");
+        boolean check = HibernateFactory.getInstance().getStudentDAO().userEnteringCheck("admin", "abyrabyrabyr");
         System.out.println(check);
 
         /*int sdfsdf = HibernateFactory.getInstance().getStudentDAO().deleteUserById(9);
@@ -148,7 +149,7 @@ public class DAOStudentImpl implements DAOStudent {
             System.out.println(fName + " " + lName);
         }*/
 
-        /*String password = "adsgsdgsd";
+        /*String password = "abyrabyrabyr";
         String readyPass= DAOStudentImpl.passwordHashing(password);
         HibernateFactory.getInstance().getStudentDAO().setUser(new Long(9),
                 "admin", readyPass, "email@com.ua", "active", new Long(1));*/
