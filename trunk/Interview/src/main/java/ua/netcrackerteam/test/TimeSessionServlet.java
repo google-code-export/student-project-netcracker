@@ -1,18 +1,13 @@
 package ua.netcrackerteam.test;
 
-import ua.netcrackerteam.GUI.MainPage;
-import ua.netcrackerteam.users.StudentPerson;
+import ua.netcrackerteam.users.StudentPersonImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 public class TimeSessionServlet extends HttpServlet {
     boolean flag = true;
@@ -48,10 +43,10 @@ public class TimeSessionServlet extends HttpServlet {
         out.println("<td>Last Name</td>");
         out.println("</tr>");
         out.println("</thead>");
-        StudentPerson studentPerson = new StudentPerson();
-        try {
-            Set<StudentPerson> studentPersonSet = studentPerson.setFIO();
-            for (StudentPerson studenPersonIterator : studentPersonSet){
+        StudentPersonImpl studentPerson = new StudentPersonImpl();
+        /*try {
+            Set<StudentPersonImpl> studentPersonSet = studentPerson.setFIO();
+            for (StudentPersonImpl studenPersonIterator : studentPersonSet){
                 out.println("<tbody>");
                 out.println("<tr>");
                 out.print("<td>");
@@ -65,7 +60,7 @@ public class TimeSessionServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
         out.println("</table>");
         out.println("</body></html>");
 

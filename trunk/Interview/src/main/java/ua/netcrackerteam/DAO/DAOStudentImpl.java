@@ -16,10 +16,7 @@ import java.util.Locale;
  * @author
  */
 public class DAOStudentImpl implements DAOStudent {
-    public static void main(String[] args) throws SQLException {
-        /*boolean check = HibernateFactory.getInstance().getStudentDAO().userEnteringCheck("admin", "abyrabyrabyr");
-        System.out.println(check);*/
-        
+public static void main(String[] args) throws SQLException {
         Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserId(5L);
         System.out.println(form.getFirstName());
         
@@ -54,21 +51,6 @@ public class DAOStudentImpl implements DAOStudent {
         form1.setFirstName("Йосип");
         form1.setLastName("Кобзон");
         HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
-
-        /*int sdfsdf = HibernateFactory.getInstance().getStudentDAO().deleteUserById(9);
-        System.out.println(sdfsdf);*/
-
-        /*List<UserList> listOfForms = HibernateFactory.getInstance().getStudentDAO().GetUseById(9);
-        for (UserList currForm : listOfForms) {
-            String fName = currForm.getUserName();
-            String lName = currForm.getPassword();
-            System.out.println(fName + " " + lName);
-        }*/
-
-        /*String password = "abyrabyrabyr";
-        String readyPass= DAOStudentImpl.passwordHashing(password);
-        HibernateFactory.getInstance().getStudentDAO().setUser(new Long(9),
-                "admin", readyPass, "email@com.ua", "active", new Long(1));*/
     }
 
     @Override
@@ -130,29 +112,48 @@ public class DAOStudentImpl implements DAOStudent {
         }
     }
 
-//    @Override
-//    public void signUpForInterview(Form form) {
-//        Session session = null;
-//        Transaction transaction = null;
-//        try {
-//            Locale.setDefault(Locale.ENGLISH);
-//            session = HibernateUtil.getSessionFactory().getCurrentSession();
-//            transaction = session.beginTransaction();
-//            String hql = "update form set idInterview = :idInterview ";
-//            session.update(form);            
-//            transaction.commit();
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        } finally {
-//            if (session != null && session.isOpen()) {
-//                session.close();
-//            }
-//        }
-//    }
-    
-    
+    /*
+        Temp method for get user list from DB. In future this method will be move to another entity.
+     */
+    public List GetUser() throws SQLException {
+        Session session = null;
+        Query re = null;
+        List listOfForms = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList");
+            listOfForms = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return listOfForms;
+    }
 
-   
+/*    @Override
+    public void signUpForInterview(Form form) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            String hql = "update form set idInterview = :idInterview ";
+            session.update(form);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }*/
 }
 
 
