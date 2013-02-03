@@ -5,16 +5,12 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.RichTextArea;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -25,6 +21,9 @@ public class MainPanel extends Panel {
     private final VerticalLayout layout;
     protected Label richText;
     private HeaderLayout hlayout;
+    protected VerticalLayout mainPageLo;
+    protected TabSheet tabSheet;
+    
 
     public MainPanel(HeaderLayout hlayout) {
         this.hlayout = hlayout;
@@ -53,9 +52,17 @@ public class MainPanel extends Panel {
         layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
     }
 
-    public VerticalLayout getClearField() {
+    public VerticalLayout getUserLayout() {
         layout.removeAllComponents();
         layout.addComponent(hlayout);
+        hlayout.setStyleName("user");
+        hlayout.setHeight("130");
+        mainPageLo = new VerticalLayout();
+        mainPageLo.addComponent(richText);
+        layout.setStyleName("user");
+        tabSheet = new TabSheet();
+        layout.addComponent(tabSheet);
+        tabSheet.addTab(mainPageLo,"Главная");
         return layout;
     }
 }

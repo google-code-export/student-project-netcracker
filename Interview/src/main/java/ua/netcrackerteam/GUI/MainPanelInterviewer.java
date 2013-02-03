@@ -4,7 +4,6 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 
 /**
@@ -18,16 +17,7 @@ public class MainPanelInterviewer extends MainPanel{
 
     public MainPanelInterviewer(HeaderLayout hlayout) {
         super(hlayout);
-        hlayout.setStyleName("user");
-        hlayout.setHeight("130");
-        mainPageLo = new VerticalLayout();
-        mainPageLo.addComponent(richText);
-        VerticalLayout layout = getClearField();
-        layout.setStyleName("user");
-        setContent(layout);
-        TabSheet tabSheet = new TabSheet();
-        layout.addComponent(tabSheet);
-        tabSheet.addTab(mainPageLo,"Главная");
+        setContent(getUserLayout());
         interviewsLo = new VerticalLayout();
         fillInterviewsLayout();
         tabSheet.addTab(interviewsLo,"Собеседования");
