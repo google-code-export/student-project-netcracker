@@ -134,26 +134,6 @@ public static void main(String[] args) throws SQLException {
         }
         return listOfForms;
     }
-
-/*    @Override
-    public void signUpForInterview(Form form) {
-        Session session = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            String hql = "update form set idInterview = :idInterview ";
-            session.update(form);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }*/
 }
 
 
