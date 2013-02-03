@@ -4,8 +4,8 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import org.vaadin.addon.componentexport.java.PdfFromComponent;
 
 /**
  * Panel for Student view
@@ -29,19 +29,52 @@ public class MainPanelStudent extends MainPanel{
         TabSheet tabSheet = new TabSheet();
         layout.addComponent(tabSheet);
         tabSheet.addTab(mainPageLo,"Главная");
+
         blankLayout = new VerticalLayout();
         fillBlankLayout();
         tabSheet.addTab(blankLayout,"Анкета");
+
         interviewLayout = new VerticalLayout();
         fillInterviewLayout();
         tabSheet.addTab(interviewLayout,"Собеседование");
+
         settingsLo = new VerticalLayout();
         fillSettingsLayout();
         tabSheet.addTab(settingsLo,"Настройки");
+
+
     }
 
+    /*
+        test implementation of form
+     */
     private void fillBlankLayout() {
-        
+        Label label = new Label("Hello Vaadin user");
+        blankLayout.addComponent(label);
+        Table table = new Table();
+        for (int i=0;i<50;i++){
+            table.addItem("Item nro: "+i);
+        }
+        blankLayout.addComponent(table);
+        Select s = new Select("select");
+        for (int i=0;i<50;i++){
+            s.addItem("Item nro: "+i);
+        }
+        blankLayout.addComponent(s);
+        TextField t = new TextField("textfield");
+        t.setValue("Hola");
+        blankLayout.addComponent(t);
+        Button b = new Button("PDF");
+
+        b.addListener(new com.vaadin.ui.Button.ClickListener() {
+            @Override
+            public void buttonClick(com.vaadin.ui.Button.ClickEvent event) {
+                PdfFromComponent factory = new PdfFromComponent();
+                factory.setFileName("Анкета.pdf");
+                factory.export(blankLayout);
+            }
+        });
+        blankLayout.addComponent(b);
     }
 
     private void fillInterviewLayout() {
@@ -49,6 +82,5 @@ public class MainPanelStudent extends MainPanel{
     }
 
     private void fillSettingsLayout() {
-        
     }
 }

@@ -1,8 +1,7 @@
 package ua.netcrackerteam.users;
 
 /**
- * @author tanya
  */
-public interface Persons {
+public class HRPersonImpl implements HRPerson {
 
 }

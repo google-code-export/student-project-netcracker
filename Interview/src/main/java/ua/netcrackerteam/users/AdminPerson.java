@@ -1,59 +1,33 @@
 package ua.netcrackerteam.users;
 
-
 /**
  * author tanya
  */
-public class AdminPerson implements AdminRights{
+public interface AdminPerson extends Persons  {
     
-     /**
+    /**
      * Deleting a user
      * @param userName
      */
-    @Override
-    public final void removeUser(String userName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void removeUser(String userName);
+
     /**
      * Adding a user
      * @param userName
      * @param rights
      */
-    @Override
-    public final void addUser(String userName, String rights) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-     /**
+    public void addUser(String userName, String rights);
+    /**
      * Resetting a user's password
      * @param userName
      * @param password
      */
-    @Override
-    public final void changePasswordUser(String userName, String password) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void changePasswordUser(String userName, String password);
     
     /**
      * Changing a user's login
      * @param userName
      * @param newUserName 
      */
-    public void changeLoginUser(String userName, String newUserName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void login(String userName, String password) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void logout(String userName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean changePassword(String exsistPassword, String newPassword) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void changeLoginUser(String userName, String newUserName);
 }
