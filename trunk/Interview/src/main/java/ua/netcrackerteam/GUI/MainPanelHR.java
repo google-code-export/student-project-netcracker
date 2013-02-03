@@ -7,7 +7,6 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import java.io.FileOutputStream;
@@ -18,7 +17,6 @@ import java.io.IOException;
  * @author Anna Kushnirenko
  */
 public class MainPanelHR extends MainPanel implements Button.ClickListener{
-    private VerticalLayout mainPageLo;
     private VerticalLayout settingsLo;
     private VerticalLayout blanksLo;
     private VerticalLayout interviewsLo;
@@ -28,20 +26,7 @@ public class MainPanelHR extends MainPanel implements Button.ClickListener{
     
     public MainPanelHR(HeaderLayout hlayout) {
         super(hlayout);
-        hlayout.setStyleName("user");
-        hlayout.setHeight("130");
-        mainPageLo = new VerticalLayout();
-        mainPageLo.addComponent(richText);
-        edit = new Button("Редактировать");
-        edit.addListener((Button.ClickListener) this);
-        mainPageLo.addComponent(edit);
-        mainPageLo.setComponentAlignment(edit,Alignment.BOTTOM_CENTER);
-        VerticalLayout layout = getClearField();
-        layout.setStyleName("user");
-        setContent(layout);
-        TabSheet tabSheet = new TabSheet();
-        layout.addComponent(tabSheet);
-        tabSheet.addTab(mainPageLo,"Главная");
+        setContent(getUserLayout());
         blanksLo = new VerticalLayout();
         fillBlanksLayout();
         tabSheet.addTab(blanksLo,"Анкеты");
