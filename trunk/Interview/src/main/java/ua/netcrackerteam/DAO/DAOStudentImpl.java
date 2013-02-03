@@ -20,11 +20,11 @@ public class DAOStudentImpl implements DAOStudent {
         /*boolean check = HibernateFactory.getInstance().getStudentDAO().userEnteringCheck("admin", "abyrabyrabyr");
         System.out.println(check);*/
         
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormById(9L);
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserId(5L);
         System.out.println(form.getFirstName());
         
         Form form1 = new Form();
-        form1.setIdForm(20L);
+        form1.setIdForm(13L);
         form1.setFirstName("Иван");
         form1.setLastName("Царевич");
         form1.setMiddleName("Дурак");
@@ -50,6 +50,10 @@ public class DAOStudentImpl implements DAOStudent {
         form1.setIdUser(2L);
         form1.setIdInterview(1L);
         HibernateFactory.getInstance().getStudentDAO().addForm(form1);
+        
+        form1.setFirstName("Йосип");
+        form1.setLastName("Кобзон");
+        HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
 
         /*int sdfsdf = HibernateFactory.getInstance().getStudentDAO().deleteUserById(9);
         System.out.println(sdfsdf);*/
@@ -68,7 +72,7 @@ public class DAOStudentImpl implements DAOStudent {
     }
 
     @Override
-    public Form getFormById(Long idForm) {        
+    public Form getFormByUserId(Long idUser) {        
         Session session = null;
         Query query;        
         Form form = null;
@@ -76,7 +80,7 @@ public class DAOStudentImpl implements DAOStudent {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createQuery("from Form where idForm = " + idForm);
+            query = session.createQuery("from Form where idUser = " + idUser);
             form = (Form) query.uniqueResult();           
         } catch (Exception e) {
             System.out.println(e);
@@ -108,19 +112,47 @@ public class DAOStudentImpl implements DAOStudent {
     }
 
     @Override
-    public void updateFormById(Long idForm, Form form) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void updateForm(Form form) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();            
+            session.update(form);            
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
 
-    @Override
-    public Collection getAllForms() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+//    @Override
+//    public void signUpForInterview(Form form) {
+//        Session session = null;
+//        Transaction transaction = null;
+//        try {
+//            Locale.setDefault(Locale.ENGLISH);
+//            session = HibernateUtil.getSessionFactory().getCurrentSession();
+//            transaction = session.beginTransaction();
+//            String hql = "update form set idInterview = :idInterview ";
+//            session.update(form);            
+//            transaction.commit();
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        } finally {
+//            if (session != null && session.isOpen()) {
+//                session.close();
+//            }
+//        }
+//    }
+    
+    
 
-    @Override
-    public void deleteFormById(Long FormId) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+   
 }
 
 
