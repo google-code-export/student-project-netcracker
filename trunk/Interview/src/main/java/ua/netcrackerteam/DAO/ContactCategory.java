@@ -13,6 +13,8 @@ public class ContactCategory implements Serializable {
     private static final long serialVersionUID = -3235404536546181451L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "contact_category_seq_gen")
+    @SequenceGenerator(name = "contact_category_seq_gen", sequenceName = "contact_category_seq")
     @Column(name= "ID_CONTACT_CATEGORY")
     private Long idContactCategory;
 

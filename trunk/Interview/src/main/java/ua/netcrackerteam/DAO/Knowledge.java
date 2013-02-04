@@ -8,10 +8,7 @@ package ua.netcrackerteam.DAO;
  * To change this template use File | Settings | File Templates.
  */
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Filipenko
@@ -20,6 +17,8 @@ import javax.persistence.Table;
 @Table(name = "KNOWLEDGE")
 public class Knowledge {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "knowledge_seq_gen")
+    @SequenceGenerator(name = "knowledge_seq_gen", sequenceName = "knowledge_seq")
     @Column(name= "ID_KNOWLEDGE")
     private Long idKnowledge;
 

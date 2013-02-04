@@ -1,9 +1,6 @@
 package ua.netcrackerteam.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -23,6 +20,8 @@ import java.util.Date;
 public class Interview implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "interview_seq_gen")
+    @SequenceGenerator(name = "interview_seq_gen", sequenceName = "interview_seq")
     @Column(name= "ID_INTERVIEW")
     private Long idInterview;
 

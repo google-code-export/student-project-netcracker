@@ -2,13 +2,7 @@ package ua.netcrackerteam.DAO;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -23,6 +17,8 @@ public class Institute implements Serializable {
     }
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "institute_seq_gen")
+    @SequenceGenerator(name = "institute_seq_gen", sequenceName = "institute_seq")
     @Column(name="ID_INSTITUTE")
     private Long instituteId;
     

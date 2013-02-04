@@ -5,11 +5,13 @@
 
 package ua.netcrackerteam.DAO;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import ua.netcrackerteam.configuration.HibernateUtil;
+
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Locale;
+import javax.persistence.*;
 
 /**
  *
@@ -19,8 +21,10 @@ import javax.persistence.Table;
 @Table(name="SCHOOL")
 public class School implements Serializable {
     private static final long serialVersionUID = -3254555057111181181L;
-    
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_seq_gen")
+    @SequenceGenerator(name = "school_seq_gen", sequenceName = "school_seq")
     @Column(name="ID_SCHOOL")
     private Long idSchool;
     
@@ -62,4 +66,5 @@ public class School implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
+
 }
