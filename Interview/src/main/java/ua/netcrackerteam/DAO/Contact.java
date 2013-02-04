@@ -12,6 +12,8 @@ public class Contact implements Serializable {
     private static final long serialVersionUID = -3235406055681181451L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "contact_seq_gen")
+    @SequenceGenerator(name = "contact_seq_gen", sequenceName = "contact_seq")
     @Column(name= "ID_CONTACT")
     private Long idContact;
 

@@ -1,13 +1,7 @@
 package ua.netcrackerteam.DAO;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -20,9 +14,11 @@ public class Advert implements Serializable {
     
     public Advert() {        
     }
-    
+
     @Id
-    @Column(name="ID_ADVERT")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "advert_seq_gen")
+    @SequenceGenerator(name = "advert_seq_gen", sequenceName = "advert_seq")
+    @Column (name = "ID_ADVERT")
     private Long idAdvert;
     
     @OneToOne

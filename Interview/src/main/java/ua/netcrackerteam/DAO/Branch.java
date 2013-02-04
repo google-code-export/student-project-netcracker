@@ -8,8 +8,13 @@ package ua.netcrackerteam.DAO;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import ua.netcrackerteam.configuration.HibernateUtil;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Locale;
 
 /**
  * @author Filipenko
@@ -19,7 +24,9 @@ import java.io.Serializable;
 public class Branch implements Serializable {
 
     @Id
-    @Column(name= "ID_BRANCH")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "branch_seq_gen")
+    @SequenceGenerator(name = "branch_seq_gen", sequenceName = "branch_seq")
+    @Column(name="ID_BRANCH")
     private Long idBranch;
 
     @Column(name= "NAME")
@@ -53,5 +60,6 @@ public class Branch implements Serializable {
     }
 
 }
+
 
 

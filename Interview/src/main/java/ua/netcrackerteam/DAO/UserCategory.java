@@ -1,9 +1,6 @@
 package ua.netcrackerteam.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -22,6 +19,8 @@ import java.io.Serializable;
 public class UserCategory implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_category_seq_gen")
+    @SequenceGenerator(name = "user_category_seq_gen", sequenceName = "user_category_seq")
     @Column(name= "ID_USER_CATEGORY")
     private Long idUSerCategory;
 

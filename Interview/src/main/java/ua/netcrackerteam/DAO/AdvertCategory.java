@@ -5,14 +5,14 @@
 
 package ua.netcrackerteam.DAO;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import ua.netcrackerteam.configuration.HibernateUtil;
+
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -25,9 +25,11 @@ public class AdvertCategory implements Serializable {
     
     public AdvertCategory() {        
     }
-    
+
     @Id
-    @Column(name="ID_ADVERT_CATEGORY")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "advert_category_seq_gen")
+    @SequenceGenerator(name = "advert_category_seq_gen", sequenceName = "advert_category_seq")
+    @Column (name = "ID_ADVERT_CATEGORY")
     private Long idAdvertCategory;
     
     @Column(name="DESCRIPTION")
@@ -82,4 +84,5 @@ public class AdvertCategory implements Serializable {
         result = 31 * result + (adverts != null ? adverts.hashCode() : 0);
         return result;
     }
+
 }

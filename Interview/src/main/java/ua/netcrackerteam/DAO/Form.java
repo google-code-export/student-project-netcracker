@@ -14,6 +14,8 @@ public class Form implements Serializable {
     private static final long serialVersionUID = -3254406057751180001L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "form_seq_gen")
+    @SequenceGenerator(name = "form_seq_gen", sequenceName = "form_seq")
     @Column(name= "ID_FORM")
     private Long idForm;
 

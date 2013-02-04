@@ -1,9 +1,6 @@
 package ua.netcrackerteam.DAO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -22,6 +19,8 @@ import java.io.Serializable;
 public class Status implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "status_seq_gen")
+    @SequenceGenerator(name = "status_seq_gen", sequenceName = "status_seq")
     @Column(name= "ID_STATUS")
     private Long idStatus;
 
