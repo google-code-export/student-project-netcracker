@@ -10,6 +10,7 @@ public class HibernateUtil {
 
     static{
         try {
+            //sessionFactory = new Configuration().configure("C:/NetCrackerProj/interview/src/mail/java/hibernate.cfg.xml").buildSessionFactory();
             sessionFactory = new Configuration().configure().buildSessionFactory();
         } catch (Throwable e) {
             throw new ExceptionInInitializerError(e);

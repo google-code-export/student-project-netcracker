@@ -4,12 +4,9 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 
