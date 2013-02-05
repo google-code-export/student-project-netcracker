@@ -64,7 +64,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
     
     public MainPanelStudent(HeaderLayout hlayout) {
         super(hlayout);
-        setContent(getUserLayout());
+        setContent(getUserLayout(hlayout));
         blankLayout = new VerticalLayout();
         tabSheet.addTab(blankLayout,"Анкета");
         fillBlankLayout();
@@ -79,7 +79,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
     private void fillBlankLayout() {
         blankLayout.setMargin(true);
         blankLayout.setSpacing(true);
-        blankLayout.setWidth("98%");
+        blankLayout.setWidth("100%");
         persInfo = new Panel("Персональная информация");
         persInfoPanelFill();
         blankLayout.addComponent(persInfo);
@@ -93,8 +93,12 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         blankLayout.addComponent(accomplishments);
         accomplishmentsPanelFill();
         OptionGroup agreement = new OptionGroup();
-        agreement.addItem("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
+        agreement.addItem("Согласен с условиями соглашения: ");
+        agreement.setMultiSelect(true);
         blankLayout.addComponent(agreement);
+        Label agreementText = new Label("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
+        agreementText.setWidth("750");
+        blankLayout.addComponent(agreementText);
         save = new Button("Сохранить");
         save.setRequired(true);
         save.setWidth("200");
@@ -192,8 +196,8 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 if(prLangName.isValid()) {
-                    Slider newSlider = new Slider((String)prLangName.getValue(),1,5);
-                    newSlider.setWidth("250");
+                    Slider newSlider = new Slider((String)prLangName.getValue());
+                    sliderConfig(newSlider);
                     programLanguages.add(newSlider);
                     glayoutPrLang.addComponent(programLanguages.get(programLanguages.size()-1));
                     getWindow().removeWindow(addPrLangWindow);
@@ -209,7 +213,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
     
     private void sliderConfig(Component slider) {
         Slider sl = (Slider) slider;
-        sl.setWidth("250");
+        sl.setWidth("220");
         sl.setMin(1);
         sl.setMax(5);
     }
@@ -232,8 +236,8 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 if(knowlName.isValid()) {
-                    Slider newSlider = new Slider((String)knowlName.getValue(),1,5);
-                    newSlider.setWidth("250");
+                    Slider newSlider = new Slider((String)knowlName.getValue());
+                    sliderConfig(newSlider);
                     knowlegesList.add(newSlider);
                     glayoutKnow.addComponent(knowlegesList.get(knowlegesList.size()-1));
                     getWindow().removeWindow(addKnowlegeWindow);
@@ -253,7 +257,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
 
     private void persInfoPanelFill() {
         persInfo.setWidth("100%");
-        GridLayout glayout1 = new GridLayout(4,2);
+        GridLayout glayout1 = new GridLayout(3,3);
         glayout1.setMargin(true);
         glayout1.setSpacing(true);
         persInfo.setContent(glayout1);
@@ -310,12 +314,12 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         Iterator<Component> i = persInfo.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
-            c.setWidth("250");
+            c.setWidth("220");
         }
     }
 
     private void contactsPanelFill() {
-        GridLayout glayout2 = new GridLayout(4,3);
+        GridLayout glayout2 = new GridLayout(3,2);
         glayout2.setMargin(true);
         glayout2.setSpacing(true);
         contacts.setContent(glayout2);
@@ -333,11 +337,10 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         contacts.addComponent(email2);
         contacts.addComponent(telephone);
         contacts.addComponent(anotherContactsBut);
-        glayout2.setComponentAlignment(anotherContactsBut, Alignment.BOTTOM_RIGHT);
         Iterator<Component> i = contacts.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
-            c.setWidth("250");
+            c.setWidth("220");
         }
         anotherContactsBut.setWidth("200");
     }
@@ -369,7 +372,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         Iterator<Component> i = interests.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
-            c.setWidth("250");
+            c.setWidth("220");
         }
     }
 
@@ -378,7 +381,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         vlayout.setSpacing(true);
         vlayout.setWidth("100%");
         vlayout.setMargin(true);
-        glayoutPrLang = new GridLayout(4,2);
+        glayoutPrLang = new GridLayout(3,3);
         glayoutPrLang.setSpacing(true);
         accomplishments.setContent(vlayout);
         Label progrLang = new Label("Владение языками программирования:"
@@ -399,7 +402,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
 
         Label knowledge = new Label("Как ты оцениваешь свои знания по разделам: ");
         vlayout.addComponent(knowledge);
-        glayoutKnow = new GridLayout(4,2);
+        glayoutKnow = new GridLayout(3,2);
         glayoutKnow.setSpacing(true);
         vlayout.addComponent(glayoutKnow);
         Slider sliderNT = new Slider("Сетевые технологии");
@@ -428,7 +431,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         addKnowlegeBut.setWidth("200");
         vlayout.addComponent(addKnowlegeBut);
         TextArea expirience = new TextArea("Если у тебя уже есть опыт работы и/или выполненные учебные проекты, опиши их: ");
-        expirience.setWidth("1020");
+        expirience.setWidth("700");
         expirience.setRows(4);
         expirience.setRequired(true);
         expirience.setWordwrap(true);
@@ -452,21 +455,21 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         }
         List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
         OptionGroup advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
-        advert.setWidth("250");
+        advert.setWidth("220");
         advert.setRequired(true);
         advert.setItemEnabled(0, true);
         vlayout.addComponent(advert);
         TextField anotherAdvert = new TextField();
-        anotherAdvert.setWidth("250");
+        anotherAdvert.setWidth("220");
         vlayout.addComponent(anotherAdvert);
         TextArea whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )");
-        whyYou.setWidth("1020");
+        whyYou.setWidth("700");
         whyYou.setRows(3);
         whyYou.setRequired(true);
         whyYou.setMaxLength(100);
         vlayout.addComponent(whyYou);
         TextArea moreInfo = new TextArea("Дополнительные сведения о себе: олимпиады, поощрения, курсы, сертификаты, личные качества, др.");
-        moreInfo.setWidth("1020");
+        moreInfo.setWidth("700");
         moreInfo.setRequired(true);
         moreInfo.setRows(3);
         moreInfo.setMaxLength(100);

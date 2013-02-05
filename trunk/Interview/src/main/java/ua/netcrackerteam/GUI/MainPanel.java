@@ -17,21 +17,18 @@ import java.io.IOException;
 public class MainPanel extends Panel {
     private final VerticalLayout layout;
     protected Label richText;
-    private HeaderLayout hlayout;
     protected VerticalLayout mainPageLo;
     protected TabSheet tabSheet;
     
 
     public MainPanel(HeaderLayout hlayout) {
-        this.hlayout = hlayout;
         setStyleName(Reindeer.PANEL_LIGHT);
-        setSizeFull();
+        setWidth("800px");
         layout = (VerticalLayout) getContent();
         layout.setMargin(false);
         layout.setSpacing(true);
         layout.setWidth("100%");
-        layout.addComponent(this.hlayout);
-        layout.setSpacing(true);
+        layout.addComponent(hlayout);
         String s = "";
         DataInputStream in;
         try {
@@ -49,11 +46,11 @@ public class MainPanel extends Panel {
         layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
     }
 
-    public VerticalLayout getUserLayout() {
+    public VerticalLayout getUserLayout(HeaderLayout hlayout) {
         layout.removeAllComponents();
+        layout.setSpacing(false);
         layout.addComponent(hlayout);
         hlayout.setStyleName("user");
-        hlayout.setHeight("130");
         mainPageLo = new VerticalLayout();
         mainPageLo.addComponent(richText);
         layout.setStyleName("user");

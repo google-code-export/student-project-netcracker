@@ -4,12 +4,16 @@
 }
 .header .v-button span {
 	text-decoration: none;
+        padding-bottom: 10px;
 }
 .user {
       background: #F4F3F1;
 }
 .user .v-button span {
 	text-decoration: none;
+}
+.v-app {
+    background: white;
 }
 .v-tabsheet-deco {
 	height: 10px;
@@ -40,9 +44,7 @@
 	padding-top: 0px;
 }
 .emblem {
-	padding-left: 150px;
-	padding-top: 10px;
-        cursor : pointer;
+	padding-left: 100px;
 }
 
 
