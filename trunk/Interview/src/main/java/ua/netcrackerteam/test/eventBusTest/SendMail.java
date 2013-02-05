@@ -7,7 +7,20 @@ import org.apache.commons.mail.MultiPartEmail;
 
 public class SendMail
 {
-    public void sendTLS() throws EmailException {
+    public SendMail() {
+        MailBus.addHandler(new EmailSending() {
+            @Override
+            public void pdfSend() {
+                try {
+                    sendTLS();
+                } catch (EmailException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public static void sendTLS() throws EmailException {
         try {
             MultiPartEmail email = new MultiPartEmail();
             String emailName = "krygina.ua@gmail.com";
@@ -33,12 +46,12 @@ public class SendMail
         }
     }
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         SendMail simpleMail = new SendMail();
         try {
             simpleMail.sendTLS();
         } catch (EmailException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

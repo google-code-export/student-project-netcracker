@@ -9,19 +9,42 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 
-
 public class FirstPDF {
-
     private static String emailName = "krygina.ua@gmail.com";
     private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
     private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL, BaseColor.RED);
     private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.BOLD);
     private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
 
+    public FirstPDF() {
+        MailBus.addHandler(new EmailSending() {
+            @Override
+            public void pdfSend() {
+                try {
+                    Document document = new Document();
+                    File file = new File("src\\"+emailName+"\\Application_" + emailName + ".pdf");
+                    File dir = file.getParentFile();
+                    if (false == file.exists()) {
+                        dir.mkdir();
+                    }
+                    file.createNewFile();
+                    PdfWriter.getInstance(document, new FileOutputStream(file));
+                    document.open();
+                    addMetaData(document);
+                    addTitlePage(document);
+                    addContent(document);
+                    document.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     public static void main(String[] args) {
         try {
             Document document = new Document();
-            File file = new File("src\\"+emailName+"\\FirstPdf.pdf");
+            File file = new File("src\\"+emailName+"\\Application_" + emailName + ".pdf");
             File dir = file.getParentFile();
             if (false == file.exists()) {
                 dir.mkdir();
