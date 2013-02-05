@@ -22,7 +22,7 @@ public class UserList implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_list_seq_gen")
     @SequenceGenerator(name = "user_list_seq_gen", sequenceName = "user_list_seq")
     @Column(name= "ID_USER")
-    private Long idUser;
+    private int idUser;
 
     @Column(name= "USER_NAME")
     private String userName;
@@ -37,13 +37,13 @@ public class UserList implements Serializable {
     private String active;
 
     @Column(name= "ID_USER_CATEGORY")
-    private Long idUserCategory;
+    private int idUserCategory;
 
-    public Long getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 
@@ -79,11 +79,11 @@ public class UserList implements Serializable {
         this.active = active;
     }
 
-    public Long getIdUserCategory() {
+    public int getIdUserCategory() {
         return idUserCategory;
     }
 
-    public void setIdUserCategory(Long idUserCategory) {
+    public void setIdUserCategory(int idUserCategory) {
         this.idUserCategory = idUserCategory;
     }
 }

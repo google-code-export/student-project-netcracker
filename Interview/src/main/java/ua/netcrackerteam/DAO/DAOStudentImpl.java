@@ -115,25 +115,7 @@ public static void main(String[] args) throws SQLException {
     /*
         Temp method for get user list from DB. In future this method will be move to another entity.
      */
-    public List GetUser() throws SQLException {
-        Session session = null;
-        Query re = null;
-        List listOfForms = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            re = session.createQuery("from UserList");
-            listOfForms = re.list();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return listOfForms;
-    }
+
 }
 
 

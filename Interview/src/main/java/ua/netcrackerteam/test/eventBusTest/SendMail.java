@@ -47,7 +47,7 @@ public class SendMail
     }
 
     /*public static void main(String[] args) {
-        SendMail simpleMail = new SendMail();
+        SendMails simpleMail = new SendMails();
         try {
             simpleMail.sendTLS();
         } catch (EmailException e) {

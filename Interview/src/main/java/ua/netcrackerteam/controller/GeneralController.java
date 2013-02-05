@@ -14,31 +14,32 @@ public class GeneralController {
         return hashedPass;
     }
 
-    public boolean checkLogin(String user, String pass){
+    public static int checkLogin(String user, String pass){
         List<UserList> listOfForms = null;
         String userName = null;
         String userPass = null;
         String hashedPass = null;
+        int idUserCategory = 0;
         try {
-            listOfForms = HibernateFactory.getInstance().getStudentDAO().GetUser();
+            listOfForms = HibernateFactory.getInstance().getCommonDao().GetUser();
             hashedPass = GeneralController.passwordHashing(pass);
             for (UserList userList : listOfForms) {
                 userName = userList.getUserName();
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
-                    return true;
+                    idUserCategory = userList.getIdUserCategory();
                 }
-                continue;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
+        return idUserCategory;
     }
 
     public static void setUsualUser(String userName, String userPassword, String userEmail){
         String active = "active";
-        Long idUserCategory = 4L;
+        int idUserCategory = 4;
         String hashPassword = passwordHashing(userPassword);
         try {
             HibernateFactory.getInstance().getCommonDao().setUser(userName, hashPassword, userEmail, active, idUserCategory);
@@ -57,5 +58,7 @@ public class GeneralController {
         //setUsualUser("Alex3", "12345", "sdfsdf@sdfsdf.df");
         /*String nickName = userNameSplitFromEmail("fdgdfg@gdfgdf.com");
         System.out.println(nickName);*/
+        int id = checkLogin("admin","abyrabyrabyr");
+        System.out.println(id);
     }
 }
