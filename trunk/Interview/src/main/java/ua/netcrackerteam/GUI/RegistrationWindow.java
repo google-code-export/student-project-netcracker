@@ -26,6 +26,7 @@ class RegistrationWindow extends Window implements Button.ClickListener{
     TextField captchaInput;
     MainPage mainPage;
     TextField email;
+    TextField username;
     PasswordField password;
     PasswordField password2;
             
@@ -40,6 +41,10 @@ class RegistrationWindow extends Window implements Button.ClickListener{
         layout.setWidth("100%");
         layout.setSpacing(true);
         layout.setMargin(true);
+        username = new TextField("Введите имя: ");
+        username.setRequired(true);
+        layout.addComponent(username);
+        username.addValidator(new RegexpValidator("\\w{3,}","Имя должно быть не короче 3х символов."));
         email = new TextField("Введите email: ");
         layout.addComponent(email);
         email.addValidator(new EmailValidator("Email должен содержать знак '@' и полный домен."));
@@ -86,7 +91,7 @@ class RegistrationWindow extends Window implements Button.ClickListener{
     }
     
     private boolean isValid() {
-        if(email.isValid() && password.isValid() && password2.isValid() && captchaInput.isValid()) {
+        if(email.isValid() && password.isValid() && password2.isValid() && captchaInput.isValid() && username.isValid()) {
             return true;
         }
         captchaField.validateCaptcha("");
