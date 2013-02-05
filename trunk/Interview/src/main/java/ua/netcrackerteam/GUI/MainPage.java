@@ -90,10 +90,10 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
      */
     public void changeMode(int mode, String username) {
         switch(mode) {
-            case 0:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(username); break;
-            case 1:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(username); break;
-            case 2:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION);changeModeStudent(username); break;
+            case 1:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(username); break;
+            case 2:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(username); break;
             case 3:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION);changeModeInterviewer(username); break;
+            case 4:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION);changeModeStudent(username); break;
             default: {
                 Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
                 error.setPosition(Notification.POSITION_CENTERED);

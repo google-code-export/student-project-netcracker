@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -16,7 +17,7 @@ public class DAOCommon {
                         String userPassword,
                         String userEmail,
                         String active,
-                        Long idUserCategory) throws SQLException{
+                        int idUserCategory) throws SQLException{
         Session session = null;
         Transaction transaction = null;
         try {
@@ -60,5 +61,25 @@ public class DAOCommon {
             }
         }
         return number;
+    }
+
+    public List GetUser() throws SQLException {
+        Session session = null;
+        Query re = null;
+        List listOfForms = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList");
+            listOfForms = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return listOfForms;
     }
 }

@@ -22,16 +22,16 @@ public class UserCategory implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_category_seq_gen")
     @SequenceGenerator(name = "user_category_seq_gen", sequenceName = "user_category_seq")
     @Column(name= "ID_USER_CATEGORY")
-    private Long idUSerCategory;
+    private int idUSerCategory;
 
     @Column(name= "CATEGORY")
     private String name;
 
-    public Long getIdUSerCategory() {
+    public int getIdUSerCategory() {
         return idUSerCategory;
     }
 
-    public void setIdUSerCategory(Long idUSerCategory) {
+    public void setIdUSerCategory(int idUSerCategory) {
         this.idUSerCategory = idUSerCategory;
     }
 

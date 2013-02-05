@@ -7,15 +7,11 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
-import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.CaptchaField;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import org.apache.commons.mail.EmailException;
+import ua.netcrackerteam.controller.GeneralController;
+import ua.netcrackerteam.controller.SendMails;
 
 /**
  *
@@ -29,7 +25,19 @@ class RegistrationWindow extends Window implements Button.ClickListener{
     TextField username;
     PasswordField password;
     PasswordField password2;
-            
+
+    public TextField getEmail() {
+        return email;
+    }
+
+    public TextField getUsername() {
+        return username;
+    }
+
+    public PasswordField getPassword() {
+        return password;
+    }
+
     public RegistrationWindow(MainPage mainPage) {
         this.mainPage = mainPage;
         setModal(true);
@@ -45,7 +53,7 @@ class RegistrationWindow extends Window implements Button.ClickListener{
         username.setRequired(true);
         username.setMaxLength(25);
         layout.addComponent(username);
-        username.addValidator(new RegexpValidator("\\w{3,}","Имя должно быть не короче 3х символов."));
+        username.addValidator(new RegexpValidator("\\w{3,}", "Имя должно быть не короче 3х символов."));
         email = new TextField("Введите email: ");
         layout.addComponent(email);
         email.addValidator(new EmailValidator("Email должен содержать знак '@' и полный домен."));
@@ -82,10 +90,19 @@ class RegistrationWindow extends Window implements Button.ClickListener{
 
     public void buttonClick(ClickEvent event) {
         if (isValid()) {
-            addUser();
+            String userName = String.valueOf(this.getUsername());
+            String userPassword = String.valueOf(this.getPassword());
+            String userEmail = String.valueOf(this.getEmail());
+            GeneralController.setUsualUser(userName, userPassword, userEmail);
             Notification n = new Notification("Регистрация завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
-            n.setDescription("Теперы Вы можете зайти под своим логином.");
+            n.setDescription("На ваш email выслано письмо с регистрационными данными.\n" +
+                    "Теперы Вы можете зайти под своим логином.");
             n.setPosition(Notification.POSITION_CENTERED);
+            try {
+                SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);
+            } catch (EmailException e) {
+                e.printStackTrace();
+            }
             mainPage.getMainWindow().showNotification(n);
             RegistrationWindow.this.close();
         }
@@ -97,9 +114,5 @@ class RegistrationWindow extends Window implements Button.ClickListener{
         }
         captchaField.validateCaptcha("");
         return false;
-    }
-
-    private void addUser() {
-        
     }
 }
