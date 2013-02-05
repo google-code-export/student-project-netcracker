@@ -66,14 +66,14 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         super(hlayout);
         setContent(getUserLayout());
         blankLayout = new VerticalLayout();
-        fillBlankLayout();
         tabSheet.addTab(blankLayout,"Анкета");
+        fillBlankLayout();
         interviewLayout = new VerticalLayout();
-        fillInterviewLayout();
         tabSheet.addTab(interviewLayout,"Собеседование");
+        fillInterviewLayout();
         settingsLo = new VerticalLayout();
-        fillSettingsLayout();
         tabSheet.addTab(settingsLo,"Настройки");
+        fillSettingsLayout();
     }
 
     private void fillBlankLayout() {
@@ -96,6 +96,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         agreement.addItem("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
         blankLayout.addComponent(agreement);
         save = new Button("Сохранить");
+        save.setRequired(true);
         save.setWidth("200");
         save.addListener(this);
         blankLayout.addComponent(save);
@@ -118,6 +119,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         } else if (source == addKnowlegeBut) {
             addKnowlege();
         } else if(source == save) {
+            
             saveBlank();
         }
     }
@@ -448,12 +450,15 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
             Component c = (Component) i.next();
             sliderConfig(c);
         }
-        TextArea advert = new TextArea("Откуда ты узнал о наборе в учебный центр?");
-        advert.setWidth("1020");
-        advert.setRows(1);
-        advert.setMaxLength(50);
+        List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
+        OptionGroup advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
+        advert.setWidth("250");
         advert.setRequired(true);
+        advert.setItemEnabled(0, true);
         vlayout.addComponent(advert);
+        TextField anotherAdvert = new TextField();
+        anotherAdvert.setWidth("250");
+        vlayout.addComponent(anotherAdvert);
         TextArea whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )");
         whyYou.setWidth("1020");
         whyYou.setRows(3);
