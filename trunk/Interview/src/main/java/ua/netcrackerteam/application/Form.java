@@ -4,6 +4,15 @@
  */
 package ua.netcrackerteam.application;
 
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -48,8 +57,22 @@ public class Form implements Observer{
     /**
      * Create from (pdf-format)
      */
-    public void generateFormPDF(){
+    public void generateFormPDF() throws DocumentException, IOException{
         
+        /*BaseFont font = BaseFont.createFont("times.ttf","cp1251",BaseFont.EMBEDDED);        
+        PdfReader reader = new PdfReader("Template.pdf");
+
+        PdfStamper stamper = new PdfStamper(reader,new FileOutputStream("C:\\Form.pdf"));
+        
+        AcroFields form = stamper.getAcroFields();
+        form.addSubstitutionFont(font);
+        
+        Map map = form.getFields();
+        Iterator iterator = map.keySet().iterator();
+        while(iterator.hasNext()){
+            form.setField((String)iterator.next(), "Поле");
+        }
+        stamper.close(); */
     }
  
     
