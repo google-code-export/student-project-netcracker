@@ -6,7 +6,7 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
-
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -33,9 +33,9 @@ public class MainPanel extends Panel {
         layout.addComponent(this.hlayout);
         layout.setSpacing(true);
         String s = "";
-        FileInputStream in;
+        DataInputStream in;
         try {
-            in = new FileInputStream("test_text.txt");
+            in = new DataInputStream(new FileInputStream("test_text.txt"));
             byte[] array = new byte[in.available()];
             in.read(array);
             s = new String(array);

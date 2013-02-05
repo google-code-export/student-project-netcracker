@@ -12,6 +12,7 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
@@ -19,6 +20,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Slider;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -54,6 +56,11 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
     private TextField prLangName;
     private ArrayList<Slider> programLanguages;
     private GridLayout glayoutPrLang;
+    private GridLayout glayoutKnow;
+    private Button addKnowlegeBut;
+    private Window addKnowlegeWindow;
+    private TextField knowlName;
+    private ArrayList<Slider> knowlegesList;
     
     public MainPanelStudent(HeaderLayout hlayout) {
         super(hlayout);
@@ -74,7 +81,175 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         blankLayout.setSpacing(true);
         blankLayout.setWidth("98%");
         persInfo = new Panel("Персональная информация");
+        persInfoPanelFill();
         blankLayout.addComponent(persInfo);
+        contacts = new Panel("Контакты");
+        blankLayout.addComponent(contacts);
+        contactsPanelFill();
+        interests = new Panel("Интересы");
+        blankLayout.addComponent(interests);
+        interestsPanelFill();
+        accomplishments = new Panel("Достоинства");
+        blankLayout.addComponent(accomplishments);
+        accomplishmentsPanelFill();
+        OptionGroup agreement = new OptionGroup();
+        agreement.addItem("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
+        blankLayout.addComponent(agreement);
+        save = new Button("Сохранить");
+        save.setWidth("200");
+        save.addListener(this);
+        blankLayout.addComponent(save);
+        blankLayout.setComponentAlignment(save, Alignment.TOP_CENTER);
+    }
+
+    private void fillInterviewLayout() {
+        
+    }
+
+    private void fillSettingsLayout() {
+    }
+
+    public void buttonClick(ClickEvent event) {
+        Button source = event.getButton();
+        if (source == anotherContactsBut) { 
+            addNewContact();
+        } else if(source == addPrLangBut) {
+            addProgrammingLanguage();
+        } else if (source == addKnowlegeBut) {
+            addKnowlege();
+        } else if(source == save) {
+            saveBlank();
+        }
+    }
+    
+    private void addNewContact() {
+        addContact = new Window("Добавить контакт");
+        addContact.setModal(true);
+        addContact.setWidth("20%");
+        addContact.setResizable(false);
+        addContact.center();
+        VerticalLayout layout = new VerticalLayout();
+        addContact.setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        layout.setWidth("100%");
+        contactType = new TextField("Тип");
+        contactType.setRequired(true);
+        contactType.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
+        contactValue = new TextField("Значение");
+        contactValue.setRequired(true);
+        contactValue.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
+        Button okBut = new Button("Добавить");
+        contactList = new ArrayList<TextField>();
+        okBut.addListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                if(contactType.isValid() && contactValue.isValid()) {
+                    TextField newTextField = new TextField((String)contactType.getValue(),(String)contactValue.getValue());
+                    newTextField.setWidth("200");
+                    contactList.add(newTextField);
+                    contacts.addComponent(contactList.get(contactList.size()-1));
+                    getWindow().removeWindow(addContact);
+                }
+            }
+        });
+        layout.addComponent(contactType);
+        layout.addComponent(contactValue);
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(contactValue, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(contactType, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+        getWindow().addWindow(addContact);
+    }
+    /**
+     * Need to implement!
+     * @return list of universities from DB
+     */
+    private Container getUniversityList() {
+        return null;
+    }
+    
+    private Container getFacultiesList() {
+        return null;
+    }
+
+    private void addProgrammingLanguage() {
+        addPrLangWindow = new Window("Добавить язык");
+        addPrLangWindow.setModal(true);
+        addPrLangWindow.setWidth("20%");
+        addPrLangWindow.setResizable(false);
+        addPrLangWindow.center();
+        VerticalLayout layout = new VerticalLayout();
+        addPrLangWindow.setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        prLangName = new TextField("Язык");
+        prLangName.setRequired(true);
+        prLangName.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        Button okBut = new Button("Добавить");
+        programLanguages = new ArrayList<Slider>();
+        okBut.addListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                if(prLangName.isValid()) {
+                    Slider newSlider = new Slider((String)prLangName.getValue(),1,5);
+                    newSlider.setWidth("250");
+                    programLanguages.add(newSlider);
+                    glayoutPrLang.addComponent(programLanguages.get(programLanguages.size()-1));
+                    getWindow().removeWindow(addPrLangWindow);
+                }
+            }
+        });
+        layout.addComponent(prLangName);
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(prLangName, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+        getWindow().addWindow(addPrLangWindow);
+    }
+    
+    private void sliderConfig(Component slider) {
+        Slider sl = (Slider) slider;
+        sl.setWidth("250");
+        sl.setMin(1);
+        sl.setMax(5);
+    }
+
+    private void addKnowlege() {
+        addKnowlegeWindow = new Window("Добавить раздел");
+        addKnowlegeWindow.setModal(true);
+        addKnowlegeWindow.setWidth("20%");
+        addKnowlegeWindow.setResizable(false);
+        addKnowlegeWindow.center();
+        VerticalLayout layout = new VerticalLayout();
+        addKnowlegeWindow.setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        knowlName = new TextField("Раздел (в области IT или сетей)");
+        knowlName.setRequired(true);
+        knowlName.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        Button okBut = new Button("Добавить");
+        knowlegesList = new ArrayList<Slider>();
+        okBut.addListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                if(knowlName.isValid()) {
+                    Slider newSlider = new Slider((String)knowlName.getValue(),1,5);
+                    newSlider.setWidth("250");
+                    knowlegesList.add(newSlider);
+                    glayoutKnow.addComponent(knowlegesList.get(knowlegesList.size()-1));
+                    getWindow().removeWindow(addKnowlegeWindow);
+                }
+            }
+        });
+        layout.addComponent(knowlName);
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(knowlName, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+        getWindow().addWindow(addKnowlegeWindow);
+    }
+
+    private void saveBlank() {
+        
+    }
+
+    private void persInfoPanelFill() {
         persInfo.setWidth("100%");
         GridLayout glayout1 = new GridLayout(4,2);
         glayout1.setMargin(true);
@@ -133,11 +308,11 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         Iterator<Component> i = persInfo.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
-            c.setWidth("200");
+            c.setWidth("250");
         }
-        
-        contacts = new Panel("Контакты");
-        blankLayout.addComponent(contacts);
+    }
+
+    private void contactsPanelFill() {
         GridLayout glayout2 = new GridLayout(4,3);
         glayout2.setMargin(true);
         glayout2.setSpacing(true);
@@ -157,14 +332,15 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         contacts.addComponent(telephone);
         contacts.addComponent(anotherContactsBut);
         glayout2.setComponentAlignment(anotherContactsBut, Alignment.BOTTOM_RIGHT);
-        i = contacts.getComponentIterator();
+        Iterator<Component> i = contacts.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
-            c.setWidth("200");
+            c.setWidth("250");
         }
-        
-        interests = new Panel("Интересы");
-        blankLayout.addComponent(interests);
+        anotherContactsBut.setWidth("200");
+    }
+
+    private void interestsPanelFill() {
         GridLayout glayout3 = new GridLayout(3,2);
         glayout3.setMargin(true);
         glayout3.setSpacing(true);
@@ -188,142 +364,108 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         interests.addComponent(whatWorkType);
         glayout3.addComponent(anotherWorkSphere,1,1);
         glayout3.addComponent(anotherWorkType,2,1);
-        i = interests.getComponentIterator();
+        Iterator<Component> i = interests.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
             c.setWidth("250");
         }
-        
-        accomplishments = new Panel("Достоинства");
-        blankLayout.addComponent(accomplishments);
+    }
+
+    private void accomplishmentsPanelFill() {
         VerticalLayout vlayout = new VerticalLayout();
-        vlayout.setMargin(true);
         vlayout.setSpacing(true);
         vlayout.setWidth("100%");
+        vlayout.setMargin(true);
         glayoutPrLang = new GridLayout(4,2);
-        glayoutPrLang.setMargin(true);
         glayoutPrLang.setSpacing(true);
         accomplishments.setContent(vlayout);
-        Label progrLang = new Label("Владение языками программирования (по шкале от 1 до 5):"
-                + " 1 – писал простые программы с книгой/справкой; 3 – хорошо помню синтаксис и нек. "
+        Label progrLang = new Label("Владение языками программирования:"
+                + " 1 – писал простые программы с книгой/справкой; 3 – хорошо помню синтаксис и некоторые "
                 + "библиотеки; 5 – написал крупный проект");
         vlayout.addComponent(progrLang);
         vlayout.addComponent(glayoutPrLang);
         Slider sliderC = new Slider("C++");
-        sliderC.setWidth("200");
-        sliderC.setMin(1);
-        sliderC.setMax(5);
-        sliderC.setImmediate(true);
+        sliderConfig(sliderC);
         glayoutPrLang.addComponent(sliderC);
         Slider sliderJava = new Slider("Java");
-        sliderJava.setWidth("200");
-        sliderJava.setMin(1);
-        sliderJava.setMax(5);
-        sliderJava.setImmediate(true);
+        sliderConfig(sliderJava);
         glayoutPrLang.addComponent(sliderJava);
         addPrLangBut = new Button("Добавить язык");
         addPrLangBut.addListener(this);
         addPrLangBut.setWidth("200");
         vlayout.addComponent(addPrLangBut);
-        
-    }
 
-    private void fillInterviewLayout() {
-        
-    }
-
-    private void fillSettingsLayout() {
-    }
-
-    public void buttonClick(ClickEvent event) {
-        Button source = event.getButton();
-        if (source == anotherContactsBut) { 
-            addNewContact();
-        } else if(source == addPrLangBut) {
-            addProgrammingLanguage();
+        Label knowledge = new Label("Как ты оцениваешь свои знания по разделам: ");
+        vlayout.addComponent(knowledge);
+        glayoutKnow = new GridLayout(4,2);
+        glayoutKnow.setSpacing(true);
+        vlayout.addComponent(glayoutKnow);
+        Slider sliderNT = new Slider("Сетевые технологии");
+        Slider sliderEA = new Slider("Эффективные алгоритмы");
+        Slider sliderOOP = new Slider("Объектно-ориент. программирование");
+        Slider sliderDB = new Slider("Базы данных");
+        Slider sliderWeb = new Slider("Web");
+        Slider sliderGUI = new Slider("Графический интерфейс (не Web)");
+        Slider sliderWP = new Slider("Сетевое программирование");
+        Slider sliderPP = new Slider("Проектирование программ");
+        glayoutKnow.addComponent(sliderNT);
+        glayoutKnow.addComponent(sliderEA);
+        glayoutKnow.addComponent(sliderOOP);
+        glayoutKnow.addComponent(sliderDB);
+        glayoutKnow.addComponent(sliderWeb);
+        glayoutKnow.addComponent(sliderGUI);
+        glayoutKnow.addComponent(sliderWP);
+        glayoutKnow.addComponent(sliderPP);        
+        Iterator<Component> i = glayoutKnow.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            sliderConfig(c);
         }
-    }
-    
-    private void addNewContact() {
-        addContact = new Window("Добавить контакт");
-        addContact.setModal(true);
-        addContact.setWidth("20%");
-        addContact.setResizable(false);
-        addContact.center();
-        VerticalLayout layout = new VerticalLayout();
-        addContact.setContent(layout);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        layout.setWidth("100%");
-        contactType = new TextField("Тип");
-        contactType.setRequired(true);
-        contactType.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        contactValue = new TextField("Значение");
-        contactValue.setRequired(true);
-        contactValue.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        Button okBut = new Button("Добавить");
-        contactList = new ArrayList<TextField>();
-        okBut.addListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                if(contactType.isValid() && contactValue.isValid()) {
-                    TextField newTextField = new TextField((String)contactType.getValue(),(String)contactValue.getValue());
-                    newTextField.setWidth("200");
-                    contactList.add(newTextField);
-                    contacts.addComponent(contactList.get(contactList.size()-1));
-                    getWindow().removeWindow(addContact);
-                }
-            }
-        });
-        layout.addComponent(contactType);
-        layout.addComponent(contactValue);
-        layout.addComponent(okBut);
-        layout.setComponentAlignment(contactValue, Alignment.TOP_CENTER);
-        layout.setComponentAlignment(contactType, Alignment.TOP_CENTER);
-        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
-        getWindow().addWindow(addContact);
-    }
-    /**
-     * Need to implement!
-     * @return list of universities from DB
-     */
-    private Container getUniversityList() {
-        return null;
-    }
-    
-    private Container getFacultiesList() {
-        return null;
-    }
-
-    private void addProgrammingLanguage() {
-        addPrLangWindow = new Window("Добавить язык");
-        addPrLangWindow.setModal(true);
-        addPrLangWindow.setWidth("20%");
-        addPrLangWindow.setResizable(false);
-        addPrLangWindow.center();
-        VerticalLayout layout = new VerticalLayout();
-        addPrLangWindow.setContent(layout);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        prLangName = new TextField("Язык");
-        prLangName.setRequired(true);
-        Button okBut = new Button("Добавить");
-        programLanguages = new ArrayList<Slider>();
-        okBut.addListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                if(prLangName.isValid()) {
-                    Slider newSlider = new Slider((String)prLangName.getValue(),1,5);
-                    newSlider.setWidth("200");
-                    programLanguages.add(newSlider);
-                    glayoutPrLang.addComponent(programLanguages.get(programLanguages.size()-1));
-                    getWindow().removeWindow(addPrLangWindow);
-                }
-            }
-        });
-        layout.addComponent(prLangName);
-        layout.addComponent(okBut);
-        layout.setComponentAlignment(prLangName, Alignment.TOP_CENTER);
-        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
-        getWindow().addWindow(addPrLangWindow);
+        addKnowlegeBut = new Button("Другие разделы");
+        addKnowlegeBut.addListener(this);
+        addKnowlegeBut.setWidth("200");
+        vlayout.addComponent(addKnowlegeBut);
+        TextArea expirience = new TextArea("Если у тебя уже есть опыт работы и/или выполненные учебные проекты, опиши их: ");
+        expirience.setWidth("1020");
+        expirience.setRows(4);
+        expirience.setRequired(true);
+        expirience.setWordwrap(true);
+        expirience.setMaxLength(100);
+        vlayout.addComponent(expirience);
+        Label english = new Label("Уровень английского языка (от 1 = elementary до 5 = advanced): ");
+        vlayout.addComponent(english);
+        GridLayout glayoutEng = new GridLayout(3,1);
+        vlayout.addComponent(glayoutEng);
+        glayoutEng.setSpacing(true);
+        Slider reading = new Slider("Чтение");
+        Slider writing = new Slider("Письмо");
+        Slider speaking = new Slider("Устная речь");
+        glayoutEng.addComponent(reading);
+        glayoutEng.addComponent(writing);
+        glayoutEng.addComponent(speaking);
+        i = glayoutEng.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            sliderConfig(c);
+        }
+        TextArea advert = new TextArea("Откуда ты узнал о наборе в учебный центр?");
+        advert.setWidth("1020");
+        advert.setRows(1);
+        advert.setMaxLength(50);
+        advert.setRequired(true);
+        vlayout.addComponent(advert);
+        TextArea whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )");
+        whyYou.setWidth("1020");
+        whyYou.setRows(3);
+        whyYou.setRequired(true);
+        whyYou.setMaxLength(100);
+        vlayout.addComponent(whyYou);
+        TextArea moreInfo = new TextArea("Дополнительные сведения о себе: олимпиады, поощрения, курсы, сертификаты, личные качества, др.");
+        moreInfo.setWidth("1020");
+        moreInfo.setRequired(true);
+        moreInfo.setRows(3);
+        moreInfo.setMaxLength(100);
+        vlayout.addComponent(moreInfo);   
     }
 
 }
