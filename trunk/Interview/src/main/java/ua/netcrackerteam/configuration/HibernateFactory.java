@@ -6,7 +6,7 @@ import ua.netcrackerteam.DAO.*;
  * @author
  */
 public class HibernateFactory {
-
+    private static DAOCommon commonDao = null;
     private static DAOStudentImpl studentDAO = null;
     private static HibernateFactory instance = null;
 
@@ -15,6 +15,13 @@ public class HibernateFactory {
             instance = new HibernateFactory();
         }
         return instance;
+    }
+
+    public DAOCommon getCommonDao(){
+        if(commonDao == null){
+            commonDao = new DAOCommon();
+        }
+        return commonDao;
     }
 
     public DAOStudentImpl getStudentDAO(){

@@ -4,16 +4,15 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
+
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Locale;
 
 /**
  *
  */
-public class DAOTemp {
-    public void setUser(Long idUser,
-                        String userName,
+public class DAOCommon {
+    public void setUser(String userName,
                         String userPassword,
                         String userEmail,
                         String active,
@@ -25,7 +24,6 @@ public class DAOTemp {
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
             UserList userList = new UserList();
-            userList.setIdUser(idUser);
             userList.setUserName(userName);
             userList.setPassword(userPassword);
             userList.setEmail(userEmail);

@@ -1,16 +1,15 @@
-package ua.netcrackerteam.users;
+package ua.netcrackerteam.persons;
 
 
 /**
  * author tanya
  */
-public class AdminPersonImpl implements AdminPerson {
+public class AdminPerson {
     
      /**
      * Deleting a user
      * @param userName
      */
-    @Override
     public final void removeUser(String userName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -19,7 +18,6 @@ public class AdminPersonImpl implements AdminPerson {
      * @param userName
      * @param rights
      */
-    @Override
     public final void addUser(String userName, String rights) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -28,7 +26,6 @@ public class AdminPersonImpl implements AdminPerson {
      * @param userName
      * @param password
      */
-    @Override
     public final void changePasswordUser(String userName, String password) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

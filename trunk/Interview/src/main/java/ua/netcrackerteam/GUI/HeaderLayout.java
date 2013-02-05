@@ -48,7 +48,7 @@ public class HeaderLayout extends HorizontalLayout {
     }
     
     /**
-     * Constructor for registered users header view
+     * Constructor for registered persons header view
      * @param exit button
      * @param username string
      */
