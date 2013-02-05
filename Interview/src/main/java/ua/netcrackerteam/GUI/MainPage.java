@@ -8,10 +8,13 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.Notification;
+import com.vaadin.ui.themes.Runo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,7 +34,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private HeaderLayout hlayoutGuest = null;
     private HeaderLayout hlayoutUser = null;
     private EnterWindow enterWindow = null;
-    private VerticalLayout layoutfull = null;
+    private Panel layoutfull = null;
     private RegistrationWindow regWindow = null;
 
     @Override
@@ -43,9 +46,13 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
      */
     private void buildMainLayout() {
         setTheme("netcracker");
-        layoutfull = new VerticalLayout();
+        layoutfull = new Panel();
+        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
+        vl.setStyleName("body");
+        
+        vl.setMargin(false);
         layoutfull.setSizeFull();
-        layoutfull.setStyleName("body");
+        layoutfull.setStyleName(Runo.PANEL_LIGHT);
         setMainWindow(new Window("Учебный Центр NetCracker"));
         enter = new Button("Вход");
         registr = new Button("Регистрация");
@@ -56,6 +63,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         hlayoutGuest = new HeaderLayout(enter, registr);
         panel = new MainPanel(hlayoutGuest);
         layoutfull.addComponent(panel);
+        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
         getMainWindow().setContent(layoutfull);
     }
 
@@ -99,6 +107,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         MainPanel oldPanel = panel;
         panel = new MainPanelAdmin(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
+        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
+        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
     }
 
     private void changeModeHR(String username) {
@@ -106,6 +116,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         MainPanel oldPanel = panel;
         panel = new MainPanelHR(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
+        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
+        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
     }
 
     private void changeModeStudent(String username) {
@@ -113,6 +125,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         MainPanel oldPanel = panel;
         panel = new MainPanelStudent(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
+        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
+        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
     }
     
     private void changeModeInterviewer(String username) {
@@ -120,12 +134,16 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         MainPanel oldPanel = panel;
         panel = new MainPanelInterviewer(hlayoutUser);
         layoutfull.replaceComponent(oldPanel, panel);
+        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
+        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
     }
 
     private void changeModeGuest() {
         MainPanel oldPanel = panel;
         panel = new MainPanel(hlayoutGuest);
         layoutfull.replaceComponent(oldPanel, panel);
+        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
+        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
     }
   
     /*TEST VAADIN SESSION*/

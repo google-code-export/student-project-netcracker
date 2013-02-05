@@ -17,7 +17,7 @@ public class MainPanelInterviewer extends MainPanel{
 
     public MainPanelInterviewer(HeaderLayout hlayout) {
         super(hlayout);
-        setContent(getUserLayout());
+        setContent(getUserLayout(hlayout));
         interviewsLo = new VerticalLayout();
         fillInterviewsLayout();
         tabSheet.addTab(interviewsLo,"Собеседования");

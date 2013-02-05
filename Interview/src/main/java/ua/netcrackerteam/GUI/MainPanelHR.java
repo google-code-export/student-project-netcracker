@@ -26,7 +26,11 @@ public class MainPanelHR extends MainPanel implements Button.ClickListener{
     
     public MainPanelHR(HeaderLayout hlayout) {
         super(hlayout);
-        setContent(getUserLayout());
+        setContent(getUserLayout(hlayout));
+        edit = new Button("Редактировать");
+        mainPageLo.addComponent(edit);
+        mainPageLo.setComponentAlignment(edit, Alignment.TOP_CENTER);
+        edit.addListener(this);
         blanksLo = new VerticalLayout();
         fillBlanksLayout();
         tabSheet.addTab(blanksLo,"Анкеты");

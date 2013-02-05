@@ -17,7 +17,7 @@ public class MainPanelAdmin extends MainPanel {
     
     public MainPanelAdmin(HeaderLayout hlayout) {
         super(hlayout);
-        setContent(getUserLayout());
+        setContent(getUserLayout(hlayout));
         hrSettingsLo = new VerticalLayout();
         fillHRSetLayout();
         tabSheet.addTab(hrSettingsLo, "Настройки HR");

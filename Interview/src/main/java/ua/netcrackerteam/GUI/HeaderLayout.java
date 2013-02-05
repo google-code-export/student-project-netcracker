@@ -8,7 +8,8 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Embedded;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 
 /**
@@ -16,20 +17,21 @@ import com.vaadin.ui.themes.BaseTheme;
  * registration buttons
  * @author Anna Kushnirenko
  */
-public class HeaderLayout extends HorizontalLayout {
+public class HeaderLayout extends GridLayout {
     private Embedded em = null;
+    private VerticalLayout emlo;
     
     {   
+        setColumns(3);
         setStyleName("header");
         setWidth("100%");
-        setHeight("150");
-        setMargin(true);
-        setSpacing(true);
+        setHeight("110");
+        emlo = new VerticalLayout();
         em = new Embedded("", new ThemeResource("images/logo.png"));
         em.setStyleName("emblem");
-        addComponent(em);
-        setComponentAlignment(em, Alignment.TOP_LEFT);
-        setExpandRatio(em, 100);
+        emlo.addComponent(em);
+        emlo.setWidth("650");
+        addComponent(emlo);
     }
     /**
      * Constructor for guest header view
@@ -37,12 +39,12 @@ public class HeaderLayout extends HorizontalLayout {
      * @param registr button
      */
     public HeaderLayout(Button enter, Button registr) {
-        addComponent(enter);
-        setComponentAlignment(enter, Alignment.BOTTOM_RIGHT);
-        setExpandRatio(enter, 1);
-        addComponent(registr);
+        enter.setWidth("50");
+        registr.setWidth("100");
+        addComponent(enter,1,0);
+        setComponentAlignment(enter, Alignment.BOTTOM_CENTER);
+        addComponent(registr,2,0);
         setComponentAlignment(registr, Alignment.BOTTOM_RIGHT);
-        setExpandRatio(registr, 1);
         enter.setStyleName(BaseTheme.BUTTON_LINK);
         registr.setStyleName(BaseTheme.BUTTON_LINK);
     }
@@ -54,13 +56,21 @@ public class HeaderLayout extends HorizontalLayout {
      */
 
     public HeaderLayout(Button exit, String username) {
+        setHeight("90");
+        VerticalLayout exitlo = new VerticalLayout();
+        VerticalLayout greetlo = new VerticalLayout();
+        greetlo.setSizeFull();
+        exitlo.setSizeFull();
+        emlo.setWidth("580");
+        exitlo.setWidth("70");
+        exitlo.addComponent(exit);
+        exitlo.setComponentAlignment(exit, Alignment.BOTTOM_CENTER);
         Button greet = new Button(username);
-        addComponent(greet);
-        setComponentAlignment(greet, Alignment.BOTTOM_RIGHT);
-        setExpandRatio(greet, 1);
-        addComponent(exit);
-        setComponentAlignment(exit, Alignment.BOTTOM_RIGHT);
-        setExpandRatio(exit, 1);
+        greetlo.addComponent(greet);
+        greetlo.setWidth("150");
+        greetlo.setComponentAlignment(greet, Alignment.BOTTOM_RIGHT);
+        addComponent(greetlo,1,0);
+        addComponent(exitlo,2,0);
         greet.setStyleName(BaseTheme.BUTTON_LINK);
         exit.setStyleName(BaseTheme.BUTTON_LINK);
     }

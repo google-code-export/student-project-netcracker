@@ -43,6 +43,7 @@ class RegistrationWindow extends Window implements Button.ClickListener{
         layout.setMargin(true);
         username = new TextField("Введите имя: ");
         username.setRequired(true);
+        username.setMaxLength(25);
         layout.addComponent(username);
         username.addValidator(new RegexpValidator("\\w{3,}","Имя должно быть не короче 3х символов."));
         email = new TextField("Введите email: ");
