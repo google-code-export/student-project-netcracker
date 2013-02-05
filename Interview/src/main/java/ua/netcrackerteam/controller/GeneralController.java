@@ -1,24 +1,20 @@
 package ua.netcrackerteam.controller;
 
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
-import ua.netcrackerteam.configuration.HibernateUtil;
+
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Locale;
 
 public class GeneralController {
+
     public static String passwordHashing(String pass){
-        String hashedPAss = String.valueOf(("user".hashCode() * pass.hashCode() +
-                (pass.hashCode() + pass.hashCode()) * 10 + pass.hashCode() * "pass".hashCode()) * 10);
-        return hashedPAss;
+        String hashedPass = String.valueOf(("user".hashCode() * pass.hashCode() + (pass.hashCode() + pass.hashCode()) * 10 + pass.hashCode() * "pass".hashCode()) * 10);
+        return hashedPass;
     }
 
-    public boolean userEnteringCheck(String user, String pass){
+    public boolean checkLogin(String user, String pass){
         List<UserList> listOfForms = null;
         String userName = null;
         String userPass = null;
@@ -38,5 +34,28 @@ public class GeneralController {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void setUsualUser(String userName, String userPassword, String userEmail){
+        String active = "active";
+        Long idUserCategory = 4L;
+        String hashPassword = passwordHashing(userPassword);
+        try {
+            HibernateFactory.getInstance().getCommonDao().setUser(userName, hashPassword, userEmail, active, idUserCategory);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*public static String userNameSplitFromEmail(String email){
+        String[] splitedString = email.split("@");
+        String splitedName = splitedString[0];
+        return splitedName;
+    }*/
+
+    public static void main(String[] args) {
+        //setUsualUser("Alex3", "12345", "sdfsdf@sdfsdf.df");
+        /*String nickName = userNameSplitFromEmail("fdgdfg@gdfgdf.com");
+        System.out.println(nickName);*/
     }
 }
