@@ -63,7 +63,7 @@ public class DAOCommon {
         return number;
     }
 
-    public List GetUser() throws SQLException {
+    public static List getUser() throws SQLException {
         Session session = null;
         Query re = null;
         List listOfForms = null;

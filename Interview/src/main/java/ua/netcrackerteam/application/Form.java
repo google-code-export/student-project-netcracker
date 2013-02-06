@@ -57,12 +57,12 @@ public class Form implements Observer{
     /**
      * Create from (pdf-format)
      */
-    public void generateFormPDF() throws DocumentException, IOException{
+    public static void generateFormPDF() throws DocumentException, IOException{
         
-        /*BaseFont font = BaseFont.createFont("times.ttf","cp1251",BaseFont.EMBEDDED);        
-        PdfReader reader = new PdfReader("Template.pdf");
+        BaseFont font = BaseFont.createFont("src\\main\\java\\times.ttf","cp1251",BaseFont.EMBEDDED);
+        PdfReader reader = new PdfReader("src\\main\\java\\Template.pdf");
 
-        PdfStamper stamper = new PdfStamper(reader,new FileOutputStream("C:\\Form.pdf"));
+        PdfStamper stamper = new PdfStamper(reader,new FileOutputStream("src\\Form.pdf"));
         
         AcroFields form = stamper.getAcroFields();
         form.addSubstitutionFont(font);
@@ -72,8 +72,17 @@ public class Form implements Observer{
         while(iterator.hasNext()){
             form.setField((String)iterator.next(), "Поле");
         }
-        stamper.close(); */
+        stamper.close();
     }
- 
+
+    public static void main(String[] args){
+        try {
+            generateFormPDF();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
 }
