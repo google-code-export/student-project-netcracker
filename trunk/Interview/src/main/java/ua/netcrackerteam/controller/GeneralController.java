@@ -21,7 +21,7 @@ public class GeneralController {
         String hashedPass = null;
         int idUserCategory = 0;
         try {
-            listOfForms = HibernateFactory.getInstance().getCommonDao().GetUser();
+            listOfForms = HibernateFactory.getInstance().getCommonDao().getUser();
             hashedPass = GeneralController.passwordHashing(pass);
             for (UserList userList : listOfForms) {
                 userName = userList.getUserName();
@@ -54,11 +54,15 @@ public class GeneralController {
         return splitedName;
     }*/
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //setUsualUser("Alex3", "12345", "sdfsdf@sdfsdf.df");
         /*String nickName = userNameSplitFromEmail("fdgdfg@gdfgdf.com");
         System.out.println(nickName);*/
         int id = checkLogin("admin","abyrabyrabyr");
         System.out.println(id);
+        List<UserList> userLists = HibernateFactory.getInstance().getCommonDao().getUser();
+        for (UserList userList : userLists){
+            System.out.println(userList.getUserName() + "   " + userList.getPassword());
+        }
     }
 }

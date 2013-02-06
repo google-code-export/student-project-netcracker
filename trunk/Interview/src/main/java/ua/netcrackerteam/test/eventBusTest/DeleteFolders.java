@@ -5,17 +5,15 @@ import java.io.File;
 /**
  *
  */
-public class DeleteFolders {
+public class DeleteFolders implements EventHandler{
 
-    public DeleteFolders() {
-        MailBus.addHandler(new EmailSending() {
-            @Override
-            public void pdfSend() {
-                String emailName = "krygina.ua@gmail.com";
-                File dir = new File("src\\"+emailName+"\\");
-                DeleteFolders.deletePDFDirectory(dir);
-            }
-        });
+    @Override
+    public void handleEvent(Event event) {
+        if (event.type == Event.EVENT_TYPE_SEND_PDF) {
+            String emailName = "krygina.ua@gmail.com";
+            File dir = new File("src\\"+emailName+"\\");
+            DeleteFolders.deletePDFDirectory(dir);
+        }
     }
 
     public static void deletePDFDirectory(File dir) {
@@ -30,8 +28,6 @@ public class DeleteFolders {
     }
 
     /*public static void main(String[] args) {
-        String emailName = "krygina.ua@gmail.com";
-        File dir = new File("src\\"+emailName+"\\");
-        DeleteFolders.deletePDFDirectory(dir);
+
     }*/
 }

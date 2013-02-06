@@ -5,19 +5,18 @@ import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 
-public class SendMail
-{
-    public SendMail() {
-        MailBus.addHandler(new EmailSending() {
-            @Override
-            public void pdfSend() {
-                try {
-                    sendTLS();
-                } catch (EmailException e) {
-                    e.printStackTrace();
-                }
+public class SendMail implements EventHandler{
+    @Override
+    public void handleEvent(Event event) {
+        if (event.type == Event.EVENT_TYPE_SEND_PDF) {
+            SendMail simpleMail = new SendMail();
+            try {
+                simpleMail.sendTLS();
+            } catch (EmailException e) {
+                e.printStackTrace();
             }
-        });
+            EventBus.getInstance().fireEvent(new Event(Event.EVENT_TYPE_DELETE_PDF));
+        }
     }
 
     public static void sendTLS() throws EmailException {
