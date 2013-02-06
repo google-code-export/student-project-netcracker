@@ -5,8 +5,10 @@
 package ua.netcrackerteam.application;
 
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.AcroFields;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import java.io.FileOutputStream;
@@ -58,6 +60,7 @@ public class Form implements Observer{
      * Create from (pdf-format)
      */
     public static void generateFormPDF() throws DocumentException, IOException{
+
         
         BaseFont font = BaseFont.createFont("src\\main\\java\\times.ttf","cp1251",BaseFont.EMBEDDED);
         PdfReader reader = new PdfReader("src\\main\\java\\Template.pdf");
@@ -72,6 +75,15 @@ public class Form implements Observer{
         while(iterator.hasNext()){
             form.setField((String)iterator.next(), "Поле");
         }
+        
+         PdfContentByte content = stamper.getOverContent(1);
+
+         Image img = Image.getInstance("src\\main\\java\\1.jpg");
+         img.setAbsolutePosition(70f, 615f);
+         img.scaleAbsolute(150,140);
+
+         content.addImage(img);
+
         stamper.close();
     }
 
