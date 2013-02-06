@@ -5,32 +5,31 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Validator;
+import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.data.validator.RegexpValidator;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-
-
 /**
  * Panel for Student view
  * @author Anna Kushnirenko
  */
-public class MainPanelStudent extends MainPanel implements Button.ClickListener  {
+public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListener {
     private VerticalLayout blankLayout;
     private VerticalLayout interviewLayout;
     private VerticalLayout settingsLo;
     private Button save;
     private Panel contacts;
     private Button anotherContactsBut;
-    private ComboBox universities;
-    private ComboBox faculties;
     private ArrayList<TextField> contactList;
     private TextField contactType;
     private TextField contactValue;
@@ -48,6 +47,40 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
     private Window addKnowlegeWindow;
     private TextField knowlName;
     private ArrayList<Slider> knowlegesList;
+    
+    private ComboBox universities;
+    private ComboBox faculties;
+    private TextField firstName;
+    private TextField middleName;
+    private TextField lastName;
+    private TextField universityYear;
+    private TextField universityGradYear;
+    private TextField email1;
+    private TextField email2;
+    private TextField telephone;
+    private OptionGroup whatInterest;
+    private OptionGroup whatWorkSphere;
+    private TextField anotherWorkSphere;
+    private OptionGroup whatWorkType;
+    private TextField anotherWorkType;
+    private Slider sliderC;
+    private Slider sliderJava;
+    private Slider sliderNT;
+    private Slider sliderEA;
+    private Slider sliderOOP;
+    private Slider sliderDB;
+    private Slider sliderWeb;
+    private Slider sliderGUI;
+    private Slider sliderWP;
+    private Slider sliderPP;
+    private TextArea expirience;
+    private Slider reading;
+    private Slider writing;
+    private Slider speaking;
+    private OptionGroup advert;
+    private TextField anotherAdvert;
+    private TextArea whyYou;
+    private TextArea moreInfo;
     
     public MainPanelStudent(HeaderLayout hlayout) {
         super(hlayout);
@@ -89,7 +122,11 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         save = new Button("Сохранить");
         save.setRequired(true);
         save.setWidth("200");
-        save.addListener(this);
+        save.addListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                buttonSaveClick(event);
+            }
+        });
         blankLayout.addComponent(save);
         blankLayout.setComponentAlignment(save, Alignment.TOP_CENTER);
     }
@@ -101,7 +138,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
     private void fillSettingsLayout() {
     }
 
-    public void buttonClick(ClickEvent event) {
+    public void buttonSaveClick(ClickEvent event) {
         Button source = event.getButton();
         if (source == anotherContactsBut) { 
             addNewContact();
@@ -128,10 +165,10 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         layout.setWidth("100%");
         contactType = new TextField("Тип");
         contactType.setRequired(true);
-        contactType.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
+        contactType.addValidator(new RegexpValidator("[[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         contactValue = new TextField("Значение");
         contactValue.setRequired(true);
-        contactValue.addValidator(new RegexpValidator("[а-яА-Яa-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
+        contactValue.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         contactList = new ArrayList<TextField>();
         okBut.addListener(new Button.ClickListener() {
@@ -153,17 +190,6 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
         getWindow().addWindow(addContact);
     }
-    /**
-     * Need to implement!
-     * @return list of universities from DB
-     */
-    private Container getUniversityList() {
-        return null;
-    }
-    
-    private Container getFacultiesList() {
-        return null;
-    }
 
     private void addProgrammingLanguage() {
         addPrLangWindow = new Window("Добавить язык");
@@ -177,7 +203,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         layout.setSpacing(true);
         prLangName = new TextField("Язык");
         prLangName.setRequired(true);
-        prLangName.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        prLangName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         programLanguages = new ArrayList<Slider>();
         okBut.addListener(new Button.ClickListener() {
@@ -217,7 +243,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         layout.setSpacing(true);
         knowlName = new TextField("Раздел (в области IT или сетей)");
         knowlName.setRequired(true);
-        knowlName.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        knowlName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         knowlegesList = new ArrayList<Slider>();
         okBut.addListener(new Button.ClickListener() {
@@ -237,29 +263,29 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
         getWindow().addWindow(addKnowlegeWindow);
     }
-
-    private void saveBlank() {
-        
-    }
-
+  
     private void persInfoPanelFill() {
         persInfo.setWidth("100%");
         GridLayout glayout1 = new GridLayout(3,3);
         glayout1.setMargin(true);
         glayout1.setSpacing(true);
         persInfo.setContent(glayout1);
-        TextField firstName = new TextField("Имя");
-        firstName.addValidator(new RegexpValidator("\\w{3,}", "Поле должно содержать хотя бы 3 символа."));
+        firstName = new TextField("Имя");
+        firstName.addListener(this);
+        firstName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
         firstName.setRequired(true);
-        TextField middleName = new TextField("Отчество");
-        middleName.addValidator(new RegexpValidator("\\w{3,}", "Поле должно содержать хотя бы 3 символа."));
+        middleName = new TextField("Отчество");
+        middleName.addListener(this);
+        middleName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
         middleName.setRequired(true);
-        TextField lastName = new TextField("Фамилия");
+        lastName = new TextField("Фамилия");
         lastName.setRequired(true);
-        lastName.addValidator(new RegexpValidator("[a-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        lastName.addListener(this);
+        lastName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
         universities = new ComboBox("ВУЗ",getUniversityList());
         universities.setRequired(true);
-        universities.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        universities.addListener(this);
+        universities.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         universities.setNewItemsAllowed(true);
                 universities.setNullSelectionAllowed(false);
                 universities.setNewItemHandler(new AbstractSelect.NewItemHandler() {
@@ -271,12 +297,13 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
                     }
                 });
         universities.setImmediate(true);
-        TextField universityYear = new TextField("Курс");
+        universityYear = new TextField("Курс");
         universityYear.setRequired(true);
         universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
         faculties = new ComboBox("Факультет", getFacultiesList());
         faculties.setRequired(true);
-        faculties.addValidator(new RegexpValidator("\\w{3,}", "Поле должно содержать хотя бы 3 символа."));
+        faculties.addListener(this);
+        faculties.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         faculties.setNewItemsAllowed(true);
                 faculties.setNullSelectionAllowed(false);
                 faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
@@ -288,8 +315,9 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
                     }
                 });
         faculties.setImmediate(true);
-        TextField universityGradYear = new TextField("Год окончания");
+        universityGradYear = new TextField("Год окончания");
         universityGradYear.setRequired(true);
+        universityGradYear.addListener(this);
         universityGradYear.addValidator(new IntegerValidator("Ошибка! Введите год."));
         persInfo.addComponent(lastName);
         persInfo.addComponent(firstName);
@@ -310,14 +338,17 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         glayout2.setMargin(true);
         glayout2.setSpacing(true);
         contacts.setContent(glayout2);
-        TextField email1 = new TextField("Email 1");
+        email1 = new TextField("Email 1");
         email1.setRequired(true);
+        email1.addListener(this);
         email1.addValidator(new EmailValidator("Email должен содержать знак '@' и полный домен."));
-        TextField email2 = new TextField("Email 2");
+        email2 = new TextField("Email 2");
         email2.addValidator(new EmailValidator("Email должен содержать знак '@' и полный домен."));
         email2.setRequired(true);
-        TextField telephone = new TextField("Телефон");
+        email2.addListener(this);
+        telephone = new TextField("Телефон");
         telephone.setRequired(true);
+        telephone.addListener(this);
         anotherContactsBut = new Button("Добавить другие");
         anotherContactsBut.addListener(this);
         contacts.addComponent(email1);
@@ -338,17 +369,17 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         glayout3.setSpacing(true);
         interests.setContent(glayout3);
         List<String> listInterests = Arrays.asList(new String[] {"учебный центр/стажировка","работа в компании NetCracker"});
-        OptionGroup whatInterest = new OptionGroup("Что заинтересовало: ",listInterests);
+        whatInterest = new OptionGroup("Что заинтересовало: ",listInterests);
         whatInterest.setMultiSelect(true);
         whatInterest.setImmediate(true);
         List<String> workSphere = Arrays.asList(new String[] {"разработка ПО","другие области (уточните)"});
-        OptionGroup whatWorkSphere  = new OptionGroup("Интересующая область деятельности: ",workSphere);
+        whatWorkSphere  = new OptionGroup("Интересующая область деятельности: ",workSphere);
         whatWorkSphere.setMultiSelect(true);
         whatWorkSphere.setImmediate(true);
-        TextField anotherWorkSphere = new TextField();
+        anotherWorkSphere = new TextField();
         List<String> workTypes = Arrays.asList(new String[] {"глубокая специализация","разнообразная работа","руководство специалистами","продажи","другое (уточните)"});
-        OptionGroup whatWorkType  = new OptionGroup("Тип работы: ",workTypes);
-        TextField anotherWorkType = new TextField();
+        whatWorkType  = new OptionGroup("Тип работы: ",workTypes);
+        anotherWorkType = new TextField();
         whatWorkType.setMultiSelect(true);
         whatWorkType.setImmediate(true);
         interests.addComponent(whatInterest);
@@ -376,10 +407,10 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
                 + "библиотеки; 5 – написал крупный проект");
         vlayout.addComponent(progrLang);
         vlayout.addComponent(glayoutPrLang);
-        Slider sliderC = new Slider("C++");
+        sliderC = new Slider("C++");
         sliderConfig(sliderC);
         glayoutPrLang.addComponent(sliderC);
-        Slider sliderJava = new Slider("Java");
+        sliderJava = new Slider("Java");
         sliderConfig(sliderJava);
         glayoutPrLang.addComponent(sliderJava);
         addPrLangBut = new Button("Добавить язык");
@@ -392,14 +423,14 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         glayoutKnow = new GridLayout(3,2);
         glayoutKnow.setSpacing(true);
         vlayout.addComponent(glayoutKnow);
-        Slider sliderNT = new Slider("Сетевые технологии");
-        Slider sliderEA = new Slider("Эффективные алгоритмы");
-        Slider sliderOOP = new Slider("Объектно-ориент. программирование");
-        Slider sliderDB = new Slider("Базы данных");
-        Slider sliderWeb = new Slider("Web");
-        Slider sliderGUI = new Slider("Графический интерфейс (не Web)");
-        Slider sliderWP = new Slider("Сетевое программирование");
-        Slider sliderPP = new Slider("Проектирование программ");
+        sliderNT = new Slider("Сетевые технологии");
+        sliderEA = new Slider("Эффективные алгоритмы");
+        sliderOOP = new Slider("Объектно-ориент. программирование");
+        sliderDB = new Slider("Базы данных");
+        sliderWeb = new Slider("Web");
+        sliderGUI = new Slider("Графический интерфейс (не Web)");
+        sliderWP = new Slider("Сетевое программирование");
+        sliderPP = new Slider("Проектирование программ");
         glayoutKnow.addComponent(sliderNT);
         glayoutKnow.addComponent(sliderEA);
         glayoutKnow.addComponent(sliderOOP);
@@ -417,21 +448,22 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         addKnowlegeBut.addListener(this);
         addKnowlegeBut.setWidth("200");
         vlayout.addComponent(addKnowlegeBut);
-        TextArea expirience = new TextArea("Если у тебя уже есть опыт работы и/или выполненные учебные проекты, опиши их: ");
+        expirience = new TextArea("Если у тебя уже есть опыт работы и/или выполненные учебные проекты, опиши их: ");
         expirience.setWidth("700");
         expirience.setRows(4);
         expirience.setRequired(true);
         expirience.setWordwrap(true);
-        expirience.setMaxLength(100);
+        expirience.addValidator(getExpirienceValidator());
+        expirience.addListener(this);
         vlayout.addComponent(expirience);
         Label english = new Label("Уровень английского языка (от 1 = elementary до 5 = advanced): ");
         vlayout.addComponent(english);
         GridLayout glayoutEng = new GridLayout(3,1);
         vlayout.addComponent(glayoutEng);
         glayoutEng.setSpacing(true);
-        Slider reading = new Slider("Чтение");
-        Slider writing = new Slider("Письмо");
-        Slider speaking = new Slider("Устная речь");
+        reading = new Slider("Чтение");
+        writing = new Slider("Письмо");
+        speaking = new Slider("Устная речь");
         glayoutEng.addComponent(reading);
         glayoutEng.addComponent(writing);
         glayoutEng.addComponent(speaking);
@@ -441,26 +473,88 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
             sliderConfig(c);
         }
         List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
-        OptionGroup advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
+        advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
         advert.setWidth("220");
         advert.setRequired(true);
         advert.setItemEnabled(0, true);
         vlayout.addComponent(advert);
-        TextField anotherAdvert = new TextField();
+        anotherAdvert = new TextField();
         anotherAdvert.setWidth("220");
         vlayout.addComponent(anotherAdvert);
-        TextArea whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )");
+        whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )");
         whyYou.setWidth("700");
         whyYou.setRows(3);
         whyYou.setRequired(true);
-        whyYou.setMaxLength(100);
+        whyYou.addValidator(getWhyYouValidator());
+        whyYou.addListener(this);
         vlayout.addComponent(whyYou);
-        TextArea moreInfo = new TextArea("Дополнительные сведения о себе: олимпиады, поощрения, курсы, сертификаты, личные качества, др.");
+        moreInfo = new TextArea("Дополнительные сведения о себе: олимпиады, поощрения, курсы, сертификаты, личные качества, др.");
         moreInfo.setWidth("700");
         moreInfo.setRequired(true);
         moreInfo.setRows(3);
-        moreInfo.setMaxLength(100);
+        moreInfo.addValidator(getMoreInfoValidator());
+        moreInfo.addListener(this);
         vlayout.addComponent(moreInfo);   
+    }
+
+    public void blur(BlurEvent event) {
+        Object source = event.getComponent();
+        if(source instanceof TextField) {
+            TextField tf = (TextField) source;
+            tf.isValid();
+        } else if(source instanceof ComboBox){
+            ComboBox cb = (ComboBox) source;
+            cb.isValid();
+        } else if(source instanceof TextArea){
+            TextArea ta = (TextArea) source;
+            ta.isValid();
+        }
+    }
+
+    /**
+     * Implement this!
+     * @return 
+     */
+    private Validator getExpirienceValidator() {
+        Validator v = new AbstractValidator("Ошибка!") {
+
+            public boolean isValid(Object value) {
+                return true;
+            }
+        };
+        return v;
+    }
+
+    private Validator getWhyYouValidator() {
+        Validator v = new AbstractValidator("Ошибка!") {
+
+            public boolean isValid(Object value) {
+                return true;
+            }
+        };
+        return v;
+    }
+
+    private Validator getMoreInfoValidator() {
+        Validator v = new AbstractValidator("Ошибка!") {
+
+            public boolean isValid(Object value) {
+                return true;
+            }
+        };
+        return v;
+    }
+
+    private void saveBlank() {
+        
+    }
+    
+    private Container getUniversityList() {
+        return null;
+    }
+    
+    private Container getFacultiesList() {
+        return null;
     }
 
 }

@@ -7,6 +7,8 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import org.apache.commons.mail.EmailException;
@@ -17,7 +19,7 @@ import ua.netcrackerteam.controller.SendMails;
  *
  * @author akush_000
  */
-class RegistrationWindow extends Window implements Button.ClickListener{
+class RegistrationWindow extends Window implements FieldEvents.BlurListener{
     CaptchaField captchaField;
     TextField captchaInput;
     MainPage mainPage;
@@ -49,23 +51,27 @@ class RegistrationWindow extends Window implements Button.ClickListener{
         layout.setWidth("100%");
         layout.setSpacing(true);
         layout.setMargin(true);
-        username = new TextField("Введите имя: ");
+        username = new TextField("Введите логин: ");
         username.setRequired(true);
+        username.addListener(this);
         username.setMaxLength(25);
         layout.addComponent(username);
-        username.addValidator(new RegexpValidator("\\w{3,}", "Имя должно быть не короче 3х символов."));
+        username.addValidator(new RegexpValidator("\\w{3,}", "Имя должно быть не короче 3х символов латиницы."));
         email = new TextField("Введите email: ");
+        email.addListener(this);
         layout.addComponent(email);
         email.addValidator(new EmailValidator("Email должен содержать знак '@' и полный домен."));
         email.setRequired(true);
         password = new PasswordField("Введите пароль: ");
         layout.addComponent(password);
+        password.addListener(this);
         password.addValidator(new RegexpValidator("\\w{6,}",
-                        "Пароль должен содержать минимум 6 символов."));
+                        "Пароль должен содержать буквы английского алфавита и/или цифры, и быть не короче 6 символов."));
         password.setRequired(true);
         password2 = new PasswordField("Введите пароль еще раз: ");
         layout.addComponent(password2);
         password2.setRequired(true);
+        password2.addListener(this);
         password2.addValidator(new AbstractValidator("Пароли должны совпадать.") {
             public boolean isValid(Object value) {
                 return password.getValue().equals(password2.getValue());
@@ -83,12 +89,18 @@ class RegistrationWindow extends Window implements Button.ClickListener{
             }
         });
         Button okBut = new Button("Регистрация");
-        okBut.addListener(this);
+        okBut.addListener(new Button.ClickListener() {
+            public void buttonClick(ClickEvent event) {
+                buttonClickRegistr();
+            }
+        });
         layout.addComponent(okBut);
         layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
     }
-
-    public void buttonClick(ClickEvent event) {
+    
+    
+    
+    public void buttonClickRegistr() {
         if (isValid()) {
             String userName = String.valueOf(this.getUsername());
             String userPassword = String.valueOf(this.getPassword());
@@ -114,5 +126,16 @@ class RegistrationWindow extends Window implements Button.ClickListener{
         }
         captchaField.validateCaptcha("");
         return false;
+    }
+
+    public void blur(BlurEvent event) {
+        Object source = event.getComponent();
+        if(source instanceof TextField) {
+            TextField tf = (TextField) source;
+            tf.isValid();
+        } else if(source instanceof PasswordField){
+            PasswordField pf = (PasswordField) source;
+            pf.isValid();
+        }
     }
 }

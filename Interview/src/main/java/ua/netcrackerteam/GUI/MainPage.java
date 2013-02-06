@@ -13,6 +13,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,6 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         layoutfull = new Panel();
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setStyleName("body");
-        
         vl.setMargin(false);
         layoutfull.setSizeFull();
         layoutfull.setStyleName(Runo.PANEL_LIGHT);
@@ -78,10 +78,20 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             changeModeGuest();
         } else if (source == registr) {
             if (regWindow == null) {
+                registr.removeListener(this);
                 regWindow = new RegistrationWindow(this);
             }
             getMainWindow().addWindow(regWindow);
+            regWindow.addListener(new Window.CloseListener() {
+                public void windowClose(CloseEvent e) {
+                    addRegListener();
+                }
+            });
         }
+    }
+    
+    private void addRegListener() {
+        registr.addListener(this);
     }
     /**
      * Temporary method
