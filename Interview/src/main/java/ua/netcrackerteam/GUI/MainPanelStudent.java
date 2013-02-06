@@ -8,22 +8,9 @@ import com.vaadin.data.Container;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.data.validator.RegexpValidator;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Slider;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -144,7 +131,7 @@ public class MainPanelStudent extends MainPanel implements Button.ClickListener 
         contactType.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
         contactValue = new TextField("Значение");
         contactValue.setRequired(true);
-        contactValue.addValidator(new RegexpValidator("[a-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
+        contactValue.addValidator(new RegexpValidator("[а-яА-Яa-zA-Z0-9_. -]{3,25}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         contactList = new ArrayList<TextField>();
         okBut.addListener(new Button.ClickListener() {
