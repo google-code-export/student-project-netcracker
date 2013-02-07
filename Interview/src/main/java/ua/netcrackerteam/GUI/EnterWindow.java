@@ -30,7 +30,7 @@ class EnterWindow extends Window {
         loginForm.setHeight("110px");
         loginForm.setLoginButtonCaption("Войти");
         loginForm.setPasswordCaption("Пароль");
-        loginForm.setUsernameCaption("E-mail");
+        loginForm.setUsernameCaption("Логин");
         VerticalLayout layout = new VerticalLayout();
         layout.setWidth("100%");
         layout.setMargin(true);
