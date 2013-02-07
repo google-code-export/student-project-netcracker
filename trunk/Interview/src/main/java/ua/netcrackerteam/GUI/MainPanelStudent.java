@@ -30,7 +30,6 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
     private Button save;
     private Panel contacts;
     private Button anotherContactsBut;
-    private ArrayList<TextField> contactList;
     private TextField contactType;
     private TextField contactValue;
     private Window addContact;
@@ -40,13 +39,12 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
     private Button addPrLangBut;
     private Window addPrLangWindow;
     private TextField prLangName;
-    private ArrayList<Slider> programLanguages;
     private GridLayout glayoutPrLang;
     private GridLayout glayoutKnow;
     private Button addKnowlegeBut;
     private Window addKnowlegeWindow;
     private TextField knowlName;
-    private ArrayList<Slider> knowlegesList;
+    private ButtonsListener buttonsListener = new ButtonsListener();
     
     private ComboBox universities;
     private ComboBox faculties;
@@ -81,6 +79,9 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
     private TextField anotherAdvert;
     private TextArea whyYou;
     private TextArea moreInfo;
+    private TextField anotherContact;
+    private ArrayList<Slider> programLangList = new ArrayList<Slider>();;
+    private ArrayList<Slider> knowlegesList = new ArrayList<Slider>();;
     
     public MainPanelStudent(HeaderLayout hlayout) {
         super(hlayout);
@@ -122,11 +123,7 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         save = new Button("Сохранить");
         save.setRequired(true);
         save.setWidth("200");
-        save.addListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                buttonSaveClick(event);
-            }
-        });
+        save.addListener(buttonsListener);
         blankLayout.addComponent(save);
         blankLayout.setComponentAlignment(save, Alignment.TOP_CENTER);
     }
@@ -138,20 +135,6 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
     private void fillSettingsLayout() {
     }
 
-    public void buttonSaveClick(ClickEvent event) {
-        Button source = event.getButton();
-        if (source == anotherContactsBut) { 
-            addNewContact();
-        } else if(source == addPrLangBut) {
-            addProgrammingLanguage();
-        } else if (source == addKnowlegeBut) {
-            addKnowlege();
-        } else if(source == save) {
-            
-            saveBlank();
-        }
-    }
-    
     private void addNewContact() {
         addContact = new Window("Добавить контакт");
         addContact.setModal(true);
@@ -165,19 +148,17 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         layout.setWidth("100%");
         contactType = new TextField("Тип");
         contactType.setRequired(true);
-        contactType.addValidator(new RegexpValidator("[[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        contactType.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         contactValue = new TextField("Значение");
         contactValue.setRequired(true);
         contactValue.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
-        contactList = new ArrayList<TextField>();
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 if(contactType.isValid() && contactValue.isValid()) {
-                    TextField newTextField = new TextField((String)contactType.getValue(),(String)contactValue.getValue());
-                    newTextField.setWidth("200");
-                    contactList.add(newTextField);
-                    contacts.addComponent(contactList.get(contactList.size()-1));
+                    anotherContact = new TextField((String)contactType.getValue(),(String)contactValue.getValue());
+                    anotherContact.setWidth("200");
+                    contacts.addComponent(anotherContact);
                     getWindow().removeWindow(addContact);
                 }
             }
@@ -205,14 +186,13 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         prLangName.setRequired(true);
         prLangName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
-        programLanguages = new ArrayList<Slider>();
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 if(prLangName.isValid()) {
                     Slider newSlider = new Slider((String)prLangName.getValue());
                     sliderConfig(newSlider);
-                    programLanguages.add(newSlider);
-                    glayoutPrLang.addComponent(programLanguages.get(programLanguages.size()-1));
+                    programLangList.add(newSlider);
+                    glayoutPrLang.addComponent(programLangList.get(programLangList.size()-1));
                     getWindow().removeWindow(addPrLangWindow);
                 }
             }
@@ -245,7 +225,6 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         knowlName.setRequired(true);
         knowlName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
-        knowlegesList = new ArrayList<Slider>();
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 if(knowlName.isValid()) {
@@ -350,7 +329,7 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         telephone.setRequired(true);
         telephone.addListener(this);
         anotherContactsBut = new Button("Добавить другие");
-        anotherContactsBut.addListener(this);
+        anotherContactsBut.addListener(buttonsListener);
         contacts.addComponent(email1);
         contacts.addComponent(email2);
         contacts.addComponent(telephone);
@@ -414,7 +393,7 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         sliderConfig(sliderJava);
         glayoutPrLang.addComponent(sliderJava);
         addPrLangBut = new Button("Добавить язык");
-        addPrLangBut.addListener(this);
+        addPrLangBut.addListener(buttonsListener);
         addPrLangBut.setWidth("200");
         vlayout.addComponent(addPrLangBut);
 
@@ -445,7 +424,7 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
             sliderConfig(c);
         }
         addKnowlegeBut = new Button("Другие разделы");
-        addKnowlegeBut.addListener(this);
+        addKnowlegeBut.addListener(buttonsListener);
         addKnowlegeBut.setWidth("200");
         vlayout.addComponent(addKnowlegeBut);
         expirience = new TextArea("Если у тебя уже есть опыт работы и/или выполненные учебные проекты, опиши их: ");
@@ -557,4 +536,37 @@ public class MainPanelStudent extends MainPanel implements FieldEvents.BlurListe
         return null;
     }
 
+    class ButtonsListener implements Button.ClickListener {
+
+        public void buttonClick(ClickEvent event) {
+            Button source = event.getButton();
+                if (source == anotherContactsBut) { 
+                    if(anotherContact == null) {
+                        addNewContact();
+                    }
+                    else {
+                        getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество контактов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
+                    }
+                } else if(source == addPrLangBut) {
+                    if(programLangList == null || programLangList.size()<3) {
+                        addProgrammingLanguage();
+                    }
+                    else {
+                        getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество языков.",Window.Notification.TYPE_TRAY_NOTIFICATION));
+                    }                    
+                } else if (source == addKnowlegeBut) {
+                    if(knowlegesList == null || knowlegesList.size()<3) {
+                        addKnowlege();
+                    }
+                    else {
+                        getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество разделов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
+                    }  
+                } else if(source == save) {
+                    saveBlank();
+                }
+        }
+        
+    }
 }
+
+
