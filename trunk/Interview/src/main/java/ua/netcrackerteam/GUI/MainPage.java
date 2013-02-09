@@ -61,7 +61,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         registr.addListener(this);
         exit.addListener(this);
         hlayoutGuest = new HeaderLayout(enter, registr);
-        panel = new MainPanel(hlayoutGuest);
+        panel = new MainPanel(hlayoutGuest,this);
         layoutfull.addComponent(panel);
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
         getMainWindow().setContent(layoutfull);
@@ -115,7 +115,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private void changeModeAdmin(String username) {
         hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
-        panel = new MainPanelAdmin(hlayoutUser);
+        panel = new MainPanelAdmin(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
@@ -124,7 +124,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private void changeModeHR(String username) {
         hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
-        panel = new MainPanelHR(hlayoutUser);
+        panel = new MainPanelHR(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
@@ -133,7 +133,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private void changeModeStudent(String username) {
         hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
-        panel = new MainPanelStudent(hlayoutUser);
+        panel = new MainPanelStudent(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
@@ -142,7 +142,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private void changeModeInterviewer(String username) {
         hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
-        panel = new MainPanelInterviewer(hlayoutUser);
+        panel = new MainPanelInterviewer(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
@@ -150,7 +150,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
 
     private void changeModeGuest() {
         MainPanel oldPanel = panel;
-        panel = new MainPanel(hlayoutGuest);
+        panel = new MainPanel(hlayoutGuest,this);
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);

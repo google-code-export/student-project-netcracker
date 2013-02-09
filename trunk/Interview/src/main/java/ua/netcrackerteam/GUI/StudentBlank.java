@@ -13,6 +13,7 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.FileResource;
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Upload.FailedEvent;
@@ -50,9 +51,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private Window addKnowlegeWindow;
     private TextField knowlName;
     private ButtonsListener buttonsListener = new ButtonsListener();
+    private Upload photoUpload;
+    private File photoFile;
+    private MainPage mainPage;
     
     private ComboBox universities;
     private ComboBox faculties;
+    private ComboBox cathedras;
     private TextField firstName;
     private TextField middleName;
     private TextField lastName;
@@ -91,10 +96,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private InterestSelection mrSpec;
     private InterestSelection sale;
     private TextField anotherWorkType;
-    private Upload photoUpload;
     private Embedded photo;
-    private File photoFile;
-    
 
     public StudentBlank() {
         setMargin(true);
@@ -241,12 +243,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
   
     private void persInfoPanelFill() {
         persInfo.setWidth("100%");
-        VerticalLayout vlayout = (VerticalLayout)persInfo.getContent();
-        vlayout.setSpacing(true);
-        GridLayout glayout1 = new GridLayout(3,3);
-        persInfo.addComponent(glayout1);
+        GridLayout glayout1 = new GridLayout(3,5);
         glayout1.setSpacing(true);
-        glayout1.setWidth("700");
+        glayout1.setMargin(true);
+        persInfo.setContent(glayout1);
         firstName = new TextField("Имя");
         firstName.addListener(this);
         firstName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
@@ -292,17 +292,33 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }
                 });
         faculties.setImmediate(true);
+        cathedras = new ComboBox("Кафедра", getCathedrasList());
+        cathedras.setRequired(true);
+        cathedras.addListener(this);
+        cathedras.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        cathedras.setNewItemsAllowed(true);
+                cathedras.setNullSelectionAllowed(false);
+                cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+                    public void addNewItem(String newItemCaption) {
+                        if (!cathedras.containsId(newItemCaption)) { 
+                            cathedras.addItem(newItemCaption);
+                            cathedras.setValue(newItemCaption);
+                        }
+                    }
+                });
+        cathedras.setImmediate(true);
         universityGradYear = new TextField("Год окончания");
         universityGradYear.setRequired(true);
         universityGradYear.addListener(this);
         universityGradYear.addValidator(new IntegerValidator("Ошибка! Введите год."));
-        glayout1.addComponent(lastName);
-        glayout1.addComponent(firstName);
-        glayout1.addComponent(middleName);
-        glayout1.addComponent(universities);
-        glayout1.addComponent(universityYear);
-        glayout1.addComponent(faculties);
-        glayout1.addComponent(universityGradYear);
+        glayout1.addComponent(lastName,0,0);
+        glayout1.addComponent(firstName,1,0);
+        glayout1.addComponent(middleName,0,1);
+        glayout1.addComponent(universities,1,1);
+        glayout1.addComponent(universityYear,0,2);
+        glayout1.addComponent(faculties,1,2);
+        glayout1.addComponent(cathedras,0,3);
+        glayout1.addComponent(universityGradYear,1,3);
         Iterator<Component> i = glayout1.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
@@ -312,7 +328,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
          photoUpload.setButtonCaption("Загрузка");
          photoUpload.addListener((Upload.SucceededListener) this);
          photoUpload.addListener((Upload.FailedListener) this);
-         persInfo.addComponent(photoUpload);
+         glayout1.addComponent(photoUpload,0,4,2,4);
     }
 
     private void contactsPanelFill() {
@@ -552,6 +568,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         return null;
     }
     
+    private Container getCathedrasList(){
+        return null;
+    }
+    
     /**
      * Implement this!
      */
@@ -564,7 +584,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         FileResource imageResource = new FileResource(photoFile, getApplication());
         if(photo == null) {
             photo = new Embedded("", imageResource);
-            persInfo.addComponent(photo);
+            GridLayout gl = (GridLayout) persInfo.getContent();
+            gl.addComponent(photo,2,0,2,3);
+            gl.setComponentAlignment(photo, Alignment.MIDDLE_CENTER);
         }
         else {
             Embedded oldPhoto = photo;
@@ -580,7 +602,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
 
     public OutputStream receiveUpload(String filename, String mimeType) {
         FileOutputStream fos = null; 
-        photoFile = new File(filename);
+        WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
+        photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+filename) );
         try {
             fos = new FileOutputStream(photoFile);
             checkPhotoFile();

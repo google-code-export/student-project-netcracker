@@ -15,8 +15,8 @@ public class MainPanelAdmin extends MainPanel {
     private VerticalLayout interSettingsLo;
     private VerticalLayout settingsLo;
     
-    public MainPanelAdmin(HeaderLayout hlayout) {
-        super(hlayout);
+    public MainPanelAdmin(HeaderLayout hlayout,MainPage mainPage) {
+        super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         hrSettingsLo = new VerticalLayout();
         fillHRSetLayout();

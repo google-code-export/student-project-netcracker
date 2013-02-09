@@ -4,9 +4,11 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -21,7 +23,7 @@ public class MainPanel extends Panel {
     protected TabSheet tabSheet;
     
 
-    public MainPanel(HeaderLayout hlayout) {
+    public MainPanel(HeaderLayout hlayout, MainPage mainPage) {
         setStyleName(Reindeer.PANEL_LIGHT);
         setWidth("800px");
         layout = (VerticalLayout) getContent();
@@ -32,7 +34,9 @@ public class MainPanel extends Panel {
         String s = "";
         DataInputStream in;
         try {
-            in = new DataInputStream(new FileInputStream("test_text.txt"));
+            WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
+            File file = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/main_page_text.txt") );
+            in = new DataInputStream(new FileInputStream(file));
             byte[] array = new byte[in.available()];
             in.read(array);
             s = new String(array);
