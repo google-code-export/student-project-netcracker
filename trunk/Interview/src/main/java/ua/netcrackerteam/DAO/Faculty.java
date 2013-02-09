@@ -24,20 +24,20 @@ public class Faculty implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "faculty_seq_gen")
     @SequenceGenerator(name = "faculty_seq_gen", sequenceName = "faculty_seq")
     @Column(name = "ID_FACULTY")
-    private Long idFaculty;
+    private int idFaculty;
     
     @Column(name = "NAME")
     private String name;
     
-    @ManyToOne
-    @JoinColumn(name="ID_INSTITUTE")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_INSTITUTE")
     private Institute institute;
 
-    public Long getIdFaculty() {
+    public int getIdFaculty() {
         return idFaculty;
     }
 
-    public void setIdFaculty(Long idFaculty) {
+    public void setIdFaculty(int idFaculty) {
         this.idFaculty = idFaculty;
     }
 
@@ -60,22 +60,22 @@ public class Faculty implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Faculty)) return false;
 
         Faculty faculty = (Faculty) o;
 
-        if (idFaculty != null ? !idFaculty.equals(faculty.idFaculty) : faculty.idFaculty != null) return false;
-        if (institute != null ? !institute.equals(faculty.institute) : faculty.institute != null) return false;
-        if (name != null ? !name.equals(faculty.name) : faculty.name != null) return false;
+        if (idFaculty != faculty.idFaculty) return false;
+        if (!institute.equals(faculty.institute)) return false;
+        if (!name.equals(faculty.name)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idFaculty != null ? idFaculty.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (institute != null ? institute.hashCode() : 0);
+        int result = idFaculty;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + institute.hashCode();
         return result;
     }
 }

@@ -20,7 +20,7 @@ public class Institute implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "institute_seq_gen")
     @SequenceGenerator(name = "institute_seq_gen", sequenceName = "institute_seq")
     @Column(name="ID_INSTITUTE")
-    private Long instituteId;
+    private Integer instituteId;
     
     @Column(name="NAME")
     private String name;
@@ -28,11 +28,11 @@ public class Institute implements Serializable {
     @OneToMany(mappedBy="idInstitute", fetch = FetchType.EAGER)
     private Set<Form> forms;
 
-    public Long getInstituteId() {
+    public Integer getInstituteId() {
         return instituteId;
     }
 
-    public void setInstituteId(Long instituteId) {
+    public void setInstituteId(Integer instituteId) {
         this.instituteId = instituteId;
     }
 

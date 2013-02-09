@@ -27,7 +27,7 @@ public class Branch implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "branch_seq_gen")
     @SequenceGenerator(name = "branch_seq_gen", sequenceName = "branch_seq")
     @Column(name="ID_BRANCH")
-    private Long idBranch;
+    private int idBranch;
 
     @Column(name= "NAME")
     private String name;
@@ -35,11 +35,11 @@ public class Branch implements Serializable {
     @Column(name="DESCRIPTION")
     private String description;
 
-    public Long getIdBranch() {
+    public int getIdBranch() {
         return idBranch;
     }
 
-    public void setIdBranch(Long idBranch) {
+    public void setIdBranch(int idBranch) {
         this.idBranch = idBranch;
     }
 
@@ -59,6 +59,27 @@ public class Branch implements Serializable {
         this.description = description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Branch)) return false;
+
+        Branch branch = (Branch) o;
+
+        if (idBranch != branch.idBranch) return false;
+        if (!description.equals(branch.description)) return false;
+        if (!name.equals(branch.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idBranch;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
+    }
 }
 
 

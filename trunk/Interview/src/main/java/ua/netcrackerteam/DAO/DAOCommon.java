@@ -29,7 +29,11 @@ public class DAOCommon {
             userList.setPassword(userPassword);
             userList.setEmail(userEmail);
             userList.setActive(active);
-            userList.setIdUserCategory(idUserCategory);
+            //Filipenko
+            //---------
+            //userList.setIdUserCategory(idUserCategory);
+            //+++++++++
+            userList.setIdUserCategory(getUserCategoeyByID(idUserCategory));
             session.save(userList);
             transaction.commit();
         } catch (Exception e) {
@@ -82,4 +86,27 @@ public class DAOCommon {
         }
         return listOfForms;
     }
+
+    public static UserCategory getUserCategoeyByID(int currUserCategoryID) throws SQLException {
+        Session session = null;
+        org.hibernate.Query re = null;
+        List listOfCategories = null;
+        UserCategory currUserCategory = new UserCategory();
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserCategory where idUSerCategory = '" + currUserCategoryID + "'");
+            listOfCategories = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        currUserCategory = (UserCategory) listOfCategories.get(0);
+        return currUserCategory;
+    }
+
 }

@@ -21,8 +21,8 @@ public static void main(String[] args) throws SQLException {
         System.out.println(form.getFirstName());
         
         Form form1 = new Form();
-        form1.setIdForm(13L);
-        form1.setFirstName("Иван");
+        //form1.setIdForm(13L);
+        /*form1.setFirstName("Иван");
         form1.setLastName("Царевич");
         form1.setMiddleName("Дурак");
         form1.setExecProject("Сайт неткрекера");
@@ -45,7 +45,7 @@ public static void main(String[] args) throws SQLException {
         form1.setIdInstitute(1L);
         form1.setIdSchool(1L);
         form1.setIdUser(2L);
-        form1.setIdInterview(1L);
+        form1.setIdInterview(1L)*/;
         HibernateFactory.getInstance().getStudentDAO().addForm(form1);
         
         form1.setFirstName("Йосип");

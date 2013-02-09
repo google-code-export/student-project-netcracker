@@ -20,22 +20,24 @@ public class Knowledge {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "knowledge_seq_gen")
     @SequenceGenerator(name = "knowledge_seq_gen", sequenceName = "knowledge_seq")
     @Column(name= "ID_KNOWLEDGE")
-    private Long idKnowledge;
+    private int idKnowledge;
 
     @Column(name= "SCORE")
     private Double score;
 
-    @Column(name= "ID_FORM")
-    private Long idForm;
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_FORM")
+    private Form idForm;
 
-    @Column(name= "ID_BRANCH")
-    private Long idBranch;
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_BRANCH")
+    private Branch idBranch;
 
-    public Long getIdKnowledge() {
+    public int getIdKnowledge() {
         return idKnowledge;
     }
 
-    public void setIdKnowledge(Long idKnowledge) {
+    public void setIdKnowledge(int idKnowledge) {
         this.idKnowledge = idKnowledge;
     }
 
@@ -47,19 +49,43 @@ public class Knowledge {
         this.score = score;
     }
 
-    public Long getIdForm() {
+    public Form getIdForm() {
         return idForm;
     }
 
-    public void setIdForm(Long idForm) {
+    public void setIdForm(Form idForm) {
         this.idForm = idForm;
     }
 
-    public Long getIdBranch() {
+    public Branch getIdBranch() {
         return idBranch;
     }
 
-    public void setIdBranch(Long idBranch) {
+    public void setIdBranch(Branch idBranch) {
         this.idBranch = idBranch;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Knowledge)) return false;
+
+        Knowledge knowledge = (Knowledge) o;
+
+        if (idKnowledge != knowledge.idKnowledge) return false;
+        if (!idBranch.equals(knowledge.idBranch)) return false;
+        if (!idForm.equals(knowledge.idForm)) return false;
+        if (!score.equals(knowledge.score)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idKnowledge;
+        result = 31 * result + score.hashCode();
+        result = 31 * result + idForm.hashCode();
+        result = 31 * result + idBranch.hashCode();
+        return result;
     }
 }

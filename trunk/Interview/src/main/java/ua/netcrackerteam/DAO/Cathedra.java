@@ -19,20 +19,20 @@ public class Cathedra implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "cathedra_seq_gen")
     @SequenceGenerator(name = "cathedra_seq_gen", sequenceName = "cathedra_seq")
     @Column(name="ID_CATHEDRA")
-    private Long idCathedra;
+    private int idCathedra;
     
     @Column(name="NAME")
     private String name;
     
-    @ManyToOne
-    @JoinColumn(name="ID_FACULTY")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_FACULTY")
     private Faculty faculty;
 
-    public Long getIdCathedra() {
+    public int getIdCathedra() {
         return idCathedra;
     }
 
-    public void setIdCathedra(Long idCathedra) {
+    public void setIdCathedra(int idCathedra) {
         this.idCathedra = idCathedra;
     }
 
@@ -55,22 +55,22 @@ public class Cathedra implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Cathedra)) return false;
 
         Cathedra cathedra = (Cathedra) o;
 
-        if (faculty != null ? !faculty.equals(cathedra.faculty) : cathedra.faculty != null) return false;
-        if (idCathedra != null ? !idCathedra.equals(cathedra.idCathedra) : cathedra.idCathedra != null) return false;
-        if (name != null ? !name.equals(cathedra.name) : cathedra.name != null) return false;
+        if (idCathedra != cathedra.idCathedra) return false;
+        if (!faculty.equals(cathedra.faculty)) return false;
+        if (!name.equals(cathedra.name)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idCathedra != null ? idCathedra.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (faculty != null ? faculty.hashCode() : 0);
+        int result = idCathedra;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + faculty.hashCode();
         return result;
     }
 }

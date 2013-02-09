@@ -22,16 +22,16 @@ public class Status implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "status_seq_gen")
     @SequenceGenerator(name = "status_seq_gen", sequenceName = "status_seq")
     @Column(name= "ID_STATUS")
-    private Long idStatus;
+    private int idStatus;
 
     @Column(name= "NAME")
     private String name;
 
-    public Long getIdStatus() {
+    public int getIdStatus() {
         return idStatus;
     }
 
-    public void setIdStatus(Long idStatus) {
+    public void setIdStatus(int idStatus) {
         this.idStatus = idStatus;
     }
 
@@ -41,5 +41,25 @@ public class Status implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Status)) return false;
+
+        Status status = (Status) o;
+
+        if (idStatus != status.idStatus) return false;
+        if (!name.equals(status.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idStatus;
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }

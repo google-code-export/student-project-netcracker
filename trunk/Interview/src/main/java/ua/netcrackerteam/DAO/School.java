@@ -26,16 +26,16 @@ public class School implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "school_seq_gen")
     @SequenceGenerator(name = "school_seq_gen", sequenceName = "school_seq")
     @Column(name="ID_SCHOOL")
-    private Long idSchool;
+    private int idSchool;
     
     @Column(name="NAME")
     private String name;
 
-    public Long getIdSchool() {
+    public Integer getIdSchool() {
         return idSchool;
     }
 
-    public void setIdSchool(Long idSchool) {
+    public void setIdSchool(int idSchool) {
         this.idSchool = idSchool;
     }
 
@@ -50,11 +50,11 @@ public class School implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof School)) return false;
 
         School school = (School) o;
 
-        if (idSchool != null ? !idSchool.equals(school.idSchool) : school.idSchool != null) return false;
+        if (idSchool != school.idSchool) return false;
         if (name != null ? !name.equals(school.name) : school.name != null) return false;
 
         return true;
@@ -62,9 +62,8 @@ public class School implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = idSchool != null ? idSchool.hashCode() : 0;
+        int result = idSchool;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
-
 }

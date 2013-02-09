@@ -36,8 +36,9 @@ public class UserList implements Serializable {
     @Column(name= "ACTIVE")
     private String active;
 
-    @Column(name= "ID_USER_CATEGORY")
-    private int idUserCategory;
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_USER_CATEGORY")
+    private UserCategory idUserCategory;
 
     public int getIdUser() {
         return idUser;
@@ -79,11 +80,39 @@ public class UserList implements Serializable {
         this.active = active;
     }
 
-    public int getIdUserCategory() {
+    public UserCategory getIdUserCategory() {
         return idUserCategory;
     }
 
-    public void setIdUserCategory(int idUserCategory) {
+    public void setIdUserCategory(UserCategory idUserCategory) {
         this.idUserCategory = idUserCategory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserList)) return false;
+
+        UserList userList = (UserList) o;
+
+        if (idUser != userList.idUser) return false;
+        if (!active.equals(userList.active)) return false;
+        if (!email.equals(userList.email)) return false;
+        if (!idUserCategory.equals(userList.idUserCategory)) return false;
+        if (!password.equals(userList.password)) return false;
+        if (!userName.equals(userList.userName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idUser;
+        result = 31 * result + userName.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + active.hashCode();
+        result = 31 * result + idUserCategory.hashCode();
+        return result;
     }
 }
