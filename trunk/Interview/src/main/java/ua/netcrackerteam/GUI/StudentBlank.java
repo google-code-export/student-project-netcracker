@@ -12,9 +12,15 @@ import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
+import com.vaadin.terminal.FileResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Upload.FailedEvent;
+import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.themes.Reindeer;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -23,7 +29,9 @@ import java.util.List;
  *
  * @author akush_000
  */
-public class StudentBlank extends VerticalLayout implements FieldEvents.BlurListener{
+public class StudentBlank extends VerticalLayout implements FieldEvents.BlurListener, Upload.SucceededListener,
+                                   Upload.FailedListener,
+                                   Upload.Receiver {
     private Button save;
     private Panel contacts;
     private Button addAnotherContactsBut;
@@ -83,6 +91,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private InterestSelection mrSpec;
     private InterestSelection sale;
     private TextField anotherWorkType;
+    private Upload photoUpload;
+    private Embedded photo;
+    private File photoFile;
     
 
     public StudentBlank() {
@@ -230,10 +241,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
   
     private void persInfoPanelFill() {
         persInfo.setWidth("100%");
+        VerticalLayout vlayout = (VerticalLayout)persInfo.getContent();
+        vlayout.setSpacing(true);
         GridLayout glayout1 = new GridLayout(3,3);
-        glayout1.setMargin(true);
+        persInfo.addComponent(glayout1);
         glayout1.setSpacing(true);
-        persInfo.setContent(glayout1);
+        glayout1.setWidth("700");
         firstName = new TextField("Имя");
         firstName.addListener(this);
         firstName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
@@ -283,18 +296,23 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         universityGradYear.setRequired(true);
         universityGradYear.addListener(this);
         universityGradYear.addValidator(new IntegerValidator("Ошибка! Введите год."));
-        persInfo.addComponent(lastName);
-        persInfo.addComponent(firstName);
-        persInfo.addComponent(middleName);
-        persInfo.addComponent(universities);
-        persInfo.addComponent(universityYear);
-        persInfo.addComponent(faculties);
-        persInfo.addComponent(universityGradYear);
-        Iterator<Component> i = persInfo.getComponentIterator();
+        glayout1.addComponent(lastName);
+        glayout1.addComponent(firstName);
+        glayout1.addComponent(middleName);
+        glayout1.addComponent(universities);
+        glayout1.addComponent(universityYear);
+        glayout1.addComponent(faculties);
+        glayout1.addComponent(universityGradYear);
+        Iterator<Component> i = glayout1.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
             c.setWidth("220");
         }
+         photoUpload = new Upload("Фото",this);
+         photoUpload.setButtonCaption("Загрузка");
+         photoUpload.addListener((Upload.SucceededListener) this);
+         photoUpload.addListener((Upload.FailedListener) this);
+         persInfo.addComponent(photoUpload);
     }
 
     private void contactsPanelFill() {
@@ -533,7 +551,45 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private Container getFacultiesList() {
         return null;
     }
+    
+    /**
+     * Implement this!
+     */
+    private void checkPhotoFile() {
+        
+    }
 
+    public void uploadSucceeded(SucceededEvent event) {
+        getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
+        FileResource imageResource = new FileResource(photoFile, getApplication());
+        if(photo == null) {
+            photo = new Embedded("", imageResource);
+            persInfo.addComponent(photo);
+        }
+        else {
+            Embedded oldPhoto = photo;
+            photo = new Embedded("", imageResource);
+            persInfo.replaceComponent(oldPhoto, photo);
+        }
+        
+    }
+
+    public void uploadFailed(FailedEvent event) {
+        getWindow().showNotification("Ошибка загрузки файла", Window.Notification.TYPE_TRAY_NOTIFICATION);
+    }
+
+    public OutputStream receiveUpload(String filename, String mimeType) {
+        FileOutputStream fos = null; 
+        photoFile = new File(filename);
+        try {
+            fos = new FileOutputStream(photoFile);
+            checkPhotoFile();
+        } catch (final java.io.FileNotFoundException e) {
+            getWindow().showNotification("Ошибка загрузки файла", Window.Notification.TYPE_TRAY_NOTIFICATION);
+        }
+        return fos; 
+    }
+ 
     private class ButtonsListener implements Button.ClickListener {
 
         public void buttonClick(ClickEvent event) {
