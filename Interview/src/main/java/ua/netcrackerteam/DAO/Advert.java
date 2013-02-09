@@ -19,21 +19,21 @@ public class Advert implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "advert_seq_gen")
     @SequenceGenerator(name = "advert_seq_gen", sequenceName = "advert_seq")
     @Column (name = "ID_ADVERT")
-    private Long idAdvert;
+    private int idAdvert;
     
     @OneToOne
     @JoinColumn(name="ID_FORM", nullable = true)
     private Form form;
     
-    @ManyToOne
-    @JoinColumn(name="ID_ADVERT_CATEGORY")       
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_ADVERT_CATEGORY")
     private AdvertCategory advertCategory;
 
-    public Long getIdAdvert() {
+    public int getIdAdvert() {
         return idAdvert;
     }
 
-    public void setIdAdvert(Long idAdvert) {
+    public void setIdAdvert(int idAdvert) {
         this.idAdvert = idAdvert;
     }
 
@@ -56,23 +56,22 @@ public class Advert implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Advert)) return false;
 
         Advert advert = (Advert) o;
 
-        if (advertCategory != null ? !advertCategory.equals(advert.advertCategory) : advert.advertCategory != null)
-            return false;
-        if (form != null ? !form.equals(advert.form) : advert.form != null) return false;
-        if (idAdvert != null ? !idAdvert.equals(advert.idAdvert) : advert.idAdvert != null) return false;
+        if (idAdvert != advert.idAdvert) return false;
+        if (!advertCategory.equals(advert.advertCategory)) return false;
+        if (!form.equals(advert.form)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idAdvert != null ? idAdvert.hashCode() : 0;
-        result = 31 * result + (form != null ? form.hashCode() : 0);
-        result = 31 * result + (advertCategory != null ? advertCategory.hashCode() : 0);
+        int result = idAdvert;
+        result = 31 * result + form.hashCode();
+        result = 31 * result + advertCategory.hashCode();
         return result;
     }
 }

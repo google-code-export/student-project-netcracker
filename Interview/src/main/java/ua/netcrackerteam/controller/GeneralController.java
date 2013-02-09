@@ -28,7 +28,11 @@ public class GeneralController {
                 userName = userList.getUserName();
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
-                    idUserCategory = userList.getIdUserCategory();
+                    //Filipenko
+                    //--------
+                    //idUserCategory = userList.getIdUserCategory();
+                    //++++++++
+                    idUserCategory = userList.getIdUserCategory().getIdUSerCategory();
                 }
             }
         } catch (SQLException e) {
@@ -51,7 +55,11 @@ public class GeneralController {
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
                     checkedUserIds.add(userList.getIdUser());
-                    checkedUserIds.add(userList.getIdUserCategory());
+                    //Filipenko
+                    //---------
+                    //checkedUserIds.add(userList.getIdUserCategory());
+                    //+++++++++
+                    checkedUserIds.add(userList.getIdUserCategory().getIdUSerCategory());
                 }
             }
         } catch (SQLException e) {

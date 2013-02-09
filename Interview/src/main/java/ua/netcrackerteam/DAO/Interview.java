@@ -23,7 +23,7 @@ public class Interview implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "interview_seq_gen")
     @SequenceGenerator(name = "interview_seq_gen", sequenceName = "interview_seq")
     @Column(name= "ID_INTERVIEW")
-    private Long idInterview;
+    private int idInterview;
 
     @Column(name= "START_DATE")
     private Date startDate;
@@ -34,11 +34,11 @@ public class Interview implements Serializable {
     @Column(name= "MAX_NUMBER")
     private Integer maxNumber;
 
-    public Long getIdInterview() {
+    public int getIdInterview() {
         return idInterview;
     }
 
-    public void setIdInterview(Long idInterview) {
+    public void setIdInterview(int idInterview) {
         this.idInterview = idInterview;
     }
 
@@ -64,5 +64,29 @@ public class Interview implements Serializable {
 
     public void setMaxNumber(Integer maxNumber) {
         this.maxNumber = maxNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Interview)) return false;
+
+        Interview interview = (Interview) o;
+
+        if (idInterview != interview.idInterview) return false;
+        if (!endDate.equals(interview.endDate)) return false;
+        if (!maxNumber.equals(interview.maxNumber)) return false;
+        if (!startDate.equals(interview.startDate)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = idInterview;
+        result = 31 * result + startDate.hashCode();
+        result = 31 * result + endDate.hashCode();
+        result = 31 * result + maxNumber.hashCode();
+        return result;
     }
 }

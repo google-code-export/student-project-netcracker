@@ -15,13 +15,13 @@ public class Contact implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "contact_seq_gen")
     @SequenceGenerator(name = "contact_seq_gen", sequenceName = "contact_seq")
     @Column(name= "ID_CONTACT")
-    private Long idContact;
+    private int idContact;
 
     @Column(name= "INFO")
     private String info;
 
-    @ManyToOne
-    @JoinColumn(name="ID_CONTACT_CATEGORY")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_CONTACT_CATEGORY")
     private ContactCategory contactCategory;    
 
     @ManyToOne
@@ -47,11 +47,11 @@ public class Contact implements Serializable {
     public Contact() {
     }
 
-    public Long getIdContact() {
+    public Integer getIdContact() {
         return idContact;
     }
 
-    public void setIdContact(Long idContact) {
+    public void setIdContact(int idContact) {
         this.idContact = idContact;
     }
 
@@ -66,20 +66,24 @@ public class Contact implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Contact)) return false;
 
-        Contact that = (Contact) o;
+        Contact contact = (Contact) o;
 
-        if (idContact != null ? !idContact.equals(that.idContact) : that.idContact != null) return false;
-        if (info != null ? !info.equals(that.info) : that.info != null) return false;
+        if (idContact != contact.idContact) return false;
+        if (!contactCategory.equals(contact.contactCategory)) return false;
+        if (!idForm.equals(contact.idForm)) return false;
+        if (!info.equals(contact.info)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idContact != null ? idContact.hashCode() : 0;
-        result = 31 * result + (info != null ? info.hashCode() : 0);
+        int result = idContact;
+        result = 31 * result + info.hashCode();
+        result = 31 * result + contactCategory.hashCode();
+        result = 31 * result + idForm.hashCode();
         return result;
     }
 

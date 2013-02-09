@@ -30,7 +30,7 @@ public class AdvertCategory implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "advert_category_seq_gen")
     @SequenceGenerator(name = "advert_category_seq_gen", sequenceName = "advert_category_seq")
     @Column (name = "ID_ADVERT_CATEGORY")
-    private Long idAdvertCategory;
+    private int idAdvertCategory;
     
     @Column(name="DESCRIPTION")
     private String description;
@@ -38,11 +38,11 @@ public class AdvertCategory implements Serializable {
     @OneToMany(mappedBy="advertCategory", fetch = FetchType.EAGER)
     private Set<Advert> adverts;
 
-    public Long getIdAdvertCategory() {
+    public int getIdAdvertCategory() {
         return idAdvertCategory;
     }
 
-    public void setIdAdvertCategory(Long idAdvertCategory) {
+    public void setIdAdvertCategory(Integer idAdvertCategory) {
         this.idAdvertCategory = idAdvertCategory;
     }
 
@@ -65,24 +65,22 @@ public class AdvertCategory implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof AdvertCategory)) return false;
 
         AdvertCategory that = (AdvertCategory) o;
 
+        if (idAdvertCategory != that.idAdvertCategory) return false;
         if (adverts != null ? !adverts.equals(that.adverts) : that.adverts != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (idAdvertCategory != null ? !idAdvertCategory.equals(that.idAdvertCategory) : that.idAdvertCategory != null)
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = idAdvertCategory != null ? idAdvertCategory.hashCode() : 0;
+        int result = idAdvertCategory;
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (adverts != null ? adverts.hashCode() : 0);
         return result;
     }
-
 }

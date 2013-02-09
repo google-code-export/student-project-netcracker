@@ -17,7 +17,7 @@ public class Form implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "form_seq_gen")
     @SequenceGenerator(name = "form_seq_gen", sequenceName = "form_seq")
     @Column(name= "ID_FORM")
-    private Long idForm;
+    private int idForm;
 
     @Column(name= "FIRST_NAME")
     private String firstName;
@@ -71,19 +71,19 @@ public class Form implements Serializable {
     private String photo;
 
     @Column(name= "ID_STATUS")
-    private Long idStatus;
+    private Status idStatus;
 
     @Column(name= "ID_INSTITUTE")
-    private Long idInstitute;
+    private Institute idInstitute;
 
     @Column(name= "ID_SCHOOL")
-    private Long idSchool;
+    private School idSchool;
 
     @Column(name= "ID_USER")
-    private Long idUser;
+    private UserList idUser;
 
     @Column(name= "ID_INTERVIEW")
-    private Long idInterview;
+    private Interview idInterview;
 
     //@Transient
     @OneToMany(mappedBy= "idForm", fetch = FetchType.EAGER )
@@ -100,11 +100,11 @@ public class Form implements Serializable {
         this.contacts = contacts;
     }
 
-    public Long getIdForm() {
+    public int getIdForm() {
         return idForm;
     }
 
-    public void setIdForm(Long idForm) {
+    public void setIdForm(Integer idForm) {
         this.idForm = idForm;
     }
 
@@ -244,66 +244,64 @@ public class Form implements Serializable {
         this.photo = photo;
     }
 
-    public Long getIdStatus() {
+    public Status getIdStatus() {
         return idStatus;
     }
 
-    public void setIdStatus(Long idStatus) {
+    public void setIdStatus(Status idStatus) {
         this.idStatus = idStatus;
     }
 
-    public Long getIdInstitute() {
+    public Institute getIdInstitute() {
         return idInstitute;
     }
 
-    public void setIdInstitute(Long idInstitute) {
+    public void setIdInstitute(Institute idInstitute) {
         this.idInstitute = idInstitute;
     }
 
-    public Long getIdSchool() {
+    public School getIdSchool() {
         return idSchool;
     }
 
-    public void setIdSchool(Long idSchool) {
+    public void setIdSchool(School idSchool) {
         this.idSchool = idSchool;
     }
 
-    public Long getIdUser() {
+    public UserList getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setIdUser(UserList idUser) {
         this.idUser = idUser;
     }
 
-    public Long getIdInterview() {
+    public Interview getIdInterview() {
         return idInterview;
     }
 
-    public void setIdInterview(Long idInterview) {
+    public void setIdInterview(Interview idInterview) {
         this.idInterview = idInterview;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Form)) return false;
 
         Form form = (Form) o;
 
+        if (idForm != form.idForm) return false;
         if (avgLast != null ? !avgLast.equals(form.avgLast) : form.avgLast != null) return false;
         if (avgScore != null ? !avgScore.equals(form.avgScore) : form.avgScore != null) return false;
-        if (execProject != null ? !execProject.equals(form.execProject) : form.execProject != null)
-            return false;
+        if (contacts != null ? !contacts.equals(form.contacts) : form.contacts != null) return false;
+        if (execProject != null ? !execProject.equals(form.execProject) : form.execProject != null) return false;
         if (extraInfo != null ? !extraInfo.equals(form.extraInfo) : form.extraInfo != null) return false;
         if (extraKnowledge != null ? !extraKnowledge.equals(form.extraKnowledge) : form.extraKnowledge != null)
             return false;
         if (firstName != null ? !firstName.equals(form.firstName) : form.firstName != null) return false;
-        if (idForm != null ? !idForm.equals(form.idForm) : form.idForm != null) return false;
-        if (idInstitute != null ? !idInstitute.equals(form.idInstitute) : form.idInstitute != null)
-            return false;
-        if (idInterview != null ? !idInterview.equals(form.idInterview) : form.idInterview != null)
-            return false;
+        if (idInstitute != null ? !idInstitute.equals(form.idInstitute) : form.idInstitute != null) return false;
+        if (idInterview != null ? !idInterview.equals(form.idInterview) : form.idInterview != null) return false;
         if (idSchool != null ? !idSchool.equals(form.idSchool) : form.idSchool != null) return false;
         if (idStatus != null ? !idStatus.equals(form.idStatus) : form.idStatus != null) return false;
         if (idUser != null ? !idUser.equals(form.idUser) : form.idUser != null) return false;
@@ -317,8 +315,7 @@ public class Form implements Serializable {
             return false;
         if (interestTelecom != null ? !interestTelecom.equals(form.interestTelecom) : form.interestTelecom != null)
             return false;
-        if (interestWork != null ? !interestWork.equals(form.interestWork) : form.interestWork != null)
-            return false;
+        if (interestWork != null ? !interestWork.equals(form.interestWork) : form.interestWork != null) return false;
         if (lastName != null ? !lastName.equals(form.lastName) : form.lastName != null) return false;
         if (middleName != null ? !middleName.equals(form.middleName) : form.middleName != null) return false;
         if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
@@ -331,7 +328,7 @@ public class Form implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = idForm != null ? idForm.hashCode() : 0;
+        int result = idForm;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
@@ -354,7 +351,7 @@ public class Form implements Serializable {
         result = 31 * result + (idSchool != null ? idSchool.hashCode() : 0);
         result = 31 * result + (idUser != null ? idUser.hashCode() : 0);
         result = 31 * result + (idInterview != null ? idInterview.hashCode() : 0);
+        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
     }
-
 }
