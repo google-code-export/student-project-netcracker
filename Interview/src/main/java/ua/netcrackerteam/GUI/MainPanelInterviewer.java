@@ -15,8 +15,8 @@ public class MainPanelInterviewer extends MainPanel{
     private VerticalLayout interviewsLo;
     private VerticalLayout settingsLo;
 
-    public MainPanelInterviewer(HeaderLayout hlayout) {
-        super(hlayout);
+    public MainPanelInterviewer(HeaderLayout hlayout,MainPage mainPage) {
+        super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         interviewsLo = new VerticalLayout();
         fillInterviewsLayout();

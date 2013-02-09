@@ -18,8 +18,8 @@ public class MainPanelStudent extends MainPanel {
     private VerticalLayout settingsLo;
     
     
-    public MainPanelStudent(HeaderLayout hlayout) {
-        super(hlayout);
+    public MainPanelStudent(HeaderLayout hlayout,MainPage mainPage) {
+        super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         blankLayout = new StudentBlank();
         tabSheet.addTab(blankLayout,"Анкета");

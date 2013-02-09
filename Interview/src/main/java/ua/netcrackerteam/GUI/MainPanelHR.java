@@ -4,11 +4,13 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -24,8 +26,8 @@ public class MainPanelHR extends MainPanel implements Button.ClickListener{
     private Button edit;
     private RichTextArea editor = new RichTextArea();
     
-    public MainPanelHR(HeaderLayout hlayout) {
-        super(hlayout);
+    public MainPanelHR(HeaderLayout hlayout, MainPage mainPage) {
+        super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         edit = new Button("Редактировать");
         mainPageLo.addComponent(edit);
@@ -59,7 +61,9 @@ public class MainPanelHR extends MainPanel implements Button.ClickListener{
                 mainPageLo.replaceComponent(editor, richText);
                 edit.setCaption("Редактировать");
                 try {
-                    FileOutputStream out = new FileOutputStream("test_text.txt");
+                    WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
+                    File file = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/main_page_text.txt") );
+                    FileOutputStream out = new FileOutputStream(file);
                     out.write(s.getBytes());
                     out.close();
                 } catch (IOException ex) {
