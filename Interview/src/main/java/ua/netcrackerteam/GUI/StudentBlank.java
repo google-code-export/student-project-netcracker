@@ -5,6 +5,8 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.Validator;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
@@ -53,7 +55,14 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private ButtonsListener buttonsListener = new ButtonsListener();
     private Upload photoUpload;
     private File photoFile;
-    private MainPage mainPage;
+    private GridLayout glayoutEng;
+    private GridLayout glayoutWorkType;
+    private GridLayout glayoutWorkSphere;
+    private GridLayout glayoutWhatInterest;
+    private final OptionGroup agreement;
+    private final Label agreementText;
+    private Button edit;
+    private Button print;
     
     private ComboBox universities;
     private ComboBox faculties;
@@ -97,6 +106,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private InterestSelection sale;
     private TextField anotherWorkType;
     private Embedded photo;
+    
 
     public StudentBlank() {
         setMargin(true);
@@ -114,21 +124,34 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         accomplishments = new Panel("Достоинства");
         addComponent(accomplishments);
         accomplishmentsPanelFill();
-        OptionGroup agreement = new OptionGroup();
+        agreement = new OptionGroup();
         agreement.addItem("Согласен с условиями соглашения: ");
         agreement.setMultiSelect(true);
         addComponent(agreement);
-        Label agreementText = new Label("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
+        agreementText = new Label("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
         agreementText.setWidth("750");
         addComponent(agreementText);
+        HorizontalLayout hlayout = new HorizontalLayout();
+        hlayout.setWidth("100%");
+        hlayout.setSpacing(true);
+        addComponent(hlayout);
         save = new Button("Сохранить");
-        save.setRequired(true);
         save.setWidth("200");
         save.addListener(buttonsListener);
-        addComponent(save);
-        setComponentAlignment(save, Alignment.TOP_CENTER);
-        
+        hlayout.addComponent(save);
+        edit = new Button("Редактировать");
+        edit.setVisible(false);
+        edit.setWidth("200");
+        edit.setVisible(false);
+        edit.addListener(buttonsListener);
+        print = new Button("Отправить PDF");
+        print.setVisible(false);
+        print.setWidth("200");
+        print.addListener(buttonsListener);
+        hlayout.addComponent(edit);
+        hlayout.addComponent(print);
     }
+    
     private void addNewContact() {
         addContact = new Window("Добавить контакт");
         addContact.setModal(true);
@@ -282,7 +305,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         faculties.addListener(this);
         faculties.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         faculties.setNewItemsAllowed(true);
-                faculties.setNullSelectionAllowed(false);
+        faculties.setNullSelectionAllowed(false);
                 faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
                     public void addNewItem(String newItemCaption) {
                         if (!faculties.containsId(newItemCaption)) { 
@@ -297,7 +320,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         cathedras.addListener(this);
         cathedras.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         cathedras.setNewItemsAllowed(true);
-                cathedras.setNullSelectionAllowed(false);
+        cathedras.setNullSelectionAllowed(false);
                 cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
                     public void addNewItem(String newItemCaption) {
                         if (!cathedras.containsId(newItemCaption)) { 
@@ -366,43 +389,43 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         vlayout.setSpacing(true);
         vlayout.setWidth("100%");
         vlayout.setMargin(true);
-        GridLayout glayout1 = new GridLayout(3,1);
-        glayout1.setSpacing(true);
+        glayoutWhatInterest = new GridLayout(3,1);
+        glayoutWhatInterest.setSpacing(true);
         interests.setContent(vlayout);
         Label whatInterest = new Label("Что заинтересовало:");
         vlayout.addComponent(whatInterest);
-        vlayout.addComponent(glayout1);
+        vlayout.addComponent(glayoutWhatInterest);
         eduCenter = new InterestSelection("Учебный центр/стажировка:");
-        glayout1.addComponent(eduCenter);  
+        glayoutWhatInterest.addComponent(eduCenter);  
         workNC = new InterestSelection("Работа в компании NetCracker:");
-        glayout1.addComponent(workNC);
+        glayoutWhatInterest.addComponent(workNC);
         Label workSphere = new Label("Интересующая область деятельности:");
         vlayout.addComponent(workSphere);
-        GridLayout glayout2 = new GridLayout(3,1);
-        glayout2.setSpacing(true);
-        vlayout.addComponent(glayout2);
+        glayoutWorkSphere = new GridLayout(3,1);
+        glayoutWorkSphere.setSpacing(true);
+        vlayout.addComponent(glayoutWorkSphere);
         development = new InterestSelection("Разработка ПО:");
         anotherWorkSphere = new TextField("Другие: ");
         anotherWorkSphere.setWidth("250");
-        glayout2.addComponent(development);
-        glayout2.addComponent(anotherWorkSphere);
-        glayout2.setComponentAlignment(development, Alignment.BOTTOM_LEFT);
+        glayoutWorkSphere.addComponent(development);
+        glayoutWorkSphere.addComponent(anotherWorkSphere);
+        glayoutWorkSphere.setComponentAlignment(development, Alignment.BOTTOM_LEFT);
         Label whatWorkType = new Label("Тип работы:");
         vlayout.addComponent(whatWorkType);
-        GridLayout glayout3 = new GridLayout(2,3);
-        glayout3.setSpacing(true);
-        vlayout.addComponent(glayout3);
+        glayoutWorkType = new GridLayout(2,3);
+        glayoutWorkType.setSpacing(true);
+        vlayout.addComponent(glayoutWorkType);
         deepSpec = new InterestSelection("Глубокая специализация: ");
         variousWork = new InterestSelection("Разнообразная работа: ");
         mrSpec = new InterestSelection("Руководство специалистами: ");
         sale = new InterestSelection("Продажи");
-        glayout3.addComponent(deepSpec);
-        glayout3.addComponent(variousWork);
-        glayout3.addComponent(mrSpec);
-        glayout3.addComponent(sale);
+        glayoutWorkType.addComponent(deepSpec);
+        glayoutWorkType.addComponent(variousWork);
+        glayoutWorkType.addComponent(mrSpec);
+        glayoutWorkType.addComponent(sale);
         anotherWorkType = new TextField("Другие: ");
         anotherWorkType.setWidth("250");
-        glayout3.addComponent(anotherWorkType);
+        glayoutWorkType.addComponent(anotherWorkType);
     }
 
     private void accomplishmentsPanelFill() {
@@ -469,7 +492,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         vlayout.addComponent(expirience);
         Label english = new Label("Уровень английского языка (от 1 = elementary до 5 = advanced): ");
         vlayout.addComponent(english);
-        GridLayout glayoutEng = new GridLayout(3,1);
+        glayoutEng = new GridLayout(3,1);
         vlayout.addComponent(glayoutEng);
         glayoutEng.setSpacing(true);
         reading = new Slider("Чтение");
@@ -555,11 +578,79 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         };
         return v;
     }
+    
+    private void checkAllValid() {
+            
+    }
 
-    private void saveBlank() {
-        
+    private void setEditable(boolean editable) {
+        Iterator<Component> i = persInfo.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            if (c instanceof Upload) {
+                c.setVisible(editable);
+            }
+            else {
+                c.setReadOnly(!editable);
+            }
+        }
+        i = contacts.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            if (c instanceof Button) {
+                c.setVisible(editable);
+            }
+            else {
+                c.setReadOnly(!editable);
+            }
+        }
+        i = glayoutWhatInterest.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(!editable);
+        }
+        i = glayoutWorkSphere.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(!editable);
+        }
+        i = glayoutWorkType.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(!editable);
+        }
+        i = accomplishments.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            if (c instanceof Button) {
+                c.setVisible(editable);
+            } else {
+                c.setReadOnly(!editable);
+            }
+        }
+        i = glayoutPrLang.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(!editable);
+        }  
+        i = glayoutKnow.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(!editable);
+        } 
+        i = glayoutEng.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(!editable);
+        }
+        agreement.setVisible(editable);
+        agreementText.setVisible(editable);
+        save.setVisible(editable);
+        edit.setVisible(!editable);
+        print.setVisible(!editable);
     }
     
+        
     private Container getUniversityList() {
         return null;
     }
@@ -578,6 +669,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private void checkPhotoFile() {
         
     }
+    
+    /**
+     * Implement this!
+     */
+    private void sendBlankPDFToEmail() {
+
+    }
 
     public void uploadSucceeded(SucceededEvent event) {
         getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
@@ -586,7 +684,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             photo = new Embedded("", imageResource);
             GridLayout gl = (GridLayout) persInfo.getContent();
             gl.addComponent(photo,2,0,2,3);
-            gl.setComponentAlignment(photo, Alignment.MIDDLE_CENTER);
+            gl.setComponentAlignment(photo, Alignment.TOP_CENTER);
         }
         else {
             Embedded oldPhoto = photo;
@@ -639,9 +737,18 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество разделов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
                     }  
                 } else if(source == save) {
-                    saveBlank();
+                    checkAllValid();
+                    setEditable(false);
+                } else if(source == edit) {
+                    setEditable(true);
+                } else if(source == print) {
+                    sendBlankPDFToEmail();
                 }
         }
+
+        
+
+        
         
     }
     
@@ -684,6 +791,24 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         
         public String getValue() {
             return select;
+        }
+        
+        @Override
+        public void setReadOnly(boolean readOnly) {
+            for(Button b : but) {
+                if (b.getCaption().equals(select)) {
+                    b.setEnabled(readOnly);
+                    if(readOnly) {
+                        b.removeListener(this);
+                    } else {
+                        b.addListener(this);
+                    }
+                    b.setDisableOnClick(!readOnly);
+                } 
+                else {
+                    b.setEnabled(!readOnly);
+                }
+            }
         }
     }
     
