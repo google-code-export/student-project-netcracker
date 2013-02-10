@@ -5,6 +5,7 @@
 package ua.netcrackerteam.controller;
 
 import ua.netcrackerteam.DAO.Form;
+import ua.netcrackerteam.DAO.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 
 /**
@@ -13,9 +14,9 @@ import ua.netcrackerteam.configuration.HibernateFactory;
  */
 public class RegistrationToInterview {
     
-        public void updateRegistrationToInterview(String userName, Long idInterview) {
+        public void updateRegistrationToInterview(String userName, Interview idInterview) {
          
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUseLogin(userName);       
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserLogin(userName);       
         form.setIdInterview(idInterview);
         HibernateFactory.getInstance().getStudentDAO().updateForm(form);       
              
