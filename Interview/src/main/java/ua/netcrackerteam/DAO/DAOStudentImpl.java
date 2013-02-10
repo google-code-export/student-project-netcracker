@@ -117,7 +117,9 @@ public static void main(String[] args) throws SQLException {
      */
 
     public Form getFormByUserLogin(String userName) {
-         Session session = null;
+        
+        //-----------------in test------------------
+        Session session = null;
         Query query;        
         Form form = null;
         try {
