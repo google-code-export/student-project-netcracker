@@ -70,19 +70,24 @@ public class Form implements Serializable {
     @Column(name= "PHOTO")
     private String photo;
 
-    @Column(name= "ID_STATUS")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_STATUS")
     private Status idStatus;
 
-    @Column(name= "ID_INSTITUTE")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_INSTITUTE")
     private Institute idInstitute;
 
-    @Column(name= "ID_SCHOOL")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_SCHOOL")
     private School idSchool;
 
-    @Column(name= "ID_USER")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_USER")
     private UserList idUser;
 
-    @Column(name= "ID_INTERVIEW")
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_INTERVIEW")
     private Interview idInterview;
 
     //@Transient

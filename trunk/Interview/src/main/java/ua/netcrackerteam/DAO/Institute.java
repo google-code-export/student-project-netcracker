@@ -25,10 +25,7 @@ public class Institute implements Serializable {
     @Column(name="NAME")
     private String name;
     
-    @OneToMany(mappedBy="idInstitute", fetch = FetchType.EAGER)
-    private Set<Form> forms;
-
-    public Integer getInstituteId() {
+   public Integer getInstituteId() {
         return instituteId;
     }
 
@@ -44,22 +41,13 @@ public class Institute implements Serializable {
         this.name = name;
     }
 
-    public Set<Form> getForms() {
-        return forms;
-    }
-
-    public void setForms(Set<Form> forms) {
-        this.forms = forms;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Institute)) return false;
 
         Institute institute = (Institute) o;
 
-        if (forms != null ? !forms.equals(institute.forms) : institute.forms != null) return false;
         if (instituteId != null ? !instituteId.equals(institute.instituteId) : institute.instituteId != null)
             return false;
         if (name != null ? !name.equals(institute.name) : institute.name != null) return false;
@@ -71,7 +59,6 @@ public class Institute implements Serializable {
     public int hashCode() {
         int result = instituteId != null ? instituteId.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (forms != null ? forms.hashCode() : 0);
         return result;
     }
 }
