@@ -116,6 +116,28 @@ public static void main(String[] args) throws SQLException {
         Temp method for get user list from DB. In future this method will be move to another entity.
      */
 
+    public Form getFormByUserLogin(String userName) {
+         Session session = null;
+        Query query;        
+        Form form = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from form, user_list "
+                                        + "where form.id_user = user_list.id_user and"
+                                        + "user_list.user_name = " + userName);
+            form = (Form) query.uniqueResult();           
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return form;       
+    }
+
 }
 
 

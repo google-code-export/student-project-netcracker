@@ -7,6 +7,7 @@ package ua.netcrackerteam.DAO;
  */
 public interface DAOStudent {
     public Form getFormByUserId(Long idForm);
+    public Form getFormByUserLogin(String userName);
     public void addForm(Form form);
     public void updateForm(Form form);
     
