@@ -21,7 +21,7 @@ public class ContactCategory implements Serializable {
     @Column(name= "CATEGORY")
     private String category;
 
-    @OneToMany(mappedBy= "contactCategory", fetch = FetchType.EAGER )
+    /*@OneToMany(mappedBy= "contactCategory", fetch = FetchType.EAGER )
     private Set<Contact> contacts;      
 
     public Set<Contact> getContacts() {
@@ -30,7 +30,7 @@ public class ContactCategory implements Serializable {
 
     public void setContacts(Set<Contact> contacts) {
         this.contacts = contacts;
-    }
+    }*/
 
     public ContactCategory() {
     }
@@ -60,7 +60,7 @@ public class ContactCategory implements Serializable {
 
         if (idContactCategory != that.idContactCategory) return false;
         if (!category.equals(that.category)) return false;
-        if (!contacts.equals(that.contacts)) return false;
+
 
         return true;
     }
@@ -69,7 +69,6 @@ public class ContactCategory implements Serializable {
     public int hashCode() {
         int result = idContactCategory;
         result = 31 * result + category.hashCode();
-        result = 31 * result + contacts.hashCode();
         return result;
     }
 }
