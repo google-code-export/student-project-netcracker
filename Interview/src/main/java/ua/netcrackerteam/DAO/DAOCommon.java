@@ -87,6 +87,7 @@ public class DAOCommon {
         return listOfForms;
     }
 
+
     public static UserCategory getUserCategoeyByID(int currUserCategoryID) throws SQLException {
         Session session = null;
         org.hibernate.Query re = null;
@@ -108,5 +109,6 @@ public class DAOCommon {
         currUserCategory = (UserCategory) listOfCategories.get(0);
         return currUserCategory;
     }
+
 
 }

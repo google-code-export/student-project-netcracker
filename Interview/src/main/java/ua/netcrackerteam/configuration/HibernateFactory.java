@@ -9,8 +9,7 @@ public class HibernateFactory {
     
     private static DAOCommon commonDao = null;
     private static DAOStudentImpl studentDAO = null;
-    private static DAOInterviewImpl interviewDAO = null;
-    
+       
     private static HibernateFactory instance = null;
 
     public static synchronized HibernateFactory getInstance(){
@@ -34,10 +33,5 @@ public class HibernateFactory {
         return studentDAO;
     }
     
-    public DAOInterviewImpl getInterviewDAO(){
-        if (interviewDAO == null){
-            interviewDAO = new DAOInterviewImpl();
-        }
-        return interviewDAO;
-    }
+
 }
