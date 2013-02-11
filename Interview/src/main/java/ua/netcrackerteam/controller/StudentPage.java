@@ -16,7 +16,8 @@ import java.util.Locale;
  */
 public class StudentPage {
 
-    public static List<String> getUniversityList() {
+    //public static List<String> getUniversityList() {
+    public static List<Institute> getUniversityList() {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -36,15 +37,15 @@ public class StudentPage {
             }
         }
 
-        for (Object currObj : instituteList) {
+       /* for (Object currObj : instituteList) {
             Institute currInst = (Institute) currObj;
             result.add(currInst.getName());
-        }
-        return result;
+        }*/
+        return instituteList;
     }
 
 
-    public static List<String> getFacultyListByInstitute(String currInstitute) {
+    public static List<Faculty> getFacultyListByInstitute(Institute currInstitute) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -56,7 +57,7 @@ public class StudentPage {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            re = session.createQuery("from Institute where upper(name) ='" + currInstitute.toUpperCase() + "'");
+            re = session.createQuery("from Institute where upper(name) ='" + currInstitute.getName().toUpperCase() + "'");
             selectedInstitute = re.list();
         } catch (Exception e) {
             System.out.println(e);
@@ -82,16 +83,16 @@ public class StudentPage {
                 }
             }
 
-            for (Object currObj : selectedFaculty) {
+ /*           for (Object currObj : selectedFaculty) {
                 Faculty currFaculty = (Faculty) currObj;
                 result.add(currFaculty.getName());
             }
-
+*/
         }
-        return result;
+        return selectedFaculty;
     }
 
-    public static List<String> getCathedraListByFaculty(String currFaculty, String currInstitute) {
+    public static List<Cathedra> getCathedraListByFaculty(Faculty currFaculty, Institute currInstitute) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -103,7 +104,7 @@ public class StudentPage {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            re = session.createQuery("from Faculty as facul where upper(facul.name) = '" + currFaculty.toUpperCase() + "'" + " and  upper(facul.institute.name) = '" + currInstitute.toUpperCase() + "'" );
+            re = session.createQuery("from Faculty as facul where upper(facul.name) = '" + currFaculty.getName().toUpperCase() + "'" + " and  upper(facul.institute.name) = '" + currInstitute.getName().toUpperCase() + "'" );
             selectedFaculty = re.list();
         } catch (Exception e) {
             System.out.println(e);
@@ -128,14 +129,14 @@ public class StudentPage {
                     session.close();
                 }
             }
-
+/*
             for (Object currObj : selectedCathedra) {
                 Cathedra currCathedra = (Cathedra) currObj;
                 result.add(currCathedra.getName());
-            }
+            }*/
 
         }
-        return result;
+        return selectedCathedra;
     }
 
     public static boolean verificationOfTheExistenceSomthing (String tableForVerification, String inWhichColumn, String someThing) {
@@ -241,11 +242,11 @@ public class StudentPage {
 
     public static void main(String args[]) {
 
-        List<String> newList = getUniversityList();
+        //List<String> newList = getUniversityList();
 
-        List<String> newListFaculty = getFacultyListByInstitute("Одеський національний політехнічний університет");
+       // List<String> newListFaculty = getFacultyListByInstitute("Одеський національний політехнічний університет");
 
-        List<String> newListCathedra = getCathedraListByFaculty("Інститут комп.ютерних систем", "Одеський національний політехнічний університет");
+        //List<String> newListCathedra = getCathedraListByFaculty("Інститут комп.ютерних систем", "Одеський національний політехнічний університет");
 
         String[] listOfBranch = new String[3];
         listOfBranch[0] = "1C";
