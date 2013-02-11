@@ -70,9 +70,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     public void buttonClick(Button.ClickEvent event) {
         Button source = event.getButton();
         if(source == enter) {
-            if (enterWindow == null) {
-                enterWindow = new EnterWindow(this);
-            } 
+            enterWindow = new EnterWindow(this);
             getMainWindow().addWindow(enterWindow);
         } else if (source == exit) {
             changeModeGuest();
@@ -93,6 +91,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private void addRegListener() {
         registr.addListener(this);
     }
+    
+
     /**
      * Temporary method
      * Show greeting pop-up window and call method to change interface 
