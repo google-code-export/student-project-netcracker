@@ -42,6 +42,7 @@ class EnterWindow extends Window {
             public void onLogin(LoginForm.LoginEvent event) {
                 mode = GeneralController.checkLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
                 mainPage.changeMode(mode, event.getLoginParameter("username"));
+                loginForm.removeListener(this);
                 EnterWindow.this.close();
             }
         });

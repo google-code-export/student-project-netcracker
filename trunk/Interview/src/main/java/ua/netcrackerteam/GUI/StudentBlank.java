@@ -4,7 +4,6 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.Validator;
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import ua.netcrackerteam.controller.StudentPage;
 /**
  *
  * @author akush_000
@@ -63,7 +63,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private final Label agreementText;
     private Button edit;
     private Button print;
-    
+   
     private ComboBox universities;
     private ComboBox faculties;
     private ComboBox cathedras;
@@ -98,12 +98,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private ArrayList<Slider> knowlegesList = new ArrayList<Slider>();
     private InterestSelection eduCenter;
     private InterestSelection workNC;
+    private InterestSelection mrSpec;
+    private InterestSelection sale;
     private InterestSelection development;
     private TextField anotherWorkSphere;
     private InterestSelection deepSpec;
     private InterestSelection variousWork;
-    private InterestSelection mrSpec;
-    private InterestSelection sale;
     private TextField anotherWorkType;
     private Embedded photo;
     
@@ -165,10 +165,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         layout.setWidth("100%");
         contactType = new TextField("Тип");
         contactType.setRequired(true);
-        contactType.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        contactType.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         contactValue = new TextField("Значение");
         contactValue.setRequired(true);
-        contactValue.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        contactValue.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
@@ -205,7 +205,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         layout.setSpacing(true);
         prLangName = new TextField("Язык");
         prLangName.setRequired(true);
-        prLangName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        prLangName.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
@@ -244,7 +244,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         layout.setSpacing(true);
         knowlName = new TextField("Раздел (в области IT или сетей)");
         knowlName.setRequired(true);
-        knowlName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        knowlName.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
@@ -272,23 +272,27 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         persInfo.setContent(glayout1);
         firstName = new TextField("Имя");
         firstName.addListener(this);
-        firstName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        firstName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
         firstName.setRequired(true);
         middleName = new TextField("Отчество");
         middleName.addListener(this);
-        middleName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        middleName.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
         middleName.setRequired(true);
         lastName = new TextField("Фамилия");
         lastName.setRequired(true);
         lastName.addListener(this);
-        lastName.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        universities = new ComboBox("ВУЗ",getUniversityList());
+        lastName.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        universities = new ComboBox("ВУЗ",StudentPage.getUniversityList());
+        faculties = new ComboBox("Факультет");
+        cathedras = new ComboBox("Кафедра");
         universities.setRequired(true);
+        universities.setInputPrompt("Выберите из списка либо добавьте свой");
         universities.addListener(this);
-        universities.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        universities.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         universities.setNewItemsAllowed(true);
-                universities.setNullSelectionAllowed(false);
-                universities.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+        universities.setImmediate(true);
+        universities.setNullSelectionAllowed(false);
+        universities.setNewItemHandler(new AbstractSelect.NewItemHandler() {
                     public void addNewItem(String newItemCaption) {
                         if (!universities.containsId(newItemCaption)) { 
                             universities.addItem(newItemCaption);
@@ -296,17 +300,37 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         }
                     }
                 });
+        universities.addListener(new FieldEvents.BlurListener() {
+            public void blur(BlurEvent event) {
+                try {
+                    String currUniver = universities.getValue().toString();
+                    if(currUniver != null) {
+                        for (String f:StudentPage.getFacultyListByInstitute(currUniver)) {
+                            faculties.addItem(f);
+                        }
+                    }
+                }
+                catch (NullPointerException ex) {}
+            }
+        });
+        universities.addListener(new ValueChangeListener() {
+            public void valueChange(ValueChangeEvent event) {
+                faculties.removeAllItems();
+                cathedras.removeAllItems();
+            }
+        });
         universities.setImmediate(true);
         universityYear = new TextField("Курс");
         universityYear.setRequired(true);
         universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
-        faculties = new ComboBox("Факультет", getFacultiesList());
         faculties.setRequired(true);
         faculties.addListener(this);
-        faculties.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        faculties.setInputPrompt("Выберите из списка либо добавьте свой");
+        faculties.setImmediate(true);
+        faculties.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         faculties.setNewItemsAllowed(true);
         faculties.setNullSelectionAllowed(false);
-                faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+        faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
                     public void addNewItem(String newItemCaption) {
                         if (!faculties.containsId(newItemCaption)) { 
                             faculties.addItem(newItemCaption);
@@ -315,21 +339,42 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }
                 });
         faculties.setImmediate(true);
-        cathedras = new ComboBox("Кафедра", getCathedrasList());
-        cathedras.setRequired(true);
-        cathedras.addListener(this);
-        cathedras.addValidator(new RegexpValidator("[а-яА-ЯёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        cathedras.setNewItemsAllowed(true);
-        cathedras.setNullSelectionAllowed(false);
-                cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                    public void addNewItem(String newItemCaption) {
-                        if (!cathedras.containsId(newItemCaption)) { 
-                            cathedras.addItem(newItemCaption);
-                            cathedras.setValue(newItemCaption);
+        faculties.addListener(new ValueChangeListener() {
+            public void valueChange(ValueChangeEvent event) {
+                cathedras.removeAllItems();
+            }
+        });
+        faculties.addListener(new FieldEvents.BlurListener() {
+
+            public void blur(BlurEvent event) {
+                try {
+                    String currFacult = faculties.getValue().toString();
+                    String currUniver = universities.getValue().toString();
+                    if(currFacult != null && currUniver != null) {
+                        for (String f:StudentPage.getCathedraListByFaculty(currFacult, currUniver)) {
+                            cathedras.addItem(f);
                         }
                     }
-                });
+                }
+                catch (NullPointerException ex) {}
+            }
+        });
+        cathedras.setRequired(true);
+        cathedras.addListener(this);
         cathedras.setImmediate(true);
+        cathedras.setInputPrompt("Выберите из списка либо добавьте свой");
+        cathedras.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        cathedras.setNewItemsAllowed(true);
+        cathedras.setNullSelectionAllowed(false);
+        cathedras.setImmediate(true);
+        cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+            public void addNewItem(String newItemCaption) {
+                if (!cathedras.containsId(newItemCaption)) { 
+                    cathedras.addItem(newItemCaption);
+                    cathedras.setValue(newItemCaption);
+                }
+            }
+        });
         universityGradYear = new TextField("Год окончания");
         universityGradYear.setRequired(true);
         universityGradYear.addListener(this);
@@ -579,10 +624,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         return v;
     }
     
-    private void checkAllValid() {
-            
-    }
-
+ 
     private void setEditable(boolean editable) {
         Iterator<Component> i = persInfo.getComponentIterator();
         while (i.hasNext()) {
@@ -650,19 +692,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         print.setVisible(!editable);
     }
     
-        
-    private Container getUniversityList() {
-        return null;
-    }
-    
-    private Container getFacultiesList() {
-        return null;
-    }
-    
-    private Container getCathedrasList(){
-        return null;
-    }
-    
     /**
      * Implement this!
      */
@@ -676,6 +705,14 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private void sendBlankPDFToEmail() {
 
     }
+    
+    /**
+     * Implement this!
+     */
+    private void checkAllValid() {
+            
+    }
+
 
     public void uploadSucceeded(SucceededEvent event) {
         getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
