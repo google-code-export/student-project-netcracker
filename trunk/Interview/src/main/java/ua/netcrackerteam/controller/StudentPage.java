@@ -16,7 +16,7 @@ import java.util.Locale;
  */
 public class StudentPage {
 
-    public static List<String> GetUniversityList() {
+    public static List<String> getUniversityList() {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -44,7 +44,7 @@ public class StudentPage {
     }
 
 
-    public static List<String> GetFacultyListByInstitute(String currInstitute) {
+    public static List<String> getFacultyListByInstitute(String currInstitute) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -91,7 +91,7 @@ public class StudentPage {
         return result;
     }
 
-    public static List<String> GetCathedraListByFaculty(String currFaculty, String currInstitute) {
+    public static List<String> getCathedraListByFaculty(String currFaculty, String currInstitute) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -165,7 +165,7 @@ public class StudentPage {
         }
     }
 
-    public static void InsertNewBranch(String[] branchNames) {
+    public static void insertNewBranch(String[] branchNames) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -192,7 +192,7 @@ public class StudentPage {
         }
     }
 
-    public static void InsertNewContacts(String contactType) {
+    public static void insertNewContacts(String contactType) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -219,20 +219,20 @@ public class StudentPage {
 
     public static void main(String args[]) {
 
-        List<String> newList = GetUniversityList();
+        List<String> newList = getUniversityList();
 
-        List<String> newListFaculty = GetFacultyListByInstitute("Одеський національний політехнічний університет");
+        List<String> newListFaculty = getFacultyListByInstitute("Одеський національний політехнічний університет");
 
-        List<String> newListCathedra = GetCathedraListByFaculty("Інститут комп.ютерних систем", "Одеський національний політехнічний університет");
+        List<String> newListCathedra = getCathedraListByFaculty("Інститут комп.ютерних систем", "Одеський національний політехнічний університет");
 
         String[] listOfBranch = new String[3];
         listOfBranch[0] = "1C";
         listOfBranch[1] = "2C";
         listOfBranch[2] = "3C";
-        InsertNewBranch(listOfBranch);
+        insertNewBranch(listOfBranch);
 
         String newContactType = "skype";
-        InsertNewContacts(newContactType);
+        insertNewContacts(newContactType);
 
     }
 

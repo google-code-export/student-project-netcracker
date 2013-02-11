@@ -162,7 +162,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         return threadLocal.get();
     }
 
-    // Set the current application instance
+    // Set the current applicationForm instance
     public static void setInstance(MainPage application) {
         threadLocal.set(application);
     }

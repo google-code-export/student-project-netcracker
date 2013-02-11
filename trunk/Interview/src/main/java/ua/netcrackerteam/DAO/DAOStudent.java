@@ -2,11 +2,11 @@ package ua.netcrackerteam.DAO;
 
 /**
  * Public interface DAOStudent - Entity of user Student.
- * Include methods to data transfer between StudentPerson type with DataBase.
+ * Include methods to data transfer between StudentData type with DataBase.
  * @author krygin, maxym, Fillipenko
  */
 public interface DAOStudent {
-    public Form getFormByUserId(Long idForm);
+    public Form getFormByUserId(int idForm);
     public Form getFormByUserLogin(String userName);
     public void addForm(Form form);
     public void updateForm(Form form);

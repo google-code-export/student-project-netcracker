@@ -1,6 +1,6 @@
 package ua.netcrackerteam.test;
 
-import ua.netcrackerteam.persons.StudentPerson;
+import ua.netcrackerteam.controller.StudentData;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,10 +43,10 @@ public class TimeSessionServlet extends HttpServlet {
         out.println("<td>Last Name</td>");
         out.println("</tr>");
         out.println("</thead>");
-        StudentPerson studentPerson = new StudentPerson();
+        StudentData studentPerson = new StudentData();
         /*try {
-            Set<StudentPerson> studentPersonSet = studentPerson.setFIO();
-            for (StudentPerson studenPersonIterator : studentPersonSet){
+            Set<StudentData> studentPersonSet = studentPerson.setFIO();
+            for (StudentData studenPersonIterator : studentPersonSet){
                 out.println("<tbody>");
                 out.println("<tr>");
                 out.print("<td>");
