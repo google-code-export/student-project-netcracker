@@ -165,6 +165,28 @@ public class StudentPage {
         }
     }
 
+    public static List<Object> searchSomething (String tableForSearch, String inWhichColumn, String someThing) {
+        Session session = null;
+        org.hibernate.Query re = null;
+        List selectedSomething = null;
+
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from " + tableForSearch + " where upper(" + inWhichColumn + ") ='" + someThing.toUpperCase() + "'");
+            selectedSomething = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return selectedSomething;
+    }
+
+
     public static void insertNewBranch(String[] branchNames) {
 
         Session session = null;
@@ -233,6 +255,40 @@ public class StudentPage {
 
         String newContactType = "skype";
         insertNewContacts(newContactType);
+
+        StudentData newStudentData = new StudentData();
+        newStudentData.setStudentFirstName("Василий");
+        newStudentData.setStudentLastName("Familiya");
+        newStudentData.setStudentMiddleName("MiddleName");
+        newStudentData.setStudentExperienceProjects("some projects");
+        newStudentData.setStudentReasonOffer("???????");
+        newStudentData.setStudentSelfAdditionalInformation("I'm a best of the best");
+        //newStudentData.setS
+
+    }
+
+    public static Form addNewForm(StudentData newStudentData, Integer userID) {
+
+        Form newForm = new Form();
+        newForm.setFirstName        (newStudentData.getStudentFirstName());
+        newForm.setMiddleName       (newStudentData.getStudentMiddleName());
+        newForm.setLastName         (newStudentData.getStudentLastName());
+        newForm.setExecProject      (newStudentData.getStudentExperienceProjects());
+        newForm.setReason           (newStudentData.getStudentReasonOffer());
+        newForm.setExtraInfo        (newStudentData.getStudentSelfAdditionalInformation());
+        newForm.setInstituteYear    (newStudentData.getStudentInstituteCourse());
+        newForm.setInterestStudy    (newStudentData.getStudentInterestStudy());
+        newForm.setInterestWork     (newStudentData.getStudentInterestWork());
+        newForm.setInterestSoftware (newStudentData.getStudentInterestDevelopment());
+        newForm.setInterestTelecom  (newStudentData.getStudentInterestOther());
+        if (!newStudentData.getStudentInstitute().equals("")) {
+            List<Object> listOfInstitute = searchSomething("INSTITUTE", "NAME", newStudentData.getStudentInstitute());
+            if (!(listOfInstitute.size() == 0)) {
+                Institute selectedInstitute = (Institute) listOfInstitute.get(0);
+                newForm.setIdInstitute(selectedInstitute);
+            }
+        }
+        return newForm;
 
     }
 
