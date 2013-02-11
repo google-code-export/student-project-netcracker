@@ -7,6 +7,7 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.Validator;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerValidator;
@@ -27,6 +28,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import ua.netcrackerteam.DAO.Cathedra;
+import ua.netcrackerteam.DAO.Faculty;
+import ua.netcrackerteam.DAO.Institute;
 import ua.netcrackerteam.controller.StudentPage;
 /**
  *
@@ -282,44 +287,56 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         lastName.setRequired(true);
         lastName.addListener(this);
         lastName.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        universities = new ComboBox("ВУЗ",StudentPage.getUniversityList());
+
+        List<Institute>insts = StudentPage.getUniversityList();
+        BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
+
+        universities = new ComboBox("ВУЗ",objects);
+        universities.setItemCaptionPropertyId("name");
+
         faculties = new ComboBox("Факультет");
+
+        faculties.setItemCaptionPropertyId("name");
         cathedras = new ComboBox("Кафедра");
+        cathedras.setItemCaptionPropertyId("name");
         universities.setRequired(true);
         universities.setInputPrompt("Выберите из списка либо добавьте свой");
         universities.addListener(this);
-        universities.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        universities.setNewItemsAllowed(true);
+      //universities.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        universities.setNewItemsAllowed(false);
         universities.setImmediate(true);
         universities.setNullSelectionAllowed(false);
-        universities.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                    public void addNewItem(String newItemCaption) {
-                        if (!universities.containsId(newItemCaption)) { 
-                            universities.addItem(newItemCaption);
-                            universities.setValue(newItemCaption);
-                        }
-                    }
-                });
-        universities.addListener(new FieldEvents.BlurListener() {
-            public void blur(BlurEvent event) {
-                try {
-                    String currUniver = universities.getValue().toString();
-                    if(currUniver != null) {
-                        for (String f:StudentPage.getFacultyListByInstitute(currUniver)) {
-                            faculties.addItem(f);
-                        }
-                    }
+       /* universities.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+            public void addNewItem(String newItemCaption) {
+                if (!universities.containsId(newItemCaption)) {
+                    universities.addItem(newItemCaption);
+                    universities.setValue(newItemCaption);
                 }
-                catch (NullPointerException ex) {}
             }
-        });
+        });*/
+/*        universities.addListener(new FieldEvents. {
+            public void blur(BlurEvent event) {
+
+            }
+        });*/
         universities.addListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
-                faculties.removeAllItems();
-                cathedras.removeAllItems();
+                try {
+                    faculties.removeAllItems();
+                    Institute currUniver = (Institute) universities.getValue();
+
+                    if (currUniver != null) {
+                        List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
+                        BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
+                        faculties.setContainerDataSource(objects);
+       /*                 for (Faculty f:StudentPage.getFacultyListByInstitute(currUniver)) {
+                            faculties.addItem(f);
+                        }*/
+                    }
+                } catch (NullPointerException ex) {
+                }
             }
         });
-        universities.setImmediate(true);
         universityYear = new TextField("Курс");
         universityYear.setRequired(true);
         universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
@@ -327,24 +344,28 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         faculties.addListener(this);
         faculties.setInputPrompt("Выберите из списка либо добавьте свой");
         faculties.setImmediate(true);
-        faculties.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        faculties.setNewItemsAllowed(true);
+       // faculties.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        faculties.setNewItemsAllowed(false);
         faculties.setNullSelectionAllowed(false);
-        faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-                    public void addNewItem(String newItemCaption) {
-                        if (!faculties.containsId(newItemCaption)) { 
-                            faculties.addItem(newItemCaption);
-                            faculties.setValue(newItemCaption);
-                        }
-                    }
-                });
-        faculties.setImmediate(true);
+       /* faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+            public void addNewItem(String newItemCaption) {
+                if (!faculties.containsId(newItemCaption)) {
+                    faculties.addItem(newItemCaption);
+                    faculties.setValue(newItemCaption);
+                }
+            }
+        });*/
+        //faculties.setImmediate(true);
         faculties.addListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
                 cathedras.removeAllItems();
+                List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
+          BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
+                cathedras.setContainerDataSource(objects);
             }
+
         });
-        faculties.addListener(new FieldEvents.BlurListener() {
+      /*  faculties.addListener(new FieldEvents.BlurListener() {
 
             public void blur(BlurEvent event) {
                 try {
@@ -358,23 +379,23 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 }
                 catch (NullPointerException ex) {}
             }
-        });
+        });*/
         cathedras.setRequired(true);
         cathedras.addListener(this);
         cathedras.setImmediate(true);
         cathedras.setInputPrompt("Выберите из списка либо добавьте свой");
-        cathedras.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        cathedras.setNewItemsAllowed(true);
+        //cathedras.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        cathedras.setNewItemsAllowed(false);
         cathedras.setNullSelectionAllowed(false);
         cathedras.setImmediate(true);
-        cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
+       /* cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
             public void addNewItem(String newItemCaption) {
-                if (!cathedras.containsId(newItemCaption)) { 
+                if (!cathedras.containsId(newItemCaption)) {
                     cathedras.addItem(newItemCaption);
                     cathedras.setValue(newItemCaption);
                 }
             }
-        });
+        });*/
         universityGradYear = new TextField("Год окончания");
         universityGradYear.setRequired(true);
         universityGradYear.addListener(this);
@@ -776,6 +797,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 } else if(source == save) {
                     checkAllValid();
                     setEditable(false);
+                    /*StudentData sd = new StudentData();
+                    sd.pr = print;
+                    sd.university = universities.getConvertedValue();*/
                 } else if(source == edit) {
                     setEditable(true);
                 } else if(source == print) {
