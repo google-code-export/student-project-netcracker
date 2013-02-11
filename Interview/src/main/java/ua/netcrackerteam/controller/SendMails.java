@@ -3,8 +3,9 @@ package ua.netcrackerteam.controller;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
+import ua.netcrackerteam.configuration.Logable;
 
-public class SendMails {
+public class SendMails implements Logable{
 
     public static void sendMailToUserAfterReg(String userEmail, String userName, String userPassword) throws EmailException {
         try {
@@ -21,8 +22,10 @@ public class SendMails {
                     "password - " + userPassword + "");
             email.addTo(userEmail);
             email.send();
+            logger.info();
         } catch (EmailException ex) {
             ex.printStackTrace();
+            logger.getLog().error(ex);
         }
     }
 }

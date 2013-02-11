@@ -1,7 +1,7 @@
 package ua.netcrackerteam.DAO;
 
 import javax.persistence.*;
-import java.io.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
@@ -67,7 +67,8 @@ public class Form implements Serializable {
     @Column(name= "AVG_LAST")
     private Double avgLast;
 
-    @Column(name= "PHOTO")
+    @Column(name = "PHOTO")
+    //@javax.persistence.Lob
     private String photo;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
@@ -239,14 +240,6 @@ public class Form implements Serializable {
 
     public void setAvgLast(Double avgLast) {
         this.avgLast = avgLast;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
     }
 
     public Status getIdStatus() {

@@ -3,15 +3,22 @@ package ua.netcrackerteam.controller;
 
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
+import ua.netcrackerteam.configuration.Logable;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeneralController {
+public class GeneralController implements Logable {
 
     public static String passwordHashing(String pass){
-        String hashedPass = String.valueOf(("user".hashCode() * pass.hashCode() + (pass.hashCode() + pass.hashCode()) * 10 + pass.hashCode() * "pass".hashCode()) * 10);
+        String hashedPass = null;
+        try {
+            hashedPass = String.valueOf(("user".hashCode() * pass.hashCode() + (pass.hashCode() + pass.hashCode()) * 10 + pass.hashCode() * "pass".hashCode()) * 10);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+        }
         return hashedPass;
     }
 
@@ -28,15 +35,13 @@ public class GeneralController {
                 userName = userList.getUserName();
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
-                    //Filipenko
-                    //--------
-                    //idUserCategory = userList.getIdUserCategory();
-                    //++++++++
                     idUserCategory = userList.getIdUserCategory().getIdUSerCategory();
                 }
             }
+            logger.info();
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.getLog().error(e);
         }
         return idUserCategory;
     }
@@ -55,15 +60,13 @@ public class GeneralController {
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
                     checkedUserIds.add(userList.getIdUser());
-                    //Filipenko
-                    //---------
-                    //checkedUserIds.add(userList.getIdUserCategory());
-                    //+++++++++
                     checkedUserIds.add(userList.getIdUserCategory().getIdUSerCategory());
                 }
             }
+            logger.info();
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.getLog().error(e);
         }
         return checkedUserIds;
     }
@@ -74,8 +77,10 @@ public class GeneralController {
         String hashPassword = passwordHashing(userPassword);
         try {
             HibernateFactory.getInstance().getCommonDao().setUser(userName, hashPassword, userEmail, active, idUserCategory);
+            logger.info();
         } catch (SQLException e) {
             e.printStackTrace();
+            logger.getLog().error(e);
         }
     }
 

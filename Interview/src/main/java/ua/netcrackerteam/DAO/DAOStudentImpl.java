@@ -1,14 +1,12 @@
 package ua.netcrackerteam.DAO;
 
-import java.sql.Date;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.HibernateUtil;
+
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -17,7 +15,7 @@ import java.util.Locale;
  */
 public class DAOStudentImpl implements DAOStudent {
 public static void main(String[] args) throws SQLException {
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserId(5L);
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserId(5);
         System.out.println(form.getFirstName());
         
         Form form1 = new Form();
@@ -54,7 +52,7 @@ public static void main(String[] args) throws SQLException {
     }
 
     @Override
-    public Form getFormByUserId(Long idUser) {        
+    public Form getFormByUserId(int idUser) {
         Session session = null;
         Query query;        
         Form form = null;

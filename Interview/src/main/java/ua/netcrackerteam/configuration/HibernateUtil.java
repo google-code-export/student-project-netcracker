@@ -5,12 +5,13 @@ package ua.netcrackerteam.configuration;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.SessionFactory;
 
-public class HibernateUtil {
+public class HibernateUtil implements Logable{
     private static SessionFactory sessionFactory;
 
     static{
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
+            logger.info();
         } catch (Throwable e) {
             throw new ExceptionInInitializerError(e);
         }

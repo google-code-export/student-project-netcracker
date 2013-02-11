@@ -15,17 +15,17 @@ public class InterviewLoggerReader {
         BufferedReader reader = null;
         String line;
         try {
-            reader = new BufferedReader(new FileReader("logs/interview.log"));
+            reader = new BufferedReader(new FileReader("interview.log"));
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
             logger.info();
         } catch (FileNotFoundException e) {
-            logger.error(e);
+            logger.getLog().error(e);
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error(e);
+            logger.getLog().error(e);
         }
 
     }
