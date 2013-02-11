@@ -18,16 +18,20 @@ import com.vaadin.terminal.FileResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Upload.FailedEvent;
+import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.themes.Reindeer;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import javax.imageio.ImageIO;
 
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
@@ -38,8 +42,7 @@ import ua.netcrackerteam.controller.StudentPage;
  * @author akush_000
  */
 public class StudentBlank extends VerticalLayout implements FieldEvents.BlurListener, Upload.SucceededListener,
-                                   Upload.FailedListener,
-                                   Upload.Receiver {
+                                   Upload.Receiver, Upload.StartedListener {
     private Button save;
     private Panel contacts;
     private Button addAnotherContactsBut;
@@ -68,7 +71,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private final Label agreementText;
     private Button edit;
     private Button print;
-   
+    private long maxSize = 300000; //300Kb
+    
     private ComboBox universities;
     private ComboBox faculties;
     private ComboBox cathedras;
@@ -111,6 +115,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private InterestSelection variousWork;
     private TextField anotherWorkType;
     private Embedded photo;
+    
     
 
     public StudentBlank() {
@@ -416,7 +421,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
          photoUpload = new Upload("Фото",this);
          photoUpload.setButtonCaption("Загрузка");
          photoUpload.addListener((Upload.SucceededListener) this);
-         photoUpload.addListener((Upload.FailedListener) this);
+         photoUpload.addListener((Upload.StartedListener) this);
          glayout1.addComponent(photoUpload,0,4,2,4);
     }
 
@@ -716,13 +721,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     /**
      * Implement this!
      */
-    private void checkPhotoFile() {
-        
-    }
-    
-    /**
-     * Implement this!
-     */
     private void sendBlankPDFToEmail() {
 
     }
@@ -733,27 +731,56 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private void checkAllValid() {
             
     }
-
-
-    public void uploadSucceeded(SucceededEvent event) {
-        getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
-        FileResource imageResource = new FileResource(photoFile, getApplication());
-        if(photo == null) {
-            photo = new Embedded("", imageResource);
-            GridLayout gl = (GridLayout) persInfo.getContent();
-            gl.addComponent(photo,2,0,2,3);
-            gl.setComponentAlignment(photo, Alignment.TOP_CENTER);
+    
+    private Embedded checkPhotoSize(Embedded newPhoto) throws IOException, NullPointerException{
+        int width, height;
+        Image im = ImageIO.read(photoFile);
+        width = im.getWidth(null);
+        height = im.getHeight(null);
+        if (height > width) {
+            if (width>200) {
+                newPhoto.setWidth("200");
+            }
+            if(height>300) {
+                newPhoto.setHeight("300");
+            }
         }
         else {
-            Embedded oldPhoto = photo;
-            photo = new Embedded("", imageResource);
-            persInfo.replaceComponent(oldPhoto, photo);
+            if(height>300) {
+                newPhoto.setHeight("300");
+            }
+            if (width>200) {
+                newPhoto.setWidth("200");
+            }
         }
-        
+        return newPhoto;
     }
 
-    public void uploadFailed(FailedEvent event) {
-        getWindow().showNotification("Ошибка загрузки файла", Window.Notification.TYPE_TRAY_NOTIFICATION);
+    public void uploadSucceeded(SucceededEvent event) {
+        try {
+            FileResource imageResource = new FileResource(photoFile, getApplication());
+            if(photo == null) {
+                Embedded newPhoto = new Embedded("", imageResource);
+                checkPhotoSize(newPhoto);
+                photo = newPhoto;
+                GridLayout gl = (GridLayout) persInfo.getContent();
+                gl.addComponent(photo,2,0,2,3);
+                gl.setComponentAlignment(photo, Alignment.TOP_CENTER);
+            }
+            else {
+                Embedded oldPhoto = photo;
+                Embedded newPhoto = new Embedded("", imageResource);
+                checkPhotoSize(newPhoto);
+                photo = newPhoto;
+                persInfo.replaceComponent(oldPhoto, photo);
+            }
+            getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
+        }
+        catch (IOException ex) {
+        }
+        catch (NullPointerException npe) {
+            getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
+        }
     }
 
     public OutputStream receiveUpload(String filename, String mimeType) {
@@ -762,11 +789,17 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+filename) );
         try {
             fos = new FileOutputStream(photoFile);
-            checkPhotoFile();
         } catch (final java.io.FileNotFoundException e) {
             getWindow().showNotification("Ошибка загрузки файла", Window.Notification.TYPE_TRAY_NOTIFICATION);
         }
         return fos; 
+    }
+
+    public void uploadStarted(StartedEvent event) {
+        if (maxSize < event.getContentLength()) {
+            photoUpload.interruptUpload();
+            getWindow().showNotification("Недопустимый размер! Максимум 300Kb",Window.Notification.TYPE_TRAY_NOTIFICATION);
+        }
     }
  
     private class ButtonsListener implements Button.ClickListener {
@@ -806,11 +839,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     sendBlankPDFToEmail();
                 }
         }
-
-        
-
-        
-        
     }
     
     public class InterestSelection extends HorizontalLayout implements Button.ClickListener{
