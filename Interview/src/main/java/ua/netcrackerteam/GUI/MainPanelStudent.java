@@ -21,7 +21,7 @@ public class MainPanelStudent extends MainPanel {
     public MainPanelStudent(HeaderLayout hlayout,MainPage mainPage) {
         super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
-        blankLayout = new StudentBlank();
+        blankLayout = new StudentBlank(hlayout.getUsername());
         tabSheet.addTab(blankLayout,"Анкета");
         interviewLayout = new VerticalLayout();
         tabSheet.addTab(interviewLayout,"Собеседование");

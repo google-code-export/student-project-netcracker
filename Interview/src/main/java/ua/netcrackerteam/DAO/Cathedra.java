@@ -73,4 +73,9 @@ public class Cathedra implements Serializable {
         result = 31 * result + faculty.hashCode();
         return result;
     }
+    
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

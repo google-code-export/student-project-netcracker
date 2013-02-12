@@ -26,11 +26,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import ua.netcrackerteam.DAO.Cathedra;
@@ -43,6 +46,7 @@ import ua.netcrackerteam.controller.StudentPage;
  */
 public class StudentBlank extends VerticalLayout implements FieldEvents.BlurListener, Upload.SucceededListener,
                                    Upload.Receiver, Upload.StartedListener {
+    private String username;
     private Button save;
     private Panel contacts;
     private Button addAnotherContactsBut;
@@ -118,7 +122,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     
     
 
-    public StudentBlank() {
+    public StudentBlank(String username) {
+        this.username = username;
         setMargin(true);
         setSpacing(true);
         setWidth("100%");
@@ -277,6 +282,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private void persInfoPanelFill() {
         persInfo.setWidth("100%");
         GridLayout glayout1 = new GridLayout(3,5);
+        glayout1.setWidth("100%");
         glayout1.setSpacing(true);
         glayout1.setMargin(true);
         persInfo.setContent(glayout1);
@@ -292,15 +298,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         lastName.setRequired(true);
         lastName.addListener(this);
         lastName.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
-
         List<Institute>insts = StudentPage.getUniversityList();
         BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
-
         universities = new ComboBox("ВУЗ",objects);
         universities.setItemCaptionPropertyId("name");
-
         faculties = new ComboBox("Факультет");
-
         faculties.setItemCaptionPropertyId("name");
         cathedras = new ComboBox("Кафедра");
         cathedras.setItemCaptionPropertyId("name");
@@ -328,15 +330,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             public void valueChange(ValueChangeEvent event) {
                 try {
                     faculties.removeAllItems();
+                    cathedras.removeAllItems();
                     Institute currUniver = (Institute) universities.getValue();
-
                     if (currUniver != null) {
                         List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
                         BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
                         faculties.setContainerDataSource(objects);
-       /*                 for (Faculty f:StudentPage.getFacultyListByInstitute(currUniver)) {
-                            faculties.addItem(f);
-                        }*/
                     }
                 } catch (NullPointerException ex) {
                 }
@@ -360,31 +359,17 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 }
             }
         });*/
-        //faculties.setImmediate(true);
+        faculties.setImmediate(true);
         faculties.addListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
-                cathedras.removeAllItems();
+                if (faculties.size() > 0) {
+                    cathedras.removeAllItems();
                 List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
-          BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
+                BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
                 cathedras.setContainerDataSource(objects);
-            }
-
-        });
-      /*  faculties.addListener(new FieldEvents.BlurListener() {
-
-            public void blur(BlurEvent event) {
-                try {
-                    String currFacult = faculties.getValue().toString();
-                    String currUniver = universities.getValue().toString();
-                    if(currFacult != null && currUniver != null) {
-                        for (String f:StudentPage.getCathedraListByFaculty(currFacult, currUniver)) {
-                            cathedras.addItem(f);
-                        }
-                    }
                 }
-                catch (NullPointerException ex) {}
             }
-        });*/
+        });
         cathedras.setRequired(true);
         cathedras.addListener(this);
         cathedras.setImmediate(true);
@@ -657,7 +642,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             Component c = (Component) i.next();
             if (c instanceof Upload) {
                 c.setVisible(editable);
-            }
+            } 
+//            else if (c instanceof ComboBox) {
+//                ComboBox c1 = (ComboBox) c;
+//                Label l = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
+//                l.setContentMode(Label.CONTENT_XHTML);
+//                persInfo.replaceComponent(c, l);
+//            }
             else {
                 c.setReadOnly(!editable);
             }
@@ -732,26 +723,19 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             
     }
     
-    private Embedded checkPhotoSize(Embedded newPhoto) throws IOException, NullPointerException{
-        int width, height;
-        Image im = ImageIO.read(photoFile);
-        width = im.getWidth(null);
-        height = im.getHeight(null);
-        if (height > width) {
-            if (width>200) {
+    private Embedded checkPhotoSize(Embedded newPhoto) throws NullPointerException{
+        try {
+            int width, height;
+            Image im = ImageIO.read(photoFile);
+            width = im.getWidth(null);
+            height = im.getHeight(null);
+            if (width > height || width > 200) {
                 newPhoto.setWidth("200");
-            }
-            if(height>300) {
+            } else if (height > 300 ){
                 newPhoto.setHeight("300");
-            }
-        }
-        else {
-            if(height>300) {
-                newPhoto.setHeight("300");
-            }
-            if (width>200) {
-                newPhoto.setWidth("200");
-            }
+            } 
+        } catch (IOException ex) {
+            System.out.println(ex);
         }
         return newPhoto;
     }
@@ -759,9 +743,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public void uploadSucceeded(SucceededEvent event) {
         try {
             FileResource imageResource = new FileResource(photoFile, getApplication());
+            Embedded newPhoto = new Embedded("", imageResource);
+            newPhoto = checkPhotoSize(newPhoto);
             if(photo == null) {
-                Embedded newPhoto = new Embedded("", imageResource);
-                checkPhotoSize(newPhoto);
                 photo = newPhoto;
                 GridLayout gl = (GridLayout) persInfo.getContent();
                 gl.addComponent(photo,2,0,2,3);
@@ -769,14 +753,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             }
             else {
                 Embedded oldPhoto = photo;
-                Embedded newPhoto = new Embedded("", imageResource);
-                checkPhotoSize(newPhoto);
                 photo = newPhoto;
                 persInfo.replaceComponent(oldPhoto, photo);
             }
             getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
-        }
-        catch (IOException ex) {
         }
         catch (NullPointerException npe) {
             getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
@@ -786,7 +766,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public OutputStream receiveUpload(String filename, String mimeType) {
         FileOutputStream fos = null; 
         WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
-        photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+filename) );
+        photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+username+".jpg") );
         try {
             fos = new FileOutputStream(photoFile);
         } catch (final java.io.FileNotFoundException e) {

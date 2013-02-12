@@ -78,4 +78,9 @@ public class Faculty implements Serializable {
         result = 31 * result + institute.hashCode();
         return result;
     }
+    
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
