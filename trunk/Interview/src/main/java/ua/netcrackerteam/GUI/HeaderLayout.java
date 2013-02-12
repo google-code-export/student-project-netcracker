@@ -20,6 +20,7 @@ import com.vaadin.ui.themes.BaseTheme;
 public class HeaderLayout extends GridLayout {
     private Embedded em = null;
     private VerticalLayout emlo;
+    private String username = "";
     
     {   
         setColumns(3);
@@ -56,6 +57,7 @@ public class HeaderLayout extends GridLayout {
      */
 
     public HeaderLayout(Button exit, String username) {
+        this.username = username;
         setHeight("90");
         VerticalLayout exitlo = new VerticalLayout();
         VerticalLayout greetlo = new VerticalLayout();
@@ -73,5 +75,9 @@ public class HeaderLayout extends GridLayout {
         addComponent(exitlo,2,0);
         greet.setStyleName(BaseTheme.BUTTON_LINK);
         exit.setStyleName(BaseTheme.BUTTON_LINK);
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
