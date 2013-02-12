@@ -67,8 +67,10 @@ public class Form implements Serializable {
     @Column(name= "AVG_LAST")
     private Double avgLast;
 
-    @Column(name = "PHOTO")
+    //@Column(name = "PHOTO")
     //@javax.persistence.Lob
+    //private String photo;
+    @Column(name = "TEMP_PHOTO")    
     private String photo;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
