@@ -26,14 +26,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import ua.netcrackerteam.DAO.Cathedra;
@@ -192,7 +188,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     GridLayout gl = (GridLayout) contacts.getContent();
                     gl.removeComponent(addAnotherContactsBut);
                     gl.addComponent(anotherContact,0,1);
-                    anotherContact.setWidth("200");
+                    anotherContact.setWidth("220");
                     gl.addComponent(addAnotherContactsBut,1,1);
                     gl.setComponentAlignment(addAnotherContactsBut, Alignment.BOTTOM_LEFT);
                     getWindow().removeWindow(addContact);
@@ -307,25 +303,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         cathedras = new ComboBox("Кафедра");
         cathedras.setItemCaptionPropertyId("name");
         universities.setRequired(true);
-        universities.setInputPrompt("Выберите из списка либо добавьте свой");
+        universities.setInputPrompt("Выберите из списка");
         universities.addListener(this);
-      //universities.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         universities.setNewItemsAllowed(false);
         universities.setImmediate(true);
         universities.setNullSelectionAllowed(false);
-       /* universities.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-            public void addNewItem(String newItemCaption) {
-                if (!universities.containsId(newItemCaption)) {
-                    universities.addItem(newItemCaption);
-                    universities.setValue(newItemCaption);
-                }
-            }
-        });*/
-/*        universities.addListener(new FieldEvents. {
-            public void blur(BlurEvent event) {
-
-            }
-        });*/
         universities.addListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
                 try {
@@ -346,19 +328,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
         faculties.setRequired(true);
         faculties.addListener(this);
-        faculties.setInputPrompt("Выберите из списка либо добавьте свой");
+        faculties.setInputPrompt("Выберите из списка");
         faculties.setImmediate(true);
-       // faculties.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        faculties.setNewItemsAllowed(false);
+       faculties.setNewItemsAllowed(false);
         faculties.setNullSelectionAllowed(false);
-       /* faculties.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-            public void addNewItem(String newItemCaption) {
-                if (!faculties.containsId(newItemCaption)) {
-                    faculties.addItem(newItemCaption);
-                    faculties.setValue(newItemCaption);
-                }
-            }
-        });*/
         faculties.setImmediate(true);
         faculties.addListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
@@ -373,19 +346,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         cathedras.setRequired(true);
         cathedras.addListener(this);
         cathedras.setImmediate(true);
-        cathedras.setInputPrompt("Выберите из списка либо добавьте свой");
-        //cathedras.addValidator(new RegexpValidator("[а-яА-ЯіІЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        cathedras.setInputPrompt("Выберите из списка");
         cathedras.setNewItemsAllowed(false);
         cathedras.setNullSelectionAllowed(false);
         cathedras.setImmediate(true);
-       /* cathedras.setNewItemHandler(new AbstractSelect.NewItemHandler() {
-            public void addNewItem(String newItemCaption) {
-                if (!cathedras.containsId(newItemCaption)) {
-                    cathedras.addItem(newItemCaption);
-                    cathedras.setValue(newItemCaption);
-                }
-            }
-        });*/
         universityGradYear = new TextField("Год окончания");
         universityGradYear.setRequired(true);
         universityGradYear.addListener(this);
@@ -635,25 +599,41 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         return v;
     }
     
- 
-    private void setEditable(boolean editable) {
-        Iterator<Component> i = persInfo.getComponentIterator();
-        while (i.hasNext()) {
-            Component c = (Component) i.next();
-            if (c instanceof Upload) {
-                c.setVisible(editable);
-            } 
-//            else if (c instanceof ComboBox) {
-//                ComboBox c1 = (ComboBox) c;
-//                Label l = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
-//                l.setContentMode(Label.CONTENT_XHTML);
-//                persInfo.replaceComponent(c, l);
-//            }
-            else {
-                c.setReadOnly(!editable);
+    /**
+     * Switch editable mode for blank
+     * @param editable false - all components read only
+     * @return true if all components valid
+     */
+    private boolean setEditable(boolean editable) {
+        boolean valid = true;
+        GridLayout l = (GridLayout) persInfo.getContent();
+        for (int i= 0; i<l.getColumns(); i++) {
+            for (int j = 0; j < l.getRows(); j++) {
+                Component c = l.getComponent(i,j);
+                if (c instanceof Upload) {
+                    c.setVisible(editable);
+                } else if (c instanceof ComboBox) {
+                    ComboBox c1 = (ComboBox) c;
+                    Label lab = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
+                    lab.setContentMode(Label.CONTENT_XHTML);
+                    l.replaceComponent(c, lab);
+                } else if (c instanceof Label) {
+                    Label lab = (Label) c;
+                    String s = lab.getValue().toString();
+                    s = s.substring(0,s.indexOf("<"));
+                    if(universities.getCaption().equals(s)) {
+                        l.replaceComponent(c, universities);
+                    } else if (faculties.getCaption().equals(s)) {
+                        l.replaceComponent(c, faculties);
+                    } else if (cathedras.getCaption().equals(s)) {
+                        l.replaceComponent(c, cathedras);
+                    }
+                } else {
+                    c.setReadOnly(!editable);
+                }
             }
         }
-        i = contacts.getComponentIterator();
+        Iterator<Component> i = contacts.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
             if (c instanceof Button) {
@@ -707,6 +687,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         save.setVisible(editable);
         edit.setVisible(!editable);
         print.setVisible(!editable);
+        return valid;
     }
     
     /**
@@ -779,6 +760,19 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if (maxSize < event.getContentLength()) {
             photoUpload.interruptUpload();
             getWindow().showNotification("Недопустимый размер! Максимум 300Kb",Window.Notification.TYPE_TRAY_NOTIFICATION);
+            return;
+        }
+        String filename = event.getFilename();
+        int i = filename.lastIndexOf('.');
+        String ext = null;
+        if (i > 0 &&  i < filename.length() - 1) {
+            ext = filename.substring(i+1).toLowerCase();
+        }
+        if (ext != null && (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png"))) {
+        }
+        else {
+            photoUpload.interruptUpload();
+            getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
         }
     }
  
