@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * Student controller class for using in View
  *
- * @author Filipenko
+ * @author Filipenko, Zhokha Maksym
  */
 public class StudentPage {
 
@@ -286,11 +286,42 @@ public class StudentPage {
             List<Object> listOfInstitute = searchSomething("INSTITUTE", "NAME", newStudentData.getStudentInstitute());
             if (!(listOfInstitute.size() == 0)) {
                 Institute selectedInstitute = (Institute) listOfInstitute.get(0);
-                newForm.setIdInstitute(selectedInstitute);
+                newForm.setInstitute(selectedInstitute);
             }
         }
         return newForm;
 
+    }
+    
+    /**
+     * Returns StudentData object, needed to fill form in UI,
+     * by transforming Form object to StudentData object
+     * @param UserName - user name (login)
+     * @return object, needed to fill form using Vaadin
+     */
+    public static StudentData getStudentDataByUserName(String UserName) {
+        StudentData std = new StudentData();        
+        Form form = new DAOStudentImpl().getFormByUserName(UserName);
+        std.setIdForm(form.getIdForm());
+//        std.setStudentCPlusPlusMark();           //this methods not applicable yet
+//        std.setStudentCathedra();
+//        std.setStudentEmailFirst();
+//        std.setStudentEmailSecond();
+//        std.setStudentEnglishReadMark();
+//        std.setStudentEnglishSpeakMark();
+//        std.setStudentEnglishWriteMark();
+        std.setStudentExperienceProjects(form.getExecProject());
+//        std.setStudentFaculty();
+        std.setStudentFirstName(form.getFirstName());
+//        std.setStudentHowHearAboutCentre();
+        std.setStudentInstitute(form.getInstitute().getName());
+        std.setStudentInstituteCourse(form.getInstituteYear());
+//        std.setStudentInstituteGradYear();
+        std.setStudentInterestDevelopment(form.getInterestSoftware());
+//        std.setStudentInterestOther();
+        
+        return std;
+        
     }
 
 }

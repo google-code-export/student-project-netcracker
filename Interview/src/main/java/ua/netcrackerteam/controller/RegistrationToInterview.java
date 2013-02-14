@@ -16,8 +16,8 @@ public class RegistrationToInterview {
     
         public void updateRegistrationToInterview(String userName, Interview idInterview) {
          
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserLogin(userName);       
-        form.setIdInterview(idInterview);
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);       
+        form.setInterview(idInterview);
         HibernateFactory.getInstance().getStudentDAO().updateForm(form);       
              
     }
