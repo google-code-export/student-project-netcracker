@@ -18,7 +18,8 @@ public static void main(String[] args) throws SQLException {
 //        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserId(5);
 //        System.out.println(form.getFirstName());
 //        
-//        Form form1 = new Form();
+//        Form form1 = new Form(); 
+    
 //        form1.setIdForm(13L);
 //        form1.setFirstName("Иван");
 //        form1.setLastName("Царевич");
