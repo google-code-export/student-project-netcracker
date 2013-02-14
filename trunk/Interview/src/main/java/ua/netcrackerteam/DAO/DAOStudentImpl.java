@@ -1,25 +1,29 @@
 package ua.netcrackerteam.DAO;
 
+import java.sql.SQLException;
+import java.util.Locale;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
-import java.sql.SQLException;
-import java.util.Locale;
-
 /**
  * Implementation of DAOStudent
- * @author
+ * Implements base methods to work with student and related table in database,
+ * such as add, update, get information by username,
+ * @author Zhokha Maksym
  */
-public class DAOStudentImpl implements DAOStudent {
-public static void main(String[] args) throws SQLException {
+public class DAOStudentImpl implements DAOStudent
+{
+    public static void main(String[] args) throws SQLException {
+        
+        //Test get form by user id
 //        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserId(5);
 //        System.out.println(form.getFirstName());
-//        
-//        Form form1 = new Form(); 
-    
+
+        //Test adding new form        
+//        Form form1 = new Form();
 //        form1.setIdForm(13L);
 //        form1.setFirstName("Иван");
 //        form1.setLastName("Царевич");
@@ -46,15 +50,29 @@ public static void main(String[] args) throws SQLException {
 //        form1.setIdUser(2L);
 //        form1.setIdInterview(1L);
 //        HibernateFactory.getInstance().getStudentDAO().addForm(form1);
-//        
+        
+        //Test updating form        
 //        form1.setFirstName("Йосип");
 //        form1.setLastName("Кобзон");
 //        HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
-    Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserLogin("ThirdLogin");
-         System.out.println("blabla");
-    
-    }
 
+        //Test getting form by user name
+          Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("ThirdLogin");
+          System.out.println("blabla");
+         
+         
+        //Example how to get form by form id
+//         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//         session.beginTransaction();
+//         Form form2 = (Form) session.get(Form.class, 9);
+//         System.out.println("blabla");    
+    }
+    
+    /**
+     * Returns Form object appropriate to certain user by user id specified
+     * @param idUser - user id, whose form is looked
+     * @return Returns Form object of the user with id specified in parameter idUser
+     */
     @Override
     public Form getFormByUserId(int idUser) {
         Session session = null;
@@ -64,7 +82,7 @@ public static void main(String[] args) throws SQLException {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createQuery("from Form where idUser = " + idUser);
+            query = session.createQuery("from Form where user = " + idUser);
             form = (Form) query.uniqueResult();           
         } catch (Exception e) {
             System.out.println(e);
@@ -75,7 +93,12 @@ public static void main(String[] args) throws SQLException {
         }
         return form;       
     }
-
+    
+    
+    /**
+     * Save data, stored in Form object to Form table in database
+     * @param form - Form object, stored data
+     */
     @Override
     public void addForm(Form form) {
         Session session = null;
@@ -95,6 +118,10 @@ public static void main(String[] args) throws SQLException {
         }
     }
 
+    /**
+     * Update row in database, related to specified Form object
+     * @param form - Form object, contained data
+     */
     @Override
     public void updateForm(Form form) {
         Session session = null;
@@ -114,36 +141,14 @@ public static void main(String[] args) throws SQLException {
         }
     }
 
-    /*
-        Temp method for get user list from DB. In future this method will be move to another entity.
-     */
 
-//    public Form getFormByUserLogin(String userName) {
-//        
-//        //-----------------in test------------------
-//        Session session = null;
-//        Query query;        
-//        Form form = null;
-//        try {
-//            Locale.setDefault(Locale.ENGLISH);
-//            session = HibernateUtil.getSessionFactory().getCurrentSession();
-//            session.beginTransaction();
-//            query = session.createQuery("from form, user_list "
-//                                        + "where form.id_user = user_list.id_user and "
-//                                        + "user_list.user_name = " + userName);
-//            form = (Form) query.uniqueResult();           
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        } finally {
-//            if (session != null && session.isOpen()) {
-//                session.close();
-//            }
-//        }
-//        return form;       
-//    }
-    
-@Override
-    public Form getFormByUserLogin(String userName) {       
+    /**
+     * Returns Form object appropriate to certain user by user name(login) specified
+     * @param userName - user name (login)
+     * @return 
+     */
+    @Override
+    public Form getFormByUserName(String userName) {       
         Session session = null;
         Query query;        
         Form form = null;

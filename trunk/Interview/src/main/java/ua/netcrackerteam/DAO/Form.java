@@ -75,44 +75,49 @@ public class Form implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_STATUS")
-    private Status idStatus;
+    private Status status;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_INSTITUTE")
-    private Institute idInstitute;
+    private Institute institute;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_SCHOOL")
-    private School idSchool;
+    private School school;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_USER")
-    private UserList idUser;
+    private UserList user;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_INTERVIEW")
-    private Interview idInterview;
+    private Interview interview;
 
-    //@Transient
-    @OneToMany(mappedBy= "idForm", fetch = FetchType.EAGER )
-    private Set<Contact> contacts;
+    
+    //Now have troubles with mapping many-to-many with additional field in join table
+    //Work without contact untill trouble shoot
+    
+//    //@Transient
+//    @OneToMany(mappedBy= "idForm", fetch = FetchType.EAGER )
+//    private Set<Contact> contacts;
 
     public Form() {
     }
+//
+//    public Set<Contact> getContacts() {
+//        return contacts;
+//    }
+//
+//    public void setContacts(Set<Contact> contacts) {
+//        this.contacts = contacts;
+//    }
 
-    public Set<Contact> getContacts() {
-        return contacts;
-    }
-
-    public void setContacts(Set<Contact> contacts) {
-        this.contacts = contacts;
-    }
 
     public int getIdForm() {
         return idForm;
     }
 
-    public void setIdForm(Integer idForm) {
+    public void setIdForm(int idForm) {
         this.idForm = idForm;
     }
 
@@ -244,47 +249,59 @@ public class Form implements Serializable {
         this.avgLast = avgLast;
     }
 
-    public Status getIdStatus() {
-        return idStatus;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setIdStatus(Status idStatus) {
-        this.idStatus = idStatus;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
-    public Institute getIdInstitute() {
-        return idInstitute;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setIdInstitute(Institute idInstitute) {
-        this.idInstitute = idInstitute;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public School getIdSchool() {
-        return idSchool;
+    public Institute getInstitute() {
+        return institute;
     }
 
-    public void setIdSchool(School idSchool) {
-        this.idSchool = idSchool;
+    public void setInstitute(Institute institute) {
+        this.institute = institute;
     }
 
-    public UserList getIdUser() {
-        return idUser;
+    public School getSchool() {
+        return school;
     }
 
-    public void setIdUser(UserList idUser) {
-        this.idUser = idUser;
+    public void setSchool(School school) {
+        this.school = school;
     }
 
-    public Interview getIdInterview() {
-        return idInterview;
+    public UserList getUser() {
+        return user;
     }
 
-    public void setIdInterview(Interview idInterview) {
-        this.idInterview = idInterview;
+    public void setUser(UserList user) {
+        this.user = user;
     }
 
-    @Override
+    public Interview getInterview() {
+        return interview;
+    }
+
+    public void setInterview(Interview interview) {
+        this.interview = interview;
+    }
+    
+    
+    
+    
+    
+        @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Form)) return false;
@@ -294,17 +311,17 @@ public class Form implements Serializable {
         if (idForm != form.idForm) return false;
         if (avgLast != null ? !avgLast.equals(form.avgLast) : form.avgLast != null) return false;
         if (avgScore != null ? !avgScore.equals(form.avgScore) : form.avgScore != null) return false;
-        if (contacts != null ? !contacts.equals(form.contacts) : form.contacts != null) return false;
+//        if (contacts != null ? !contacts.equals(form.contacts) : form.contacts != null) return false;
         if (execProject != null ? !execProject.equals(form.execProject) : form.execProject != null) return false;
         if (extraInfo != null ? !extraInfo.equals(form.extraInfo) : form.extraInfo != null) return false;
         if (extraKnowledge != null ? !extraKnowledge.equals(form.extraKnowledge) : form.extraKnowledge != null)
             return false;
         if (firstName != null ? !firstName.equals(form.firstName) : form.firstName != null) return false;
-        if (idInstitute != null ? !idInstitute.equals(form.idInstitute) : form.idInstitute != null) return false;
-        if (idInterview != null ? !idInterview.equals(form.idInterview) : form.idInterview != null) return false;
-        if (idSchool != null ? !idSchool.equals(form.idSchool) : form.idSchool != null) return false;
-        if (idStatus != null ? !idStatus.equals(form.idStatus) : form.idStatus != null) return false;
-        if (idUser != null ? !idUser.equals(form.idUser) : form.idUser != null) return false;
+        if (institute != null ? !institute.equals(form.institute) : form.institute != null) return false;
+        if (interview != null ? !interview.equals(form.interview) : form.interview != null) return false;
+        if (school != null ? !school.equals(form.school) : form.school != null) return false;
+        if (status != null ? !status.equals(form.status) : form.status != null) return false;
+        if (user != null ? !user.equals(form.user) : form.user != null) return false;
         if (instituteGradYear != null ? !instituteGradYear.equals(form.instituteGradYear) : form.instituteGradYear != null)
             return false;
         if (instituteYear != null ? !instituteYear.equals(form.instituteYear) : form.instituteYear != null)
@@ -346,12 +363,12 @@ public class Form implements Serializable {
         result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
         result = 31 * result + (avgLast != null ? avgLast.hashCode() : 0);
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
-        result = 31 * result + (idStatus != null ? idStatus.hashCode() : 0);
-        result = 31 * result + (idInstitute != null ? idInstitute.hashCode() : 0);
-        result = 31 * result + (idSchool != null ? idSchool.hashCode() : 0);
-        result = 31 * result + (idUser != null ? idUser.hashCode() : 0);
-        result = 31 * result + (idInterview != null ? idInterview.hashCode() : 0);
-        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (institute != null ? institute.hashCode() : 0);
+        result = 31 * result + (school != null ? school.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (interview != null ? interview.hashCode() : 0);
+//        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
     }
 }
