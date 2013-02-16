@@ -10,13 +10,14 @@ public class StudentData {
     private String studentFirstName = "";
     private String studentMiddleName = "";
     private String studentInstitute = "";
-    private int studentInstituteCourse;
+    private int studentInstituteCourse = 1;
     private String studentFaculty = "";
     private String studentCathedra = "";
-    private int studentInstituteGradYear;
+    private int studentInstituteGradYear = 2013;
     private String studentEmailFirst = "";
     private String studentEmailSecond = "";
     private String studentTelephone = "";
+    private String studentOtherContactType = "";
     private String studentOtherContact = "";
     private String studentInterestStudy = "";
     private String studentInterestWork = "";
@@ -27,35 +28,43 @@ public class StudentData {
     private String studentWorkTypeManagement = "";
     private String studentWorkTypeSale = "";
     private String studentWorkTypeOther = "";
-    private int studentCPlusPlusMark;
-    private int studentJavaMark;
+    private double studentCPlusPlusMark = 1;
+    private double studentJavaMark = 1;
     private String studentLanguage1 = "";
-    private String studentLanguage1Mark = "";
+    private double studentLanguage1Mark = 1;
     private String studentLanguage2 = "";
-    private String studentLanguage2Mark = "";
+    private double studentLanguage2Mark = 1;
     private String studentLanguage3 = "";
-    private String studentLanguage3Mark = "";
-    private int studentKnowledgeNetwork;
-    private int studentKnowledgeEfficientAlgorithms;
-    private int studentKnowledgeOOP;
-    private int studentKnowledgeDB;
-    private int studentKnowledgeWeb;
-    private int studentKnowledgeGUI;
-    private int studentKnowledgeNetworkProgramming;
-    private int studentKnowledgeProgramDesign;
+    private double studentLanguage3Mark = 1;
+    private double studentKnowledgeNetwork = 0;
+    private double studentKnowledgeEfficientAlgorithms = 0;
+    private double studentKnowledgeOOP = 0;
+    private double studentKnowledgeDB = 0;
+    private double studentKnowledgeWeb = 0;
+    private double studentKnowledgeGUI = 0;
+    private double studentKnowledgeNetworkProgramming = 0;
+    private double studentKnowledgeProgramDesign = 0;
     private String studentKnowledgeOther1 = "";
-    private String studentKnowledgeOther1Mark = "";
+    private double studentKnowledgeOther1Mark = 0;
     private String studentKnowledgeOther2 = "";
-    private String studentKnowledgeOther2Mark = "";
+    private double studentKnowledgeOther2Mark = 0;
     private String studentKnowledgeOther3 = "";
-    private String studentKnowledgeOther3Mark = "";
+    private double studentKnowledgeOther3Mark = 0;
     private String studentExperienceProjects = "";
-    private int studentEnglishReadMark;
-    private int studentEnglishWriteMark;
-    private int studentEnglishSpeakMark;
+    private double studentEnglishReadMark  = 1;
+    private double studentEnglishWriteMark  = 1;
+    private double studentEnglishSpeakMark  = 1;
     private String studentHowHearAboutCentre = "";
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
+
+    public String getStudentOtherContactType() {
+        return studentOtherContactType;
+    }
+
+    public void setStudentOtherContactType(String studentOtherContactType) {
+        this.studentOtherContactType = studentOtherContactType;
+    }
 
     public int getIdForm() {
         return idForm;
@@ -233,19 +242,19 @@ public class StudentData {
         this.studentWorkTypeOther = studentWorkTypeOther;
     }
 
-    public int getStudentCPlusPlusMark() {
+    public double getStudentCPlusPlusMark() {
         return studentCPlusPlusMark;
     }
 
-    public void setStudentCPlusPlusMark(int studentCPlusPlusMark) {
+    public void setStudentCPlusPlusMark(double studentCPlusPlusMark) {
         this.studentCPlusPlusMark = studentCPlusPlusMark;
     }
 
-    public int getStudentJavaMark() {
+    public double getStudentJavaMark() {
         return studentJavaMark;
     }
 
-    public void setStudentJavaMark(int studentJavaMark) {
+    public void setStudentJavaMark(double studentJavaMark) {
         this.studentJavaMark = studentJavaMark;
     }
 
@@ -257,11 +266,11 @@ public class StudentData {
         this.studentLanguage1 = studentLanguage1;
     }
 
-    public String getStudentLanguage1Mark() {
+    public double getStudentLanguage1Mark() {
         return studentLanguage1Mark;
     }
 
-    public void setStudentLanguage1Mark(String studentLanguage1Mark) {
+    public void setStudentLanguage1Mark(double studentLanguage1Mark) {
         this.studentLanguage1Mark = studentLanguage1Mark;
     }
 
@@ -273,11 +282,11 @@ public class StudentData {
         this.studentLanguage2 = studentLanguage2;
     }
 
-    public String getStudentLanguage2Mark() {
+    public double getStudentLanguage2Mark() {
         return studentLanguage2Mark;
     }
 
-    public void setStudentLanguage2Mark(String studentLanguage2Mark) {
+    public void setStudentLanguage2Mark(double studentLanguage2Mark) {
         this.studentLanguage2Mark = studentLanguage2Mark;
     }
 
@@ -289,75 +298,75 @@ public class StudentData {
         this.studentLanguage3 = studentLanguage3;
     }
 
-    public String getStudentLanguage3Mark() {
+    public double getStudentLanguage3Mark() {
         return studentLanguage3Mark;
     }
 
-    public void setStudentLanguage3Mark(String studentLanguage3Mark) {
+    public void setStudentLanguage3Mark(double studentLanguage3Mark) {
         this.studentLanguage3Mark = studentLanguage3Mark;
     }
 
-    public int getStudentKnowledgeNetwork() {
+    public double getStudentKnowledgeNetwork() {
         return studentKnowledgeNetwork;
     }
 
-    public void setStudentKnowledgeNetwork(int studentKnowledgeNetwork) {
+    public void setStudentKnowledgeNetwork(double studentKnowledgeNetwork) {
         this.studentKnowledgeNetwork = studentKnowledgeNetwork;
     }
 
-    public int getStudentKnowledgeEfficientAlgorithms() {
+    public double getStudentKnowledgeEfficientAlgorithms() {
         return studentKnowledgeEfficientAlgorithms;
     }
 
-    public void setStudentKnowledgeEfficientAlgorithms(int studentKnowledgeEfficientAlgorithms) {
+    public void setStudentKnowledgeEfficientAlgorithms(double studentKnowledgeEfficientAlgorithms) {
         this.studentKnowledgeEfficientAlgorithms = studentKnowledgeEfficientAlgorithms;
     }
 
-    public int getStudentKnowledgeOOP() {
+    public double getStudentKnowledgeOOP() {
         return studentKnowledgeOOP;
     }
 
-    public void setStudentKnowledgeOOP(int studentKnowledgeOOP) {
+    public void setStudentKnowledgeOOP(double studentKnowledgeOOP) {
         this.studentKnowledgeOOP = studentKnowledgeOOP;
     }
 
-    public int getStudentKnowledgeDB() {
+    public double getStudentKnowledgeDB() {
         return studentKnowledgeDB;
     }
 
-    public void setStudentKnowledgeDB(int studentKnowledgeDB) {
+    public void setStudentKnowledgeDB(double studentKnowledgeDB) {
         this.studentKnowledgeDB = studentKnowledgeDB;
     }
 
-    public int getStudentKnowledgeWeb() {
+    public double getStudentKnowledgeWeb() {
         return studentKnowledgeWeb;
     }
 
-    public void setStudentKnowledgeWeb(int studentKnowledgeWeb) {
+    public void setStudentKnowledgeWeb(double studentKnowledgeWeb) {
         this.studentKnowledgeWeb = studentKnowledgeWeb;
     }
 
-    public int getStudentKnowledgeGUI() {
+    public double getStudentKnowledgeGUI() {
         return studentKnowledgeGUI;
     }
 
-    public void setStudentKnowledgeGUI(int studentKnowledgeGUI) {
+    public void setStudentKnowledgeGUI(double studentKnowledgeGUI) {
         this.studentKnowledgeGUI = studentKnowledgeGUI;
     }
 
-    public int getStudentKnowledgeNetworkProgramming() {
+    public double getStudentKnowledgeNetworkProgramming() {
         return studentKnowledgeNetworkProgramming;
     }
 
-    public void setStudentKnowledgeNetworkProgramming(int studentKnowledgeNetworkProgramming) {
+    public void setStudentKnowledgeNetworkProgramming(double studentKnowledgeNetworkProgramming) {
         this.studentKnowledgeNetworkProgramming = studentKnowledgeNetworkProgramming;
     }
 
-    public int getStudentKnowledgeProgramDesign() {
+    public double getStudentKnowledgeProgramDesign() {
         return studentKnowledgeProgramDesign;
     }
 
-    public void setStudentKnowledgeProgramDesign(int studentKnowledgeProgramDesign) {
+    public void setStudentKnowledgeProgramDesign(double studentKnowledgeProgramDesign) {
         this.studentKnowledgeProgramDesign = studentKnowledgeProgramDesign;
     }
 
@@ -369,11 +378,11 @@ public class StudentData {
         this.studentKnowledgeOther1 = studentKnowledgeOther1;
     }
 
-    public String getStudentKnowledgeOther1Mark() {
+    public double getStudentKnowledgeOther1Mark() {
         return studentKnowledgeOther1Mark;
     }
 
-    public void setStudentKnowledgeOther1Mark(String studentKnowledgeOther1Mark) {
+    public void setStudentKnowledgeOther1Mark(double studentKnowledgeOther1Mark) {
         this.studentKnowledgeOther1Mark = studentKnowledgeOther1Mark;
     }
 
@@ -385,11 +394,11 @@ public class StudentData {
         this.studentKnowledgeOther2 = studentKnowledgeOther2;
     }
 
-    public String getStudentKnowledgeOther2Mark() {
+    public double getStudentKnowledgeOther2Mark() {
         return studentKnowledgeOther2Mark;
     }
 
-    public void setStudentKnowledgeOther2Mark(String studentKnowledgeOther2Mark) {
+    public void setStudentKnowledgeOther2Mark(double studentKnowledgeOther2Mark) {
         this.studentKnowledgeOther2Mark = studentKnowledgeOther2Mark;
     }
 
@@ -401,11 +410,11 @@ public class StudentData {
         this.studentKnowledgeOther3 = studentKnowledgeOther3;
     }
 
-    public String getStudentKnowledgeOther3Mark() {
+    public double getStudentKnowledgeOther3Mark() {
         return studentKnowledgeOther3Mark;
     }
 
-    public void setStudentKnowledgeOther3Mark(String studentKnowledgeOther3Mark) {
+    public void setStudentKnowledgeOther3Mark(double studentKnowledgeOther3Mark) {
         this.studentKnowledgeOther3Mark = studentKnowledgeOther3Mark;
     }
 
@@ -417,27 +426,27 @@ public class StudentData {
         this.studentExperienceProjects = studentExperienceProjects;
     }
 
-    public int getStudentEnglishReadMark() {
+    public double getStudentEnglishReadMark() {
         return studentEnglishReadMark;
     }
 
-    public void setStudentEnglishReadMark(int studentEnglishReadMark) {
+    public void setStudentEnglishReadMark(double studentEnglishReadMark) {
         this.studentEnglishReadMark = studentEnglishReadMark;
     }
 
-    public int getStudentEnglishWriteMark() {
+    public double getStudentEnglishWriteMark() {
         return studentEnglishWriteMark;
     }
 
-    public void setStudentEnglishWriteMark(int studentEnglishWriteMark) {
+    public void setStudentEnglishWriteMark(double studentEnglishWriteMark) {
         this.studentEnglishWriteMark = studentEnglishWriteMark;
     }
 
-    public int getStudentEnglishSpeakMark() {
+    public double getStudentEnglishSpeakMark() {
         return studentEnglishSpeakMark;
     }
 
-    public void setStudentEnglishSpeakMark(int studentEnglishSpeakMark) {
+    public void setStudentEnglishSpeakMark(double studentEnglishSpeakMark) {
         this.studentEnglishSpeakMark = studentEnglishSpeakMark;
     }
 
