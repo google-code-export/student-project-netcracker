@@ -307,10 +307,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         List<Institute>insts = StudentPage.getUniversityList();
         BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
         universities = new ComboBox("ВУЗ",objects);
+        universities.setPropertyDataSource((Property) bean.getItemProperty("studentInstitute"));
         universities.setItemCaptionPropertyId("name");
         faculties = new ComboBox("Факультет");
+        faculties.setPropertyDataSource((Property) bean.getItemProperty("studentFaculty"));
         faculties.setItemCaptionPropertyId("name");
         cathedras = new ComboBox("Кафедра");
+        cathedras.setPropertyDataSource((Property) bean.getItemProperty("studentCathedra"));
         cathedras.setItemCaptionPropertyId("name");
         universities.addListener(new ValueChangeListener() {
             public void valueChange(ValueChangeEvent event) {
@@ -530,6 +533,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
         advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
+        advert.setPropertyDataSource((Property) bean.getItemProperty("studentHowHearAboutCentre"));
         advert.setWidth("220");
         advert.setRequired(true);
         advert.setItemEnabled(0, true);
@@ -826,22 +830,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
         }
     }
-    private void saveComboBoxes() {
-        Property u = (Property) bean.getItemProperty("studentInstitute");
-        u.setValue((Institute)universities.getValue());
-        Property f = (Property) bean.getItemProperty("studentFaculty");
-        f.setValue((Faculty)faculties.getValue());
-        Property c = (Property) bean.getItemProperty("studentCathedra");
-        c.setValue((Cathedra)cathedras.getValue());
-    }
 
     private void saveOptionGroup() {
-        Property p = (Property) bean.getItemProperty("studentHowHearAboutCentre");
         if(advert.getValue().equals("Другое (уточните)")) {
+            Property p = (Property) bean.getItemProperty("studentHowHearAboutCentre");
             p.setValue(anotherAdvert.getValue().toString());
-        } else {
-            p.setValue(advert.getValue().toString());
-        }
+        } 
     }
  
     private class ButtonsListener implements Button.ClickListener {
@@ -871,7 +865,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }  
                 } else if(source == save) {
                     if(checkAllValid()) {
-                        saveComboBoxes();
                         saveOptionGroup();
                         setEditable(false);
                         stData.getIdForm();
@@ -918,6 +911,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 }
             }
             if(property.getValue().toString().equals("")) {
+                property.setValue(select);
                 but.get(0).setEnabled(false);
             } 
         }
