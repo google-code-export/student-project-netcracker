@@ -4,6 +4,9 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.ui.Component;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.VerticalLayout;
 
 
@@ -12,30 +15,37 @@ import com.vaadin.ui.VerticalLayout;
  * Panel for Student view
  * @author Anna Kushnirenko
  */
-public class MainPanelStudent extends MainPanel {
+public class MainPanelStudent extends MainPanel{
     private StudentBlank blankLayout;
-    private VerticalLayout interviewLayout;
-    private VerticalLayout settingsLo;
+    private InterviewLayout interviewLayout;
+    private SettingsLayout settingsLayout;
     
     
-    public MainPanelStudent(HeaderLayout hlayout,MainPage mainPage) {
+    public MainPanelStudent(final HeaderLayout hlayout,MainPage mainPage) {
         super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
-        blankLayout = new StudentBlank(hlayout.getUsername());
-        tabSheet.addTab(blankLayout,"Анкета");
-        interviewLayout = new VerticalLayout();
-        tabSheet.addTab(interviewLayout,"Собеседование");
-        fillInterviewLayout();
-        settingsLo = new VerticalLayout();
-        tabSheet.addTab(settingsLo,"Настройки");
-        fillSettingsLayout();
-    }
+        final Component c1 = new VerticalLayout();
+        final Component c2 = new VerticalLayout();
+        final Component c3 = new VerticalLayout();
+        tabSheet.addTab(c1,"Анкета");
+        tabSheet.addTab(c2,"Собеседование");
+        tabSheet.addTab(c3,"Настройки");
+        tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
 
-    private void fillInterviewLayout() {
-        
-    }
-
-    private void fillSettingsLayout() {
+            public void selectedTabChange(SelectedTabChangeEvent event) {
+                final TabSheet source = (TabSheet) event.getSource();
+                if(source.getSelectedTab() == c1) {
+                    blankLayout = new StudentBlank(hlayout.getUsername());
+                    source.replaceComponent(c1, blankLayout);
+                } else if (source.getSelectedTab() == c2) {
+                    interviewLayout = new InterviewLayout(hlayout.getUsername());
+                    source.replaceComponent(c2, interviewLayout);
+                } else if (source.getSelectedTab() == c3) {
+                    settingsLayout = new SettingsLayout(hlayout.getUsername());
+                    source.replaceComponent(c3, settingsLayout);
+                }
+            }
+        });
     }
    
 }
