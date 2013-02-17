@@ -118,8 +118,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private TextField anotherWorkType;
     private Embedded photo;
 
- 
-    
 
     public StudentBlank(String username) {
         stData = StudentPage.getStudentDataByUserName(username);
@@ -828,6 +826,23 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
         }
     }
+    private void saveComboBoxes() {
+        Property u = (Property) bean.getItemProperty("studentInstitute");
+        u.setValue((Institute)universities.getValue());
+        Property f = (Property) bean.getItemProperty("studentFaculty");
+        f.setValue((Faculty)faculties.getValue());
+        Property c = (Property) bean.getItemProperty("studentCathedra");
+        c.setValue((Cathedra)cathedras.getValue());
+    }
+
+    private void saveOptionGroup() {
+        Property p = (Property) bean.getItemProperty("studentHowHearAboutCentre");
+        if(advert.getValue().equals("Другое (уточните)")) {
+            p.setValue(anotherAdvert.getValue().toString());
+        } else {
+            p.setValue(advert.getValue().toString());
+        }
+    }
  
     private class ButtonsListener implements Button.ClickListener {
 
@@ -856,6 +871,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }  
                 } else if(source == save) {
                     if(checkAllValid()) {
+                        saveComboBoxes();
+                        saveOptionGroup();
                         setEditable(false);
                         stData.getIdForm();
                     } else {
