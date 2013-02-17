@@ -1,5 +1,9 @@
 package ua.netcrackerteam.controller;
 
+import ua.netcrackerteam.DAO.Cathedra;
+import ua.netcrackerteam.DAO.Faculty;
+import ua.netcrackerteam.DAO.Institute;
+
 /**
  * Class-controller for Student Entity with necessary information for use in GUI
  * @author krygin
@@ -9,10 +13,10 @@ public class StudentData {
     private String studentLastName = "";
     private String studentFirstName = "";
     private String studentMiddleName = "";
-    private String studentInstitute = "";
+    private Institute studentInstitute;
     private int studentInstituteCourse = 1;
-    private String studentFaculty = "";
-    private String studentCathedra = "";
+    private Faculty studentFaculty;
+    private Cathedra studentCathedra;
     private int studentInstituteGradYear = 2013;
     private String studentEmailFirst = "";
     private String studentEmailSecond = "";
@@ -98,11 +102,11 @@ public class StudentData {
         this.studentMiddleName = studentMiddleName;
     }
 
-    public String getStudentInstitute() {
+    public Institute getStudentInstitute() {
         return studentInstitute;
     }
 
-    public void setStudentInstitute(String studentInstitute) {
+    public void setStudentInstitute(Institute studentInstitute) {
         this.studentInstitute = studentInstitute;
     }
 
@@ -114,19 +118,19 @@ public class StudentData {
         this.studentInstituteCourse = studentInstituteCourse;
     }
 
-    public String getStudentFaculty() {
+    public Faculty getStudentFaculty() {
         return studentFaculty;
     }
 
-    public void setStudentFaculty(String studentFaculty) {
+    public void setStudentFaculty(Faculty studentFaculty) {
         this.studentFaculty = studentFaculty;
     }
 
-    public String getStudentCathedra() {
+    public Cathedra getStudentCathedra() {
         return studentCathedra;
     }
 
-    public void setStudentCathedra(String studentCathedra) {
+    public void setStudentCathedra(Cathedra studentCathedra) {
         this.studentCathedra = studentCathedra;
     }
 
