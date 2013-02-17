@@ -22,7 +22,6 @@ public class SendMails implements Logable{
                     "password - " + userPassword + "");
             email.addTo(userEmail);
             email.send();
-            logger.info();
         } catch (EmailException ex) {
             ex.printStackTrace();
             logger.getLog().error(ex);

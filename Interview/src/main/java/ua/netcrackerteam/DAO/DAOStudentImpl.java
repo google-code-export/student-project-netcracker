@@ -1,12 +1,15 @@
 package ua.netcrackerteam.DAO;
 
-import java.sql.SQLException;
-import java.util.Locale;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.HibernateUtil;
+import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
+
+import javax.interceptor.Interceptors;
+import java.sql.SQLException;
+import java.util.Locale;
 
 /**
  * Implementation of DAOStudent
@@ -58,7 +61,7 @@ public class DAOStudentImpl implements DAOStudent
 
         //Test getting form by user name
           Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("ThirdLogin");
-          System.out.println("blabla");
+          System.out.println("blabla" + form1.getFirstName());
          
          
         //Example how to get form by form id
@@ -74,6 +77,7 @@ public class DAOStudentImpl implements DAOStudent
      * @return Returns Form object of the user with id specified in parameter idUser
      */
     @Override
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public Form getFormByUserId(int idUser) {
         Session session = null;
         Query query;        
@@ -100,6 +104,7 @@ public class DAOStudentImpl implements DAOStudent
      * @param form - Form object, stored data
      */
     @Override
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public void addForm(Form form) {
         Session session = null;
         Transaction transaction = null;
@@ -123,6 +128,7 @@ public class DAOStudentImpl implements DAOStudent
      * @param form - Form object, contained data
      */
     @Override
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public void updateForm(Form form) {
         Session session = null;
         Transaction transaction = null;
@@ -148,6 +154,7 @@ public class DAOStudentImpl implements DAOStudent
      * @return 
      */
     @Override
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public Form getFormByUserName(String userName) {       
         Session session = null;
         Query query;        

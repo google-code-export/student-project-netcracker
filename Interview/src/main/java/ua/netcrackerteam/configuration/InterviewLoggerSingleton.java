@@ -30,7 +30,7 @@ public class InterviewLoggerSingleton{
         return instance;
     }
 
-    public void info() {
+    /*public void info() {
         Throwable t = new Throwable();
         StackTraceElement trace[] = t.getStackTrace();
         if (trace.length > 1)
@@ -40,5 +40,5 @@ public class InterviewLoggerSingleton{
             String usedMethod = element.getMethodName();
             log.info("[" + usedClass + "],[" + usedMethod + "] " + infoMsg);
         }
-    }
+    }*/
 }

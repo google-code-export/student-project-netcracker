@@ -4,7 +4,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.*;
 import ua.netcrackerteam.configuration.HibernateUtil;
+import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
+import javax.interceptor.Interceptors;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +18,7 @@ import java.util.Locale;
  */
 public class StudentPage {
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     //public static List<String> getUniversityList() {
     public static List<Institute> getUniversityList() {
 
@@ -44,7 +47,7 @@ public class StudentPage {
         return instituteList;
     }
 
-
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Faculty> getFacultyListByInstitute(Institute currInstitute) {
 
         Session session = null;
@@ -92,6 +95,7 @@ public class StudentPage {
         return selectedFaculty;
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Cathedra> getCathedraListByFaculty(Faculty currFaculty, Institute currInstitute) {
 
         Session session = null;
@@ -139,6 +143,7 @@ public class StudentPage {
         return selectedCathedra;
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static boolean verificationOfTheExistenceSomthing (String tableForVerification, String inWhichColumn, String someThing) {
         Session session = null;
         org.hibernate.Query re = null;
@@ -166,6 +171,7 @@ public class StudentPage {
         }
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Object> searchSomething (String tableForSearch, String inWhichColumn, String someThing) {
         Session session = null;
         org.hibernate.Query re = null;
@@ -187,7 +193,7 @@ public class StudentPage {
         return selectedSomething;
     }
 
-
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static void insertNewBranch(String[] branchNames) {
 
         Session session = null;
@@ -215,6 +221,7 @@ public class StudentPage {
         }
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static void insertNewContacts(String contactType) {
 
         Session session = null;
@@ -268,6 +275,7 @@ public class StudentPage {
 
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static Form addNewForm(StudentData newStudentData, Integer userID) {
 
         Form newForm = new Form();
@@ -282,13 +290,13 @@ public class StudentPage {
         newForm.setInterestWork     (newStudentData.getStudentInterestWork());
         newForm.setInterestSoftware (newStudentData.getStudentInterestDevelopment());
         newForm.setInterestTelecom  (newStudentData.getStudentInterestOther());
-        if (!newStudentData.getStudentInstitute().equals("")) {
+        /*if (!newStudentData.getStudentInstitute().equals("")) {
             List<Object> listOfInstitute = searchSomething("INSTITUTE", "NAME", newStudentData.getStudentInstitute());
             if (!(listOfInstitute.size() == 0)) {
                 Institute selectedInstitute = (Institute) listOfInstitute.get(0);
                 newForm.setInstitute(selectedInstitute);
             }
-        }
+        }*/
         return newForm;
 
     }
@@ -299,6 +307,7 @@ public class StudentPage {
      * @param UserName - user name (login)
      * @return object, needed to fill form using Vaadin
      */
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static StudentData getStudentDataByUserName(String UserName) {
         StudentData std = new StudentData();        
         Form form = new DAOStudentImpl().getFormByUserName(UserName);

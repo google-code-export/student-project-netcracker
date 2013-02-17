@@ -11,7 +11,6 @@ public class HibernateUtil implements Logable{
     static{
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
-            logger.info();
         } catch (Throwable e) {
             throw new ExceptionInInitializerError(e);
         }
