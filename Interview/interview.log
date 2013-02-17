@@ -89,3 +89,12 @@ line 1:46: unexpected token: where
 20:56:34,833 ERROR main SqlExceptionHelper:logExceptions:144 - Invalid column type: getString not implemented for class oracle.jdbc.driver.T4CBlobAccessor
 21:00:45,368  WARN main SqlExceptionHelper:logExceptions:143 - SQL Error: 17004, SQLState: 99999
 21:00:45,374 ERROR main SqlExceptionHelper:logExceptions:144 - Invalid column type: getString not implemented for class oracle.jdbc.driver.T4CBlobAccessor
+16/02/2013 2:25:01 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 2:25:01 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 2:25:01 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 3:00:26 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 3:00:26 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 3:00:26 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 3:00:57 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 3:00:57 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>
+16/02/2013 3:00:57 [main] INFO - <[ua.netcrackerteam.configuration.HibernateUtil],[<clinit>] has successfully executed>

@@ -6,6 +6,7 @@ package ua.netcrackerteam.DAO;
  * @author krygin, Zhokha Maksym, Fillipenko
  */
 public interface DAOStudent {
+    
     public Form getFormByUserId(int idForm);
     public Form getFormByUserName(String userName);
     public void addForm(Form form);

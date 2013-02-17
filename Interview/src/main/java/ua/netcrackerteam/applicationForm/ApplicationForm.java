@@ -7,54 +7,22 @@ package ua.netcrackerteam.applicationForm;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
-import ua.netcrackerteam.controller.StudentData;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
+import ua.netcrackerteam.controller.StudentData;
 
 /**
  *
  * @author tanya
  */
-public class ApplicationForm implements Observer{
-    
-    /**
-     * Unique identifier for form
-     */
-    public int idForm;
-    /**
-     * interview
-     */
-    public Observable interview;
-    
-    /**
-     * Called when the interview was changed by hr
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    /**
-     * Checking the filling of fields
-     * @return true/false
-     */
-    public boolean checkFields(){
-        return true;
-    }
-    /**    
-     * Check size photo (max size 300 kb)
-     * @return true/false
-     */
-    public boolean checkSizePhoto(){
-        return true;
-    }
+public class ApplicationForm{   
     
     /**
      * Create from (pdf-format)
      */
     public static void generateFormPDF() throws DocumentException, IOException {
+        
         BaseFont font = BaseFont.createFont("src\\main\\java\\times.ttf", "cp1251", BaseFont.EMBEDDED);
         PdfReader reader = new PdfReader("src\\main\\java\\Template.pdf");
         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("src\\Form.pdf"));
