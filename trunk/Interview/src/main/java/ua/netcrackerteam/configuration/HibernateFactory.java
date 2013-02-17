@@ -8,8 +8,9 @@ import ua.netcrackerteam.DAO.*;
 public class HibernateFactory {
     
     private static DAOCommon commonDao = null;
-    private static DAOStudentImpl studentDAO = null;
-       
+    private static DAOStudentImpl studentDAO = null;    
+    private static InterviewDAOImpl interviewDAO = null;
+        
     private static HibernateFactory instance = null;
 
     public static synchronized HibernateFactory getInstance(){
@@ -31,6 +32,13 @@ public class HibernateFactory {
             studentDAO = new DAOStudentImpl();
         }
         return studentDAO;
+    }
+    
+    public InterviewDAOImpl getDAOInterview(){
+        if (interviewDAO == null){
+            interviewDAO = new InterviewDAOImpl();
+        }
+        return interviewDAO;
     }
     
 
