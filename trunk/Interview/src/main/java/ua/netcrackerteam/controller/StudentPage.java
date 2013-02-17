@@ -282,13 +282,13 @@ public class StudentPage {
         newForm.setInterestWork     (newStudentData.getStudentInterestWork());
         newForm.setInterestSoftware (newStudentData.getStudentInterestDevelopment());
         newForm.setInterestTelecom  (newStudentData.getStudentInterestOther());
-//        if (!newStudentData.getStudentInstitute().equals("")) {
-//            List<Object> listOfInstitute = searchSomething("INSTITUTE", "NAME", newStudentData.getStudentInstitute());
-//            if (!(listOfInstitute.size() == 0)) {
-//                Institute selectedInstitute = (Institute) listOfInstitute.get(0);
-//                newForm.setInstitute(selectedInstitute);
-//            }
-//        }
+        if (!newStudentData.getStudentInstitute().equals("")) {
+            List<Object> listOfInstitute = searchSomething("INSTITUTE", "NAME", newStudentData.getStudentInstitute());
+            if (!(listOfInstitute.size() == 0)) {
+                Institute selectedInstitute = (Institute) listOfInstitute.get(0);
+                newForm.setInstitute(selectedInstitute);
+            }
+        }
         return newForm;
 
     }
@@ -301,24 +301,24 @@ public class StudentPage {
      */
     public static StudentData getStudentDataByUserName(String UserName) {
         StudentData std = new StudentData();        
-//        Form form = new DAOStudentImpl().getFormByUserName(UserName);
-//        std.setIdForm(form.getIdForm());
-////        std.setStudentCPlusPlusMark();           //this methods not applicable yet
-////        std.setStudentCathedra();
-////        std.setStudentEmailFirst();
-////        std.setStudentEmailSecond();
-////        std.setStudentEnglishReadMark();
-////        std.setStudentEnglishSpeakMark();
-////        std.setStudentEnglishWriteMark();
-//        std.setStudentExperienceProjects(form.getExecProject());
-////        std.setStudentFaculty();
-//        std.setStudentFirstName(form.getFirstName());
-////        std.setStudentHowHearAboutCentre();
-////        std.setStudentInstitute(form.getInstitute().getName());
-//        std.setStudentInstituteCourse(form.getInstituteYear());
-////        std.setStudentInstituteGradYear();
-//        std.setStudentInterestDevelopment(form.getInterestSoftware());
-////        std.setStudentInterestOther();
+        Form form = new DAOStudentImpl().getFormByUserName(UserName);
+        std.setIdForm(form.getIdForm());
+//        std.setStudentCPlusPlusMark();           //this methods not applicable yet
+//        std.setStudentCathedra();
+//        std.setStudentEmailFirst();
+//        std.setStudentEmailSecond();
+//        std.setStudentEnglishReadMark();
+//        std.setStudentEnglishSpeakMark();
+//        std.setStudentEnglishWriteMark();
+        std.setStudentExperienceProjects(form.getExecProject());
+//        std.setStudentFaculty();
+        std.setStudentFirstName(form.getFirstName());
+//        std.setStudentHowHearAboutCentre();
+//        std.setStudentInstitute(form.getInstitute().getName());
+        std.setStudentInstituteCourse(form.getInstituteYear());
+//        std.setStudentInstituteGradYear();
+        std.setStudentInterestDevelopment(form.getInterestSoftware());
+//        std.setStudentInterestOther();
         
         return std;
         

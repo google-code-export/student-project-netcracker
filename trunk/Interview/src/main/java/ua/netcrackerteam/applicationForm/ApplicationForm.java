@@ -70,10 +70,10 @@ public class ApplicationForm implements Observer{
         form.setField("info1", studentData.getStudentLastName());
         form.setField("info2", studentData.getStudentFirstName());
         form.setField("info3", studentData.getStudentMiddleName());
-//        form.setField("info4", studentData.getStudentInstitute());
+        form.setField("info4", studentData.getStudentInstitute());
         form.setField("info5", String.valueOf(studentData.getStudentInstituteCourse()));
-//        form.setField("info6", studentData.getStudentFaculty());
-//        form.setField("info7", studentData.getStudentCathedra());
+        form.setField("info6", studentData.getStudentFaculty());
+        form.setField("info7", studentData.getStudentCathedra());
         form.setField("info8", String.valueOf(studentData.getStudentInstituteGradYear()));
         form.setField("year1", String.valueOf(currentYear));
         form.setField("year2", String.valueOf(currentYear));
