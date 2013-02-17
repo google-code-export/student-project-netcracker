@@ -19,7 +19,6 @@ public class InterviewLoggerReader {
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
-            logger.info();
         } catch (FileNotFoundException e) {
             logger.getLog().error(e);
             e.printStackTrace();

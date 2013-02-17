@@ -4,7 +4,9 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
+import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
+import javax.interceptor.Interceptors;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -13,6 +15,7 @@ import java.util.Locale;
  *
  */
 public class DAOCommon {
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public void setUser(String userName,
                         String userPassword,
                         String userEmail,
@@ -33,7 +36,7 @@ public class DAOCommon {
             //---------
             //userList.setIdUserCategory(idUserCategory);
             //+++++++++
-            userList.setIdUserCategory(getUserCategoeyByID(idUserCategory));
+            userList.setIdUserCategory(getUserCategoeyByID(idUserCategory, session));
             session.save(userList);
             transaction.commit();
         } catch (Exception e) {
@@ -45,6 +48,7 @@ public class DAOCommon {
         }
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public int deleteUserById(int user_Id) {
         Session session = null;
         Query re = null;
@@ -67,6 +71,7 @@ public class DAOCommon {
         return number;
     }
 
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List getUser() throws SQLException {
         Session session = null;
         Query re = null;
@@ -87,28 +92,26 @@ public class DAOCommon {
         return listOfForms;
     }
 
-
-    public static UserCategory getUserCategoeyByID(int currUserCategoryID) throws SQLException {
-        Session session = null;
+    @Interceptors(ShowHibernateSQLInterceptor.class)
+    public static UserCategory getUserCategoeyByID(int currUserCategoryID, Session session) throws SQLException {
+        //Session session = null;
         org.hibernate.Query re = null;
         List listOfCategories = null;
         UserCategory currUserCategory = new UserCategory();
         try {
             Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
+            //session = HibernateUtil.getSessionFactory().getCurrentSession();
+            //session.beginTransaction();
             re = session.createQuery("from UserCategory where idUSerCategory = '" + currUserCategoryID + "'");
             listOfCategories = re.list();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
-            if (session != null && session.isOpen()) {
+            /*if (session != null && session.isOpen()) {
                 session.close();
-            }
+            }*/
         }
         currUserCategory = (UserCategory) listOfCategories.get(0);
         return currUserCategory;
     }
-
-
 }
