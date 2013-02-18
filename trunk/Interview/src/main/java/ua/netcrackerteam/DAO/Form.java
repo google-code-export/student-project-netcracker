@@ -77,17 +77,17 @@ public class Form implements Serializable {
     @JoinColumn(name = "ID_STATUS")
     private Status status;
 
-    @ManyToOne(fetch = FetchType.EAGER,optional=true)
-    @JoinColumn(name = "ID_INSTITUTE")
-    private Institute institute;
+//    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+//    @JoinColumn(name = "ID_INSTITUTE")
+//    private Institute institute;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_CATHEDRA")
     private Cathedra cathedra;
 
-    @ManyToOne(fetch = FetchType.EAGER,optional=true)
-    @JoinColumn(name = "ID_FACULTY")
-    private Faculty faculty;
+//    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+//    @JoinColumn(name = "ID_FACULTY")
+//    private Faculty faculty;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_SCHOOL")
@@ -129,13 +129,13 @@ public class Form implements Serializable {
         this.cathedra = cathedra;
     }
 
-    public Faculty getFaculty() {
-        return faculty;
-    }
-
-    public void setFaculty(Faculty faculty) {
-        this.faculty = faculty;
-    }
+//    public Faculty getFaculty() {
+//        return faculty;
+//    }
+//
+//    public void setFaculty(Faculty faculty) {
+//        this.faculty = faculty;
+//    }
 
     public int getIdForm() {
         return idForm;
@@ -289,13 +289,13 @@ public class Form implements Serializable {
         this.status = status;
     }
 
-    public Institute getInstitute() {
-        return institute;
-    }
-
-    public void setInstitute(Institute institute) {
-        this.institute = institute;
-    }
+//    public Institute getInstitute() {
+//        return institute;
+//    }
+//
+//    public void setInstitute(Institute institute) {
+//        this.institute = institute;
+//    }
 
     public School getSchool() {
         return school;
@@ -341,7 +341,7 @@ public class Form implements Serializable {
         if (extraKnowledge != null ? !extraKnowledge.equals(form.extraKnowledge) : form.extraKnowledge != null)
             return false;
         if (firstName != null ? !firstName.equals(form.firstName) : form.firstName != null) return false;
-        if (institute != null ? !institute.equals(form.institute) : form.institute != null) return false;
+//        if (institute != null ? !institute.equals(form.institute) : form.institute != null) return false;
         if (interview != null ? !interview.equals(form.interview) : form.interview != null) return false;
         if (school != null ? !school.equals(form.school) : form.school != null) return false;
         if (status != null ? !status.equals(form.status) : form.status != null) return false;
@@ -388,7 +388,7 @@ public class Form implements Serializable {
         result = 31 * result + (avgLast != null ? avgLast.hashCode() : 0);
         result = 31 * result + (photo != null ? photo.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (institute != null ? institute.hashCode() : 0);
+//        result = 31 * result + (institute != null ? institute.hashCode() : 0);
         result = 31 * result + (school != null ? school.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (interview != null ? interview.hashCode() : 0);
