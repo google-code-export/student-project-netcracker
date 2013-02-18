@@ -12,17 +12,17 @@ import ua.netcrackerteam.configuration.HibernateFactory;
 
 public class RegistrationToInterview {
     
-    public void updateRegistrationToInterview(String userName, Date dateInterview) {
-        
-       
-            Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);  
-            Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(dateInterview);
-            form.setInterview(interview);
-            HibernateFactory.getInstance().getStudentDAO().updateForm(form);    
+    public void updateRegistrationToInterview(String userName, Date dateInterview) {        
+            
+                Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);  
+                Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(dateInterview);
+                form.setInterview(interview);
+                HibernateFactory.getInstance().getStudentDAO().updateForm(form);              
              
     }
     
-    public List<Interview> getInterviews(){  
+    
+    public List<Interview> getInterviews(){ 
         
        return HibernateFactory.getInstance().getDAOInterview().getInterview();
        
