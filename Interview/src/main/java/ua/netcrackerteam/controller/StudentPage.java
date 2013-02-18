@@ -17,7 +17,7 @@ import java.util.Locale;
  * @author Filipenko, Zhokha Maksym
  */
 public class StudentPage {
-
+        
     @Interceptors(ShowHibernateSQLInterceptor.class)
     //public static List<String> getUniversityList() {
     public static List<Institute> getUniversityList() {
@@ -255,23 +255,27 @@ public class StudentPage {
 
         //List<String> newListCathedra = getCathedraListByFaculty("Інститут комп.ютерних систем", "Одеський національний політехнічний університет");
 
-        String[] listOfBranch = new String[3];
-        listOfBranch[0] = "1C";
-        listOfBranch[1] = "2C";
-        listOfBranch[2] = "3C";
-        insertNewBranch(listOfBranch);
-
-        String newContactType = "skype";
-        insertNewContacts(newContactType);
-
-        StudentData newStudentData = new StudentData();
-        newStudentData.setStudentFirstName("Василий");
-        newStudentData.setStudentLastName("Familiya");
-        newStudentData.setStudentMiddleName("MiddleName");
-        newStudentData.setStudentExperienceProjects("some projects");
-        newStudentData.setStudentReasonOffer("???????");
-        newStudentData.setStudentSelfAdditionalInformation("I'm a best of the best");
-        //newStudentData.setS
+//        String[] listOfBranch = new String[3];
+//        listOfBranch[0] = "1C";
+//        listOfBranch[1] = "2C";
+//        listOfBranch[2] = "3C";
+//        insertNewBranch(listOfBranch);
+//
+//        String newContactType = "skype";
+//        insertNewContacts(newContactType);
+//
+//        StudentData newStudentData = new StudentData();
+//        newStudentData.setStudentFirstName("Василий");
+//        newStudentData.setStudentLastName("Familiya");
+//        newStudentData.setStudentMiddleName("MiddleName");
+//        newStudentData.setStudentExperienceProjects("some projects");
+//        newStudentData.setStudentReasonOffer("???????");
+//        newStudentData.setStudentSelfAdditionalInformation("I'm a best of the best");
+        
+        
+        StudentData std = StudentPage.getStudentDataByUserName("ThirdLogin");
+        System.out.println(std);    
+        
 
     }
 
@@ -304,31 +308,34 @@ public class StudentPage {
     /**
      * Returns StudentData object, needed to fill form in UI,
      * by transforming Form object to StudentData object
-     * @param UserName - user name (login)
+     * @param UserName  user name (login)
      * @return object, needed to fill form using Vaadin
      */
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public static StudentData getStudentDataByUserName(String UserName) {
         StudentData std = new StudentData();        
         Form form = new DAOStudentImpl().getFormByUserName(UserName);
-        std.setIdForm(form.getIdForm());
-//        std.setStudentCPlusPlusMark();           //this methods not applicable yet
-//        std.setStudentCathedra();
-//        std.setStudentEmailFirst();
-//        std.setStudentEmailSecond();
-//        std.setStudentEnglishReadMark();
-//        std.setStudentEnglishSpeakMark();
-//        std.setStudentEnglishWriteMark();
-        std.setStudentExperienceProjects(form.getExecProject());
-//        std.setStudentFaculty();
-        std.setStudentFirstName(form.getFirstName());
-//        std.setStudentHowHearAboutCentre();
-//        std.setStudentInstitute(form.getInstitute().getName());
-        std.setStudentInstituteCourse(form.getInstituteYear());
-//        std.setStudentInstituteGradYear();
-        std.setStudentInterestDevelopment(form.getInterestSoftware());
-//        std.setStudentInterestOther();
-        
+        if (form != null)
+        {
+            std.setIdForm(form.getIdForm());
+//            std.setStudentCPlusPlusMark();           //this methods not applicable yet
+//            std.setStudentCathedra();
+//            std.setStudentEmailFirst();
+//            std.setStudentEmailSecond();
+//            std.setStudentEnglishReadMark();
+//            std.setStudentEnglishSpeakMark();
+//            std.setStudentEnglishWriteMark();
+            std.setStudentExperienceProjects(form.getExecProject());
+    //        std.setStudentFaculty();
+            std.setStudentFirstName(form.getFirstName());
+            std.setStudentLastName(form.getLastName());
+    //        std.setStudentHowHearAboutCentre();
+    //        std.setStudentInstitute(form.getInstitute().getName());
+            std.setStudentInstituteCourse(form.getInstituteYear());
+    //        std.setStudentInstituteGradYear();
+            std.setStudentInterestDevelopment(form.getInterestSoftware());
+    //        std.setStudentInterestOther();
+        }       
         return std;
         
     }
