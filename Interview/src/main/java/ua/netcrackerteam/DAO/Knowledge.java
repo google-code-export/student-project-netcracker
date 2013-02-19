@@ -25,14 +25,21 @@ public class Knowledge {
     @Column(name= "SCORE")
     private Double score;
 
-    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @ManyToOne//(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_FORM")
-    private Form idForm;
+    private Form form;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_BRANCH")
-    private Branch idBranch;
+    private Branch branch;
+    
+    
+    
+    
 
+    public Knowledge() {        
+    }
+    
     public int getIdKnowledge() {
         return idKnowledge;
     }
@@ -47,23 +54,29 @@ public class Knowledge {
 
     public void setScore(Double score) {
         this.score = score;
+    }    
+    
+    public Form getForm() {
+        return form;
     }
 
-    public Form getIdForm() {
-        return idForm;
+    public void setForm(Form form) {
+        this.form = form;
     }
 
-    public void setIdForm(Form idForm) {
-        this.idForm = idForm;
+    public Branch getBranch() {
+        return branch;
     }
 
-    public Branch getIdBranch() {
-        return idBranch;
+    public void setBranch(Branch branch) {
+        this.branch = branch;
     }
 
-    public void setIdBranch(Branch idBranch) {
-        this.idBranch = idBranch;
-    }
+    
+    
+    
+    
+    
 
     @Override
     public boolean equals(Object o) {
@@ -73,8 +86,8 @@ public class Knowledge {
         Knowledge knowledge = (Knowledge) o;
 
         if (idKnowledge != knowledge.idKnowledge) return false;
-        if (!idBranch.equals(knowledge.idBranch)) return false;
-        if (!idForm.equals(knowledge.idForm)) return false;
+        if (!branch.equals(knowledge.branch)) return false;
+        if (!form.equals(knowledge.form)) return false;
         if (!score.equals(knowledge.score)) return false;
 
         return true;
@@ -84,8 +97,8 @@ public class Knowledge {
     public int hashCode() {
         int result = idKnowledge;
         result = 31 * result + score.hashCode();
-        result = 31 * result + idForm.hashCode();
-        result = 31 * result + idBranch.hashCode();
+        result = 31 * result + branch.hashCode();
+        result = 31 * result + form.hashCode();
         return result;
-    }
+    }    
 }

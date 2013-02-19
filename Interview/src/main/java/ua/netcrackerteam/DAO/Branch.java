@@ -34,7 +34,13 @@ public class Branch implements Serializable {
 
     @Column(name="DESCRIPTION")
     private String description;
-
+    
+    
+    
+    
+    public Branch() {        
+    }
+    
     public int getIdBranch() {
         return idBranch;
     }
@@ -58,7 +64,11 @@ public class Branch implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
+    
+    
+    
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

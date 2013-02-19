@@ -326,7 +326,9 @@ public class StudentPage {
 //            std.setStudentEnglishSpeakMark();
 //            std.setStudentEnglishWriteMark();
             std.setStudentExperienceProjects(form.getExecProject());
-    //        std.setStudentFaculty();
+            std.setStudentCathedra(form.getCathedra());
+            std.setStudentFaculty(form.getCathedra().getFaculty());
+            std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
             std.setStudentFirstName(form.getFirstName());
             std.setStudentLastName(form.getLastName());
     //        std.setStudentHowHearAboutCentre();
