@@ -41,10 +41,10 @@ public class Form implements Serializable {
     private Integer instituteYear;
 
     @Column(name= "INSTITUTE_GRAD_YEAR")
-    private Date instituteGradYear;
+    private Integer instituteGradYear;
 
     @Column(name= "SCHOOL_GRAD_YEAR")
-    private Date schoolGradYear;
+    private Integer schoolGradYear;
 
     @Column(name= "EXTRA_KNOWLEDGE")
     private String extraKnowledge;
@@ -60,6 +60,21 @@ public class Form implements Serializable {
 
     @Column(name= "INTEREST_TELECOM")
     private String interestTelecom;
+    
+    @Column(name="INTEREST_OTHER")
+    private String interestOther;
+    
+    @Column(name="INTEREST_DEEP_SPEC")
+    private String interestDeepSpec;
+    
+    @Column(name="INTEREST_VARIOUS")
+    private String interestVarious;
+    
+    @Column(name="INTEREST_MANAGMENT")
+    private String interestManagment;
+    
+    @Column(name="INTEREST_SALE")
+    private String interestSale;
 
     @Column(name= "AVG_SCORE")
     private Double avgScore;
@@ -198,19 +213,19 @@ public class Form implements Serializable {
         this.instituteYear = instituteYear;
     }
 
-    public Date getInstituteGradYear() {
+    public Integer getInstituteGradYear() {
         return instituteGradYear;
     }
 
-    public void setInstituteGradYear(Date instituteGradYear) {
+    public void setInstituteGradYear(Integer instituteGradYear) {
         this.instituteGradYear = instituteGradYear;
     }
 
-    public Date getSchoolGradYear() {
+    public Integer getSchoolGradYear() {
         return schoolGradYear;
     }
 
-    public void setSchoolGradYear(Date schoolGradYear) {
+    public void setSchoolGradYear(Integer schoolGradYear) {
         this.schoolGradYear = schoolGradYear;
     }
 
@@ -252,6 +267,46 @@ public class Form implements Serializable {
 
     public void setInterestTelecom(String interestTelecom) {
         this.interestTelecom = interestTelecom;
+    }
+    
+    public String getInterestOther() {
+        return interestOther;
+    }
+
+    public void setInterestOther(String interestOther) {
+        this.interestOther = interestOther;
+    }
+    
+    public String getInterestDeepSpec() {
+        return interestDeepSpec;
+    }
+
+    public void setInterestDeepSpec(String interestDeepSpec) {
+        this.interestDeepSpec = interestDeepSpec;
+    }
+
+    public String getInterestVarious() {
+        return interestVarious;
+    }
+
+    public void setInterestVarious(String interestVarious) {
+        this.interestVarious = interestVarious;
+    }
+
+    public String getInterestManagment() {
+        return interestManagment;
+    }
+
+    public void setInterestManagment(String interestManagment) {
+        this.interestManagment = interestManagment;
+    }
+
+    public String getInterestSale() {
+        return interestSale;
+    }
+
+    public void setInterestSale(String interestSale) {
+        this.interestSale = interestSale;
     }
 
     public Double getAvgScore() {
@@ -392,4 +447,8 @@ public class Form implements Serializable {
 //        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
     }    
+
+    
+
+    
 }

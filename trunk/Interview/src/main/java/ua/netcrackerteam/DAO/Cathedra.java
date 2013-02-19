@@ -27,6 +27,10 @@ public class Cathedra implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_FACULTY")
     private Faculty faculty;
+    
+    
+    
+    
 
     public int getIdCathedra() {
         return idCathedra;
@@ -51,6 +55,10 @@ public class Cathedra implements Serializable {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
+    
+    
+    
+    
 
     @Override
     public boolean equals(Object o) {

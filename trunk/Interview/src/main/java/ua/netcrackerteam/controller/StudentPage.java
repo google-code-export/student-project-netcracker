@@ -8,8 +8,10 @@ import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 /**
  * Student controller class for using in View
@@ -319,7 +321,7 @@ public class StudentPage {
         {
             std.setIdForm(form.getIdForm());
 //            std.setStudentCPlusPlusMark();           //this methods not applicable yet
-//            std.setStudentCathedra();
+
 //            std.setStudentEmailFirst();
 //            std.setStudentEmailSecond();
 //            std.setStudentEnglishReadMark();
@@ -331,12 +333,17 @@ public class StudentPage {
             std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
             std.setStudentFirstName(form.getFirstName());
             std.setStudentLastName(form.getLastName());
-    //        std.setStudentHowHearAboutCentre();
-    //        std.setStudentInstitute(form.getInstitute().getName());
+            
+            Set adverts = form.getAdverts();
+            Iterator iterator = adverts.iterator();            
+            Advert advert = (Advert) iterator.next();
+            std.setStudentHowHearAboutCentre(advert.getAdvertCategory().getDescription());
+            
             std.setStudentInstituteCourse(form.getInstituteYear());
-    //        std.setStudentInstituteGradYear();
+            std.setStudentInstituteGradYear(form.getInstituteGradYear());
             std.setStudentInterestDevelopment(form.getInterestSoftware());
-    //        std.setStudentInterestOther();
+            std.setStudentInterestOther(form.getInterestOther());
+            std.setStudentInterestDevelopment(form.getInterestSoftware());
         }       
         return std;
         
