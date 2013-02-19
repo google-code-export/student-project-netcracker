@@ -1,8 +1,7 @@
 package ua.netcrackerteam.DAO;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import javax.persistence.*;
 
 /**
  * @author
@@ -50,7 +49,11 @@ public class ContactCategory implements Serializable {
     public void setCategory(String category) {
         this.category = category;
     }
-
+    
+    
+    
+    
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

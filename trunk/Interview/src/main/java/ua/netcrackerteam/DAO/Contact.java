@@ -26,7 +26,14 @@ public class Contact implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "ID_FORM")
-    private Form idForm;
+    private Form form;
+    
+    
+    
+    
+    
+    public Contact() {
+    }
 
     public ContactCategory getContactCategory() {
         return contactCategory;
@@ -35,18 +42,7 @@ public class Contact implements Serializable {
     public void setContactCategory(ContactCategory contactCategory) {
         this.contactCategory = contactCategory;
     }
-
-    public Form getIdFormList() {
-        return idForm;
-    }
-
-    public void setIdFormList(Form idFormList) {
-        this.idForm = idFormList;
-    }
-
-    public Contact() {
-    }
-
+    
     public Integer getIdContact() {
         return idContact;
     }
@@ -62,6 +58,17 @@ public class Contact implements Serializable {
     public void setInfo(String info) {
         this.info = info;
     }
+    
+    public Form getForm() {
+        return form;
+    }
+
+    public void setForm(Form form) {
+        this.form = form;
+    }
+    
+    
+    
 
     @Override
     public boolean equals(Object o) {
@@ -72,7 +79,7 @@ public class Contact implements Serializable {
 
         if (idContact != contact.idContact) return false;
         if (!contactCategory.equals(contact.contactCategory)) return false;
-        if (!idForm.equals(contact.idForm)) return false;
+        if (!form.equals(contact.form)) return false;
         if (!info.equals(contact.info)) return false;
 
         return true;
@@ -83,15 +90,7 @@ public class Contact implements Serializable {
         int result = idContact;
         result = 31 * result + info.hashCode();
         result = 31 * result + contactCategory.hashCode();
-        result = 31 * result + idForm.hashCode();
+        result = 31 * result + form.hashCode();
         return result;
-    }
-
-    public Form getIdForm() {
-        return idForm;
-    }
-
-    public void setIdForm(Form currForm) {
-        this.idForm = currForm;
-    }
+    }   
 }

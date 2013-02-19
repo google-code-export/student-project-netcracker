@@ -77,17 +77,9 @@ public class Form implements Serializable {
     @JoinColumn(name = "ID_STATUS")
     private Status status;
 
-//    @ManyToOne(fetch = FetchType.EAGER,optional=true)
-//    @JoinColumn(name = "ID_INSTITUTE")
-//    private Institute institute;
-
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_CATHEDRA")
     private Cathedra cathedra;
-
-//    @ManyToOne(fetch = FetchType.EAGER,optional=true)
-//    @JoinColumn(name = "ID_FACULTY")
-//    private Faculty faculty;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_SCHOOL")
@@ -99,26 +91,39 @@ public class Form implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_INTERVIEW")
-    private Interview interview;
+    private Interview interview;    
 
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
+    private Set<Contact> contacts;
     
-    //Now have troubles with mapping many-to-many with additional field in join table
-    //Work without contact untill trouble shoot
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
+    private Set<Knowledge> knowledges;
     
-//    //@Transient
-//    @OneToMany(mappedBy= "idForm", fetch = FetchType.EAGER )
-//    private Set<Contact> contacts;
-
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
+    private Set<Advert> adverts;
+    
+    
+    
+           
     public Form() {
     }
-//
-//    public Set<Contact> getContacts() {
-//        return contacts;
-//    }
-//
-//    public void setContacts(Set<Contact> contacts) {
-//        this.contacts = contacts;
-//    }
+
+    public Set<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(Set<Contact> contacts) {
+        this.contacts = contacts;
+    }
+    
+    
+    public Set<Knowledge> getKnowledges() {
+        return knowledges;
+    }
+
+    public void setKnowledges(Set<Knowledge> knowledges) {
+        this.knowledges = knowledges;
+    }
 
 
     public Cathedra getCathedra() {
@@ -128,14 +133,6 @@ public class Form implements Serializable {
     public void setCathedra(Cathedra cathedra) {
         this.cathedra = cathedra;
     }
-
-//    public Faculty getFaculty() {
-//        return faculty;
-//    }
-//
-//    public void setFaculty(Faculty faculty) {
-//        this.faculty = faculty;
-//    }
 
     public int getIdForm() {
         return idForm;
@@ -289,14 +286,6 @@ public class Form implements Serializable {
         this.status = status;
     }
 
-//    public Institute getInstitute() {
-//        return institute;
-//    }
-//
-//    public void setInstitute(Institute institute) {
-//        this.institute = institute;
-//    }
-
     public School getSchool() {
         return school;
     }
@@ -321,11 +310,19 @@ public class Form implements Serializable {
         this.interview = interview;
     }
     
+    public Set<Advert> getAdverts() {
+        return adverts;
+    }
+
+    public void setAdverts(Set<Advert> adverts) {
+        this.adverts = adverts;
+    }
     
     
     
     
-        @Override
+    
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Form)) return false;
@@ -394,5 +391,5 @@ public class Form implements Serializable {
         result = 31 * result + (interview != null ? interview.hashCode() : 0);
 //        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
         return result;
-    }
+    }    
 }

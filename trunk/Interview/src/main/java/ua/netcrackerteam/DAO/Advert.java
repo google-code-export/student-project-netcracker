@@ -10,10 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name="ADVERT")
 public class Advert implements Serializable {
-    private static final long serialVersionUID = -3299906777751181181L;
     
-    public Advert() {        
-    }
+    private static final long serialVersionUID = -3299906777751181181L;    
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "advert_seq_gen")
@@ -28,6 +26,13 @@ public class Advert implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_ADVERT_CATEGORY")
     private AdvertCategory advertCategory;
+    
+    
+    
+    
+    
+    public Advert() {        
+    }
 
     public int getIdAdvert() {
         return idAdvert;
@@ -53,6 +58,10 @@ public class Advert implements Serializable {
         this.advertCategory = advertCategory;
     }
 
+    
+    
+    
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
