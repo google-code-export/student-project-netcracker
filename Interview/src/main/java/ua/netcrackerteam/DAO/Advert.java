@@ -19,7 +19,7 @@ public class Advert implements Serializable {
     @Column (name = "ID_ADVERT")
     private int idAdvert;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="ID_FORM", nullable = true)
     private Form form;
     
