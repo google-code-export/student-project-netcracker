@@ -122,18 +122,18 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public StudentBlank(String username) {
         this.username = username;
         stData = StudentPage.getStudentDataByUserName(username);
-        stData.setStudentFirstName(username);
-        stData.setStudentInstitute(new Institute());
-        stData.setStudentFaculty(new Faculty());
-        stData.setStudentCathedra(new Cathedra());
-        stData.setStudentInterestStudy("+");
-        stData.setStudentLanguage1("C");
-        stData.setStudentLanguage1Mark(2);
-        stData.setStudentLanguage2("C");
-        stData.setStudentLanguage3("C");
-        stData.setStudentKnowledgeOther1("1");
-        stData.setStudentOtherContactType("scype");
-        stData.setStudentOtherContact("a-m");
+//        stData.setStudentFirstName(username);
+//        stData.setStudentInstitute(new Institute());
+//        stData.setStudentFaculty(new Faculty());
+//        stData.setStudentCathedra(new Cathedra());
+//        stData.setStudentInterestStudy("+");
+//        stData.setStudentLanguage1("C");
+//        stData.setStudentLanguage1Mark(2);
+//        stData.setStudentLanguage2("C");
+//        stData.setStudentLanguage3("C");
+//        stData.setStudentKnowledgeOther1("1");
+//        stData.setStudentOtherContactType("scype");
+//        stData.setStudentOtherContact("a-m");
         bean = new BeanItem<StudentData>(stData);
         setMargin(true);
         setSpacing(true);
@@ -204,8 +204,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     getWindow().removeWindow(addContact);
                 }
             }
-
-            
         });
         layout.addComponent(contactType);
         layout.addComponent(okBut);
@@ -562,7 +560,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         advert.setMultiSelect(true);
         advert.setItemEnabled(0, true);
         vlayout.addComponent(advert);
-        anotherAdvert = new TextField();
+        anotherAdvert = new TextField(bean.getItemProperty("studentHowHearAboutCentreOther"));
         anotherAdvert.setWidth("220");
         vlayout.addComponent(anotherAdvert);
         whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )",
@@ -854,14 +852,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
         }
     }
-
-//    private void saveOptionGroup() {
-//        if(advert.getValue().equals("Другое (уточните)")) {
-//            Property p = bean.getItemProperty("studentHowHearAboutCentre");
-//            p.setValue(anotherAdvert.getValue().toString());
-//        } 
-//    }
-    
+   
     /**
      * Prepare saved form to view 
      */
