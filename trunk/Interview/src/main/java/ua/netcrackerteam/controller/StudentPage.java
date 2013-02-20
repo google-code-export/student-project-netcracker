@@ -291,7 +291,7 @@ public class StudentPage {
         newForm.setExecProject      (newStudentData.getStudentExperienceProjects());
         newForm.setReason           (newStudentData.getStudentReasonOffer());
         newForm.setExtraInfo        (newStudentData.getStudentSelfAdditionalInformation());
-        newForm.setInstituteYear    (newStudentData.getStudentInstituteCourse());
+        newForm.setInstituteYear    (Integer.valueOf(newStudentData.getStudentInstituteCourse()));    //Maksym changed here, cause Anna change studentInstituteCourse  to String
         newForm.setInterestStudy    (newStudentData.getStudentInterestStudy());
         newForm.setInterestWork     (newStudentData.getStudentInterestWork());
         newForm.setInterestSoftware (newStudentData.getStudentInterestDevelopment());
@@ -339,8 +339,8 @@ public class StudentPage {
             Advert advert = (Advert) iterator.next();
             std.setStudentHowHearAboutCentre(advert.getAdvertCategory().getDescription());
             
-            std.setStudentInstituteCourse(form.getInstituteYear());
-            std.setStudentInstituteGradYear(form.getInstituteGradYear());
+            std.setStudentInstituteCourse(form.getInstituteYear().toString());
+            std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
             std.setStudentInterestDevelopment(form.getInterestSoftware());
             std.setStudentInterestOther(form.getInterestOther());
             std.setStudentInterestDevelopment(form.getInterestSoftware());
