@@ -164,6 +164,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         print.addListener(buttonsListener);
         hlayout.addComponent(edit);
         hlayout.addComponent(print);
+        if(!stData.getStudentFirstName().equals("")) {
+            getSavedData();
+            setEditable(false);
+        }
     }
     
     private void addNewContact() {
@@ -393,6 +397,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 textFieldConfig((TextField)c);
             }
         }
+        email2.setRequired(false);
         addAnotherContactsBut.setWidth("200");
     }
 
@@ -618,26 +623,28 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         for (int i= 0; i<l.getColumns(); i++) {
             for (int j = 0; j < l.getRows(); j++) {
                 Component c = l.getComponent(i,j);
-                if (c instanceof Upload) {
+                if(c != null) {
+                    if (c instanceof Upload) {
                     c.setVisible(editable);
-                } else if (c instanceof ComboBox) {
-                    ComboBox c1 = (ComboBox) c;
-                    Label lab = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
-                    lab.setContentMode(Label.CONTENT_XHTML);
-                    l.replaceComponent(c, lab);
-                } else if (c instanceof Label) {
-                    Label lab = (Label) c;
-                    String s = lab.getValue().toString();
-                    s = s.substring(0,s.indexOf("<"));
-                    if(universities.getCaption().equals(s)) {
-                        l.replaceComponent(c, universities);
-                    } else if (faculties.getCaption().equals(s)) {
-                        l.replaceComponent(c, faculties);
-                    } else if (cathedras.getCaption().equals(s)) {
-                        l.replaceComponent(c, cathedras);
+                    } else if (c instanceof ComboBox) {
+                        ComboBox c1 = (ComboBox) c;
+                        Label lab = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
+                        lab.setContentMode(Label.CONTENT_XHTML);
+                        l.replaceComponent(c, lab);
+                    } else if (c instanceof Label) {
+                        Label lab = (Label) c;
+                        String s = lab.getValue().toString();
+                        s = s.substring(0,s.indexOf("<"));
+                        if(universities.getCaption().equals(s)) {
+                            l.replaceComponent(c, universities);
+                        } else if (faculties.getCaption().equals(s)) {
+                            l.replaceComponent(c, faculties);
+                        } else if (cathedras.getCaption().equals(s)) {
+                            l.replaceComponent(c, cathedras);
+                        }
+                    } else {
+                        c.setReadOnly(!editable);
                     }
-                } else {
-                    c.setReadOnly(!editable);
                 }
             }
         }
@@ -836,6 +843,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             Property p = (Property) bean.getItemProperty("studentHowHearAboutCentre");
             p.setValue(anotherAdvert.getValue().toString());
         } 
+    }
+    
+    /**
+     * Prepare saved form to view 
+     */
+    private void getSavedData() {
+        
     }
  
     private class ButtonsListener implements Button.ClickListener {

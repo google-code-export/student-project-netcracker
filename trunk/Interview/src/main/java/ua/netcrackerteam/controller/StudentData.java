@@ -14,10 +14,10 @@ public class StudentData {
     private String studentFirstName = "";
     private String studentMiddleName = "";
     private Institute studentInstitute;
-    private int studentInstituteCourse = 1;
+    private String studentInstituteCourse = "";
     private Faculty studentFaculty;
     private Cathedra studentCathedra;
-    private int studentInstituteGradYear = 2013;
+    private String studentInstituteGradYear = "";
     private String studentEmailFirst = "";
     private String studentEmailSecond = "";
     private String studentTelephone = "";
@@ -110,11 +110,11 @@ public class StudentData {
         this.studentInstitute = studentInstitute;
     }
 
-    public int getStudentInstituteCourse() {
+    public String getStudentInstituteCourse() {
         return studentInstituteCourse;
     }
 
-    public void setStudentInstituteCourse(int studentInstituteCourse) {
+    public void setStudentInstituteCourse(String studentInstituteCourse) {
         this.studentInstituteCourse = studentInstituteCourse;
     }
 
@@ -134,11 +134,11 @@ public class StudentData {
         this.studentCathedra = studentCathedra;
     }
 
-    public int getStudentInstituteGradYear() {
+    public String getStudentInstituteGradYear() {
         return studentInstituteGradYear;
     }
 
-    public void setStudentInstituteGradYear(int studentInstituteGradYear) {
+    public void setStudentInstituteGradYear(String studentInstituteGradYear) {
         this.studentInstituteGradYear = studentInstituteGradYear;
     }
 
