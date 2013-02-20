@@ -120,9 +120,21 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
 
 
     public StudentBlank(String username) {
-        stData = StudentPage.getStudentDataByUserName(username);
-        bean = new BeanItem<StudentData>(stData);
         this.username = username;
+        stData = StudentPage.getStudentDataByUserName(username);
+        stData.setStudentFirstName(username);
+        stData.setStudentInstitute(new Institute());
+        stData.setStudentFaculty(new Faculty());
+        stData.setStudentCathedra(new Cathedra());
+        stData.setStudentInterestStudy("+");
+        stData.setStudentLanguage1("C");
+        stData.setStudentLanguage1Mark(2);
+        stData.setStudentLanguage2("C");
+        stData.setStudentLanguage3("C");
+        stData.setStudentKnowledgeOther1("1");
+        stData.setStudentOtherContactType("scype");
+        stData.setStudentOtherContact("a-m");
+        bean = new BeanItem<StudentData>(stData);
         setMargin(true);
         setSpacing(true);
         setWidth("100%");
@@ -141,6 +153,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         agreement = new OptionGroup();
         agreement.addItem("Согласен с условиями соглашения: ");
         agreement.setMultiSelect(true);
+        agreement.setRequired(true);
         addComponent(agreement);
         agreementText = new Label("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
         agreementText.setWidth("750");
@@ -187,18 +200,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(ClickEvent event) {
                 if(contactType.isValid()) {
-                    anotherContact = new TextField((String)contactType.getValue(),(Property) bean.getItemProperty("studentOtherContact"));
-                    textFieldConfig(anotherContact);
-                    anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-                    GridLayout gl = (GridLayout) contacts.getContent();
-                    gl.removeComponent(addAnotherContactsBut);
-                    gl.addComponent(anotherContact,0,1);
-                    anotherContact.setWidth("220");
-                    gl.addComponent(addAnotherContactsBut,1,1);
-                    gl.setComponentAlignment(addAnotherContactsBut, Alignment.BOTTOM_LEFT);
+                    addNewContactField((String)contactType.getValue(),(Property) bean.getItemProperty("studentOtherContact"));
                     getWindow().removeWindow(addContact);
                 }
             }
+
+            
         });
         layout.addComponent(contactType);
         layout.addComponent(okBut);
@@ -206,7 +213,18 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
         getWindow().addWindow(addContact);
     }
-
+    
+    private void addNewContactField(String type, Property value) {
+        anotherContact = new TextField(type,value);
+        textFieldConfig(anotherContact);
+        anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        GridLayout gl = (GridLayout) contacts.getContent();
+        gl.removeComponent(addAnotherContactsBut);
+        gl.addComponent(anotherContact,0,1);
+        anotherContact.setWidth("220");
+        gl.addComponent(addAnotherContactsBut,1,1);
+        gl.setComponentAlignment(addAnotherContactsBut, Alignment.BOTTOM_LEFT);
+    }
     private void addProgrammingLanguage() {
         addPrLangWindow = new Window("Добавить язык");
         addPrLangWindow.setModal(true);
@@ -412,17 +430,17 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         Label whatInterest = new Label("Что заинтересовало:");
         vlayout.addComponent(whatInterest);
         vlayout.addComponent(glayoutWhatInterest);
-        eduCenter = new InterestSelection("Учебный центр/стажировка:",(Property) bean.getItemProperty("studentInterestStudy"));
+        eduCenter = new InterestSelection("Учебный центр/стажировка:", bean.getItemProperty("studentInterestStudy"));
         glayoutWhatInterest.addComponent(eduCenter);  
-        workNC = new InterestSelection("Работа в компании NetCracker:",(Property) bean.getItemProperty("studentInterestWork"));
+        workNC = new InterestSelection("Работа в компании NetCracker:", bean.getItemProperty("studentInterestWork"));
         glayoutWhatInterest.addComponent(workNC);
         Label workSphere = new Label("Интересующая область деятельности:");
         vlayout.addComponent(workSphere);
         glayoutWorkSphere = new GridLayout(3,1);
         glayoutWorkSphere.setSpacing(true);
         vlayout.addComponent(glayoutWorkSphere);
-        development = new InterestSelection("Разработка ПО:",(Property) bean.getItemProperty("studentInterestDevelopment"));
-        anotherWorkSphere = new TextField("Другие: ",(Property) bean.getItemProperty("studentInterestOther"));
+        development = new InterestSelection("Разработка ПО:", bean.getItemProperty("studentInterestDevelopment"));
+        anotherWorkSphere = new TextField("Другие: ", bean.getItemProperty("studentInterestOther"));
         anotherWorkSphere.setWidth("250");
         glayoutWorkSphere.addComponent(development);
         glayoutWorkSphere.addComponent(anotherWorkSphere);
@@ -432,15 +450,15 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWorkType = new GridLayout(2,3);
         glayoutWorkType.setSpacing(true);
         vlayout.addComponent(glayoutWorkType);
-        deepSpec = new InterestSelection("Глубокая специализация: ",(Property) bean.getItemProperty("studentWorkTypeDeepSpec"));
-        variousWork = new InterestSelection("Разнообразная работа: ",(Property) bean.getItemProperty("studentWorkTypeVarious"));
-        mrSpec = new InterestSelection("Руководство специалистами: ",(Property) bean.getItemProperty("studentWorkTypeManagement"));
-        sale = new InterestSelection("Продажи",(Property) bean.getItemProperty("studentWorkTypeSale"));
+        deepSpec = new InterestSelection("Глубокая специализация: ", bean.getItemProperty("studentWorkTypeDeepSpec"));
+        variousWork = new InterestSelection("Разнообразная работа: ", bean.getItemProperty("studentWorkTypeVarious"));
+        mrSpec = new InterestSelection("Руководство специалистами: ", bean.getItemProperty("studentWorkTypeManagement"));
+        sale = new InterestSelection("Продажи", bean.getItemProperty("studentWorkTypeSale"));
         glayoutWorkType.addComponent(deepSpec);
         glayoutWorkType.addComponent(variousWork);
         glayoutWorkType.addComponent(mrSpec);
         glayoutWorkType.addComponent(sale);
-        anotherWorkType = new TextField("Другие: ",(Property) bean.getItemProperty("studentWorkTypeOther"));
+        anotherWorkType = new TextField("Другие: ", bean.getItemProperty("studentWorkTypeOther"));
         anotherWorkType.setWidth("250");
         glayoutWorkType.addComponent(anotherWorkType);
     }
@@ -538,9 +556,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
         advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
-        advert.setPropertyDataSource((Property) bean.getItemProperty("studentHowHearAboutCentre"));
+        advert.setPropertyDataSource(bean.getItemProperty("studentHowHearAboutCentre"));
         advert.setWidth("220");
         advert.setRequired(true);
+        advert.setMultiSelect(true);
         advert.setItemEnabled(0, true);
         vlayout.addComponent(advert);
         anotherAdvert = new TextField();
@@ -617,8 +636,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
      * @param editable false - all components read only
      * @return true if all components valid
      */
-    private boolean setEditable(boolean editable) {
-        boolean valid = true;
+    private void setEditable(boolean editable) {
         GridLayout l = (GridLayout) persInfo.getContent();
         for (int i= 0; i<l.getColumns(); i++) {
             for (int j = 0; j < l.getRows(); j++) {
@@ -631,17 +649,17 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         Label lab = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
                         lab.setContentMode(Label.CONTENT_XHTML);
                         l.replaceComponent(c, lab);
-                    } else if (c instanceof Label) {
-                        Label lab = (Label) c;
-                        String s = lab.getValue().toString();
-                        s = s.substring(0,s.indexOf("<"));
-                        if(universities.getCaption().equals(s)) {
-                            l.replaceComponent(c, universities);
-                        } else if (faculties.getCaption().equals(s)) {
-                            l.replaceComponent(c, faculties);
-                        } else if (cathedras.getCaption().equals(s)) {
-                            l.replaceComponent(c, cathedras);
-                        }
+//                    } else if (c instanceof Label) {
+//                        Label lab = (Label) c;
+//                        String s = lab.getValue().toString();
+//                        s = s.substring(0,s.indexOf("<"));
+//                        if(universities.getCaption().equals(s)) {
+//                            l.replaceComponent(c, universities);
+//                        } else if (faculties.getCaption().equals(s)) {
+//                            l.replaceComponent(c, faculties);
+//                        } else if (cathedras.getCaption().equals(s)) {
+//                            l.replaceComponent(c, cathedras);
+//                        }
                     } else {
                         c.setReadOnly(!editable);
                     }
@@ -702,7 +720,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         save.setVisible(editable);
         edit.setVisible(!editable);
         print.setVisible(!editable);
-        return valid;
     }
     
     /**
@@ -752,12 +769,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 }
             } else if (c instanceof TextArea) {
                 TextArea c1 = (TextArea) c;
-                if (c1 == null) {
+                if (!c1.isValid()) {
                     return false;
                 }
             } 
         }
-        if(!agreement.isItemEnabled(0)) {
+        if(!agreement.isValid()) {
             return false;
         }
         if(photo == null) {
@@ -838,18 +855,47 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
     }
 
-    private void saveOptionGroup() {
-        if(advert.getValue().equals("Другое (уточните)")) {
-            Property p = (Property) bean.getItemProperty("studentHowHearAboutCentre");
-            p.setValue(anotherAdvert.getValue().toString());
-        } 
-    }
+//    private void saveOptionGroup() {
+//        if(advert.getValue().equals("Другое (уточните)")) {
+//            Property p = bean.getItemProperty("studentHowHearAboutCentre");
+//            p.setValue(anotherAdvert.getValue().toString());
+//        } 
+//    }
     
     /**
      * Prepare saved form to view 
      */
     private void getSavedData() {
+        if(!stData.getStudentOtherContact().equals("")) {
+            addNewContactField(stData.getStudentOtherContactType(), bean.getItemProperty("studentOtherContact"));
+        }
+        if(!stData.getStudentLanguage1().equals("")) {
+            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage1Mark"),glayoutPrLang);
+        }
+        if(!stData.getStudentLanguage2().equals("")) {
+            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage2Mark"),glayoutPrLang);
+        }
+        if(!stData.getStudentLanguage3().equals("")) {
+            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage3Mark"),glayoutPrLang);
+        }
+        if(!stData.getStudentKnowledgeOther1().equals("")) {
+            addNewSavedSlider(stData.getStudentKnowledgeOther1(),bean.getItemProperty("studentKnowledgeOther1Mark"),glayoutKnow);
+        }
+        if(!stData.getStudentKnowledgeOther2().equals("")) {
+            addNewSavedSlider(stData.getStudentKnowledgeOther2(),bean.getItemProperty("studentKnowledgeOther2Mark"),glayoutKnow);
+        }
+        if(!stData.getStudentKnowledgeOther3().equals("")) {
+            addNewSavedSlider(stData.getStudentKnowledgeOther3(),bean.getItemProperty("studentKnowledgeOther3Mark"),glayoutKnow);
+        }
         
+    }
+
+    private void addNewSavedSlider(String name, Property value, Layout lo) {
+        Slider newSlider = new Slider(name);
+        newSlider.setPropertyDataSource(value);
+        sliderConfig(newSlider,1);
+        programLangList.add(newSlider);
+        lo.addComponent(programLangList.get(programLangList.size()-1));
     }
  
     private class ButtonsListener implements Button.ClickListener {
@@ -879,12 +925,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }  
                 } else if(source == save) {
                     if(checkAllValid()) {
-                        saveOptionGroup();
                         setEditable(false);
                         stData.getIdForm();
                     } else {
                         Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
-                        n.setDescription("Все поля обязательны к заполнению.");
+                        n.setDescription("Все поля помеченные * обязательны к заполнению.");
                         getWindow().showNotification(n);
                     }
                 } else if(source == edit) {
