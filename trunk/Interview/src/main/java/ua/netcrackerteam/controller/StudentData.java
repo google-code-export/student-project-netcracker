@@ -62,9 +62,18 @@ public class StudentData {
     private double studentEnglishWriteMark  = 1;
     private double studentEnglishSpeakMark  = 1;
     private LinkedHashSet studentHowHearAboutCentre;
+    private String studentHowHearAboutCentreOther = "";
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
 
+    public String getStudentHowHearAboutCentreOther() {
+        return studentHowHearAboutCentreOther;
+    }
+
+    public void setStudentHowHearAboutCentreOther(String studentHowHearAboutCentreOther) {
+        this.studentHowHearAboutCentreOther = studentHowHearAboutCentreOther;
+    }
+    
     public String getStudentOtherContactType() {
         return studentOtherContactType;
     }
