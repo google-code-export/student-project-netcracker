@@ -1,5 +1,8 @@
 package ua.netcrackerteam.controller;
 
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
@@ -58,7 +61,7 @@ public class StudentData {
     private double studentEnglishReadMark  = 1;
     private double studentEnglishWriteMark  = 1;
     private double studentEnglishSpeakMark  = 1;
-    private String studentHowHearAboutCentre = "";
+    private LinkedHashSet studentHowHearAboutCentre;
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
 
@@ -454,11 +457,11 @@ public class StudentData {
         this.studentEnglishSpeakMark = studentEnglishSpeakMark;
     }
 
-    public String getStudentHowHearAboutCentre() {
+    public LinkedHashSet getStudentHowHearAboutCentre() {
         return studentHowHearAboutCentre;
     }
 
-    public void setStudentHowHearAboutCentre(String studentHowHearAboutCentre) {
+    public void setStudentHowHearAboutCentre(LinkedHashSet studentHowHearAboutCentre) {
         this.studentHowHearAboutCentre = studentHowHearAboutCentre;
     }
 
