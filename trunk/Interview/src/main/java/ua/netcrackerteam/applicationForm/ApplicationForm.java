@@ -4,13 +4,33 @@
  */
 package ua.netcrackerteam.applicationForm;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.DefaultAuthenticator;
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.MultiPartEmail;
 import ua.netcrackerteam.controller.StudentData;
+
 
 /**
  *
@@ -21,27 +41,37 @@ public class ApplicationForm{
     /**
      * Create from (pdf-format)
      */
-    public static void generateFormPDF() throws DocumentException, IOException {
+    public static void generateFormPDF(OutputStream memory) {
+             
+        try {
+                       
+            BaseFont font = BaseFont.createFont("src\\main\\java\\times.ttf", "cp1251", BaseFont.EMBEDDED);
+            PdfReader reader = new PdfReader("src\\main\\java\\Template.pdf");
+            PdfStamper stamper = new PdfStamper(reader, memory);
+            AcroFields form = stamper.getAcroFields();
+            form.addSubstitutionFont(font);
+            fillFormData(form);          
+            PdfContentByte content = stamper.getOverContent(1);
+            content.addImage(reciveImage());        
+            stamper.close();
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+              
+      
+    }
+    
+    public static void fillFormData(AcroFields form) throws IOException, DocumentException{
         
-        BaseFont font = BaseFont.createFont("src\\main\\java\\times.ttf", "cp1251", BaseFont.EMBEDDED);
-        PdfReader reader = new PdfReader("src\\main\\java\\Template.pdf");
-        PdfStamper stamper = new PdfStamper(reader, new FileOutputStream("src\\Form.pdf"));
-        AcroFields form = stamper.getAcroFields();
-        form.addSubstitutionFont(font);
-
         StudentData studentData = new StudentData();
 
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         calendar.setTime(new Date());
         int currentYear = calendar.get(Calendar.YEAR);
-
-        Map map = form.getFields();
-        Iterator iterator = map.keySet().iterator();
-        while (iterator.hasNext()) {
-            String str = (String) iterator.next();
-            System.out.println(str);
-        }
-
+        
         form.setField("info1", studentData.getStudentLastName());
         form.setField("info2", studentData.getStudentFirstName());
         form.setField("info3", studentData.getStudentMiddleName());
@@ -91,26 +121,27 @@ public class ApplicationForm{
         form.setField("english1", String.valueOf(studentData.getStudentEnglishWriteMark()));
         form.setField("english2", String.valueOf(studentData.getStudentEnglishReadMark()));
         form.setField("english3", String.valueOf(studentData.getStudentEnglishSpeakMark()));
-        form.setField("aboutCenter", studentData.getStudentHowHearAboutCentre());
+        //form.setField("aboutCenter", studentData.getStudentHowHearAboutCentre());
         form.setField("additional", studentData.getStudentSelfAdditionalInformation());
-
-        PdfContentByte content = stamper.getOverContent(1);
+        
+       
+    }
+    public static Image reciveImage() throws BadElementException, MalformedURLException, IOException{
+        
         Image img = Image.getInstance("src\\main\\java\\1.jpg");
         img.setAbsolutePosition(70f, 615f);
         img.scaleAbsolute(150, 140);
-
-        content.addImage(img);
-        stamper.close();
+        
+        return img;
+    }
+    
+    public static void sendPDFToStudent(){
+        
+        // in process ....
     }
 
-    public static void main(String[] args){
-        try {
-            generateFormPDF();
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args){       
+        sendPDFToStudent();   
     }
     
 }
