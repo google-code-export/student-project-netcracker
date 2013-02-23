@@ -1,9 +1,20 @@
 package ua.netcrackerteam.DAO;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 /**
  * @author
@@ -55,11 +66,11 @@ public class Form implements Serializable {
     @Column(name= "INTEREST_WORK")
     private String interestWork;
 
-    @Column(name= "INTEREST_SOFTWARE")
-    private String interestSoftware;
+    @Column(name= "INTEREST_BRANCH_SOFT")
+    private String interestBranchSoft;
 
-    @Column(name= "INTEREST_TELECOM")
-    private String interestTelecom;
+    @Column(name= "INTEREST_BRANCH_OTHER")
+    private String interestBranchOther;
     
     @Column(name="INTEREST_OTHER")
     private String interestOther;
@@ -75,18 +86,13 @@ public class Form implements Serializable {
     
     @Column(name="INTEREST_SALE")
     private String interestSale;
-
-    @Column(name= "AVG_SCORE")
-    private Double avgScore;
-
-    @Column(name= "AVG_LAST")
-    private Double avgLast;
+    
 
     //@Column(name = "PHOTO")
     //@javax.persistence.Lob
     //private String photo;
-    @Column(name = "TEMP_PHOTO")    
-    private String photo;
+//    @Column(name = "PHOTO")    
+//    private String photo;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_STATUS")
@@ -94,11 +100,7 @@ public class Form implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_CATHEDRA")
-    private Cathedra cathedra;
-
-    @ManyToOne(fetch = FetchType.EAGER,optional=true)
-    @JoinColumn(name = "ID_SCHOOL")
-    private School school;
+    private Cathedra cathedra;    
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_USER")
@@ -115,7 +117,7 @@ public class Form implements Serializable {
     private Set<Knowledge> knowledges;
     
     @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
-    private Set<Advert> adverts;
+    private Set<Advert> adverts = new LinkedHashSet();
     
     
     
@@ -253,20 +255,20 @@ public class Form implements Serializable {
         this.interestWork = interestWork;
     }
 
-    public String getInterestSoftware() {
-        return interestSoftware;
+    public String getInterestBranchSoft() {
+        return interestBranchSoft;
     }
 
-    public void setInterestSoftware(String interestSoftware) {
-        this.interestSoftware = interestSoftware;
+    public void setInterestBranchSoft(String interestSoftware) {
+        this.interestBranchSoft = interestSoftware;
     }
 
-    public String getInterestTelecom() {
-        return interestTelecom;
+    public String getInterestBranchOther() {
+        return interestBranchOther;
     }
 
-    public void setInterestTelecom(String interestTelecom) {
-        this.interestTelecom = interestTelecom;
+    public void setInterestBranchOther(String interestBranchOther) {
+        this.interestBranchOther = interestBranchOther;
     }
     
     public String getInterestOther() {
@@ -309,29 +311,13 @@ public class Form implements Serializable {
         this.interestSale = interestSale;
     }
 
-    public Double getAvgScore() {
-        return avgScore;
-    }
-
-    public void setAvgScore(Double avgScore) {
-        this.avgScore = avgScore;
-    }
-
-    public Double getAvgLast() {
-        return avgLast;
-    }
-
-    public void setAvgLast(Double avgLast) {
-        this.avgLast = avgLast;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
+//    public String getPhoto() {
+//        return photo;
+//    }
+//
+//    public void setPhoto(String photo) {
+//        this.photo = photo;
+//    }
 
     public Status getStatus() {
         return status;
@@ -339,15 +325,7 @@ public class Form implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public School getSchool() {
-        return school;
-    }
-
-    public void setSchool(School school) {
-        this.school = school;
-    }
+    }    
 
     public UserList getUser() {
         return user;
@@ -384,9 +362,7 @@ public class Form implements Serializable {
 
         Form form = (Form) o;
 
-        if (idForm != form.idForm) return false;
-        if (avgLast != null ? !avgLast.equals(form.avgLast) : form.avgLast != null) return false;
-        if (avgScore != null ? !avgScore.equals(form.avgScore) : form.avgScore != null) return false;
+        if (idForm != form.idForm) return false;     
 //        if (contacts != null ? !contacts.equals(form.contacts) : form.contacts != null) return false;
         if (execProject != null ? !execProject.equals(form.execProject) : form.execProject != null) return false;
         if (extraInfo != null ? !extraInfo.equals(form.extraInfo) : form.extraInfo != null) return false;
@@ -395,23 +371,22 @@ public class Form implements Serializable {
         if (firstName != null ? !firstName.equals(form.firstName) : form.firstName != null) return false;
 //        if (institute != null ? !institute.equals(form.institute) : form.institute != null) return false;
         if (interview != null ? !interview.equals(form.interview) : form.interview != null) return false;
-        if (school != null ? !school.equals(form.school) : form.school != null) return false;
         if (status != null ? !status.equals(form.status) : form.status != null) return false;
         if (user != null ? !user.equals(form.user) : form.user != null) return false;
         if (instituteGradYear != null ? !instituteGradYear.equals(form.instituteGradYear) : form.instituteGradYear != null)
             return false;
         if (instituteYear != null ? !instituteYear.equals(form.instituteYear) : form.instituteYear != null)
             return false;
-        if (interestSoftware != null ? !interestSoftware.equals(form.interestSoftware) : form.interestSoftware != null)
+        if (interestBranchSoft != null ? !interestBranchSoft.equals(form.interestBranchSoft) : form.interestBranchSoft != null)
             return false;
         if (interestStudy != null ? !interestStudy.equals(form.interestStudy) : form.interestStudy != null)
             return false;
-        if (interestTelecom != null ? !interestTelecom.equals(form.interestTelecom) : form.interestTelecom != null)
+        if (interestBranchOther != null ? !interestBranchOther.equals(form.interestBranchOther) : form.interestBranchOther != null)
             return false;
         if (interestWork != null ? !interestWork.equals(form.interestWork) : form.interestWork != null) return false;
         if (lastName != null ? !lastName.equals(form.lastName) : form.lastName != null) return false;
         if (middleName != null ? !middleName.equals(form.middleName) : form.middleName != null) return false;
-        if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
+//        if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
         if (reason != null ? !reason.equals(form.reason) : form.reason != null) return false;
         if (schoolGradYear != null ? !schoolGradYear.equals(form.schoolGradYear) : form.schoolGradYear != null)
             return false;
@@ -434,14 +409,11 @@ public class Form implements Serializable {
         result = 31 * result + (extraKnowledge != null ? extraKnowledge.hashCode() : 0);
         result = 31 * result + (interestStudy != null ? interestStudy.hashCode() : 0);
         result = 31 * result + (interestWork != null ? interestWork.hashCode() : 0);
-        result = 31 * result + (interestSoftware != null ? interestSoftware.hashCode() : 0);
-        result = 31 * result + (interestTelecom != null ? interestTelecom.hashCode() : 0);
-        result = 31 * result + (avgScore != null ? avgScore.hashCode() : 0);
-        result = 31 * result + (avgLast != null ? avgLast.hashCode() : 0);
-        result = 31 * result + (photo != null ? photo.hashCode() : 0);
+        result = 31 * result + (interestBranchSoft != null ? interestBranchSoft.hashCode() : 0);
+        result = 31 * result + (interestBranchOther != null ? interestBranchOther.hashCode() : 0);  
+//        result = 31 * result + (photo != null ? photo.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
 //        result = 31 * result + (institute != null ? institute.hashCode() : 0);
-        result = 31 * result + (school != null ? school.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (interview != null ? interview.hashCode() : 0);
 //        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);

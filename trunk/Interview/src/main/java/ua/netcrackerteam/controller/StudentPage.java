@@ -8,7 +8,9 @@ import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -275,7 +277,7 @@ public class StudentPage {
 //        newStudentData.setStudentSelfAdditionalInformation("I'm a best of the best");
         
         
-        StudentData std = StudentPage.getStudentDataByUserName("ThirdLogin");
+        StudentData std = StudentPage.getStudentDataByUserName("iviarkiz");
         System.out.println(std);    
         
 
@@ -294,8 +296,8 @@ public class StudentPage {
         newForm.setInstituteYear    (Integer.valueOf(newStudentData.getStudentInstituteCourse()));    //Maksym changed here, cause Anna change studentInstituteCourse  to String
         newForm.setInterestStudy    (newStudentData.getStudentInterestStudy());
         newForm.setInterestWork     (newStudentData.getStudentInterestWork());
-        newForm.setInterestSoftware (newStudentData.getStudentInterestDevelopment());
-        newForm.setInterestTelecom  (newStudentData.getStudentInterestOther());
+        newForm.setInterestBranchSoft (newStudentData.getStudentInterestDevelopment());
+        newForm.setInterestBranchOther(newStudentData.getStudentInterestOther());
         /*if (!newStudentData.getStudentInstitute().equals("")) {
             List<Object> listOfInstitute = searchSomething("INSTITUTE", "NAME", newStudentData.getStudentInstitute());
             if (!(listOfInstitute.size() == 0)) {
@@ -318,32 +320,136 @@ public class StudentPage {
         StudentData std = new StudentData();        
         Form form = new DAOStudentImpl().getFormByUserName(UserName);
         if (form != null)
-        {
+        {     
             std.setIdForm(form.getIdForm());
-//            std.setStudentCPlusPlusMark();           //this methods not applicable yet
-
-//            std.setStudentEmailFirst();
-//            std.setStudentEmailSecond();
-//            std.setStudentEnglishReadMark();
-//            std.setStudentEnglishSpeakMark();
-//            std.setStudentEnglishWriteMark();
-            std.setStudentExperienceProjects(form.getExecProject());
-            std.setStudentCathedra(form.getCathedra());
-            std.setStudentFaculty(form.getCathedra().getFaculty());
-            std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
-            std.setStudentFirstName(form.getFirstName());
             std.setStudentLastName(form.getLastName());
+            std.setStudentFirstName(form.getFirstName());
+            std.setStudentMiddleName(form.getMiddleName());
+            std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
+            std.setStudentInstituteCourse(form.getInstituteYear().toString());
+            std.setStudentFaculty(form.getCathedra().getFaculty());
+            std.setStudentCathedra(form.getCathedra());
+            std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
+            
+            Set contacts = form.getContacts();
+            Iterator iterCont = contacts.iterator();
+            while(iterCont.hasNext()) {
+                Contact contact = (Contact) iterCont.next();
+                String contactCategory = contact.getContactCategory().getCategory();
+                if (contactCategory.equals("email1")) {
+                    std.setStudentEmailFirst(contact.getInfo());
+                }
+                else if (contactCategory.equals("email2")) {
+                    std.setStudentEmailSecond(contact.getInfo());
+                }
+                else if (contactCategory.equals("cellphone1")) {
+                    std.setStudentTelephone(contact.getInfo());
+                }
+                else {
+                    std.setStudentOtherContactType(contactCategory);
+                    std.setStudentOtherContact(contact.getInfo());
+                }
+            }             
+            
+            std.setStudentInterestStudy(form.getInterestStudy());
+            std.setStudentInterestWork(form.getInterestWork());
+            std.setStudentInterestDevelopment(form.getInterestBranchSoft());
+            std.setStudentInterestOther(form.getInterestBranchOther());
+            std.setStudentWorkTypeDeepSpec(form.getInterestDeepSpec());
+            std.setStudentWorkTypeVarious(form.getInterestVarious());
+            std.setStudentWorkTypeManagement(form.getInterestManagment());
+            std.setStudentWorkTypeSale(form.getInterestSale());
+            std.setStudentWorkTypeOther(form.getInterestOther());
+            
+            Set knowledges = form.getKnowledges();
+            Iterator iterKnow = knowledges.iterator();
+            Set<Knowledge> otherKnowledges = new HashSet();
+            while(iterKnow.hasNext()) {
+                Knowledge knowledge = (Knowledge) iterKnow.next();
+                String branch = knowledge.getBranch().getName();
+                if (branch.equals("C++")) {
+                    std.setStudentCPlusPlusMark(knowledge.getScore());
+                }
+                else if (branch.equals("Java")) {
+                    std.setStudentJavaMark(knowledge.getScore());
+                }                
+                else if (branch.equals("Сетевые технологии")) {
+                    std.setStudentKnowledgeNetwork(knowledge.getScore());
+                }
+                else if (branch.equals("Эффективные алгоритмы")) {
+                    std.setStudentKnowledgeEfficientAlgorithms(knowledge.getScore());
+                }
+                else if (branch.equals("ООП")) {
+                    std.setStudentKnowledgeOOP(knowledge.getScore());
+                }
+                else if (branch.equals("БД")) {
+                    std.setStudentKnowledgeDB(knowledge.getScore());
+                }
+                else if (branch.equals("Web")) {
+                    std.setStudentKnowledgeWeb(knowledge.getScore());
+                }
+                else if (branch.equals("GUI")) {
+                    std.setStudentKnowledgeGUI(knowledge.getScore());
+                }
+                else if (branch.equals("Сетевое программирование")) {
+                    std.setStudentKnowledgeNetworkProgramming(knowledge.getScore());
+                }
+                else if (branch.equals("Проектирование программ")) {
+                    std.setStudentKnowledgeProgramDesign(knowledge.getScore());
+                }
+                else {
+                    otherKnowledges.add(knowledge);
+                }
+            }            
+            Iterator iterOtherKnow = otherKnowledges.iterator();
+            Knowledge know;
+            if(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                std.setStudentKnowledgeOther1(know.getBranch().getName());
+                std.setStudentKnowledgeOther1Mark(know.getScore());
+            }
+            if(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                std.setStudentKnowledgeOther2(know.getBranch().getName());
+                std.setStudentKnowledgeOther2Mark(know.getScore());
+            }
+            if(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                std.setStudentKnowledgeOther3(know.getBranch().getName());
+                std.setStudentKnowledgeOther3Mark(know.getScore());
+            }   
+            
+            
+            
+            
+            
+            
+//            std.setStudentLanguage1();
+//            std.setStudentLanguage1Mark();
+//            std.setStudentLanguage2();
+//            std.setStudentLanguage2Mark();
+//            std.setStudentLanguage3();
+//            std.setStudentLanguage3Mark();
+           
+            std.setStudentExperienceProjects(form.getExecProject());
+//            std.setStudentEnglishReadMark();
+//            std.setStudentEnglishWriteMark();
+//            std.setStudentEnglishSpeakMark();
             
             Set adverts = form.getAdverts();
-            Iterator iterator = adverts.iterator();            
-            Advert advert = (Advert) iterator.next();
-            std.setStudentHowHearAboutCentre(advert.getAdvertCategory().getDescription());
+            Iterator iterAdv = adverts.iterator();
+            while(iterAdv.hasNext()) {
+                Advert advert = (Advert) iterAdv.next();
+                String advertDecription = advert.getAdvertCategory().getDescription();
+                if(advertDecription.equals("Другое")) {
+                    std.setStudentHowHearAboutCentreOther(advert.getOther());
+                    iterAdv.remove();
+                }
+            }
+            std.setStudentHowHearAboutCentre(adverts);            
             
-            std.setStudentInstituteCourse(form.getInstituteYear().toString());
-            std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
-            std.setStudentInterestDevelopment(form.getInterestSoftware());
-            std.setStudentInterestOther(form.getInterestOther());
-            std.setStudentInterestDevelopment(form.getInterestSoftware());
+            std.setStudentReasonOffer(form.getReason());
+            std.setStudentSelfAdditionalInformation(form.getExtraInfo());            
         }       
         return std;
         
