@@ -3,6 +3,7 @@ package ua.netcrackerteam.controller;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
@@ -61,7 +62,7 @@ public class StudentData {
     private double studentEnglishReadMark  = 1;
     private double studentEnglishWriteMark  = 1;
     private double studentEnglishSpeakMark  = 1;
-    private LinkedHashSet studentHowHearAboutCentre;
+    private Set studentHowHearAboutCentre;                //Maksym changed here
     private String studentHowHearAboutCentreOther = "";
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
@@ -466,11 +467,11 @@ public class StudentData {
         this.studentEnglishSpeakMark = studentEnglishSpeakMark;
     }
 
-    public LinkedHashSet getStudentHowHearAboutCentre() {
+    public Set getStudentHowHearAboutCentre() {
         return studentHowHearAboutCentre;
     }
 
-    public void setStudentHowHearAboutCentre(LinkedHashSet studentHowHearAboutCentre) {
+    public void setStudentHowHearAboutCentre(Set studentHowHearAboutCentre) {
         this.studentHowHearAboutCentre = studentHowHearAboutCentre;
     }
 

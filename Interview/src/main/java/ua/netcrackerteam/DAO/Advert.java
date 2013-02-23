@@ -27,6 +27,9 @@ public class Advert implements Serializable {
     @JoinColumn(name = "ID_ADVERT_CATEGORY")
     private AdvertCategory advertCategory;
     
+    @Column(name = "OTHER")
+    private String other;
+    
     
     
     
@@ -56,6 +59,14 @@ public class Advert implements Serializable {
 
     public void setAdvertCategory(AdvertCategory advertCategory) {
         this.advertCategory = advertCategory;
+    }
+    
+        public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
     }
 
     

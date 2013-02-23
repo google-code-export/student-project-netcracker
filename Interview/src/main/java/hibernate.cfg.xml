@@ -15,8 +15,7 @@
       <mapping class="ua.netcrackerteam.DAO.Form" />
       <mapping class="ua.netcrackerteam.DAO.Contact" />
       <mapping class="ua.netcrackerteam.DAO.ContactCategory" />
-      <mapping class="ua.netcrackerteam.DAO.Institute" />
-      <mapping class="ua.netcrackerteam.DAO.School" />
+      <mapping class="ua.netcrackerteam.DAO.Institute" />      
       <mapping class="ua.netcrackerteam.DAO.Advert" />
       <mapping class="ua.netcrackerteam.DAO.AdvertCategory" />
       <mapping class="ua.netcrackerteam.DAO.Cathedra" />
