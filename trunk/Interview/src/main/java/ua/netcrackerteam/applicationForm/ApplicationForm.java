@@ -9,7 +9,6 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -18,7 +17,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.Authenticator;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -26,9 +31,6 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.mail.ByteArrayDataSource;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.MultiPartEmail;
 import ua.netcrackerteam.controller.StudentData;
 
 
@@ -41,7 +43,7 @@ public class ApplicationForm{
     /**
      * Create from (pdf-format)
      */
-    public static void generateFormPDF(OutputStream memory) {
+    public void generateFormPDF(OutputStream memory) {
              
         try {
                        
@@ -64,7 +66,7 @@ public class ApplicationForm{
       
     }
     
-    public static void fillFormData(AcroFields form) throws IOException, DocumentException{
+    public void fillFormData(AcroFields form) throws IOException, DocumentException{
         
         StudentData studentData = new StudentData();
 
@@ -126,7 +128,7 @@ public class ApplicationForm{
         
        
     }
-    public static Image reciveImage() throws BadElementException, MalformedURLException, IOException{
+    public Image reciveImage() throws BadElementException, MalformedURLException, IOException{
         
         Image img = Image.getInstance("src\\main\\java\\1.jpg");
         img.setAbsolutePosition(70f, 615f);
@@ -135,13 +137,126 @@ public class ApplicationForm{
         return img;
     }
     
-    public static void sendPDFToStudent(){
+    public String readHTMLContent(){
+        return  "Test";
+    }
+    
+    public void sendPDFToStudent(String mailStudent, String nameStudent) throws MessagingException, IOException{
+    	                 
+	        String sender = "NetcrackerTeamOdessaOspu@gmail.com"; 
+	        String recipient = "klitna.tetiana@gmail.com"; 
+	       
+	        String subject = "Учебный Центр NetCracker при ОНПУ"; 
+	         	                    
+                Properties properties = new Properties();
+                properties.put("mail.transport.protocol", "smtp");
+                properties.put("mail.smtp.host", "smtp.gmail.com");
+                properties.put("mail.smtp.socketFactory.port", "465");
+                properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+                properties.put("mail.smtp.auth", "true");
+                properties.put("mail.smtp.port", "465");
+                properties.put("mail.debug", "false");
+                properties.put("mail.smtp.ssl.enable", "true");
+          
+                Authenticator auth = new SMTPAuthenticator();
+	        Session session = Session.getDefaultInstance(properties, auth);                              
+	                       
+	       	
+                MimeBodyPart messageBodyPart = new MimeBodyPart();
+                String htmlText = readHTMLContent();
+                messageBodyPart.setContent(htmlText, "text/html");	        
+                
+	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	        generateFormPDF(outputStream);
+	        byte[] bytes = outputStream.toByteArray();	             
+	        DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
+	        MimeBodyPart pdfBodyPart = new MimeBodyPart();
+	        pdfBodyPart.setDataHandler(new DataHandler(dataSource));
+	        pdfBodyPart.setFileName("FormForInterview.pdf");                    
+                                                         
+	        MimeMultipart mimeMultipart = new MimeMultipart();
+                mimeMultipart.addBodyPart(messageBodyPart);	       
+	        mimeMultipart.addBodyPart(pdfBodyPart);	             
+	        
+	        InternetAddress iaSender = new InternetAddress(sender);
+	        InternetAddress iaRecipient = new InternetAddress(recipient);	             
+	        
+	        MimeMessage mimeMessage = new MimeMessage(session);
+	        mimeMessage.setSender(iaSender);
+	        mimeMessage.setSubject(subject);
+	        mimeMessage.setRecipient(Message.RecipientType.TO, iaRecipient);           
+	        mimeMessage.setContent(mimeMultipart);                  	             
+	     
+               Transport transport = session.getTransport();
+               transport.connect();
+	       transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
+               transport.close();
+                
+                
+// -------------------------------------------------
+
+                 /*InternetAddress iaSender = new InternetAddress(sender);
+	        InternetAddress iaRecipient = new InternetAddress(recipient);
+                
+MimeMessage message = new MimeMessage(session);
+message.setSender(iaSender);
+message.setSubject(subject);
+message.setRecipient(Message.RecipientType.TO, iaRecipient); 
+
+message.setSubject(subject);
+
+// Add html content
+
+// Specify the cid of the image to include in the email
+
+  MimeMultipart multipart = new MimeMultipart("related");
+
+        // first part  (the html)
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = "< <h1>Здравствуйте, Татьяна!</h1>img src=\"cid:image\">";
+        messageBodyPart.setContent(htmlText, "text/html");
+
+        // add it
+        multipart.addBodyPart(messageBodyPart);
         
-        // in process ....
+        // second part (the image)
+        messageBodyPart = new MimeBodyPart();
+        DataSource fds = new FileDataSource("src\\\\main\\\\java\\\\logotip.png");
+        messageBodyPart.setDataHandler(new DataHandler(fds));
+        messageBodyPart.setHeader("Content-ID","<image>");
+
+        // add it
+        multipart.addBodyPart(messageBodyPart);
+
+        // put everything together
+        message.setContent(multipart);
+
+// Send the message
+Transport.send(message);*/
+     
+    }
+    
+     private class SMTPAuthenticator extends Authenticator {
+         
+         @Override
+        public PasswordAuthentication getPasswordAuthentication() {
+           String username = "NetcrackerTeamOdessaOspu@gmail.com";
+           String password = "12345odessa";
+           return new PasswordAuthentication(username, password);
+           
+        }
     }
 
     public static void main(String[] args){       
-        sendPDFToStudent();   
+        try {
+             ApplicationForm form = new ApplicationForm();
+             form.sendPDFToStudent("klitna.tetiana@gmail.com", "Tanya");
+        } catch (MessagingException ex) {
+            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
     
 }
