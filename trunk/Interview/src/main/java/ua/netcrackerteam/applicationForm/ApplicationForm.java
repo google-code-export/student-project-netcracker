@@ -191,48 +191,6 @@ public class ApplicationForm{
                transport.connect();
 	       transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
                transport.close();
-                
-                
-// -------------------------------------------------
-
-                 /*InternetAddress iaSender = new InternetAddress(sender);
-	        InternetAddress iaRecipient = new InternetAddress(recipient);
-                
-MimeMessage message = new MimeMessage(session);
-message.setSender(iaSender);
-message.setSubject(subject);
-message.setRecipient(Message.RecipientType.TO, iaRecipient); 
-
-message.setSubject(subject);
-
-// Add html content
-
-// Specify the cid of the image to include in the email
-
-  MimeMultipart multipart = new MimeMultipart("related");
-
-        // first part  (the html)
-        BodyPart messageBodyPart = new MimeBodyPart();
-        String htmlText = "< <h1>Здравствуйте, Татьяна!</h1>img src=\"cid:image\">";
-        messageBodyPart.setContent(htmlText, "text/html");
-
-        // add it
-        multipart.addBodyPart(messageBodyPart);
-        
-        // second part (the image)
-        messageBodyPart = new MimeBodyPart();
-        DataSource fds = new FileDataSource("src\\\\main\\\\java\\\\logotip.png");
-        messageBodyPart.setDataHandler(new DataHandler(fds));
-        messageBodyPart.setHeader("Content-ID","<image>");
-
-        // add it
-        multipart.addBodyPart(messageBodyPart);
-
-        // put everything together
-        message.setContent(multipart);
-
-// Send the message
-Transport.send(message);*/
      
     }
     
