@@ -47,7 +47,7 @@ public class ApplicationForm{
     /**
      * Create from (pdf-format)
      */
-    public void generateFormPDF(OutputStream memory) {
+    public static void generateFormPDF(OutputStream memory) {
              
         try {
                        
@@ -70,7 +70,7 @@ public class ApplicationForm{
       
     }
     
-    public void fillFormData(AcroFields form) throws IOException, DocumentException{
+    public static void fillFormData(AcroFields form) throws IOException, DocumentException{
         
         StudentData studentData = new StudentData();
 
@@ -132,7 +132,7 @@ public class ApplicationForm{
         
        
     }
-    public Image reciveImage() throws BadElementException, MalformedURLException, IOException{
+    public static Image reciveImage() throws BadElementException, MalformedURLException, IOException{
         
         Image img = Image.getInstance("src\\main\\java\\1.jpg");
         img.setAbsolutePosition(70f, 615f);
@@ -141,7 +141,7 @@ public class ApplicationForm{
         return img;
     }
     
-    private String readHTMLContent(){
+    private static String readHTMLContent(){
         
         StringBuilder builder = new StringBuilder();
         
@@ -168,7 +168,7 @@ public class ApplicationForm{
     }
     
       
-    public void sendPDFToStudent(String userName) throws MessagingException, IOException{
+    public static void sendPDFToStudent(String userName) throws MessagingException, IOException{
         
                 Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
                     	                 
@@ -186,8 +186,7 @@ public class ApplicationForm{
                 properties.put("mail.smtp.port", "465");
                 properties.put("mail.debug", "false");
                 properties.put("mail.smtp.ssl.enable", "true");
-          
-                Authenticator auth = new SMTPAuthenticator();
+                       
 	        Session session = Session.getDefaultInstance(properties, new DefaultAuthenticator("NetcrackerTeamOdessaOspu@gmail.com", "12345odessa"));                              
 	                       
 	       	
@@ -231,32 +230,23 @@ public class ApplicationForm{
      
     }
     
-    private String getTime(Date date){
+    private static String getTime(Date date){
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(date);
     }
     
-      private String getDate(Date date){
+      private static String getDate(Date date){
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM");
         return dateFormat.format(date);
     }
     
-     private class SMTPAuthenticator extends Authenticator {
-         
-         @Override
-        public PasswordAuthentication getPasswordAuthentication() {
-           String username = "NetcrackerTeamOdessaOspu@gmail.com";
-           String password = "12345odessa";
-           return new PasswordAuthentication(username, password);
-           
-        }
-    }
+    
+    
 
     public static void main(String[] args){       
         try {
-             ApplicationForm form = new ApplicationForm();
-             form.sendPDFToStudent("iviarkiz");
+            ApplicationForm.sendPDFToStudent("iviarkiz");      
         } catch (MessagingException ex) {
             Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
