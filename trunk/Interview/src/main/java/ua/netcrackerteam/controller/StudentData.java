@@ -1,10 +1,9 @@
 package ua.netcrackerteam.controller;
 
+import java.util.Set;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
-
-import java.util.Set;
 
 /**
  * Class-controller for Student Entity with necessary information for use in GUI
