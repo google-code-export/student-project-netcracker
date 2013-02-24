@@ -193,20 +193,20 @@ public class StudentPage {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public static void insertNewBranch(String[] BranchNames) {
+    public static void insertNewBranch(String branchName) {
 
         Session session = null;
         org.hibernate.Query re = null;
         Transaction transaction = null;
-        for (String currBranch:BranchNames) {
-            if (verificationOfTheExistenceSomthing("Branch", "name" ,currBranch)) {
+        //for (String currBranch:BranchNames) {
+            if (verificationOfTheExistenceSomthing("Branch", "name" ,branchName)) {
                 try {
                     Locale.setDefault(Locale.ENGLISH);
                     session = HibernateUtil.getSessionFactory().getCurrentSession();
                     transaction = session.beginTransaction();
                     Branch newBranch = new Branch();
-                    newBranch.setName(currBranch);
-                    newBranch.setDescription(currBranch);
+                    newBranch.setName(branchName);
+                    newBranch.setDescription(branchName);
                     session.save(newBranch);
                     transaction.commit();
                 } catch (Exception e) {
@@ -217,7 +217,7 @@ public class StudentPage {
                     }
                 }
             }
-        }
+        //}
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
@@ -275,7 +275,7 @@ public class StudentPage {
         //StudentData std = StudentPage.getStudentDataByUserName("iviarkiz");
         //System.out.println(std);
 
-       /* StudentData newStudentData = new StudentData();
+        /*StudentData newStudentData = new StudentData();
         newStudentData.setStudentFirstName("Алексей");
         newStudentData.setStudentLastName("Филипенко");
         newStudentData.setStudentMiddleName("Андреевич");
@@ -326,8 +326,8 @@ public class StudentPage {
         //newForm.setInstitute        (newStudentData.getStudentInstitute());
         newForm.setCathedra         (newStudentData.getStudentCathedra());
         //newForm.setFaculty          (newStudentData.getStudentFaculty());
-        newForm.setInstituteYear    (newStudentData.getStudentInstituteCourse());
-        newForm.setInstituteGradYear(newStudentData.getStudentInstituteGradYear());
+        newForm.setInstituteYear    (Integer.parseInt(newStudentData.getStudentInstituteCourse()));
+        newForm.setInstituteGradYear(Integer.parseInt(newStudentData.getStudentInstituteGradYear()));
 
         newForm.setInterestStudy    (newStudentData.getStudentInterestStudy());
         newForm.setInterestWork     (newStudentData.getStudentInterestWork());
@@ -335,11 +335,13 @@ public class StudentPage {
         newForm.setInterestDeepSpec (newStudentData.getStudentWorkTypeDeepSpec());
         newForm.setInterestManagment(newStudentData.getStudentWorkTypeManagement());
         newForm.setInterestSale     (newStudentData.getStudentWorkTypeSale());
-        newForm.setInterestVarious  (newStudentData.getStudentWorkTypeManagement());
+        newForm.setInterestVarious  (newStudentData.getStudentWorkTypeVarious());
 
         newForm.setExecProject      (newStudentData.getStudentExperienceProjects());
         newForm.setReason           (newStudentData.getStudentReasonOffer());
         newForm.setExtraInfo        (newStudentData.getStudentSelfAdditionalInformation());
+        newForm.setInterestBranchOther(newStudentData.getStudentInterestDevelopment());
+        newForm.setInterestOther    (newStudentData.getStudentInterestOther());
         try {
             newForm.setUser             ((UserList)currDAOComm.getUserByName(userName).get(0));
         } catch (SQLException e) {
@@ -375,13 +377,16 @@ public class StudentPage {
             ContactCategory cellPhone = (ContactCategory)listOfCellphone.get(0);
             Contact newEmailContact = new Contact();
             newEmailContact.setContactCategory  (cellPhone);
-            newEmailContact.setInfo             (newStudentData.getStudentEmailSecond().trim());
+            newEmailContact.setInfo             (newStudentData.getStudentTelephone().trim());
             newEmailContact.setForm           (newForm);
             currDAOComm.addSomethingNew(newEmailContact);
         }
         //contacts//other
         if (!newStudentData.getStudentOtherContactType().equals("") &&
                 !newStudentData.getStudentOtherContact().equals("")) {
+            //create
+            insertNewContacts(newStudentData.getStudentOtherContactType().trim());
+            //filling
             List<Object> listOfOther = searchSomething("ContactCategory", "category", newStudentData.getStudentOtherContactType());
             ContactCategory otherContact = (ContactCategory)listOfOther.get(0);
             Contact newEmailContact = new Contact();
@@ -409,6 +414,7 @@ public class StudentPage {
 
         //lang//other 1
         if (!newStudentData.getStudentLanguage1().trim().equals("")) {
+            insertNewBranch(newStudentData.getStudentLanguage1().trim());
             List<Object> listOfBranchLang1 = searchSomething("Branch", "name", newStudentData.getStudentLanguage1().trim());
             Branch BranchLang1 = (Branch)listOfBranchLang1.get(0);
             Knowledge knowLang1 = new Knowledge();
@@ -419,6 +425,7 @@ public class StudentPage {
         }
         //lang//other 2
         if (!newStudentData.getStudentLanguage2().trim().equals("")) {
+            insertNewBranch(newStudentData.getStudentLanguage2().trim());
             List<Object> listOfBranchLang2 = searchSomething("Branch", "name", newStudentData.getStudentLanguage2().trim());
             Branch BranchLang2 = (Branch)listOfBranchLang2.get(0);
             Knowledge knowLang2 = new Knowledge();
@@ -429,6 +436,7 @@ public class StudentPage {
         }
         //lang//other 3
         if (!newStudentData.getStudentLanguage3().trim().equals("")) {
+            insertNewBranch(newStudentData.getStudentLanguage3().trim());
             List<Object> listOfBranchLang3 = searchSomething("Branch", "name", newStudentData.getStudentLanguage3().trim());
             Branch BranchLang3 = (Branch)listOfBranchLang3.get(0);
             Knowledge knowLang3 = new Knowledge();
@@ -440,6 +448,7 @@ public class StudentPage {
 
         //knowledge//other 1
         if (!newStudentData.getStudentKnowledgeOther1().trim().equals("")) {
+            insertNewBranch(newStudentData.getStudentKnowledgeOther1().trim());
             List<Object> listOfBranchOther1 = searchSomething("Branch", "name", newStudentData.getStudentKnowledgeOther1().trim());
             Branch BranchOther1 = (Branch)listOfBranchOther1.get(0);
             Knowledge knowOther1 = new Knowledge();
@@ -450,6 +459,7 @@ public class StudentPage {
         }
         //knowledge//other 2
         if (!newStudentData.getStudentKnowledgeOther2().trim().equals("")) {
+            insertNewBranch(newStudentData.getStudentKnowledgeOther2().trim());
             List<Object> listOfBranchOther2 = searchSomething("Branch", "name", newStudentData.getStudentKnowledgeOther2().trim());
             Branch BranchOther2 = (Branch)listOfBranchOther2.get(0);
             Knowledge knowOther2 = new Knowledge();
@@ -460,6 +470,7 @@ public class StudentPage {
         }
         //knowledge//other 3
         if (!newStudentData.getStudentKnowledgeOther3().trim().equals("")) {
+            insertNewBranch(newStudentData.getStudentKnowledgeOther3().trim());
             List<Object> listOfBranchOther3 = searchSomething("Branch", "name", newStudentData.getStudentKnowledgeOther3().trim());
             Branch BranchOther3 = (Branch)listOfBranchOther3.get(0);
             Knowledge knowOther3 = new Knowledge();
@@ -582,20 +593,10 @@ public class StudentPage {
             std.setStudentFirstName(form.getFirstName());
             std.setStudentMiddleName(form.getMiddleName());
             std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
-            //Filipenko
-            //-
-            //std.setStudentInstituteCourse(form.getInstituteYear().toString());
-            //+
-            std.setStudentInstituteCourse(form.getInstituteYear());
-            //=
+            std.setStudentInstituteCourse(form.getInstituteYear().toString());
             std.setStudentFaculty(form.getCathedra().getFaculty());
             std.setStudentCathedra(form.getCathedra());
-            //Filipenko
-            //-
-            //std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
-            //+
-            std.setStudentInstituteGradYear(form.getInstituteGradYear());
-            //=
+            std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
 
             Set contacts = form.getContacts();
             Iterator iterCont = contacts.iterator();

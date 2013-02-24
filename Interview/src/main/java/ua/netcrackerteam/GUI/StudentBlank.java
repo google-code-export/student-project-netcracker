@@ -931,6 +931,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     if(checkAllValid()) {
                         setEditable(false);
                         stData.getIdForm();
+                        //Filipenko
+                        //+
+                        StudentPage.addNewForm(stData, username);
+                        //=
                     } else {
                         Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
                         n.setDescription("Все поля помеченные * обязательны к заполнению.");
