@@ -19,11 +19,26 @@ import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.FileResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
-import java.awt.Image;
+import ua.netcrackerteam.DAO.Cathedra;
+import ua.netcrackerteam.DAO.Faculty;
+import ua.netcrackerteam.DAO.Institute;
+import ua.netcrackerteam.controller.StudentData;
+import ua.netcrackerteam.controller.StudentPage;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -32,12 +47,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import javax.imageio.ImageIO;
-import ua.netcrackerteam.DAO.Cathedra;
-import ua.netcrackerteam.DAO.Faculty;
-import ua.netcrackerteam.DAO.Institute;
-import ua.netcrackerteam.controller.StudentData;
-import ua.netcrackerteam.controller.StudentPage;
 /**
  *
  * @author akush_000
@@ -824,8 +833,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public OutputStream receiveUpload(String filename, String mimeType) {
         FileOutputStream fos = null; 
         WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
-        photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+username+".jpg") );
+        photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+username+"/"+username+".jpg") );
         try {
+            File dir = photoFile.getParentFile();
+            if (false == photoFile.exists()) {
+                dir.mkdir();
+            }
             fos = new FileOutputStream(photoFile);
         } catch (final java.io.FileNotFoundException e) {
             getWindow().showNotification("Ошибка загрузки файла", Window.Notification.TYPE_TRAY_NOTIFICATION);

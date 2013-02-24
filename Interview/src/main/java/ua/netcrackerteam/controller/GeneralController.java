@@ -7,6 +7,7 @@ import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
+import java.io.File;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.SQLException;
@@ -103,6 +104,24 @@ public class GeneralController implements Logable {
         }
     }
 
+    public static void deleteDirectory(File dir) {
+        try {
+            if (dir.isDirectory()) {
+                String[] children = dir.list();
+                for (int i=0; i<children.length; i++) {
+                    File f = new File(dir, children[i]);
+                    deleteDirectory(f);
+                }
+                dir.delete();
+            } else {
+                dir.delete();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            logger.getLog().error("Something wrong with folder deleting", e);
+        }
+    }
+
    /* public static String checkInputText(String inputText){
         String result = inputText.replaceAll("\n", " ");
         return result;
@@ -115,7 +134,7 @@ public class GeneralController implements Logable {
     }*/
 
     public static void main(String[] args) throws SQLException {
-        setUsualUser("gglex34e", "1234556", "sdfsdf@sdfsdf.df");
+        setUsualUser("gglex34zfzd2e", "1234556", "sdfsdf@sdfsdf.df");
         /*String nickName = userNameSplitFromEmail("fdgdfg@gdfgdf.com");
         System.out.println(nickName);*/
         /*List<Integer> ids = checkLoginIdUser("admin", "abyrabyrabyr");
