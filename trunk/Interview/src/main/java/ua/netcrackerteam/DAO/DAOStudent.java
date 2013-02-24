@@ -13,6 +13,6 @@ public interface DAOStudent {
     public Form getFormByUserName(String userName);
     //public void addForm(Form form);
     public void updateForm(Form form);
-    public List<Interview> getFormByInterview(Interview idInterview);
+    public List<Form> getFormByInterview(Interview idInterview);
     public String getEmailByUserName(String userName);
 }
