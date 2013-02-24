@@ -1,19 +1,9 @@
 package ua.netcrackerteam.DAO;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 
 /**
@@ -54,9 +44,6 @@ public class Form implements Serializable {
     @Column(name= "INSTITUTE_GRAD_YEAR")
     private Integer instituteGradYear;
 
-    @Column(name= "SCHOOL_GRAD_YEAR")
-    private Integer schoolGradYear;
-
     @Column(name= "EXTRA_KNOWLEDGE")
     private String extraKnowledge;
 
@@ -77,7 +64,7 @@ public class Form implements Serializable {
     
     @Column(name="INTEREST_DEEP_SPEC")
     private String interestDeepSpec;
-    
+
     @Column(name="INTEREST_VARIOUS")
     private String interestVarious;
     
@@ -86,13 +73,9 @@ public class Form implements Serializable {
     
     @Column(name="INTEREST_SALE")
     private String interestSale;
-    
 
-    //@Column(name = "PHOTO")
-    //@javax.persistence.Lob
-    //private String photo;
-//    @Column(name = "PHOTO")    
-//    private String photo;
+    @Column(name = "PHOTO")    
+    private byte[] photo;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_STATUS")
@@ -118,10 +101,7 @@ public class Form implements Serializable {
     
     @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
     private Set<Advert> adverts = new LinkedHashSet();
-    
-    
-    
-           
+
     public Form() {
     }
 
@@ -133,7 +113,6 @@ public class Form implements Serializable {
         this.contacts = contacts;
     }
     
-    
     public Set<Knowledge> getKnowledges() {
         return knowledges;
     }
@@ -141,7 +120,6 @@ public class Form implements Serializable {
     public void setKnowledges(Set<Knowledge> knowledges) {
         this.knowledges = knowledges;
     }
-
 
     public Cathedra getCathedra() {
         return cathedra;
@@ -221,14 +199,6 @@ public class Form implements Serializable {
 
     public void setInstituteGradYear(Integer instituteGradYear) {
         this.instituteGradYear = instituteGradYear;
-    }
-
-    public Integer getSchoolGradYear() {
-        return schoolGradYear;
-    }
-
-    public void setSchoolGradYear(Integer schoolGradYear) {
-        this.schoolGradYear = schoolGradYear;
     }
 
     public String getExtraKnowledge() {
@@ -311,13 +281,13 @@ public class Form implements Serializable {
         this.interestSale = interestSale;
     }
 
-//    public String getPhoto() {
-//        return photo;
-//    }
-//
-//    public void setPhoto(String photo) {
-//        this.photo = photo;
-//    }
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
 
     public Status getStatus() {
         return status;
@@ -350,10 +320,6 @@ public class Form implements Serializable {
     public void setAdverts(Set<Advert> adverts) {
         this.adverts = adverts;
     }
-    
-    
-    
-    
     
     @Override
     public boolean equals(Object o) {
@@ -388,9 +354,9 @@ public class Form implements Serializable {
         if (middleName != null ? !middleName.equals(form.middleName) : form.middleName != null) return false;
 //        if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
         if (reason != null ? !reason.equals(form.reason) : form.reason != null) return false;
-        if (schoolGradYear != null ? !schoolGradYear.equals(form.schoolGradYear) : form.schoolGradYear != null)
+        if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
+        if (reason != null ? !reason.equals(form.reason) : form.reason != null)
             return false;
-
         return true;
     }
 
@@ -405,7 +371,6 @@ public class Form implements Serializable {
         result = 31 * result + (extraInfo != null ? extraInfo.hashCode() : 0);
         result = 31 * result + (instituteYear != null ? instituteYear.hashCode() : 0);
         result = 31 * result + (instituteGradYear != null ? instituteGradYear.hashCode() : 0);
-        result = 31 * result + (schoolGradYear != null ? schoolGradYear.hashCode() : 0);
         result = 31 * result + (extraKnowledge != null ? extraKnowledge.hashCode() : 0);
         result = 31 * result + (interestStudy != null ? interestStudy.hashCode() : 0);
         result = 31 * result + (interestWork != null ? interestWork.hashCode() : 0);

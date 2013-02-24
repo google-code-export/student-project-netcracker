@@ -60,9 +60,10 @@ public class DAOStudentImpl implements DAOStudent
 //        HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
 
         //Test getting form by user name
-          Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("iviarkiz");
-          System.out.println("blabla" + form1.getFirstName());
-         
+          /*Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("iviarkiz");
+          System.out.println("blabla" + form1.getFirstName());*/
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("iviarkiz");
+        System.out.println(form.getUser().getIdUser());
          
         //Example how to get form by form id
 //         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
