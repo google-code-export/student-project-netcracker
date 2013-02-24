@@ -14,4 +14,5 @@ public interface DAOStudent {
     //public void addForm(Form form);
     public void updateForm(Form form);
     public List<Interview> getFormByInterview(Interview idInterview);
+    public String getEmailByUserName(String userName);
 }
