@@ -14,13 +14,15 @@ import java.util.List;
  */
 public class InterviewDAOImpl {
        
-   //get all interview 
+   //Получает все интервью 
    public List<Interview> getInterview(){
        return new ArrayList<Interview>();
    } 
    
-   //get interview 
+   //Получает интервью по конкретной дате 
    public Interview getInterview(Date startInterview){
       return new Interview(); 
    } 
+   
+   
 }
