@@ -314,7 +314,7 @@ public class StudentPage {
 
     }
 
-    public static void addNewForm(StudentData newStudentData, String userName) {
+    public static void addNewForm(StudentData newStudentData, String userName, int statusParam) {
 
         DAOStudentImpl currDAOStImpl = new DAOStudentImpl();
         DAOCommon currDAOComm = new DAOCommon();
@@ -567,10 +567,16 @@ public class StudentPage {
         knowEngSpeak.setForm   (newForm);
         knowEngSpeak.setScore    (newStudentData.getStudentEnglishSpeakMark());
         currDAOComm.addSomethingNew(knowEngSpeak);
-
-        List<Object> listOfStatus = searchSomething("Status", "name", "Зарегистрирована");
-        Status currStatus = (Status)listOfStatus.get(0);
-        newForm.setStatus(currStatus);
+        if (statusParam == 1) {
+            List<Object> listOfStatus = searchSomething("Status", "name", "Зарегистрирована");
+            Status currStatus = (Status)listOfStatus.get(0);
+            newForm.setStatus(currStatus);
+        }
+        else if(statusParam == 2) {
+            List<Object> listOfStatus = searchSomething("Status", "name", "Требует подтверждения");
+            Status currStatus = (Status)listOfStatus.get(0);
+            newForm.setStatus(currStatus);
+        }
 
     }
 
