@@ -185,8 +185,8 @@ public class DAOStudentImpl implements DAOStudent
     }
     
    //Получает все формы записанные на интервью   
-   public List<Interview> getFormByInterview(Interview idInterview){
-       return new ArrayList<Interview>();
+   public List<Form> getFormByInterview(Interview idInterview){
+       return new ArrayList<Form>();
    }
    
     //Получает емаил пользователя  
