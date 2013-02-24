@@ -8,21 +8,22 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -31,6 +32,9 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.mail.ByteArrayDataSource;
+import org.apache.commons.mail.DefaultAuthenticator;
+import ua.netcrackerteam.DAO.Interview;
+import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.StudentData;
 
 
@@ -137,14 +141,39 @@ public class ApplicationForm{
         return img;
     }
     
-    public String readHTMLContent(){
-        return  "Test";
+    private String readHTMLContent(){
+        
+        StringBuilder builder = new StringBuilder();
+        
+        BufferedReader reader= null;
+        
+        try{
+            reader = new BufferedReader(new FileReader("src\\main\\java\\NetCrackerHTML.html"));
+            String currentStr = reader.readLine();
+            while((currentStr = reader.readLine()) != null){
+                builder.append(currentStr);
+            }
+        } catch(IOException e){
+            e.printStackTrace();
+        }finally{
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        return  builder.toString();
     }
     
-    public void sendPDFToStudent(String mailStudent, String nameStudent) throws MessagingException, IOException{
-    	                 
+      
+    public void sendPDFToStudent(String userName) throws MessagingException, IOException{
+        
+                Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+                    	                 
 	        String sender = "NetcrackerTeamOdessaOspu@gmail.com"; 
-	        String recipient = "klitna.tetiana@gmail.com"; 
+	        String recipient = HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName); 
 	       
 	        String subject = "Учебный Центр NetCracker при ОНПУ"; 
 	         	                    
@@ -159,12 +188,20 @@ public class ApplicationForm{
                 properties.put("mail.smtp.ssl.enable", "true");
           
                 Authenticator auth = new SMTPAuthenticator();
-	        Session session = Session.getDefaultInstance(properties, auth);                              
+	        Session session = Session.getDefaultInstance(properties, new DefaultAuthenticator("NetcrackerTeamOdessaOspu@gmail.com", "12345odessa"));                              
 	                       
 	       	
                 MimeBodyPart messageBodyPart = new MimeBodyPart();
+                
+               
+                Date dataInterview = interview .getStartDate();
+                dataInterview.getTime();
                 String htmlText = readHTMLContent();
-                messageBodyPart.setContent(htmlText, "text/html");	        
+                htmlText = htmlText.replace("[userName]",  userName);
+                htmlText = htmlText.replace("[dateStart]", getDate(interview.getStartDate()));
+                htmlText = htmlText.replace("[timeStart]", getTime(interview.getStartDate()));
+   
+                messageBodyPart.setContent(htmlText, "text/html; charset=utf-8");	        
                 
 	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	        generateFormPDF(outputStream);
@@ -194,6 +231,17 @@ public class ApplicationForm{
      
     }
     
+    private String getTime(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        return dateFormat.format(date);
+    }
+    
+      private String getDate(Date date){
+        
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM");
+        return dateFormat.format(date);
+    }
+    
      private class SMTPAuthenticator extends Authenticator {
          
          @Override
@@ -208,7 +256,7 @@ public class ApplicationForm{
     public static void main(String[] args){       
         try {
              ApplicationForm form = new ApplicationForm();
-             form.sendPDFToStudent("klitna.tetiana@gmail.com", "Tanya");
+             form.sendPDFToStudent("iviarkiz");
         } catch (MessagingException ex) {
             Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
