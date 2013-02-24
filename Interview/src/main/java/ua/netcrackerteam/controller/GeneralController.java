@@ -103,6 +103,11 @@ public class GeneralController implements Logable {
         }
     }
 
+   /* public static String checkInputText(String inputText){
+        String result = inputText.replaceAll("\n", " ");
+        return result;
+    }*/
+
     /*public static String userNameSplitFromEmail(String email){
         String[] splitedString = email.split("@");
         String splitedName = splitedString[0];
