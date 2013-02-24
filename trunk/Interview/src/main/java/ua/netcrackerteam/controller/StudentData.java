@@ -1,12 +1,10 @@
 package ua.netcrackerteam.controller;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
+
+import java.util.Set;
 
 /**
  * Class-controller for Student Entity with necessary information for use in GUI
@@ -18,10 +16,10 @@ public class StudentData {
     private String studentFirstName = "";
     private String studentMiddleName = "";
     private Institute studentInstitute;
-    private String studentInstituteCourse = "";
+    private int studentInstituteCourse = 1;
     private Faculty studentFaculty;
     private Cathedra studentCathedra;
-    private String studentInstituteGradYear = "";
+    private int studentInstituteGradYear = 1;
     private String studentEmailFirst = "";
     private String studentEmailSecond = "";
     private String studentTelephone = "";
@@ -123,11 +121,11 @@ public class StudentData {
         this.studentInstitute = studentInstitute;
     }
 
-    public String getStudentInstituteCourse() {
+    public int getStudentInstituteCourse() {
         return studentInstituteCourse;
     }
 
-    public void setStudentInstituteCourse(String studentInstituteCourse) {
+    public void setStudentInstituteCourse(int studentInstituteCourse) {
         this.studentInstituteCourse = studentInstituteCourse;
     }
 
@@ -147,11 +145,11 @@ public class StudentData {
         this.studentCathedra = studentCathedra;
     }
 
-    public String getStudentInstituteGradYear() {
+    public int getStudentInstituteGradYear() {
         return studentInstituteGradYear;
     }
 
-    public void setStudentInstituteGradYear(String studentInstituteGradYear) {
+    public void setStudentInstituteGradYear(int studentInstituteGradYear) {
         this.studentInstituteGradYear = studentInstituteGradYear;
     }
 

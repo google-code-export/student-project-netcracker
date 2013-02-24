@@ -95,7 +95,7 @@ public class DAOCommon {
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public static UserCategory getUserCategoeyByID(int currUserCategoryID, Session session) throws SQLException {
         //Session session = null;
-        org.hibernate.Query re = null;
+        Query re = null;
         List listOfCategories = null;
         UserCategory currUserCategory = new UserCategory();
         try {
@@ -114,4 +114,46 @@ public class DAOCommon {
         currUserCategory = (UserCategory) listOfCategories.get(0);
         return currUserCategory;
     }
+
+    @Interceptors(ShowHibernateSQLInterceptor.class)
+    public void addSomethingNew(Object newData) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.save(newData);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    @Interceptors(ShowHibernateSQLInterceptor.class)
+    public List getUserByName(String userName) throws SQLException {
+        Session session = null;
+        Query re = null;
+        List listOfUsers = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            listOfUsers = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return listOfUsers;
+    }
+
+
 }

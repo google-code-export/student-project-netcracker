@@ -9,7 +9,7 @@ public interface DAOStudent {
     
     public Form getFormByUserId(int idForm);
     public Form getFormByUserName(String userName);
-    public void addForm(Form form);
+    //public void addForm(Form form);
     public void updateForm(Form form);
     
 }
