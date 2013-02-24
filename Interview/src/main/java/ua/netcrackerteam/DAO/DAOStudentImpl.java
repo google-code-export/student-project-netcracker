@@ -9,6 +9,8 @@ import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -100,6 +102,7 @@ public class DAOStudentImpl implements DAOStudent
     }
     
     
+    
     /**
      * Save data, stored in Form object to Form table in database
      * @param form - Form object, stored data
@@ -180,6 +183,16 @@ public class DAOStudentImpl implements DAOStudent
         }
         return getFormByUserId(idUser);       
     }
+    
+   //Получает все формы записанные на интервью   
+   public List<Interview> getFormByInterview(Interview idInterview){
+       return new ArrayList<Interview>();
+   }
+   
+    //Получает емаил пользователя  
+   public String getEmailByUserName(String userName){
+       return "klitna.tetiana@gmail.com";
+   }
 
 }
 

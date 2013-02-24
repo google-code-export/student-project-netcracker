@@ -1,5 +1,7 @@
 package ua.netcrackerteam.DAO;
 
+import java.util.List;
+
 /**
  * Public interface DAOStudent - Entity of user Student.
  * Include methods to data transfer between StudentData type with DataBase.
@@ -11,5 +13,5 @@ public interface DAOStudent {
     public Form getFormByUserName(String userName);
     //public void addForm(Form form);
     public void updateForm(Form form);
-    
+    public List<Interview> getFormByInterview(Interview idInterview);
 }
