@@ -31,13 +31,6 @@ import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
-import ua.netcrackerteam.DAO.Cathedra;
-import ua.netcrackerteam.DAO.Faculty;
-import ua.netcrackerteam.DAO.Institute;
-import ua.netcrackerteam.controller.StudentData;
-import ua.netcrackerteam.controller.StudentPage;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,6 +40,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import javax.imageio.ImageIO;
+import ua.netcrackerteam.DAO.Cathedra;
+import ua.netcrackerteam.DAO.Faculty;
+import ua.netcrackerteam.DAO.Institute;
+import ua.netcrackerteam.controller.StudentData;
+import ua.netcrackerteam.controller.StudentPage;
 /**
  *
  * @author akush_000
@@ -131,18 +130,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public StudentBlank(String username) {
         this.username = username;
         stData = StudentPage.getStudentDataByUserName(username);
-//        stData.setStudentFirstName(username);
-//        stData.setStudentInstitute(new Institute());
-//        stData.setStudentFaculty(new Faculty());
-//        stData.setStudentCathedra(new Cathedra());
-//        stData.setStudentInterestStudy("+");
-//        stData.setStudentLanguage1("C");
-//        stData.setStudentLanguage1Mark(2);
-//        stData.setStudentLanguage2("C");
-//        stData.setStudentLanguage3("C");
-//        stData.setStudentKnowledgeOther1("1");
-//        stData.setStudentOtherContactType("scype");
-//        stData.setStudentOtherContact("a-m");
         bean = new BeanItem<StudentData>(stData);
         setMargin(true);
         setSpacing(true);
@@ -207,6 +194,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         contactType.setRequired(true);
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
+            @Override
             public void buttonClick(ClickEvent event) {
                 if(contactType.isValid()) {
                     addNewContactField((String)contactType.getValue(),(Property) bean.getItemProperty("studentOtherContact"));
@@ -247,6 +235,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         prLangName.setRequired(true);
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
+            @Override
             public void buttonClick(ClickEvent event) {
                 if(prLangName.isValid()) {
                     Slider newSlider = new Slider((String)prLangName.getValue());
@@ -288,6 +277,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         knowlName.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
+            @Override
             public void buttonClick(ClickEvent event) {
                 if(knowlName.isValid()) {
                     Slider newSlider = new Slider((String)knowlName.getValue());
@@ -930,7 +920,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 } else if(source == save) {
                     if(checkAllValid()) {
                         setEditable(false);
-                        stData.getIdForm();
+                        ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username);
                         //Filipenko
                         //+
                         StudentPage.addNewForm(stData, username);
