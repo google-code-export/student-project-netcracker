@@ -340,8 +340,9 @@ public class StudentPage {
         newForm.setExecProject      (newStudentData.getStudentExperienceProjects());
         newForm.setReason           (newStudentData.getStudentReasonOffer());
         newForm.setExtraInfo        (newStudentData.getStudentSelfAdditionalInformation());
-        newForm.setInterestBranchOther(newStudentData.getStudentInterestDevelopment());
-        newForm.setInterestOther    (newStudentData.getStudentInterestOther());
+        newForm.setInterestBranchOther(newStudentData.getStudentInterestOther());
+        newForm.setInterestBranchSoft(newStudentData.getStudentInterestDevelopment());
+        newForm.setInterestOther    (newStudentData.getStudentWorkTypeOther());
         try {
             newForm.setUser             ((UserList)currDAOComm.getUserByName(userName).get(0));
         } catch (SQLException e) {

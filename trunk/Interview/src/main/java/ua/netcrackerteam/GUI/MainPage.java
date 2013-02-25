@@ -65,7 +65,6 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         layoutfull.addComponent(panel);
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
         getMainWindow().setContent(layoutfull);
-
     }
 
     public void buttonClick(Button.ClickEvent event) {
