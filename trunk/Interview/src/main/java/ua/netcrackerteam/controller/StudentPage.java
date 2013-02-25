@@ -7,6 +7,10 @@ import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -349,29 +353,29 @@ public class StudentPage {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        newForm.setExtraKnowledge   ("extra know");
-
-        currDAOStImpl.addForm(newForm);
-
+        newForm.setExtraKnowledge   ("shit");
         //Filipenko//25.02.12//20.14
         //+
-        for (Object currAdvert:newStudentData.getStudentHowHearAboutCentre()) {
-            List<Object> listOfOtherAdvertCategory = searchSomething("AdvertCategory", "description", (String)currAdvert);
-            AdvertCategory currAdvertCategory = (AdvertCategory) listOfOtherAdvertCategory.get(0);
-            Advert newAdvert = new Advert();
-            newAdvert.setAdvertCategory(currAdvertCategory);
-            newAdvert.setForm(newForm);
-            currDAOComm.addSomethingNew(newAdvert);
-        }
-        List<Object> listOfOtherAdvertCategoryOther = searchSomething("AdvertCategory", "description", "Другое");
-        AdvertCategory currAdvertCategoryOther = (AdvertCategory) listOfOtherAdvertCategoryOther.get(0);
-        Advert newAdvertOther = new Advert();
-        newAdvertOther.setAdvertCategory(currAdvertCategoryOther);
-        newAdvertOther.setForm(newForm);
-        newAdvertOther.setOther(newStudentData.getStudentHowHearAboutCentreOther().trim());
-        currDAOComm.addSomethingNew(newAdvertOther);
-        //=
+        newForm.setAdverts(newStudentData.getStudentHowHearAboutCentre());
 
+        //user photo adding
+        FileInputStream fileInputStream = null;
+        File file = null;
+        byte[] bFile = null;
+        try {
+            file = new File("C:\\Users\\AlexK\\IdeaProj\\interview\\src\\main\\webapp\\WEB-INF\\resources\\alexk\\"+userName+".jpg");
+            bFile = new byte[(int) file.length()];
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(bFile);
+            fileInputStream.close();
+            newForm.setPhoto(bFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //=
+        currDAOStImpl.addForm(newForm);
         //contacts//email1
         if (!newStudentData.getStudentEmailFirst().equals("")) {
             List<Object> listOfEmails = searchSomething("ContactCategory", "category", "email1");
