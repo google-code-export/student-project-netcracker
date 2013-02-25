@@ -129,6 +129,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private InterestSelection variousWork;
     private TextField anotherWorkType;
     private Embedded photo;
+    private ValueChangeListener facultListener;
 
 
     public StudentBlank(String username) {
@@ -333,37 +334,44 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         universities = new ComboBox("ВУЗ",objects);
         universities.setPropertyDataSource((Property) bean.getItemProperty("studentInstitute"));
         universities.setItemCaptionPropertyId("name");
+        universities.setImmediate(true);
         faculties = new ComboBox("Факультет");
         faculties.setPropertyDataSource((Property) bean.getItemProperty("studentFaculty"));
         faculties.setItemCaptionPropertyId("name");
+        faculties.setImmediate(true);
         cathedras = new ComboBox("Кафедра");
+        cathedras.setImmediate(true);
         cathedras.setPropertyDataSource((Property) bean.getItemProperty("studentCathedra"));
         cathedras.setItemCaptionPropertyId("name");
         universities.addListener(new ValueChangeListener() {
+            
+            @Override
             public void valueChange(ValueChangeEvent event) {
                 try {
-                    faculties.removeAllItems();
-                    cathedras.removeAllItems();
-                    Institute currUniver = (Institute) universities.getValue();
-                    if (currUniver != null) {
-                        List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
-                        BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
-                        faculties.setContainerDataSource(objects);
+                        faculties.removeAllItems();
+                        cathedras.removeAllItems();
+                        Institute currUniver = (Institute) universities.getValue();
+                        if (currUniver != null) {
+                            List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
+                            BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
+                            faculties.setContainerDataSource(objects);
+                        }
+                    } catch (NullPointerException ex) {
                     }
-                } catch (NullPointerException ex) {
-                }
             }
         });
-        faculties.addListener(new ValueChangeListener() {
+        facultListener = new ValueChangeListener() {
+            @Override
             public void valueChange(ValueChangeEvent event) {
-                if (faculties.size() > 0) {
+                if ( faculties.size() > 0 ) {
                     cathedras.removeAllItems();
-                List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
-                BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
-                cathedras.setContainerDataSource(objects);
+                    List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
+                    BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
+                    cathedras.setContainerDataSource(objects);
                 }
             }
-        });
+        };
+        faculties.addListener(facultListener);
         universityYear = new TextField("Курс",(Property) bean.getItemProperty("studentInstituteCourse"));
         universityGradYear = new TextField("Год окончания",(Property) bean.getItemProperty("studentInstituteGradYear"));
         universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
@@ -483,7 +491,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         sliderConfig(sliderC,1);
         glayoutPrLang.addComponent(sliderC);
         sliderJava = new Slider("Java");
-        sliderC.setPropertyDataSource((Property) bean.getItemProperty("studentJavaMark"));
+        sliderJava.setPropertyDataSource((Property) bean.getItemProperty("studentJavaMark"));
         sliderConfig(sliderJava,1);
         glayoutPrLang.addComponent(sliderJava);
         addPrLangBut = new Button("Добавить язык");
@@ -651,17 +659,25 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         Label lab = new Label(c1.getCaption()+"<br>"+c1.getValue().toString());
                         lab.setContentMode(Label.CONTENT_XHTML);
                         l.replaceComponent(c, lab);
-//                    } else if (c instanceof Label) {
-//                        Label lab = (Label) c;
-//                        String s = lab.getValue().toString();
-//                        s = s.substring(0,s.indexOf("<"));
-//                        if(universities.getCaption().equals(s)) {
-//                            l.replaceComponent(c, universities);
-//                        } else if (faculties.getCaption().equals(s)) {
-//                            l.replaceComponent(c, faculties);
-//                        } else if (cathedras.getCaption().equals(s)) {
-//                            l.replaceComponent(c, cathedras);
-//                        }
+                    } else if (c instanceof Label) {
+                        if (i == 1 && j == 1) {
+                            l.replaceComponent(c, universities);
+                            faculties.removeListener(facultListener);
+                        } else if (i == 1 && j == 2) {
+                            l.replaceComponent(c, faculties);
+                            Institute currUniver = (Institute) universities.getValue();
+                            List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
+                            BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
+                            faculties.setContainerDataSource(objects);
+                            faculties.setPropertyDataSource((Property) bean.getItemProperty("studentFaculty"));
+                            faculties.addListener(facultListener);
+                        } else if (i == 0 && j == 3) {
+                            l.replaceComponent(c, cathedras);
+                            List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
+                            BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
+                            cathedras.setContainerDataSource(objects);
+                            cathedras.setPropertyDataSource((Property) bean.getItemProperty("studentCathedra"));
+                        }
                     } else {
                         c.setReadOnly(!editable);
                     }
@@ -723,17 +739,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         edit.setVisible(!editable);
         print.setVisible(!editable);
     }
-    
-    /**
-     * Implement this!
-     */
-    private void sendBlankPDFToEmail() {
 
-    }
-    
-    /**
-     * Implement this!
-     */
     private boolean checkAllValid() {
         GridLayout l = (GridLayout) persInfo.getContent();
         Iterator<Component> i = l.getComponentIterator();
@@ -802,6 +808,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         return newPhoto;
     }
 
+    @Override
     public void uploadSucceeded(SucceededEvent event) {
         try {
             FileResource imageResource = new FileResource(photoFile, getApplication());
