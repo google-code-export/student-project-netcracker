@@ -1,6 +1,7 @@
 package ua.netcrackerteam.controller;
 
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
@@ -60,7 +61,7 @@ public class StudentData implements Serializable{
     private double studentEnglishReadMark  = 1;
     private double studentEnglishWriteMark  = 1;
     private double studentEnglishSpeakMark  = 1;
-    private Set studentHowHearAboutCentre;                //Maksym changed here
+    private LinkedHashSet studentHowHearAboutCentre;                //Maksym changed here
     private String studentHowHearAboutCentreOther = "";
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
@@ -465,11 +466,11 @@ public class StudentData implements Serializable{
         this.studentEnglishSpeakMark = studentEnglishSpeakMark;
     }
 
-    public Set getStudentHowHearAboutCentre() {
+    public LinkedHashSet getStudentHowHearAboutCentre() {
         return studentHowHearAboutCentre;
     }
 
-    public void setStudentHowHearAboutCentre(Set studentHowHearAboutCentre) {
+    public void setStudentHowHearAboutCentre(LinkedHashSet studentHowHearAboutCentre) {
         this.studentHowHearAboutCentre = studentHowHearAboutCentre;
     }
 
