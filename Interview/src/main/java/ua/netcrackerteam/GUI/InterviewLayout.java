@@ -6,6 +6,8 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
+import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -18,7 +20,6 @@ import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,8 +36,13 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
     private final OptionGroup dates;
     private final Button saveEdit;
     private Date selectedDate;
+    private String userName;
 
-    public InterviewLayout(String username) {
+    public InterviewLayout(String username, MainPage mainPage) {
+        this.userName = username;
+        WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
+        WebBrowser webBrowser = context.getBrowser();
+        setHeight(webBrowser.getScreenHeight()-200,UNITS_PIXELS);
         setMargin(true);
         setSpacing(true);
         Panel panel = new Panel("Выберите дату собеседования");
@@ -53,16 +59,16 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         calendar.setResolution(InlineDateField.RESOLUTION_DAY);
         layout.addComponent(calendar,0,0);
         layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
-        List interviews = new ArrayList();
-        interviews.add(new Date(2013,10,24,18,0));
-        interviews.add(new Date(2013,10,24,20,0));
-        interviews.add(20);
-        interviews.add(new Date(2013,10,26,16,0));
-        interviews.add(new Date(2013,10,26,19,0));
-        interviews.add(15);
-        interviews.add(new Date(2013,10,27,16,0));
-        interviews.add(new Date(2013,10,27,19,0));
-        interviews.add(0);
+        List interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
+//        interviews.add(new Date(2013,10,24,18,0));
+//        interviews.add(new Date(2013,10,24,20,0));
+//        interviews.add(20);
+//        interviews.add(new Date(2013,10,26,16,0));
+//        interviews.add(new Date(2013,10,26,19,0));
+//        interviews.add(15);
+//        interviews.add(new Date(2013,10,27,16,0));
+//        interviews.add(new Date(2013,10,27,19,0));
+//        interviews.add(0);
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
         layout.addComponent(dates,1,0);
@@ -94,6 +100,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             @Override
             public void buttonClick(ClickEvent event) {
                 if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
+                    ua.netcrackerteam.controller.RegistrationToInterview.updateRegistrationToInterview(userName, selectedDate);
                     dates.setReadOnly(true);
                     saveEdit.setCaption("Редактировать");
                 } else {

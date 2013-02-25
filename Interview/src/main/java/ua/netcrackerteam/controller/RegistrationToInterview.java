@@ -21,7 +21,6 @@ public class RegistrationToInterview implements  Logable{
                 Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(dateInterview);
                 form.setInterview(interview);
                 HibernateFactory.getInstance().getStudentDAO().updateForm(form);             
-             
     }
     
     

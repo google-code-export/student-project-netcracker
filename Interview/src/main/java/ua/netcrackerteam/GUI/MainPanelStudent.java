@@ -21,7 +21,7 @@ public class MainPanelStudent extends MainPanel{
     private SettingsLayout settingsLayout;
     
     
-    public MainPanelStudent(final HeaderLayout hlayout,MainPage mainPage) {
+    public MainPanelStudent(final HeaderLayout hlayout,final MainPage mainPage) {
         super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         final Component c1 = new VerticalLayout();
@@ -32,13 +32,14 @@ public class MainPanelStudent extends MainPanel{
         tabSheet.addTab(c3,"Настройки");
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
 
+            @Override
             public void selectedTabChange(SelectedTabChangeEvent event) {
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == c1) {
                     blankLayout = new StudentBlank(hlayout.getUsername());
                     source.replaceComponent(c1, blankLayout);
                 } else if (source.getSelectedTab() == c2) {
-                    interviewLayout = new InterviewLayout(hlayout.getUsername());
+                    interviewLayout = new InterviewLayout(hlayout.getUsername(), mainPage);
                     source.replaceComponent(c2, interviewLayout);
                 } else if (source.getSelectedTab() == c3) {
                     settingsLayout = new SettingsLayout(hlayout.getUsername());

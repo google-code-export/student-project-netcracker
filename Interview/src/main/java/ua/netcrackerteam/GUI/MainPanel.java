@@ -5,6 +5,7 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
+import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.DataInputStream;

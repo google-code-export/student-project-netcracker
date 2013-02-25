@@ -40,7 +40,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
@@ -53,6 +56,7 @@ import ua.netcrackerteam.controller.StudentPage;
 public class StudentBlank extends VerticalLayout implements FieldEvents.BlurListener, Upload.SucceededListener,
                                    Upload.Receiver, Upload.StartedListener {
     private String username;
+    private int status = 1;
     private Button save;
     private Panel contacts;
     private Button addAnotherContactsBut;
@@ -176,6 +180,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if(!stData.getStudentFirstName().equals("")) {
             getSavedData();
             setEditable(false);
+            status = 2;
         }
     }
     
@@ -894,6 +899,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
  
     private class ButtonsListener implements Button.ClickListener {
 
+        @Override
         public void buttonClick(ClickEvent event) {
             Button source = event.getButton();
                 if (source == addAnotherContactsBut) { 
@@ -920,11 +926,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 } else if(source == save) {
                     if(checkAllValid()) {
                         setEditable(false);
-                        ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username);
-                        //Filipenko
-                        //+
-                        StudentPage.addNewForm(stData, username);
-                        //=
+                        ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status);
                     } else {
                         Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
                         n.setDescription("Все поля помеченные * обязательны к заполнению.");
@@ -932,8 +934,15 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }
                 } else if(source == edit) {
                     setEditable(true);
+                    status = 2;
                 } else if(source == print) {
-                    sendBlankPDFToEmail();
+                try {
+                    ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(username);
+                } catch (MessagingException ex) {
+                    getWindow().showNotification("Ошибка отправки документа", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                } catch (IOException ex) {
+                    getWindow().showNotification("Ошибка отправки документа", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
                 }
         }
     }

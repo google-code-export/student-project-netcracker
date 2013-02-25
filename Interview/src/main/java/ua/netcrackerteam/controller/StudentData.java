@@ -1,5 +1,6 @@
 package ua.netcrackerteam.controller;
 
+import java.io.Serializable;
 import java.util.Set;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
@@ -9,7 +10,7 @@ import ua.netcrackerteam.DAO.Institute;
  * Class-controller for Student Entity with necessary information for use in GUI
  * @author krygin
  */
-public class StudentData {
+public class StudentData implements Serializable{
     private int idForm;
     private String studentLastName = "";
     private String studentFirstName = "";
