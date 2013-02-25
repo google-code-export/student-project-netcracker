@@ -276,8 +276,8 @@ public class StudentPage {
 //        newStudentData.setStudentSelfAdditionalInformation("I'm a best of the best");
 
 
-        //StudentData std = StudentPage.getStudentDataByUserName("iviarkiz");
-        //System.out.println(std);
+        StudentData std = StudentPage.getStudentDataByUserName("iviarkiz");
+        System.out.println(std);
 
         /*StudentData newStudentData = new StudentData();
         newStudentData.setStudentFirstName("Алексей");
@@ -664,36 +664,45 @@ public class StudentPage {
             Set<Knowledge> otherKnowledges = new HashSet();
             while(iterKnow.hasNext()) {
                 Knowledge knowledge = (Knowledge) iterKnow.next();
-                String Branch = knowledge.getBranch().getName();
-                if (Branch.equals("C++")) {
+                String branch = knowledge.getBranch().getName();
+                if (branch.equals("C++")) {
                     std.setStudentCPlusPlusMark(knowledge.getScore());
                 }
-                else if (Branch.equals("Java")) {
+                else if (branch.equals("Java")) {
                     std.setStudentJavaMark(knowledge.getScore());
                 }
-                else if (Branch.equals("Сетевые технологии")) {
+                else if (branch.equals("Сетевые технологии")) {
                     std.setStudentKnowledgeNetwork(knowledge.getScore());
                 }
-                else if (Branch.equals("Эффективные алгоритмы")) {
+                else if (branch.equals("Эффективные алгоритмы")) {
                     std.setStudentKnowledgeEfficientAlgorithms(knowledge.getScore());
                 }
-                else if (Branch.equals("ООП")) {
+                else if (branch.equals("ООП")) {
                     std.setStudentKnowledgeOOP(knowledge.getScore());
                 }
-                else if (Branch.equals("БД")) {
+                else if (branch.equals("БД")) {
                     std.setStudentKnowledgeDB(knowledge.getScore());
                 }
-                else if (Branch.equals("Web")) {
+                else if (branch.equals("Web")) {
                     std.setStudentKnowledgeWeb(knowledge.getScore());
                 }
-                else if (Branch.equals("GUI")) {
+                else if (branch.equals("GUI")) {
                     std.setStudentKnowledgeGUI(knowledge.getScore());
                 }
-                else if (Branch.equals("Сетевое программирование")) {
+                else if (branch.equals("Сетевое программирование")) {
                     std.setStudentKnowledgeNetworkProgramming(knowledge.getScore());
                 }
-                else if (Branch.equals("Проектирование программ")) {
+                else if (branch.equals("Проектирование программ")) {
                     std.setStudentKnowledgeProgramDesign(knowledge.getScore());
+                }
+                else if (branch.trim().equalsIgnoreCase("Английский(чтение)")) {
+                    std.setStudentEnglishReadMark(knowledge.getScore());
+                }
+                else if (branch.trim().equalsIgnoreCase("Английский(письмо)")) {
+                    std.setStudentEnglishWriteMark(knowledge.getScore());
+                }
+                else if (branch.trim().equalsIgnoreCase("Английский(речь)")) {
+                    std.setStudentEnglishSpeakMark(knowledge.getScore());
                 }
                 else {
                     otherKnowledges.add(knowledge);
@@ -717,11 +726,6 @@ public class StudentPage {
                 std.setStudentKnowledgeOther3Mark(know.getScore());
             }
 
-
-
-
-
-
 //            std.setStudentLanguage1();
 //            std.setStudentLanguage1Mark();
 //            std.setStudentLanguage2();
@@ -730,22 +734,25 @@ public class StudentPage {
 //            std.setStudentLanguage3Mark();
 
             std.setStudentExperienceProjects(form.getExecProject());
-//            std.setStudentEnglishReadMark();
-//            std.setStudentEnglishWriteMark();
-//            std.setStudentEnglishSpeakMark();
+
 
             Set adverts = form.getAdverts();
+            LinkedHashSet<Advert> linkedAdverts = new LinkedHashSet<Advert>();
             Iterator iterAdv = adverts.iterator();
             while(iterAdv.hasNext()) {
                 Advert advert = (Advert) iterAdv.next();
                 String advertDecription = advert.getAdvertCategory().getDescription();
-                if(advertDecription.equals("Другое")) {
+                if(advertDecription.trim().equalsIgnoreCase("Другое")) {
                     std.setStudentHowHearAboutCentreOther(advert.getOther());
                     iterAdv.remove();
+                } else {
+                    linkedAdverts.add((Advert) iterAdv.next());
                 }
             }
-            std.setStudentHowHearAboutCentre(adverts);
-
+            if (std.getStudentHowHearAboutCentreOther() == null) { std.setStudentHowHearAboutCentreOther("");}
+            std.setStudentHowHearAboutCentre(linkedAdverts);
+            
+            
             std.setStudentReasonOffer(form.getReason());
             std.setStudentSelfAdditionalInformation(form.getExtraInfo());
         }

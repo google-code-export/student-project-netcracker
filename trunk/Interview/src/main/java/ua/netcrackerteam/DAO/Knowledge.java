@@ -8,6 +8,7 @@ package ua.netcrackerteam.DAO;
  * To change this template use File | Settings | File Templates.
  */
 
+import java.io.Serializable;
 import javax.persistence.*;
 
 /**
@@ -15,7 +16,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "KNOWLEDGE")
-public class Knowledge {
+public class Knowledge implements Serializable
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "knowledge_seq_gen")
     @SequenceGenerator(name = "knowledge_seq_gen", sequenceName = "knowledge_seq")

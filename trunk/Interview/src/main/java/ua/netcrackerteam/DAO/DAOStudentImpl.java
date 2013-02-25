@@ -187,6 +187,25 @@ public class DAOStudentImpl implements DAOStudent
    //Получает все формы записанные на интервью   
    public List<Form> getFormByInterview(Interview idInterview){
        return new ArrayList<Form>();
+       //       Session session = null;
+//        Query query;        
+//        Form form = null;                
+//        try {
+//            Locale.setDefault(Locale.ENGLISH);
+//            session = HibernateUtil.getSessionFactory().getCurrentSession();
+//            session.beginTransaction();
+//            query = session.createQuery("from Form "                                        
+//                                        + "where Interview = '" + idInterview + "'");
+//            form = (Form) query.();                        
+//            
+//        } catch (Exception e) {
+//            System.out.println(e);
+//        } finally {
+//            if (session != null && session.isOpen()) {
+//                session.close();
+//            }
+//        }
+//        return form;
    }
    
     //Получает емаил пользователя  
