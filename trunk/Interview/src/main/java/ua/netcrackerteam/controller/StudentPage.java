@@ -349,8 +349,11 @@ public class StudentPage {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        newForm.setExtraKnowledge   ("new extra know");
-
+        //newForm.setExtraKnowledge   ("new extra know");
+        //Filipenko//25.02.12//20.14
+        //+
+        newForm.setAdverts(newStudentData.getStudentHowHearAboutCentre());
+        //=
         currDAOStImpl.addForm(newForm);
         //contacts//email1
         if (!newStudentData.getStudentEmailFirst().equals("")) {
