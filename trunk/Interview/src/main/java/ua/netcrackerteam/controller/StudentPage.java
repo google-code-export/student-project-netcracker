@@ -746,7 +746,7 @@ public class StudentPage {
                     std.setStudentHowHearAboutCentreOther(advert.getOther());
                     iterAdv.remove();
                 } else {
-                    linkedAdverts.add((Advert) iterAdv.next());
+                    linkedAdverts.add(advert);
                 }
             }
             if (std.getStudentHowHearAboutCentreOther() == null) { std.setStudentHowHearAboutCentreOther("");}
