@@ -375,6 +375,16 @@ public class StudentPage {
             e.printStackTrace();
         }
         //=
+        if (statusParam == 1) {
+            List<Object> listOfStatus = searchSomething("Status", "name", "Зарегистрирована");
+            Status currStatus = (Status)listOfStatus.get(0);
+            newForm.setStatus(currStatus);
+        }
+        else if(statusParam == 2) {
+            List<Object> listOfStatus = searchSomething("Status", "name", "Требует подтверждения");
+            Status currStatus = (Status)listOfStatus.get(0);
+            newForm.setStatus(currStatus);
+        }
         currDAOStImpl.addForm(newForm);
         //contacts//email1
         if (!newStudentData.getStudentEmailFirst().equals("")) {
