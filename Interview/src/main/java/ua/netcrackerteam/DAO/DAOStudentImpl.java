@@ -10,6 +10,7 @@ import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 import javax.interceptor.Interceptors;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,7 +65,7 @@ public class DAOStudentImpl implements DAOStudent
         //Test getting form by user name
           /*Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("iviarkiz");
           System.out.println("blabla" + form1.getFirstName());*/
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("iviarkiz");
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("briarey");
         System.out.println(form.getUser().getIdUser());
          
         //Example how to get form by form id
@@ -85,12 +86,58 @@ public class DAOStudentImpl implements DAOStudent
         Session session = null;
         Query query;        
         Form form = null;
+        Form confirmedForm = null;
+        Form needConfirmationForm = null;
+        Form registeredForm = null;
+        Form withoutStatusForm = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createQuery("from Form where user = " + idUser);
-            form = (Form) query.uniqueResult();           
+            query = session.createQuery("from Form where user = " + idUser + "order by idForm");
+            List<Form> forms = query.list();
+            Iterator formIter = forms.iterator();
+            while(formIter.hasNext()) {
+                Form curForm = (Form) formIter.next();
+                if (curForm.getStatus() != null && 
+                        curForm.getStatus().
+                        getName().
+                        trim().
+                        equalsIgnoreCase("Подтверждена")) {
+                        confirmedForm = curForm;                    
+                }
+                else if(curForm.getStatus() != null && 
+                        curForm.getStatus().
+                        getName().
+                        trim().
+                        equalsIgnoreCase("Требует подтверждения")) {
+                        needConfirmationForm = curForm;
+                }
+                else if(curForm.getStatus() != null && 
+                        curForm.getStatus().
+                        getName().
+                        trim().
+                        equalsIgnoreCase("Зарегистрирована")) {
+                        registeredForm = curForm;
+                }
+                else {
+                    withoutStatusForm = curForm;
+                }
+            }
+            if(registeredForm != null) {
+                form = registeredForm;
+            }
+            if(needConfirmationForm != null) {
+                form = needConfirmationForm;
+            }
+            if (confirmedForm != null) {
+                form  = confirmedForm;
+            }
+            if (form == null) {
+                form = withoutStatusForm;
+            }
+            
+            System.out.println(forms);
         } catch (Exception e) {
             System.out.println(e);
         } finally {
