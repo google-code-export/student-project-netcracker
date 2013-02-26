@@ -10,6 +10,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,10 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
-import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -42,17 +41,24 @@ import ua.netcrackerteam.controller.StudentData;
  *
  * @author tanya
  */
-public class ApplicationForm{   
+public class ApplicationForm{  
+    
+    private final static String pathToMailConfig = "src/main/java/mail.properties";
+    private final static String pathToMailAuthentification = "src/main/java/authentification.properties";
+    private final static String pathMailToStudent = "src/main/java/NetCrackerHTML.html";
+    private final static String pathPDFTemplate = "src/main/java/Template.pdf";
+    private final static String pathTimesTTF = "src/main/java/times.ttf";
     
     /**
-     * Create from (pdf-format)
+     * Generate pdf with pdf-template and write it to binary stream
+     * @param OutputStream memory
      */
     public static void generateFormPDF(OutputStream memory) {
              
         try {
                        
-            BaseFont font = BaseFont.createFont("src\\main\\java\\times.ttf", "cp1251", BaseFont.EMBEDDED);
-            PdfReader reader = new PdfReader("src\\main\\java\\Template.pdf");
+            BaseFont font = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED);
+            PdfReader reader = new PdfReader(pathPDFTemplate);
             PdfStamper stamper = new PdfStamper(reader, memory);
             AcroFields form = stamper.getAcroFields();
             form.addSubstitutionFont(font);
@@ -70,6 +76,12 @@ public class ApplicationForm{
       
     }
     
+    /**
+     * Fill pdf template with data from Form
+     * @param form 
+     * @throws IOException
+     * @throws DocumentException 
+     */
     public static void fillFormData(AcroFields form) throws IOException, DocumentException{
         
         StudentData studentData = new StudentData();
@@ -129,9 +141,16 @@ public class ApplicationForm{
         form.setField("english3", String.valueOf(studentData.getStudentEnglishSpeakMark()));
         //form.setField("aboutCenter", studentData.getStudentHowHearAboutCentre());
         form.setField("additional", studentData.getStudentSelfAdditionalInformation());
-        
-       
+               
     }
+    
+    /**
+     * Get photo student for add to the Form
+     * @return Image
+     * @throws BadElementException
+     * @throws MalformedURLException
+     * @throws IOException 
+     */
     public static Image reciveImage() throws BadElementException, MalformedURLException, IOException{
         
         Image img = Image.getInstance("src\\main\\java\\1.jpg");
@@ -141,6 +160,10 @@ public class ApplicationForm{
         return img;
     }
     
+    /**
+     * Read html file, generated for create letter to send student
+     * @return String
+     */
     private static String readHTMLContent(){
         
         StringBuilder builder = new StringBuilder();
@@ -148,7 +171,7 @@ public class ApplicationForm{
         BufferedReader reader= null;
         
         try{
-            reader = new BufferedReader(new FileReader("src\\main\\java\\NetCrackerHTML.html"));
+            reader = new BufferedReader(new FileReader(pathMailToStudent));
             String currentStr = reader.readLine();
             while((currentStr = reader.readLine()) != null){
                 builder.append(currentStr);
@@ -167,91 +190,111 @@ public class ApplicationForm{
         return  builder.toString();
     }
     
-      
-    public static void sendPDFToStudent(String userName) throws MessagingException, IOException{
+    /**
+     * Send mail to the student with attachment pdf file for interview
+     * @param userName 
+     */   
+    public static void sendPDFToStudent(String userName){
         
-                Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
-                    	                 
-	        String sender = "NetcrackerTeamOdessaOspu@gmail.com"; 
-	        String recipient = HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName); 
-	       
-	        String subject = "Учебный Центр NetCracker при ОНПУ"; 
-	         	                    
-                Properties properties = new Properties();
-                properties.put("mail.transport.protocol", "smtp");
-                properties.put("mail.smtp.host", "smtp.gmail.com");
-                properties.put("mail.smtp.socketFactory.port", "465");
-                properties.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-                properties.put("mail.smtp.auth", "true");
-                properties.put("mail.smtp.port", "465");
-                properties.put("mail.debug", "false");
-                properties.put("mail.smtp.ssl.enable", "true");
-                       
-	        Session session = Session.getDefaultInstance(properties, new DefaultAuthenticator("NetcrackerTeamOdessaOspu@gmail.com", "12345odessa"));                              
-	                       
-	       	
-                MimeBodyPart messageBodyPart = new MimeBodyPart();
-                
-               
-                Date dataInterview = interview .getStartDate();
-                dataInterview.getTime();
-                String htmlText = readHTMLContent();
-                htmlText = htmlText.replace("[userName]",  userName);
-                htmlText = htmlText.replace("[dateStart]", getDate(interview.getStartDate()));
-                htmlText = htmlText.replace("[timeStart]", getTime(interview.getStartDate()));
-   
-                messageBodyPart.setContent(htmlText, "text/html; charset=utf-8");	        
-                
-	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-	        generateFormPDF(outputStream);
-	        byte[] bytes = outputStream.toByteArray();	             
-	        DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
-	        MimeBodyPart pdfBodyPart = new MimeBodyPart();
-	        pdfBodyPart.setDataHandler(new DataHandler(dataSource));
-	        pdfBodyPart.setFileName("FormForInterview.pdf");                    
-                                                         
-	        MimeMultipart mimeMultipart = new MimeMultipart();
-                mimeMultipart.addBodyPart(messageBodyPart);	       
-	        mimeMultipart.addBodyPart(pdfBodyPart);	             
-	        
-	        InternetAddress iaSender = new InternetAddress(sender);
-	        InternetAddress iaRecipient = new InternetAddress(recipient);	             
-	        
-	        MimeMessage mimeMessage = new MimeMessage(session);
-	        mimeMessage.setSender(iaSender);
-	        mimeMessage.setSubject(subject);
-	        mimeMessage.setRecipient(Message.RecipientType.TO, iaRecipient);           
-	        mimeMessage.setContent(mimeMultipart);                  	             
-	     
-               Transport transport = session.getTransport();
-               transport.connect();
-	       transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
-               transport.close();
+        try {
+            Properties propertiesMail = new Properties();
+            propertiesMail.load(new FileInputStream(pathToMailConfig)); 
+            
+            Properties propertiesAuthentification = new Properties();
+            propertiesAuthentification.load(new FileInputStream(pathToMailAuthentification));
+                                                               
+            String sender = propertiesAuthentification.getProperty("mail"); 
+            String recipient = HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName); 
+           
+            String subject = "Учебный Центр NetCracker при ОНПУ"; 	         	                    
+                         
+            Session session = Session.getDefaultInstance(propertiesMail, new DefaultAuthenticator("NetcrackerTeamOdessaOspu@gmail.com", "12345odessa"));                              
+                                                               
+            MimeMultipart mimeMultipart = new MimeMultipart();
+            mimeMultipart.addBodyPart(getHTMLBodyPart(userName));	       
+            mimeMultipart.addBodyPart(getPDFBodyPart());	             
+            
+            InternetAddress iaSender = new InternetAddress(sender);
+            InternetAddress iaRecipient = new InternetAddress(recipient);	             
+            
+            MimeMessage mimeMessage = new MimeMessage(session);
+            mimeMessage.setSender(iaSender);
+            mimeMessage.setSubject(subject);
+            mimeMessage.setRecipient(Message.RecipientType.TO, iaRecipient);           
+            mimeMessage.setContent(mimeMultipart);                  	             
+         
+           Transport transport = session.getTransport();
+           transport.connect();
+           transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
+           transport.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
      
     }
     
+    /**
+     * Insert to the letter for student - name, date start and end interview
+     * @param userName
+     * @return MimeBodyPart
+     * @throws MessagingException 
+     */
+    private static MimeBodyPart getHTMLBodyPart(String userName) throws MessagingException{
+        
+       Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+       MimeBodyPart messageBodyPart = new MimeBodyPart();
+                               
+       Date dataInterview = interview.getStartDate();
+       dataInterview.getTime();
+       String htmlText = readHTMLContent();
+       htmlText = htmlText.replace("[userName]",  userName);
+       htmlText = htmlText.replace("[dateStart]", getDate(interview.getStartDate()));
+       htmlText = htmlText.replace("[timeStart]", getTime(interview.getStartDate()));   
+       messageBodyPart.setContent(htmlText, "text/html; charset=utf-8");
+            
+       return messageBodyPart;
+    }
+    
+    /**
+     * Attachment to the letter pdf from binary stream
+     * @return MimeBodyPart
+     * @throws IOException
+     * @throws MessagingException 
+     */
+    private static MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{
+        
+       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+       generateFormPDF(outputStream);
+       byte[] bytes = outputStream.toByteArray();	             
+       DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
+       MimeBodyPart pdfBodyPart = new MimeBodyPart();
+       pdfBodyPart.setDataHandler(new DataHandler(dataSource));
+       pdfBodyPart.setFileName("FormForInterview.pdf"); 
+       
+       return pdfBodyPart;
+    }
+    
+    /**
+     * Get time from date for add to letter
+     * @param date
+     * @return String
+     */
     private static String getTime(Date date){
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(date);
     }
     
-      private static String getDate(Date date){
+       /**
+     * Get day and mounth from date for add to letter
+     * @param date
+     * @return String
+     */
+    private static String getDate(Date date){
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM");
         return dateFormat.format(date);
-    }
-    
-    
-    
-
-    public static void main(String[] args){       
-        try {
-            ApplicationForm.sendPDFToStudent("iviarkiz");      
-        } catch (MessagingException ex) {
-            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     

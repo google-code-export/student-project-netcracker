@@ -976,3 +976,561 @@ line 1:46: unexpected token: where
 24/02/2013 10:56:20 [main] TRACE - <Found [null] as column [OTHER4_1_]>
 24/02/2013 10:56:20 [main] TRACE - <Found [21] as column [ID4_0_2_]>
 24/02/2013 10:56:20 [main] TRACE - <Found [2] as column [ID1_2_]>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@693a317a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@693a317a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Boolean -> org.hibernate.type.BooleanType@693a317a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration numeric_boolean -> org.hibernate.type.NumericBooleanType@5b7ee8b8>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration true_false -> org.hibernate.type.TrueFalseType@59c9b9ca>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration yes_no -> org.hibernate.type.YesNoType@35ab28fe>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@86e293a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@86e293a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Byte -> org.hibernate.type.ByteType@86e293a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration character -> org.hibernate.type.CharacterType@67e8a1f6>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration char -> org.hibernate.type.CharacterType@67e8a1f6>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Character -> org.hibernate.type.CharacterType@67e8a1f6>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@1f5b0afd>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@1f5b0afd>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Short -> org.hibernate.type.ShortType@1f5b0afd>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration integer -> org.hibernate.type.IntegerType@eb64435>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration int -> org.hibernate.type.IntegerType@eb64435>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Integer -> org.hibernate.type.IntegerType@eb64435>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@6d4c1103>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@6d4c1103>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Long -> org.hibernate.type.LongType@6d4c1103>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@2897a560>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@2897a560>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Float -> org.hibernate.type.FloatType@2897a560>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@41fc2fb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@41fc2fb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Double -> org.hibernate.type.DoubleType@41fc2fb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration big_decimal -> org.hibernate.type.BigDecimalType@4ba33d48>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.math.BigDecimal -> org.hibernate.type.BigDecimalType@4ba33d48>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration big_integer -> org.hibernate.type.BigIntegerType@56406199>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.math.BigInteger -> org.hibernate.type.BigIntegerType@56406199>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration string -> org.hibernate.type.StringType@43b09468>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.String -> org.hibernate.type.StringType@43b09468>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration url -> org.hibernate.type.UrlType@4de13d52>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.net.URL -> org.hibernate.type.UrlType@4de13d52>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration date -> org.hibernate.type.DateType@485329c5>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.sql.Date -> org.hibernate.type.DateType@485329c5>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration time -> org.hibernate.type.TimeType@26544ec1>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.sql.Time -> org.hibernate.type.TimeType@26544ec1>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration timestamp -> org.hibernate.type.TimestampType@2678a212>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.sql.Timestamp -> org.hibernate.type.TimestampType@2678a212>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.Date -> org.hibernate.type.TimestampType@2678a212>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration dbtimestamp -> org.hibernate.type.DbTimestampType@2c641e9a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration calendar -> org.hibernate.type.CalendarType@270e3293>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.Calendar -> org.hibernate.type.CalendarType@270e3293>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.GregorianCalendar -> org.hibernate.type.CalendarType@270e3293>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration calendar_date -> org.hibernate.type.CalendarDateType@348bdcd2>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration locale -> org.hibernate.type.LocaleType@44bd928a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.Locale -> org.hibernate.type.LocaleType@44bd928a>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration currency -> org.hibernate.type.CurrencyType@57bcc0bc>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.Currency -> org.hibernate.type.CurrencyType@57bcc0bc>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration timezone -> org.hibernate.type.TimeZoneType@392d263f>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.TimeZone -> org.hibernate.type.TimeZoneType@392d263f>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration class -> org.hibernate.type.ClassType@6f34a7d8>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Class -> org.hibernate.type.ClassType@6f34a7d8>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration uuid-binary -> org.hibernate.type.UUIDBinaryType@5f7a8a02>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.util.UUID -> org.hibernate.type.UUIDBinaryType@5f7a8a02>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration uuid-char -> org.hibernate.type.UUIDCharType@2fdb7df8>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration pg-uuid -> org.hibernate.type.PostgresUUIDType@3a21b220>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration binary -> org.hibernate.type.BinaryType@6b0a2d64>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration byte[] -> org.hibernate.type.BinaryType@6b0a2d64>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration [B -> org.hibernate.type.BinaryType@6b0a2d64>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration wrapper-binary -> org.hibernate.type.WrapperBinaryType@557ce4e7>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration Byte[] -> org.hibernate.type.WrapperBinaryType@557ce4e7>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration [Ljava.lang.Byte; -> org.hibernate.type.WrapperBinaryType@557ce4e7>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration image -> org.hibernate.type.ImageType@6262937c>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration characters -> org.hibernate.type.CharArrayType@58a17083>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration char[] -> org.hibernate.type.CharArrayType@58a17083>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration [C -> org.hibernate.type.CharArrayType@58a17083>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration wrapper-characters -> org.hibernate.type.CharacterArrayType@690da5eb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration [Ljava.lang.Character; -> org.hibernate.type.CharacterArrayType@690da5eb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration Character[] -> org.hibernate.type.CharacterArrayType@690da5eb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration text -> org.hibernate.type.TextType@42698403>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration blob -> org.hibernate.type.BlobType@2cb0ce8f>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.sql.Blob -> org.hibernate.type.BlobType@2cb0ce8f>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration materialized_blob -> org.hibernate.type.MaterializedBlobType@42a9c09e>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration clob -> org.hibernate.type.ClobType@63238bd2>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.sql.Clob -> org.hibernate.type.ClobType@63238bd2>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration materialized_clob -> org.hibernate.type.MaterializedClobType@70ba9340>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration serializable -> org.hibernate.type.SerializableType@a761fe>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration object -> org.hibernate.type.ObjectType@52cc95d>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration java.lang.Object -> org.hibernate.type.ObjectType@52cc95d>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_date -> org.hibernate.type.AdaptedImmutableType@2934e4fb>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_time -> org.hibernate.type.AdaptedImmutableType@4fa52fdf>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_timestamp -> org.hibernate.type.AdaptedImmutableType@65ea0252>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_dbtimestamp -> org.hibernate.type.AdaptedImmutableType@663e89c3>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_calendar -> org.hibernate.type.AdaptedImmutableType@13c695a6>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_calendar_date -> org.hibernate.type.AdaptedImmutableType@528acf6e>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_binary -> org.hibernate.type.AdaptedImmutableType@17386918>
+24/02/2013 11:02:13 [main] DEBUG - <Adding type registration imm_serializable -> org.hibernate.type.AdaptedImmutableType@787bb290>
+24/02/2013 11:02:13 [main] INFO - <HCANN000001: Hibernate Commons Annotations {4.0.1.Final}>
+24/02/2013 11:02:13 [main] INFO - <HHH000412: Hibernate Core {4.1.1}>
+24/02/2013 11:02:13 [main] INFO - <HHH000206: hibernate.properties not found>
+24/02/2013 11:02:13 [main] INFO - <HHH000021: Bytecode provider name : javassist>
+24/02/2013 11:02:13 [main] INFO - <HHH000043: Configuring from resource: /hibernate.cfg.xml>
+24/02/2013 11:02:13 [main] INFO - <HHH000040: Configuration resource: /hibernate.cfg.xml>
+24/02/2013 11:02:13 [main] INFO - <HHH000041: Configured SessionFactory: null>
+24/02/2013 11:02:14 [main] INFO - <HHH000402: Using Hibernate built-in connection pool (not for production use!)>
+24/02/2013 11:02:14 [main] INFO - <HHH000115: Hibernate connection pool size: 20>
+24/02/2013 11:02:14 [main] INFO - <HHH000006: Autocommit mode: false>
+24/02/2013 11:02:14 [main] INFO - <HHH000401: using driver [oracle.jdbc.OracleDriver] at URL [jdbc:oracle:thin:@85.238.104.112:1521:XE]>
+24/02/2013 11:02:14 [main] INFO - <HHH000046: Connection properties: {user=netcracker, password=****}>
+24/02/2013 11:02:14 [main] INFO - <HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect>
+24/02/2013 11:02:14 [main] INFO - <HHH000399: Using default transaction strategy (direct JDBC transactions)>
+24/02/2013 11:02:14 [main] INFO - <HHH000397: Using ASTQueryTranslatorFactory>
+24/02/2013 11:02:14 [main] TRACE - <Scoping types to session factory org.hibernate.internal.SessionFactoryImpl@44739f3f>
+24/02/2013 11:02:15 [main] TRACE - <Found [10] as column [ID1_8_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [active] as column [ACTIVE8_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [zhokha.maksym@gmail.com] as column [EMAIL8_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [4] as column [ID6_8_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [688477184] as column [PASSWORD8_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [iviarkiz] as column [USER5_8_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 4>
+24/02/2013 11:02:15 [main] TRACE - <Found [abiturient] as column [CATEGORY9_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID1_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [5] as column [ID21_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [сайт интернет-магазина] as column [EXEC2_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Люблю читать литературу на английском языке.] as column [EXTRA3_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Php] as column [EXTRA4_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Максим] as column [FIRST5_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [2013] as column [INSTITUTE6_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [6] as column [INSTITUTE7_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST8_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST9_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST11_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST12_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST13_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [+] as column [INTEREST14_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [INTEREST15_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [+] as column [INTEREST16_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID22_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Жоха] as column [LAST17_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Александрович] as column [MIDDLE18_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [PHOTO0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Получить навыки командной разработки по] as column [REASON0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID23_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [10] as column [ID24_0_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 5>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID1_7_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID1_3_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID3_7_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Інститут комп.ютерних систем] as column [NAME7_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Одеський національний політехнічний університет] as column [NAME3_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID3_6_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Кафедра компьютеризированных систем управления] as column [NAME6_2_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 1>
+24/02/2013 11:02:15 [main] TRACE - <Found [2012-09-28 18:00:00.0] as column [END2_12_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [40] as column [MAX3_12_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [2012-09-28 16:00:00.0] as column [START4_12_0_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 1>
+24/02/2013 11:02:15 [main] TRACE - <Found [Зарегистрирована] as column [NAME14_0_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 10>
+24/02/2013 11:02:15 [main] TRACE - <Found [4] as column [ID1_9_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [abiturient] as column [CATEGORY9_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [active] as column [ACTIVE8_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [zhokha.maksym@gmail.com] as column [EMAIL8_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [4] as column [ID6_8_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [688477184] as column [PASSWORD8_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [iviarkiz] as column [USER5_8_1_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 21>
+24/02/2013 11:02:15 [main] TRACE - <Found [2] as column [ID1_10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [9] as column [ID1_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Знание Java] as column [DESCRIPT2_10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Java] as column [NAME10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [2] as column [ID3_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [4.0] as column [SCORE11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [9] as column [ID1_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [5] as column [ID1_10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [10] as column [ID1_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Знание ООП] as column [DESCRIPT2_10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [ООП] as column [NAME10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [5] as column [ID3_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [4.0] as column [SCORE11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [10] as column [ID1_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1100] as column [ID1_10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [11] as column [ID1_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Web] as column [DESCRIPT2_10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Web] as column [NAME10_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1100] as column [ID3_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [5.0] as column [SCORE11_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [11] as column [ID1_2_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 21>
+24/02/2013 11:02:15 [main] TRACE - <Found [4] as column [ID1_2_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [7] as column [ID1_1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [cellphone1] as column [CATEGORY2_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [4] as column [ID3_1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [0933274958] as column [INFO1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [7] as column [ID1_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [6] as column [ID1_2_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [6] as column [ID1_1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [skype] as column [CATEGORY2_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [6] as column [ID3_1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [bigiviaks] as column [INFO1_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [6] as column [ID1_2_]>
+24/02/2013 11:02:15 [main] TRACE - <binding parameter [1] as [INTEGER] - 21>
+24/02/2013 11:02:15 [main] TRACE - <Found [2] as column [ID1_5_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID1_4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [Интернет] as column [DESCRIPT2_5_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [2] as column [ID3_4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [OTHER4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [1] as column [ID1_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [3] as column [ID1_5_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [2] as column [ID1_4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [От знакомых] as column [DESCRIPT2_5_0_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [3] as column [ID3_4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [null] as column [OTHER4_1_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:02:15 [main] TRACE - <Found [2] as column [ID1_2_]>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@693a317a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@693a317a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Boolean -> org.hibernate.type.BooleanType@693a317a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration numeric_boolean -> org.hibernate.type.NumericBooleanType@5b7ee8b8>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration true_false -> org.hibernate.type.TrueFalseType@59c9b9ca>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration yes_no -> org.hibernate.type.YesNoType@35ab28fe>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@86e293a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@86e293a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Byte -> org.hibernate.type.ByteType@86e293a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration character -> org.hibernate.type.CharacterType@67e8a1f6>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration char -> org.hibernate.type.CharacterType@67e8a1f6>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Character -> org.hibernate.type.CharacterType@67e8a1f6>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@1f5b0afd>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@1f5b0afd>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Short -> org.hibernate.type.ShortType@1f5b0afd>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration integer -> org.hibernate.type.IntegerType@eb64435>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration int -> org.hibernate.type.IntegerType@eb64435>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Integer -> org.hibernate.type.IntegerType@eb64435>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@6d4c1103>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@6d4c1103>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Long -> org.hibernate.type.LongType@6d4c1103>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@2897a560>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@2897a560>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Float -> org.hibernate.type.FloatType@2897a560>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@41fc2fb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@41fc2fb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Double -> org.hibernate.type.DoubleType@41fc2fb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration big_decimal -> org.hibernate.type.BigDecimalType@4ba33d48>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.math.BigDecimal -> org.hibernate.type.BigDecimalType@4ba33d48>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration big_integer -> org.hibernate.type.BigIntegerType@56406199>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.math.BigInteger -> org.hibernate.type.BigIntegerType@56406199>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration string -> org.hibernate.type.StringType@43b09468>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.String -> org.hibernate.type.StringType@43b09468>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration url -> org.hibernate.type.UrlType@4de13d52>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.net.URL -> org.hibernate.type.UrlType@4de13d52>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration date -> org.hibernate.type.DateType@485329c5>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.sql.Date -> org.hibernate.type.DateType@485329c5>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration time -> org.hibernate.type.TimeType@26544ec1>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.sql.Time -> org.hibernate.type.TimeType@26544ec1>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration timestamp -> org.hibernate.type.TimestampType@2678a212>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.sql.Timestamp -> org.hibernate.type.TimestampType@2678a212>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.Date -> org.hibernate.type.TimestampType@2678a212>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration dbtimestamp -> org.hibernate.type.DbTimestampType@2c641e9a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration calendar -> org.hibernate.type.CalendarType@270e3293>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.Calendar -> org.hibernate.type.CalendarType@270e3293>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.GregorianCalendar -> org.hibernate.type.CalendarType@270e3293>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration calendar_date -> org.hibernate.type.CalendarDateType@348bdcd2>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration locale -> org.hibernate.type.LocaleType@44bd928a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.Locale -> org.hibernate.type.LocaleType@44bd928a>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration currency -> org.hibernate.type.CurrencyType@57bcc0bc>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.Currency -> org.hibernate.type.CurrencyType@57bcc0bc>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration timezone -> org.hibernate.type.TimeZoneType@392d263f>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.TimeZone -> org.hibernate.type.TimeZoneType@392d263f>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration class -> org.hibernate.type.ClassType@6f34a7d8>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Class -> org.hibernate.type.ClassType@6f34a7d8>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration uuid-binary -> org.hibernate.type.UUIDBinaryType@5f7a8a02>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.util.UUID -> org.hibernate.type.UUIDBinaryType@5f7a8a02>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration uuid-char -> org.hibernate.type.UUIDCharType@2fdb7df8>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration pg-uuid -> org.hibernate.type.PostgresUUIDType@3a21b220>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration binary -> org.hibernate.type.BinaryType@6b0a2d64>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration byte[] -> org.hibernate.type.BinaryType@6b0a2d64>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration [B -> org.hibernate.type.BinaryType@6b0a2d64>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration wrapper-binary -> org.hibernate.type.WrapperBinaryType@557ce4e7>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration Byte[] -> org.hibernate.type.WrapperBinaryType@557ce4e7>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration [Ljava.lang.Byte; -> org.hibernate.type.WrapperBinaryType@557ce4e7>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration image -> org.hibernate.type.ImageType@6262937c>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration characters -> org.hibernate.type.CharArrayType@58a17083>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration char[] -> org.hibernate.type.CharArrayType@58a17083>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration [C -> org.hibernate.type.CharArrayType@58a17083>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration wrapper-characters -> org.hibernate.type.CharacterArrayType@690da5eb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration [Ljava.lang.Character; -> org.hibernate.type.CharacterArrayType@690da5eb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration Character[] -> org.hibernate.type.CharacterArrayType@690da5eb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration text -> org.hibernate.type.TextType@42698403>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration blob -> org.hibernate.type.BlobType@2cb0ce8f>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.sql.Blob -> org.hibernate.type.BlobType@2cb0ce8f>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration materialized_blob -> org.hibernate.type.MaterializedBlobType@42a9c09e>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration clob -> org.hibernate.type.ClobType@5f989f84>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.sql.Clob -> org.hibernate.type.ClobType@5f989f84>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration materialized_clob -> org.hibernate.type.MaterializedClobType@63238bd2>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration serializable -> org.hibernate.type.SerializableType@a761fe>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration object -> org.hibernate.type.ObjectType@4393722c>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration java.lang.Object -> org.hibernate.type.ObjectType@4393722c>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_date -> org.hibernate.type.AdaptedImmutableType@3f57fb52>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_time -> org.hibernate.type.AdaptedImmutableType@2934e4fb>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_timestamp -> org.hibernate.type.AdaptedImmutableType@4fa52fdf>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_dbtimestamp -> org.hibernate.type.AdaptedImmutableType@65ea0252>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_calendar -> org.hibernate.type.AdaptedImmutableType@663e89c3>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_calendar_date -> org.hibernate.type.AdaptedImmutableType@13c695a6>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_binary -> org.hibernate.type.AdaptedImmutableType@528acf6e>
+24/02/2013 11:03:39 [main] DEBUG - <Adding type registration imm_serializable -> org.hibernate.type.AdaptedImmutableType@17386918>
+24/02/2013 11:03:39 [main] INFO - <HCANN000001: Hibernate Commons Annotations {4.0.1.Final}>
+24/02/2013 11:03:39 [main] INFO - <HHH000412: Hibernate Core {4.1.1}>
+24/02/2013 11:03:39 [main] INFO - <HHH000206: hibernate.properties not found>
+24/02/2013 11:03:39 [main] INFO - <HHH000021: Bytecode provider name : javassist>
+24/02/2013 11:03:39 [main] INFO - <HHH000043: Configuring from resource: /hibernate.cfg.xml>
+24/02/2013 11:03:39 [main] INFO - <HHH000040: Configuration resource: /hibernate.cfg.xml>
+24/02/2013 11:03:39 [main] INFO - <HHH000041: Configured SessionFactory: null>
+24/02/2013 11:03:39 [main] INFO - <HHH000402: Using Hibernate built-in connection pool (not for production use!)>
+24/02/2013 11:03:39 [main] INFO - <HHH000115: Hibernate connection pool size: 20>
+24/02/2013 11:03:39 [main] INFO - <HHH000006: Autocommit mode: false>
+24/02/2013 11:03:39 [main] INFO - <HHH000401: using driver [oracle.jdbc.OracleDriver] at URL [jdbc:oracle:thin:@85.238.104.112:1521:XE]>
+24/02/2013 11:03:39 [main] INFO - <HHH000046: Connection properties: {user=netcracker, password=****}>
+24/02/2013 11:03:40 [main] INFO - <HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect>
+24/02/2013 11:03:40 [main] INFO - <HHH000399: Using default transaction strategy (direct JDBC transactions)>
+24/02/2013 11:03:40 [main] INFO - <HHH000397: Using ASTQueryTranslatorFactory>
+24/02/2013 11:03:40 [main] TRACE - <Scoping types to session factory org.hibernate.internal.SessionFactoryImpl@235f4a7f>
+24/02/2013 11:03:41 [main] TRACE - <Found [10] as column [ID1_8_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [active] as column [ACTIVE8_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [zhokha.maksym@gmail.com] as column [EMAIL8_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [4] as column [ID6_8_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [688477184] as column [PASSWORD8_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [iviarkiz] as column [USER5_8_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 4>
+24/02/2013 11:03:41 [main] TRACE - <Found [abiturient] as column [CATEGORY9_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID1_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [5] as column [ID21_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [сайт интернет-магазина] as column [EXEC2_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Люблю читать литературу на английском языке.] as column [EXTRA3_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Php] as column [EXTRA4_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Максим] as column [FIRST5_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [2013] as column [INSTITUTE6_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [6] as column [INSTITUTE7_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST8_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST9_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST11_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST12_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST13_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [+] as column [INTEREST14_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [INTEREST15_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [+] as column [INTEREST16_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID22_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Жоха] as column [LAST17_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Александрович] as column [MIDDLE18_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [PHOTO0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Получить навыки командной разработки по] as column [REASON0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID23_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [10] as column [ID24_0_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 5>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID1_7_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID1_3_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID3_7_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Інститут комп.ютерних систем] as column [NAME7_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Одеський національний політехнічний університет] as column [NAME3_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID3_6_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Кафедра компьютеризированных систем управления] as column [NAME6_2_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 1>
+24/02/2013 11:03:41 [main] TRACE - <Found [2012-09-28 18:00:00.0] as column [END2_12_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [40] as column [MAX3_12_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [2012-09-28 16:00:00.0] as column [START4_12_0_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 1>
+24/02/2013 11:03:41 [main] TRACE - <Found [Зарегистрирована] as column [NAME14_0_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 10>
+24/02/2013 11:03:41 [main] TRACE - <Found [4] as column [ID1_9_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [abiturient] as column [CATEGORY9_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [active] as column [ACTIVE8_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [zhokha.maksym@gmail.com] as column [EMAIL8_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [4] as column [ID6_8_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [688477184] as column [PASSWORD8_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [iviarkiz] as column [USER5_8_1_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 21>
+24/02/2013 11:03:41 [main] TRACE - <Found [2] as column [ID1_10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [9] as column [ID1_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Знание Java] as column [DESCRIPT2_10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Java] as column [NAME10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [2] as column [ID3_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [4.0] as column [SCORE11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [9] as column [ID1_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [5] as column [ID1_10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [10] as column [ID1_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Знание ООП] as column [DESCRIPT2_10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [ООП] as column [NAME10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [5] as column [ID3_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [4.0] as column [SCORE11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [10] as column [ID1_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1100] as column [ID1_10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [11] as column [ID1_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Web] as column [DESCRIPT2_10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Web] as column [NAME10_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1100] as column [ID3_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [5.0] as column [SCORE11_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [11] as column [ID1_2_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 21>
+24/02/2013 11:03:41 [main] TRACE - <Found [4] as column [ID1_2_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [7] as column [ID1_1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [cellphone1] as column [CATEGORY2_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [4] as column [ID3_1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [0933274958] as column [INFO1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [7] as column [ID1_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [6] as column [ID1_2_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [6] as column [ID1_1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [skype] as column [CATEGORY2_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [6] as column [ID3_1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [bigiviaks] as column [INFO1_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [6] as column [ID1_2_]>
+24/02/2013 11:03:41 [main] TRACE - <binding parameter [1] as [INTEGER] - 21>
+24/02/2013 11:03:41 [main] TRACE - <Found [2] as column [ID1_5_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID1_4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [Интернет] as column [DESCRIPT2_5_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [2] as column [ID3_4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [OTHER4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [1] as column [ID1_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [3] as column [ID1_5_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [2] as column [ID1_4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [От знакомых] as column [DESCRIPT2_5_0_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [3] as column [ID3_4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [null] as column [OTHER4_1_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [21] as column [ID4_0_2_]>
+24/02/2013 11:03:41 [main] TRACE - <Found [2] as column [ID1_2_]>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@7a763f5d>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@7a763f5d>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Boolean -> org.hibernate.type.BooleanType@7a763f5d>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration numeric_boolean -> org.hibernate.type.NumericBooleanType@21551f60>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration true_false -> org.hibernate.type.TrueFalseType@73995d80>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration yes_no -> org.hibernate.type.YesNoType@4ac4aad3>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@74341960>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@74341960>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Byte -> org.hibernate.type.ByteType@74341960>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration character -> org.hibernate.type.CharacterType@7ca3d4cf>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration char -> org.hibernate.type.CharacterType@7ca3d4cf>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Character -> org.hibernate.type.CharacterType@7ca3d4cf>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@62587c94>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@62587c94>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Short -> org.hibernate.type.ShortType@62587c94>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration integer -> org.hibernate.type.IntegerType@121a9334>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration int -> org.hibernate.type.IntegerType@121a9334>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Integer -> org.hibernate.type.IntegerType@121a9334>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@375212bc>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@375212bc>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Long -> org.hibernate.type.LongType@375212bc>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@6686fe26>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@6686fe26>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Float -> org.hibernate.type.FloatType@6686fe26>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@21f3aa07>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@21f3aa07>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Double -> org.hibernate.type.DoubleType@21f3aa07>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration big_decimal -> org.hibernate.type.BigDecimalType@4cbfea1d>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.math.BigDecimal -> org.hibernate.type.BigDecimalType@4cbfea1d>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration big_integer -> org.hibernate.type.BigIntegerType@522a4983>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.math.BigInteger -> org.hibernate.type.BigIntegerType@522a4983>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration string -> org.hibernate.type.StringType@79f6f296>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.String -> org.hibernate.type.StringType@79f6f296>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration url -> org.hibernate.type.UrlType@52b2a2d8>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.net.URL -> org.hibernate.type.UrlType@52b2a2d8>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration date -> org.hibernate.type.DateType@1f292d26>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.sql.Date -> org.hibernate.type.DateType@1f292d26>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration time -> org.hibernate.type.TimeType@f0f11b8>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.sql.Time -> org.hibernate.type.TimeType@f0f11b8>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration timestamp -> org.hibernate.type.TimestampType@378f6235>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.sql.Timestamp -> org.hibernate.type.TimestampType@378f6235>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.Date -> org.hibernate.type.TimestampType@378f6235>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration dbtimestamp -> org.hibernate.type.DbTimestampType@39d85f79>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration calendar -> org.hibernate.type.CalendarType@33c282a1>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.Calendar -> org.hibernate.type.CalendarType@33c282a1>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.GregorianCalendar -> org.hibernate.type.CalendarType@33c282a1>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration calendar_date -> org.hibernate.type.CalendarDateType@99b5393>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration locale -> org.hibernate.type.LocaleType@6627e353>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.Locale -> org.hibernate.type.LocaleType@6627e353>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration currency -> org.hibernate.type.CurrencyType@5210f6d3>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.Currency -> org.hibernate.type.CurrencyType@5210f6d3>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration timezone -> org.hibernate.type.TimeZoneType@450e790c>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.TimeZone -> org.hibernate.type.TimeZoneType@450e790c>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration class -> org.hibernate.type.ClassType@7e5a9de6>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Class -> org.hibernate.type.ClassType@7e5a9de6>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration uuid-binary -> org.hibernate.type.UUIDBinaryType@584fce71>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.util.UUID -> org.hibernate.type.UUIDBinaryType@584fce71>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration uuid-char -> org.hibernate.type.UUIDCharType@65faba46>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration pg-uuid -> org.hibernate.type.PostgresUUIDType@1bc74f37>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration binary -> org.hibernate.type.BinaryType@4a79717e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration byte[] -> org.hibernate.type.BinaryType@4a79717e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration [B -> org.hibernate.type.BinaryType@4a79717e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration wrapper-binary -> org.hibernate.type.WrapperBinaryType@5289cf1e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration Byte[] -> org.hibernate.type.WrapperBinaryType@5289cf1e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration [Ljava.lang.Byte; -> org.hibernate.type.WrapperBinaryType@5289cf1e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration image -> org.hibernate.type.ImageType@6262937c>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration characters -> org.hibernate.type.CharArrayType@58a17083>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration char[] -> org.hibernate.type.CharArrayType@58a17083>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration [C -> org.hibernate.type.CharArrayType@58a17083>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration wrapper-characters -> org.hibernate.type.CharacterArrayType@690da5eb>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration [Ljava.lang.Character; -> org.hibernate.type.CharacterArrayType@690da5eb>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration Character[] -> org.hibernate.type.CharacterArrayType@690da5eb>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration text -> org.hibernate.type.TextType@42698403>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration blob -> org.hibernate.type.BlobType@2cb0ce8f>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.sql.Blob -> org.hibernate.type.BlobType@2cb0ce8f>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration materialized_blob -> org.hibernate.type.MaterializedBlobType@42a9c09e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration clob -> org.hibernate.type.ClobType@12b7eea>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.sql.Clob -> org.hibernate.type.ClobType@12b7eea>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration materialized_clob -> org.hibernate.type.MaterializedClobType@10382a9>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration serializable -> org.hibernate.type.SerializableType@7f5663a2>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration object -> org.hibernate.type.ObjectType@4393722c>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration java.lang.Object -> org.hibernate.type.ObjectType@4393722c>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_date -> org.hibernate.type.AdaptedImmutableType@3f57fb52>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_time -> org.hibernate.type.AdaptedImmutableType@2934e4fb>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_timestamp -> org.hibernate.type.AdaptedImmutableType@4fa52fdf>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_dbtimestamp -> org.hibernate.type.AdaptedImmutableType@65ea0252>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_calendar -> org.hibernate.type.AdaptedImmutableType@663e89c3>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_calendar_date -> org.hibernate.type.AdaptedImmutableType@13c695a6>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_binary -> org.hibernate.type.AdaptedImmutableType@528acf6e>
+26/02/2013 9:54:27 [main] DEBUG - <Adding type registration imm_serializable -> org.hibernate.type.AdaptedImmutableType@17386918>
+26/02/2013 9:54:27 [main] INFO - <HCANN000001: Hibernate Commons Annotations {4.0.1.Final}>
+26/02/2013 9:54:27 [main] INFO - <HHH000412: Hibernate Core {4.1.1}>
+26/02/2013 9:54:27 [main] INFO - <HHH000206: hibernate.properties not found>
+26/02/2013 9:54:27 [main] INFO - <HHH000021: Bytecode provider name : javassist>
+26/02/2013 9:54:27 [main] INFO - <HHH000043: Configuring from resource: /hibernate.cfg.xml>
+26/02/2013 9:54:27 [main] INFO - <HHH000040: Configuration resource: /hibernate.cfg.xml>
+26/02/2013 9:54:27 [main] INFO - <HHH000041: Configured SessionFactory: null>
+26/02/2013 9:54:28 [main] INFO - <HHH000402: Using Hibernate built-in connection pool (not for production use!)>
+26/02/2013 9:54:28 [main] INFO - <HHH000115: Hibernate connection pool size: 20>
+26/02/2013 9:54:28 [main] INFO - <HHH000006: Autocommit mode: false>
+26/02/2013 9:54:28 [main] INFO - <HHH000401: using driver [oracle.jdbc.OracleDriver] at URL [jdbc:oracle:thin:@85.238.104.112:1521:XE]>
+26/02/2013 9:54:28 [main] INFO - <HHH000046: Connection properties: {user=netcracker, password=****}>
+26/02/2013 9:54:49 [main] WARN - <HHH000342: Could not obtain connection to query metadata : IO Error: The Network Adapter could not establish the connection>
+26/02/2013 9:54:49 [main] INFO - <HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect>
+26/02/2013 9:54:49 [main] INFO - <HHH000422: Disabling contextual LOB creation as connection was null>
+26/02/2013 9:54:49 [main] INFO - <HHH000399: Using default transaction strategy (direct JDBC transactions)>
+26/02/2013 9:54:49 [main] INFO - <HHH000397: Using ASTQueryTranslatorFactory>
+26/02/2013 9:54:49 [main] TRACE - <Scoping types to session factory org.hibernate.internal.SessionFactoryImpl@e4c6320>
+26/02/2013 9:55:11 [main] WARN - <SQL Error: 17002, SQLState: 08006>
+26/02/2013 9:55:11 [main] ERROR - <IO Error: The Network Adapter could not establish the connection>
+26/02/2013 9:55:32 [main] WARN - <SQL Error: 17002, SQLState: 08006>
+26/02/2013 9:55:32 [main] ERROR - <IO Error: The Network Adapter could not establish the connection>
+26/02/2013 9:55:53 [main] WARN - <SQL Error: 17002, SQLState: 08006>
+26/02/2013 9:55:53 [main] ERROR - <IO Error: The Network Adapter could not establish the connection>
