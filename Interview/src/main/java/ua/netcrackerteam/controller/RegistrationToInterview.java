@@ -43,6 +43,10 @@ public class RegistrationToInterview implements  Logable{
        return dataInterviews;
         
     }
-
+    
+    public static Date getInterview(String userName){
+          Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+          return (interview == null? null:interview.getStartDate());
+    }
     
 }

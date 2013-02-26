@@ -172,7 +172,7 @@ public class ApplicationForm{
         
         try{
             reader = new BufferedReader(new FileReader(pathMailToStudent));
-            String currentStr = reader.readLine();
+            String currentStr = "";
             while((currentStr = reader.readLine()) != null){
                 builder.append(currentStr);
             }
