@@ -353,7 +353,7 @@ public class StudentPage {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
-        newForm.setExtraKnowledge   ("shit");
+        newForm.setExtraKnowledge   ("ExtraKnowledge");
         //Filipenko//25.02.12//20.14
         //+
         newForm.setAdverts(newStudentData.getStudentHowHearAboutCentre());
@@ -386,6 +386,23 @@ public class StudentPage {
             newForm.setStatus(currStatus);
         }
         currDAOStImpl.addForm(newForm);
+        //advert
+        for (Object currAdvert:newStudentData.getStudentHowHearAboutCentre()) {
+            List<Object> listOfAdvertCat = searchSomething("AdvertCategory", "description", (String)currAdvert);
+            AdvertCategory currAdvertCat = (AdvertCategory)listOfAdvertCat.get(0);
+            Advert newAdvert = new Advert();
+            newAdvert.setAdvertCategory(currAdvertCat);
+            newAdvert.setForm(newForm);
+            currDAOComm.addSomethingNew(newAdvert);
+        }
+        //advert other
+        List<Object> listOfAdvertCatOther = searchSomething("AdvertCategory", "description", "Другое");
+        AdvertCategory currAdvertCatOther = (AdvertCategory)listOfAdvertCatOther.get(0);
+        Advert newAdvert = new Advert();
+        newAdvert.setAdvertCategory(currAdvertCatOther);
+        newAdvert.setForm(newForm);
+        newAdvert.setOther(newStudentData.getStudentHowHearAboutCentreOther());
+        currDAOComm.addSomethingNew(newAdvert);
         //contacts//email1
         if (!newStudentData.getStudentEmailFirst().equals("")) {
             List<Object> listOfEmails = searchSomething("ContactCategory", "category", "email1");
