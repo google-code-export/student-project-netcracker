@@ -62,17 +62,25 @@ public class DAOStudentImpl implements DAOStudent
 //        form1.setLastName("Кобзон");
 //        HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
 
-        //Test getting form by user name
-          /*Form form1 = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("iviarkiz");
-          System.out.println("blabla" + form1.getFirstName());*/
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("briarey");
-        System.out.println(form.getUser().getIdUser());
+        //Test getting form by user name          
+//        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("briarey");
+//        System.out.println(form.getUser().getIdUser());
          
-        //Example how to get form by form id
+        //Test how to get form by form id
 //         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 //         session.beginTransaction();
 //         Form form2 = (Form) session.get(Form.class, 9);
-//         System.out.println("blabla");    
+//         System.out.println("blabla"); 
+        
+        //Test getting list of forms by interview id
+//        List<Form> forms = new DAOStudentImpl().getFormsByInterviewId(1);
+//        System.out.println(forms);
+        
+        //Test getting user email by username
+        String email = new DAOStudentImpl().getEmailByUserName("iviarkiz");
+        System.out.println(email);
+        
+        
     }
     
     /**
@@ -231,33 +239,41 @@ public class DAOStudentImpl implements DAOStudent
         return getFormByUserId(idUser);       
     }
     
-   //Получает все формы записанные на интервью   
-   public List<Form> getFormByInterview(Interview idInterview){
-       return new ArrayList<Form>();
-       //       Session session = null;
-//        Query query;        
-//        Form form = null;                
-//        try {
-//            Locale.setDefault(Locale.ENGLISH);
-//            session = HibernateUtil.getSessionFactory().getCurrentSession();
-//            session.beginTransaction();
-//            query = session.createQuery("from Form "                                        
-//                                        + "where Interview = '" + idInterview + "'");
-//            form = (Form) query.();                        
-//            
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        } finally {
-//            if (session != null && session.isOpen()) {
-//                session.close();
-//            }
-//        }
-//        return form;
+   /**
+    * Returns list of forms with id of interview specified in param
+    * @param idInterview id of interview
+    * @return List of forms which have id of interview equaled to param specified
+    */    
+   public List<Form> getFormsByInterviewId(int idInterview){       
+        Session session = null;
+        Query query;        
+        List<Form> forms = null;                
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from Form "                                        
+                                        + "where interview = " + idInterview);
+            forms = query.list();                        
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return forms;
    }
    
-    //Получает емаил пользователя  
+   /**
+    * Returns string, represented email of user, whose username specifed in param
+    * @param userName username from user_list table
+    * @return email of a user, whose username specified in param
+    */
    public String getEmailByUserName(String userName){
-       return "klitna.tetiana@gmail.com";
+       Form form = getFormByUserName(userName);
+       return form.getUser().getEmail();
    }
 
 }

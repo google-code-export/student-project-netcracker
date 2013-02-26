@@ -36,7 +36,7 @@ public class RegistrationToInterview implements  Logable{
             interview = (Interview)iterator.next();
             dataInterviews.add(interview.getStartDate());
             dataInterviews.add(interview.getEndDate());
-            dataInterviews.add(HibernateFactory.getInstance().getStudentDAO().getFormByInterview(interview).size());
+            dataInterviews.add(HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size());
        }
 
        
