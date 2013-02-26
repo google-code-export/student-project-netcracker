@@ -356,7 +356,7 @@ public class StudentPage {
         newForm.setExtraKnowledge   ("ExtraKnowledge");
         //Filipenko//25.02.12//20.14
         //+
-        newForm.setAdverts(newStudentData.getStudentHowHearAboutCentre());
+        //newForm.setAdverts(newStudentData.getStudentHowHearAboutCentre());
 
         //user photo adding
         FileInputStream fileInputStream = null;
