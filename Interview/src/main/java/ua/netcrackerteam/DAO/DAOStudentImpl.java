@@ -77,7 +77,7 @@ public class DAOStudentImpl implements DAOStudent
 //        System.out.println(forms);
         
         //Test getting user email by username
-        String email = new DAOStudentImpl().getEmailByUserName("iviarkiz");
+        String email = new DAOStudentImpl().getEmailByUserName("FirstLogin");
         System.out.println(email);
         
         
@@ -226,9 +226,7 @@ public class DAOStudentImpl implements DAOStudent
             query = session.createQuery("from UserList "                                        
                                         + "where userName = '" + userName + "'");
             user = (UserList) query.uniqueResult();
-            idUser = user.getIdUser();
-            System.out.println(idUser);         
-            
+            idUser = user.getIdUser();           
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -244,6 +242,7 @@ public class DAOStudentImpl implements DAOStudent
     * @param idInterview id of interview
     * @return List of forms which have id of interview equaled to param specified
     */    
+    @Override
    public List<Form> getFormsByInterviewId(int idInterview){       
         Session session = null;
         Query query;        
@@ -271,9 +270,28 @@ public class DAOStudentImpl implements DAOStudent
     * @param userName username from user_list table
     * @return email of a user, whose username specified in param
     */
+    @Override
    public String getEmailByUserName(String userName){
-       Form form = getFormByUserName(userName);
-       return form.getUser().getEmail();
+       Session session = null;
+       Query query;        
+       UserList user = null;                
+       String email = null;
+       try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from UserList "                                        
+                                        + "where userName = '" + userName + "'");
+            user = (UserList) query.uniqueResult();                        
+            email = user.getEmail();
+       } catch (Exception e) {
+            System.out.println(e);
+       } finally {
+       if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return email;
    }
 
 }
