@@ -36,7 +36,8 @@ public class RegistrationToInterview implements  Logable{
             interview = (Interview)iterator.next();
             dataInterviews.add(interview.getStartDate());
             dataInterviews.add(interview.getEndDate());
-            dataInterviews.add(HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size());
+            //dataInterviews.add(HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size());
+             dataInterviews.add(10);
        }
 
        
@@ -48,5 +49,13 @@ public class RegistrationToInterview implements  Logable{
           Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
           return (interview == null? null:interview.getStartDate());
     }
+    
+     public static void main(String[] args){
+         List list = getInterviews();
+         ListIterator iterator = list.listIterator();
+          while(iterator.hasNext()){
+            System.out.println(iterator.next());         
+       }
+     }
     
 }

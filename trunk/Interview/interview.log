@@ -1534,3 +1534,109 @@ line 1:46: unexpected token: where
 26/02/2013 9:55:32 [main] ERROR - <IO Error: The Network Adapter could not establish the connection>
 26/02/2013 9:55:53 [main] WARN - <SQL Error: 17002, SQLState: 08006>
 26/02/2013 9:55:53 [main] ERROR - <IO Error: The Network Adapter could not establish the connection>
+27/02/2013 11:14:40 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@781edf4>
+27/02/2013 11:14:40 [main] DEBUG - <Adding type registration boolean -> org.hibernate.type.BooleanType@781edf4>
+27/02/2013 11:14:40 [main] DEBUG - <Adding type registration java.lang.Boolean -> org.hibernate.type.BooleanType@781edf4>
+27/02/2013 11:14:40 [main] DEBUG - <Adding type registration numeric_boolean -> org.hibernate.type.NumericBooleanType@47808199>
+27/02/2013 11:14:40 [main] DEBUG - <Adding type registration true_false -> org.hibernate.type.TrueFalseType@2d20cc56>
+27/02/2013 11:14:40 [main] DEBUG - <Adding type registration yes_no -> org.hibernate.type.YesNoType@1fff7a1e>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@48d19bc8>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration byte -> org.hibernate.type.ByteType@48d19bc8>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Byte -> org.hibernate.type.ByteType@48d19bc8>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration character -> org.hibernate.type.CharacterType@5b7ee8b8>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration char -> org.hibernate.type.CharacterType@5b7ee8b8>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Character -> org.hibernate.type.CharacterType@5b7ee8b8>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@4ac4aad3>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration short -> org.hibernate.type.ShortType@4ac4aad3>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Short -> org.hibernate.type.ShortType@4ac4aad3>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration integer -> org.hibernate.type.IntegerType@78ce5b1c>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration int -> org.hibernate.type.IntegerType@78ce5b1c>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Integer -> org.hibernate.type.IntegerType@78ce5b1c>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@7ca3d4cf>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration long -> org.hibernate.type.LongType@7ca3d4cf>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Long -> org.hibernate.type.LongType@7ca3d4cf>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@62587c94>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration float -> org.hibernate.type.FloatType@62587c94>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Float -> org.hibernate.type.FloatType@62587c94>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@121a9334>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration double -> org.hibernate.type.DoubleType@121a9334>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Double -> org.hibernate.type.DoubleType@121a9334>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration big_decimal -> org.hibernate.type.BigDecimalType@6d4c1103>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.math.BigDecimal -> org.hibernate.type.BigDecimalType@6d4c1103>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration big_integer -> org.hibernate.type.BigIntegerType@6686fe26>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.math.BigInteger -> org.hibernate.type.BigIntegerType@6686fe26>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration string -> org.hibernate.type.StringType@55d15445>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.String -> org.hibernate.type.StringType@55d15445>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration url -> org.hibernate.type.UrlType@4139eeda>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.net.URL -> org.hibernate.type.UrlType@4139eeda>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration date -> org.hibernate.type.DateType@74b2002f>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.sql.Date -> org.hibernate.type.DateType@74b2002f>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration time -> org.hibernate.type.TimeType@43b09468>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.sql.Time -> org.hibernate.type.TimeType@43b09468>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration timestamp -> org.hibernate.type.TimestampType@45b9ce4b>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.sql.Timestamp -> org.hibernate.type.TimestampType@45b9ce4b>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.Date -> org.hibernate.type.TimestampType@45b9ce4b>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration dbtimestamp -> org.hibernate.type.DbTimestampType@68861f24>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration calendar -> org.hibernate.type.CalendarType@485329c5>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.Calendar -> org.hibernate.type.CalendarType@485329c5>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.GregorianCalendar -> org.hibernate.type.CalendarType@485329c5>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration calendar_date -> org.hibernate.type.CalendarDateType@68fe748f>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration locale -> org.hibernate.type.LocaleType@378f6235>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.Locale -> org.hibernate.type.LocaleType@378f6235>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration currency -> org.hibernate.type.CurrencyType@2c641e9a>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.Currency -> org.hibernate.type.CurrencyType@2c641e9a>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration timezone -> org.hibernate.type.TimeZoneType@270e3293>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.TimeZone -> org.hibernate.type.TimeZoneType@270e3293>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration class -> org.hibernate.type.ClassType@99b5393>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Class -> org.hibernate.type.ClassType@99b5393>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration uuid-binary -> org.hibernate.type.UUIDBinaryType@5210f6d3>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.util.UUID -> org.hibernate.type.UUIDBinaryType@5210f6d3>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration uuid-char -> org.hibernate.type.UUIDCharType@2911a3a4>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration pg-uuid -> org.hibernate.type.PostgresUUIDType@432a0f6c>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration binary -> org.hibernate.type.BinaryType@69f78ef1>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration byte[] -> org.hibernate.type.BinaryType@69f78ef1>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration [B -> org.hibernate.type.BinaryType@69f78ef1>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration wrapper-binary -> org.hibernate.type.WrapperBinaryType@53ad085>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration Byte[] -> org.hibernate.type.WrapperBinaryType@53ad085>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration [Ljava.lang.Byte; -> org.hibernate.type.WrapperBinaryType@53ad085>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration image -> org.hibernate.type.ImageType@65faba46>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration characters -> org.hibernate.type.CharArrayType@1bc74f37>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration char[] -> org.hibernate.type.CharArrayType@1bc74f37>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration [C -> org.hibernate.type.CharArrayType@1bc74f37>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration wrapper-characters -> org.hibernate.type.CharacterArrayType@4a79717e>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration [Ljava.lang.Character; -> org.hibernate.type.CharacterArrayType@4a79717e>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration Character[] -> org.hibernate.type.CharacterArrayType@4a79717e>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration text -> org.hibernate.type.TextType@5289cf1e>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration blob -> org.hibernate.type.BlobType@452bb7e0>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.sql.Blob -> org.hibernate.type.BlobType@452bb7e0>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration materialized_blob -> org.hibernate.type.MaterializedBlobType@442a15cd>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration clob -> org.hibernate.type.ClobType@340d1fa5>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.sql.Clob -> org.hibernate.type.ClobType@340d1fa5>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration materialized_clob -> org.hibernate.type.MaterializedClobType@12b7eea>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration serializable -> org.hibernate.type.SerializableType@314c194d>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration object -> org.hibernate.type.ObjectType@70ba9340>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration java.lang.Object -> org.hibernate.type.ObjectType@70ba9340>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_date -> org.hibernate.type.AdaptedImmutableType@b551d7f>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_time -> org.hibernate.type.AdaptedImmutableType@10382a9>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_timestamp -> org.hibernate.type.AdaptedImmutableType@d7725c4>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_dbtimestamp -> org.hibernate.type.AdaptedImmutableType@9506dc4>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_calendar -> org.hibernate.type.AdaptedImmutableType@7f5663a2>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_calendar_date -> org.hibernate.type.AdaptedImmutableType@a761fe>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_binary -> org.hibernate.type.AdaptedImmutableType@6d126b07>
+27/02/2013 11:14:41 [main] DEBUG - <Adding type registration imm_serializable -> org.hibernate.type.AdaptedImmutableType@5430d082>
+27/02/2013 11:14:41 [main] INFO - <HCANN000001: Hibernate Commons Annotations {4.0.1.Final}>
+27/02/2013 11:14:41 [main] INFO - <HHH000412: Hibernate Core {4.1.1}>
+27/02/2013 11:14:41 [main] INFO - <HHH000206: hibernate.properties not found>
+27/02/2013 11:14:41 [main] INFO - <HHH000021: Bytecode provider name : javassist>
+27/02/2013 11:14:41 [main] INFO - <HHH000043: Configuring from resource: /hibernate.cfg.xml>
+27/02/2013 11:14:41 [main] INFO - <HHH000040: Configuration resource: /hibernate.cfg.xml>
+27/02/2013 11:14:41 [main] INFO - <HHH000041: Configured SessionFactory: null>
+27/02/2013 11:14:42 [main] INFO - <HHH000402: Using Hibernate built-in connection pool (not for production use!)>
+27/02/2013 11:14:42 [main] INFO - <HHH000115: Hibernate connection pool size: 20>
+27/02/2013 11:14:42 [main] INFO - <HHH000006: Autocommit mode: false>
+27/02/2013 11:14:42 [main] INFO - <HHH000401: using driver [oracle.jdbc.OracleDriver] at URL [jdbc:oracle:thin:@85.238.104.112:1521:XE]>
+27/02/2013 11:14:42 [main] INFO - <HHH000046: Connection properties: {user=netcracker, password=****}>
+27/02/2013 11:14:42 [main] INFO - <HHH000400: Using dialect: org.hibernate.dialect.Oracle10gDialect>
+27/02/2013 11:14:43 [main] INFO - <HHH000399: Using default transaction strategy (direct JDBC transactions)>
+27/02/2013 11:14:43 [main] INFO - <HHH000397: Using ASTQueryTranslatorFactory>
+27/02/2013 11:14:43 [main] TRACE - <Scoping types to session factory org.hibernate.internal.SessionFactoryImpl@3efd66a5>
