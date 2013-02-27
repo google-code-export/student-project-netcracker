@@ -38,12 +38,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
+import org.apache.commons.collections.set.UnmodifiableSet;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
@@ -86,6 +90,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private long maxSize = 300000; //300Kb
     private StudentData stData;
     private final BeanItem<StudentData> bean;
+    private static final List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
     
     private ComboBox universities;
     private ComboBox faculties;
@@ -564,13 +569,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             Component c = (Component) i.next();
             sliderConfig(c,1);
         }
-        List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
         advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
-        advert.setPropertyDataSource(bean.getItemProperty("studentHowHearAboutCentre"));
+        advert.setMultiSelect(true);
+        advert.setValue(stData.getStudentHowHearAboutCentre());
+        advert.setNullSelectionAllowed(false);
+        advert.setImmediate(true);
         advert.setWidth("220");
         advert.setRequired(true);
-        advert.setMultiSelect(true);
-        advert.setItemEnabled(0, true);
         vlayout.addComponent(advert);
         anotherAdvert = new TextField(bean.getItemProperty("studentHowHearAboutCentreOther"));
         anotherAdvert.setWidth("220");
@@ -932,6 +937,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }  
                 } else if(source == save) {
                     if(checkAllValid()) {
+                        stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
                         setEditable(false);
                         ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status);
                     } else {
@@ -943,13 +949,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     setEditable(true);
                     status = 2;
                 } else if(source == print) {
-                try {
                     ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(username);
-                } catch (MessagingException ex) {
-                    getWindow().showNotification("Ошибка отправки документа", Window.Notification.TYPE_TRAY_NOTIFICATION);
-                } catch (IOException ex) {
-                    getWindow().showNotification("Ошибка отправки документа", Window.Notification.TYPE_TRAY_NOTIFICATION);
-                }
                 }
         }
     }

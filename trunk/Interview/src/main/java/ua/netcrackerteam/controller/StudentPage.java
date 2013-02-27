@@ -764,7 +764,7 @@ public class StudentPage {
 
 
             Set adverts = form.getAdverts();
-            LinkedHashSet<Advert> linkedAdverts = new LinkedHashSet<Advert>();
+            LinkedHashSet linkedAdverts = new LinkedHashSet();
             Iterator iterAdv = adverts.iterator();
             while(iterAdv.hasNext()) {
                 Advert advert = (Advert) iterAdv.next();
@@ -773,7 +773,7 @@ public class StudentPage {
                     std.setStudentHowHearAboutCentreOther(advert.getOther());
                     iterAdv.remove();
                 } else {
-                    linkedAdverts.add(advert);
+                    linkedAdverts.add(advertDecription);
                 }
             }
             if (std.getStudentHowHearAboutCentreOther() == null) { std.setStudentHowHearAboutCentreOther("");}
