@@ -17,6 +17,7 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.FileResource;
+import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button;
@@ -32,6 +33,7 @@ import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.awt.*;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -135,6 +137,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private TextField anotherWorkType;
     private Embedded photo;
     private ValueChangeListener facultListener;
+    private ByteArrayOutputStream baos;
 
 
     public StudentBlank(String username) {
@@ -815,42 +818,33 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
 
     @Override
     public void uploadSucceeded(SucceededEvent event) {
-        try {
-            FileResource imageResource = new FileResource(photoFile, getApplication());
-            Embedded newPhoto = new Embedded("", imageResource);
-            newPhoto = checkPhotoSize(newPhoto);
-            if(photo == null) {
-                photo = newPhoto;
-                GridLayout gl = (GridLayout) persInfo.getContent();
-                gl.addComponent(photo,2,0,2,3);
-                gl.setComponentAlignment(photo, Alignment.TOP_CENTER);
-            }
-            else {
-                Embedded oldPhoto = photo;
-                photo = newPhoto;
-                persInfo.replaceComponent(oldPhoto, photo);
-            }
-            getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
-        }
-        catch (NullPointerException npe) {
-            getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
-        }
+        byte[] photoArray = baos.toByteArray();
+        stData.setPhoto(photoArray);
+//        try {
+//            StreamResource imageResource = new StreamResource(baos,"", getApplication());
+//            Embedded newPhoto = new Embedded("", imageResource);
+//            newPhoto = checkPhotoSize(newPhoto);
+//            if(photo == null) {
+//                photo = newPhoto;
+//                GridLayout gl = (GridLayout) persInfo.getContent();
+//                gl.addComponent(photo,2,0,2,3);
+//                gl.setComponentAlignment(photo, Alignment.TOP_CENTER);
+//            }
+//            else {
+//                Embedded oldPhoto = photo;
+//                photo = newPhoto;
+//                persInfo.replaceComponent(oldPhoto, photo);
+//            }
+//            getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
+//        }
+//        catch (NullPointerException npe) {
+//            getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
+//        }
     }
 
     public OutputStream receiveUpload(String filename, String mimeType) {
-        FileOutputStream fos = null; 
-        WebApplicationContext context = (WebApplicationContext) getApplication().getContext();
-        photoFile = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/"+username+"/"+username+".jpg") );
-        try {
-            File dir = photoFile.getParentFile();
-            if (false == photoFile.exists()) {
-                dir.mkdir();
-            }
-            fos = new FileOutputStream(photoFile);
-        } catch (final java.io.FileNotFoundException e) {
-            getWindow().showNotification("Ошибка загрузки файла", Window.Notification.TYPE_TRAY_NOTIFICATION);
-        }
-        return fos; 
+        baos = new ByteArrayOutputStream(); 
+        return baos;
     }
 
     public void uploadStarted(StartedEvent event) {

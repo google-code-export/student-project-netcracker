@@ -66,6 +66,15 @@ public class StudentData implements Serializable{
     private String studentHowHearAboutCentreOther = "";
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
+    private byte[] photo = null;
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
 
     public String getStudentHowHearAboutCentreOther() {
         return studentHowHearAboutCentreOther;
