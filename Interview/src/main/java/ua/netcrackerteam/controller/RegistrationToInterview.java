@@ -31,7 +31,6 @@ public class RegistrationToInterview implements  Logable{
        
        List dataInterviews = new ArrayList(interviews.size()*3);
        Interview interview = null;
-       
        while(iterator.hasNext()){
             interview = (Interview)iterator.next();
             dataInterviews.add(interview.getStartDate());
@@ -44,10 +43,16 @@ public class RegistrationToInterview implements  Logable{
        return dataInterviews;
         
     }
-    
-    public static Date getInterview(String userName){
+    //Anna changed this
+    public static List getInterview(String userName){
           Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
-          return (interview == null? null:interview.getStartDate());
+          List currentInterview = new ArrayList();
+          if (interview != null) {
+              currentInterview.add(interview.getStartDate());
+              currentInterview.add(interview.getEndDate());
+              currentInterview.add(10);
+          }
+          return currentInterview;
     }
     
      public static void main(String[] args){
@@ -56,6 +61,7 @@ public class RegistrationToInterview implements  Logable{
           while(iterator.hasNext()){
             System.out.println(iterator.next());         
        }
+          
      }
     
 }
