@@ -35,7 +35,7 @@ public class InterviewDAOImpl {
         interwiev.setEndDate(new Date(2012, 9, 29, 19, 30));
         interwiev.setMaxNumber(40);
         interwievs.add(interwiev);
-          interwiev.setStartDate(new Date(2012, 9, 30, 17, 30));
+        interwiev.setStartDate(new Date(2012, 9, 30, 17, 30));
         interwiev.setEndDate(new Date(2012, 9, 30, 18, 30));
         interwiev.setMaxNumber(40);
         interwievs.add(interwiev);

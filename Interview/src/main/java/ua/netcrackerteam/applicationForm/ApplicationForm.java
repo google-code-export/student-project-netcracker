@@ -203,12 +203,13 @@ public class ApplicationForm{
             Properties propertiesAuthentification = new Properties();
             propertiesAuthentification.load(new FileInputStream(pathToMailAuthentification));
                                                                
-            String sender = propertiesAuthentification.getProperty("mail"); 
+            String sender = propertiesAuthentification.getProperty("mail");
+            String senderPassword = propertiesAuthentification.getProperty("password");
             String recipient = HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName); 
            
             String subject = "Учебный Центр NetCracker при ОНПУ"; 	         	                    
                          
-            Session session = Session.getDefaultInstance(propertiesMail, new DefaultAuthenticator("NetcrackerTeamOdessaOspu@gmail.com", "12345odessa"));                              
+            Session session = Session.getDefaultInstance(propertiesMail, new DefaultAuthenticator(sender, senderPassword));                              
                                                                
             MimeMultipart mimeMultipart = new MimeMultipart();
             mimeMultipart.addBodyPart(getHTMLBodyPart(userName));	       
