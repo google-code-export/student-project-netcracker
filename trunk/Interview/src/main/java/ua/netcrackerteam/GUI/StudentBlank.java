@@ -7,18 +7,14 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
-import com.vaadin.terminal.FileResource;
 import com.vaadin.terminal.StreamResource;
-import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -33,23 +29,19 @@ import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Reindeer;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.mail.MessagingException;
-import org.apache.commons.collections.set.UnmodifiableSet;
+import javax.swing.ImageIcon;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;
@@ -138,6 +130,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private Embedded photo;
     private ValueChangeListener facultListener;
     private ByteArrayOutputStream baos;
+    private byte[] photoArray;
 
 
     public StudentBlank(String username) {
@@ -407,6 +400,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         photoUpload.addListener((Upload.SucceededListener) this);
         photoUpload.addListener((Upload.StartedListener) this);
         glayout1.addComponent(photoUpload,0,4,2,4);
+        photo = new Embedded("");
+        glayout1.addComponent(photo,2,0,2,3);
+        glayout1.setComponentAlignment(photo, Alignment.TOP_CENTER);
+        photoArray = stData.getPhoto();
+        if(photoArray != null) {
+            showPhoto();
+        }
     }
 
     private void contactsPanelFill() {
@@ -550,7 +550,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         expirience.setRows(4);
         expirience.setRequired(true);
         expirience.setWordwrap(true);
-        expirience.addValidator(getExpirienceValidator());
         expirience.addListener(this);
         vlayout.addComponent(expirience);
         Label english = new Label("Уровень английского языка (от 1 = elementary до 5 = advanced): ");
@@ -588,7 +587,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         whyYou.setWidth("700");
         whyYou.setRows(3);
         whyYou.setRequired(true);
-        whyYou.addValidator(getWhyYouValidator());
         whyYou.addListener(this);
         vlayout.addComponent(whyYou);
         moreInfo = new TextArea("Дополнительные сведения о себе: олимпиады, поощрения, курсы, сертификаты, личные качества, др.",
@@ -596,7 +594,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         moreInfo.setWidth("700");
         moreInfo.setRequired(true);
         moreInfo.setRows(3);
-        moreInfo.addValidator(getMoreInfoValidator());
         moreInfo.addListener(this);
         vlayout.addComponent(moreInfo);   
     }
@@ -613,40 +610,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             TextArea ta = (TextArea) source;
             ta.isValid();
         }
-    }
-
-    /**
-     * Implement this!
-     * @return 
-     */
-    private Validator getExpirienceValidator() {
-        Validator v = new AbstractValidator("Ошибка!") {
-
-            public boolean isValid(Object value) {
-                return true;
-            }
-        };
-        return v;
-    }
-
-    private Validator getWhyYouValidator() {
-        Validator v = new AbstractValidator("Ошибка!") {
-
-            public boolean isValid(Object value) {
-                return true;
-            }
-        };
-        return v;
-    }
-
-    private Validator getMoreInfoValidator() {
-        Validator v = new AbstractValidator("Ошибка!") {
-
-            public boolean isValid(Object value) {
-                return true;
-            }
-        };
-        return v;
     }
     
     /**
@@ -798,55 +761,22 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         return true;            
     }
-    
-    private Embedded checkPhotoSize(Embedded newPhoto) throws NullPointerException{
-        try {
-            int width, height;
-            Image im = ImageIO.read(photoFile);
-            width = im.getWidth(null);
-            height = im.getHeight(null);
-            if (width > height || width > 200) {
-                newPhoto.setWidth("200");
-            } else if (height > 300 ){
-                newPhoto.setHeight("300");
-            } 
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        return newPhoto;
-    }
 
     @Override
     public void uploadSucceeded(SucceededEvent event) {
-        byte[] photoArray = baos.toByteArray();
+        photoArray = baos.toByteArray();
+        photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray);
         stData.setPhoto(photoArray);
-//        try {
-//            StreamResource imageResource = new StreamResource(baos,"", getApplication());
-//            Embedded newPhoto = new Embedded("", imageResource);
-//            newPhoto = checkPhotoSize(newPhoto);
-//            if(photo == null) {
-//                photo = newPhoto;
-//                GridLayout gl = (GridLayout) persInfo.getContent();
-//                gl.addComponent(photo,2,0,2,3);
-//                gl.setComponentAlignment(photo, Alignment.TOP_CENTER);
-//            }
-//            else {
-//                Embedded oldPhoto = photo;
-//                photo = newPhoto;
-//                persInfo.replaceComponent(oldPhoto, photo);
-//            }
-//            getWindow().showNotification("Файл успешно загружен", Window.Notification.TYPE_TRAY_NOTIFICATION);
-//        }
-//        catch (NullPointerException npe) {
-//            getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
-//        }
+        showPhoto();
     }
 
+    @Override
     public OutputStream receiveUpload(String filename, String mimeType) {
         baos = new ByteArrayOutputStream(); 
         return baos;
     }
 
+    @Override
     public void uploadStarted(StartedEvent event) {
         if (maxSize < event.getContentLength()) {
             photoUpload.interruptUpload();
@@ -901,6 +831,18 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         sliderConfig(newSlider,1);
         programLangList.add(newSlider);
         lo.addComponent(programLangList.get(programLangList.size()-1));
+    }
+
+    private void showPhoto() {
+        StreamResource.StreamSource imagesource = new StreamResource.StreamSource() {
+
+            @Override
+            public InputStream getStream() {
+                    return new ByteArrayInputStream(photoArray);
+            }
+        };
+        StreamResource imageresource = new StreamResource(imagesource, "photo.jpg", getApplication());
+        photo.setSource(imageresource);
     }
  
     private class ButtonsListener implements Button.ClickListener {

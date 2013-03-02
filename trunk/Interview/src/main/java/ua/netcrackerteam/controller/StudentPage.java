@@ -1,5 +1,9 @@
 package ua.netcrackerteam.controller;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.*;
@@ -13,6 +17,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  * Student controller class for using in View
@@ -785,6 +793,29 @@ public class StudentPage {
         }
         return std;
 
+    }
+    
+    public static byte[] scalePhoto(byte[] photoArray) {
+        byte[] newPhotoArray = null;
+        ImageIcon imageIcon = new ImageIcon(photoArray);
+        Image image = imageIcon.getImage();
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        double ratio = Math.min((double) 200/width, (double) 300/height);
+        double newWidth = ratio * width;
+        double newHeight = ratio * height;
+        image = image.getScaledInstance((int)Math.round(newWidth), (int)Math.round(newHeight), Image.SCALE_DEFAULT);
+        BufferedImage bi = new BufferedImage((int)Math.round(newWidth), (int)Math.round(newHeight), BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = bi.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bi, "JPEG", baos);
+        } catch (IOException ex) {
+            Logger.getLogger(StudentPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        newPhotoArray = baos.toByteArray();
+        return newPhotoArray;
     }
 
 }
