@@ -155,7 +155,7 @@ public class ApplicationForm{
         
         Image img = Image.getInstance("src\\main\\java\\1.jpg");
         img.setAbsolutePosition(70f, 615f);
-        img.scaleAbsolute(150, 140);
+        img.scaleToFit(150, 140);
         
         return img;
     }
