@@ -8,13 +8,8 @@ package ua.netcrackerteam.DAO;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import ua.netcrackerteam.configuration.HibernateUtil;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Locale;
 
 /**
  * @author Filipenko
@@ -34,8 +29,10 @@ public class Branch implements Serializable {
 
     @Column(name="DESCRIPTION")
     private String description;
-    
-    
+
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_BRANCH_CAT")
+    private BranchCategory branchCategory;
     
     
     public Branch() {        
@@ -64,11 +61,16 @@ public class Branch implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
-    
-    
-    
+
+
+    public BranchCategory getBranchCategory() {
+        return branchCategory;
+    }
+
+    public void setBranchCategory(BranchCategory branchCategory) {
+        this.branchCategory = branchCategory;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
