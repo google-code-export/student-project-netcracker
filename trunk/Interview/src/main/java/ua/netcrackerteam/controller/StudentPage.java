@@ -816,7 +816,6 @@ public class StudentPage {
         double ratio = Math.min((double) 200/width, (double) 300/height);
         double newWidth = ratio * width;
         double newHeight = ratio * height;
-        //Image imageScaled = image.getScaledInstance((int)Math.round(newWidth), (int)Math.round(newHeight), Image.SCALE_DEFAULT);
         BufferedImage bi = new BufferedImage((int)Math.round(newWidth), (int)Math.round(newHeight), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bi.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
