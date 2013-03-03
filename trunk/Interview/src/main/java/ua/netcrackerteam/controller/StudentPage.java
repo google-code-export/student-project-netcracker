@@ -1,26 +1,22 @@
 package ua.netcrackerteam.controller;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.*;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
+import javax.imageio.ImageIO;
 import javax.interceptor.Interceptors;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
  * Student controller class for using in View
@@ -205,7 +201,7 @@ public class StudentPage {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public static void insertNewBranch(String branchName) {
+    public static void insertNewBranch(String branchName, BranchCategory currBranchCat) {
 
         Session session = null;
         org.hibernate.Query re = null;
@@ -219,6 +215,7 @@ public class StudentPage {
                     Branch newBranch = new Branch();
                     newBranch.setName(branchName);
                     newBranch.setDescription(branchName);
+                    newBranch.setBranchCategory(currBranchCat);
                     session.save(newBranch);
                     transaction.commit();
                 } catch (Exception e) {
@@ -455,6 +452,7 @@ public class StudentPage {
             newEmailContact.setForm           (newForm);
             currDAOComm.addSomethingNew(newEmailContact);
         }
+
         //knowledge//C++
         List<Object> listOfBranchCPP = searchSomething("Branch", "name", "C++");
         Branch BranchCPP = (Branch)listOfBranchCPP.get(0);
@@ -472,9 +470,18 @@ public class StudentPage {
         knowJava.setScore    (newStudentData.getStudentJavaMark());
         currDAOComm.addSomethingNew(knowJava);
 
+
+        List<Object> listOfBranchCatProgLang = searchSomething("BranchCategory", "discription", "Языки программирования");
+        BranchCategory branchCategoryProgLang = (BranchCategory)listOfBranchCatProgLang.get(0);
+
+        List<Object> listOfBranchCatIT = searchSomething("BranchCategory", "discription", "Знания в области IT технологий");
+        BranchCategory branchCategoryIT = (BranchCategory)listOfBranchCatIT.get(0);
+
+        List<Object> listOfBranchCatLang = searchSomething("BranchCategory", "discription", "Знания иностранных языков");
+        BranchCategory branchCategoryLang = (BranchCategory)listOfBranchCatLang.get(0);
         //lang//other 1
         if (!newStudentData.getStudentLanguage1().trim().equals("")) {
-            insertNewBranch(newStudentData.getStudentLanguage1().trim());
+            insertNewBranch(newStudentData.getStudentLanguage1().trim(), branchCategoryProgLang);
             List<Object> listOfBranchLang1 = searchSomething("Branch", "name", newStudentData.getStudentLanguage1().trim());
             Branch BranchLang1 = (Branch)listOfBranchLang1.get(0);
             Knowledge knowLang1 = new Knowledge();
@@ -485,7 +492,7 @@ public class StudentPage {
         }
         //lang//other 2
         if (!newStudentData.getStudentLanguage2().trim().equals("")) {
-            insertNewBranch(newStudentData.getStudentLanguage2().trim());
+            insertNewBranch(newStudentData.getStudentLanguage2().trim(), branchCategoryProgLang);
             List<Object> listOfBranchLang2 = searchSomething("Branch", "name", newStudentData.getStudentLanguage2().trim());
             Branch BranchLang2 = (Branch)listOfBranchLang2.get(0);
             Knowledge knowLang2 = new Knowledge();
@@ -496,7 +503,7 @@ public class StudentPage {
         }
         //lang//other 3
         if (!newStudentData.getStudentLanguage3().trim().equals("")) {
-            insertNewBranch(newStudentData.getStudentLanguage3().trim());
+            insertNewBranch(newStudentData.getStudentLanguage3().trim(), branchCategoryProgLang);
             List<Object> listOfBranchLang3 = searchSomething("Branch", "name", newStudentData.getStudentLanguage3().trim());
             Branch BranchLang3 = (Branch)listOfBranchLang3.get(0);
             Knowledge knowLang3 = new Knowledge();
@@ -508,7 +515,7 @@ public class StudentPage {
 
         //knowledge//other 1
         if (!newStudentData.getStudentKnowledgeOther1().trim().equals("")) {
-            insertNewBranch(newStudentData.getStudentKnowledgeOther1().trim());
+            insertNewBranch(newStudentData.getStudentKnowledgeOther1().trim(), branchCategoryIT);
             List<Object> listOfBranchOther1 = searchSomething("Branch", "name", newStudentData.getStudentKnowledgeOther1().trim());
             Branch BranchOther1 = (Branch)listOfBranchOther1.get(0);
             Knowledge knowOther1 = new Knowledge();
@@ -519,7 +526,7 @@ public class StudentPage {
         }
         //knowledge//other 2
         if (!newStudentData.getStudentKnowledgeOther2().trim().equals("")) {
-            insertNewBranch(newStudentData.getStudentKnowledgeOther2().trim());
+            insertNewBranch(newStudentData.getStudentKnowledgeOther2().trim(), branchCategoryIT);
             List<Object> listOfBranchOther2 = searchSomething("Branch", "name", newStudentData.getStudentKnowledgeOther2().trim());
             Branch BranchOther2 = (Branch)listOfBranchOther2.get(0);
             Knowledge knowOther2 = new Knowledge();
@@ -530,7 +537,7 @@ public class StudentPage {
         }
         //knowledge//other 3
         if (!newStudentData.getStudentKnowledgeOther3().trim().equals("")) {
-            insertNewBranch(newStudentData.getStudentKnowledgeOther3().trim());
+            insertNewBranch(newStudentData.getStudentKnowledgeOther3().trim(), branchCategoryIT);
             List<Object> listOfBranchOther3 = searchSomething("Branch", "name", newStudentData.getStudentKnowledgeOther3().trim());
             Branch BranchOther3 = (Branch)listOfBranchOther3.get(0);
             Knowledge knowOther3 = new Knowledge();
