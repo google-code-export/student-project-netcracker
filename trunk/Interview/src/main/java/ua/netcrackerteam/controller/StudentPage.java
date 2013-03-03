@@ -1,5 +1,10 @@
 package ua.netcrackerteam.controller;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.*;
@@ -811,10 +816,12 @@ public class StudentPage {
         double ratio = Math.min((double) 200/width, (double) 300/height);
         double newWidth = ratio * width;
         double newHeight = ratio * height;
-        image = image.getScaledInstance((int)Math.round(newWidth), (int)Math.round(newHeight), Image.SCALE_DEFAULT);
+        //Image imageScaled = image.getScaledInstance((int)Math.round(newWidth), (int)Math.round(newHeight), Image.SCALE_DEFAULT);
         BufferedImage bi = new BufferedImage((int)Math.round(newWidth), (int)Math.round(newHeight), BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = bi.createGraphics();
-        g2d.drawImage(image, 0, 0, null);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+        g2d.drawImage(image, 0, 0,(int)Math.round(newWidth), (int)Math.round(newHeight), null); 
+    	g2d.dispose();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             ImageIO.write(bi, "JPEG", baos);
