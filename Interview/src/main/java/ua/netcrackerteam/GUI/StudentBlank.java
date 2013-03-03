@@ -35,9 +35,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -765,8 +767,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     @Override
     public void uploadSucceeded(SucceededEvent event) {
         photoArray = baos.toByteArray();
-        photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray);
         stData.setPhoto(photoArray);
+        photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray);
         showPhoto();
     }
 
@@ -789,11 +791,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if (i > 0 &&  i < filename.length() - 1) {
             ext = filename.substring(i+1).toLowerCase();
         }
-        if (ext != null && (ext.equals("jpeg") || ext.equals("jpg") || ext.equals("gif") || ext.equals("png"))) {
+        if (ext != null && (ext.equals("jpeg") || ext.equals("jpg"))) {
         }
         else {
             photoUpload.interruptUpload();
-            getWindow().showNotification("Файл не является изображением!",Window.Notification.TYPE_TRAY_NOTIFICATION);
+            getWindow().showNotification("Файл не является изображением! Допустимые форматы: JPEG",Window.Notification.TYPE_TRAY_NOTIFICATION);
         }
     }
    
@@ -835,14 +837,20 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
 
     private void showPhoto() {
         StreamResource.StreamSource imagesource = new StreamResource.StreamSource() {
-
             @Override
             public InputStream getStream() {
                     return new ByteArrayInputStream(photoArray);
             }
         };
         StreamResource imageresource = new StreamResource(imagesource, "photo.jpg", getApplication());
+        imageresource.setCacheTime(0);
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String filename = "photo-" + df.format(new Date()) + ".png";
+        imageresource.setFilename(filename);
+        photo.setType(Embedded.TYPE_IMAGE);
+        photo.setMimeType("image/jpeg");
         photo.setSource(imageresource);
+        photo.requestRepaint();
     }
  
     private class ButtonsListener implements Button.ClickListener {
