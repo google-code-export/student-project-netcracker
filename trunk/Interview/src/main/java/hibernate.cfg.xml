@@ -27,5 +27,6 @@
       <mapping class="ua.netcrackerteam.DAO.Interview" />
       <mapping class="ua.netcrackerteam.DAO.InterviewRes" />
       <mapping class="ua.netcrackerteam.DAO.Status" />
+      <mapping class="ua.netcrackerteam.DAO.BranchCategory" />
   </session-factory>
 </hibernate-configuration>
