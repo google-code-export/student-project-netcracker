@@ -768,7 +768,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public void uploadSucceeded(SucceededEvent event) {
         photoArray = baos.toByteArray();
         stData.setPhoto(photoArray);
-        photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray);
         showPhoto();
     }
 
@@ -839,6 +838,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         StreamResource.StreamSource imagesource = new StreamResource.StreamSource() {
             @Override
             public InputStream getStream() {
+                    photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray);
                     return new ByteArrayInputStream(photoArray);
             }
         };
