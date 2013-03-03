@@ -74,7 +74,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private TextField knowlName;
     private ButtonsListener buttonsListener = new ButtonsListener();
     private Upload photoUpload;
-    private File photoFile;
     private GridLayout glayoutEng;
     private GridLayout glayoutWorkType;
     private GridLayout glayoutWorkSphere;
@@ -133,10 +132,12 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private ValueChangeListener facultListener;
     private ByteArrayOutputStream baos;
     private byte[] photoArray;
+    private final MainPage mainPage;
 
 
-    public StudentBlank(String username) {
+    public StudentBlank(String username, MainPage mainPage) {
         this.username = username;
+        this.mainPage = mainPage;
         stData = StudentPage.getStudentDataByUserName(username);
         bean = new BeanItem<StudentData>(stData);
         setMargin(true);
@@ -403,6 +404,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         photoUpload.addListener((Upload.StartedListener) this);
         glayout1.addComponent(photoUpload,0,4,2,4);
         photo = new Embedded("");
+        photo.setWidth("200");
         glayout1.addComponent(photo,2,0,2,3);
         glayout1.setComponentAlignment(photo, Alignment.TOP_CENTER);
         photoArray = stData.getPhoto();
@@ -842,7 +844,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     return new ByteArrayInputStream(photoArray);
             }
         };
-        StreamResource imageresource = new StreamResource(imagesource, "photo.jpg", getApplication());
+        StreamResource imageresource = new StreamResource(imagesource, "photo.jpg", mainPage);
         imageresource.setCacheTime(0);
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
         String filename = "photo-" + df.format(new Date()) + ".png";
