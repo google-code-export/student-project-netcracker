@@ -1,10 +1,5 @@
 package ua.netcrackerteam.controller;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.*;
@@ -16,7 +11,8 @@ import javax.interceptor.Interceptors;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
@@ -369,22 +365,9 @@ public class StudentPage {
         //newForm.setAdverts(newStudentData.getStudentHowHearAboutCentre());
 
         //user photo adding
-        FileInputStream fileInputStream = null;
-        File file = null;
-        byte[] bFile = null;
-        try {
-            file = new File("C:\\Users\\AlexK\\IdeaProj\\interview\\src\\main\\webapp\\WEB-INF\\resources\\alexk\\"+userName+".jpg");
-            bFile = new byte[(int) file.length()];
-            fileInputStream = new FileInputStream(file);
-            fileInputStream.read(bFile);
-            fileInputStream.close();
-            newForm.setPhoto(bFile);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //=
+        byte[] bFile = newStudentData.getPhoto();
+        newForm.setPhoto(bFile);
+
         if (statusParam == 1) {
             List<Object> listOfStatus = searchSomething("Status", "name", "Зарегистрирована");
             Status currStatus = (Status)listOfStatus.get(0);
@@ -675,6 +658,8 @@ public class StudentPage {
             std.setStudentFaculty(form.getCathedra().getFaculty());
             std.setStudentCathedra(form.getCathedra());
             std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
+
+            std.setPhoto(form.getPhoto());
 
             Set contacts = form.getContacts();
             Iterator iterCont = contacts.iterator();
