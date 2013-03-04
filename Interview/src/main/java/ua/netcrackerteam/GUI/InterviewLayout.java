@@ -4,7 +4,6 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
@@ -19,14 +18,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import java.text.DateFormatSymbols;
 import java.text.Format;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ua.netcrackerteam.controller.StudentInterview;
 
 /**
