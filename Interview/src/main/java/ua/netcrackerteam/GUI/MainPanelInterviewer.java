@@ -15,6 +15,8 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
@@ -24,6 +26,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import ua.netcrackerteam.controller.StudentInterview;
+import ua.netcrackerteam.controller.StudentPage;
 
 /**
  * Panel for Interviewer view
@@ -44,8 +47,14 @@ public class MainPanelInterviewer extends MainPanel{
         interviewsLo.setHeight(height,UNITS_PIXELS);
         interviewsLo.setWidth("100%");
         interviewsLo.setMargin(true, false, false, false);
-        fillInterviewsLayout();
         tabSheet.addTab(interviewsLo,"Собеседования");
+        tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
+
+            @Override
+            public void selectedTabChange(SelectedTabChangeEvent event) {
+                fillInterviewsLayout();
+            }
+        });
     }
 
     private void fillInterviewsLayout() {
@@ -114,12 +123,8 @@ public class MainPanelInterviewer extends MainPanel{
         topLo.setMargin(false);
         top.setContent(splitV);
         splitH.setSecondComponent(top);
-
-        
-        
-        
-        
-        
     }
+    
+    
     
 }
