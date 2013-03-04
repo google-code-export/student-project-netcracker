@@ -389,7 +389,7 @@ public class StudentPage {
             currDAOComm.addSomethingNew(newAdvert);
         }
         //advert other
-        List<Object> listOfAdvertCatOther = searchSomething("AdvertCategory", "description", "Другое");
+        List<Object> listOfAdvertCatOther = searchSomething("AdvertCategory", "description", "Другое (уточните)");
         AdvertCategory currAdvertCatOther = (AdvertCategory)listOfAdvertCatOther.get(0);
         Advert newAdvert = new Advert();
         newAdvert.setAdvertCategory(currAdvertCatOther);
