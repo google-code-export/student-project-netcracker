@@ -41,7 +41,8 @@ public class RegistrationToInterview implements  Logable{
              
        while(iterator.hasNext()){
             interview = (Interview)iterator.next();
-            int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size(); 
+            List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+            int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
             StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
                     interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
             listInterviews.add(stInterview);
@@ -63,7 +64,8 @@ public class RegistrationToInterview implements  Logable{
           StudentInterview currentInterview = null;
                    
           if (interview != null) {
-               int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size(); 
+            List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+            int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
               currentInterview = new StudentInterview(interview.getIdInterview(),
                     interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
           }
