@@ -53,7 +53,11 @@ public class RegistrationToInterview implements  Logable{
      * @return 
      */
     public static StudentInterview getInterview(String userName){
-          Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+          Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
+          Interview interview = null;
+          if (form != null) {
+            interview = form.getInterview();
+          }
           StudentInterview currentInterview = null;
           int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size(); 
           
