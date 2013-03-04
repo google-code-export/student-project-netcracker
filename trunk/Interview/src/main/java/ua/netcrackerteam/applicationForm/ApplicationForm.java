@@ -298,5 +298,8 @@ public class ApplicationForm{
         return dateFormat.format(date);
     }
     
+        public static void main(String[] args) {
+          sendPDFToStudent("Tresh");
+       }
     
 }
