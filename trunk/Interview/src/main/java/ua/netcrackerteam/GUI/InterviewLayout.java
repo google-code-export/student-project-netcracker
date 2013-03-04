@@ -22,10 +22,12 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ua.netcrackerteam.controller.StudentInterview;
 
 /**
  *
@@ -43,8 +45,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
     private final InlineDateField calendar;
     private final OptionGroup dates;
     private final Button saveEdit;
-    private Date selectedDate;
     private String userName;
+    private int selectedInterviewID;
 
     public InterviewLayout(String username, MainPage mainPage) {
         this.userName = username;
@@ -67,39 +69,27 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         calendar.setResolution(InlineDateField.RESOLUTION_DAY);
         layout.addComponent(calendar,0,0);
         layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
-        List interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
-//        List interviews = new ArrayList();
-//        interviews.add(new Date(2013,10,24,18,0));
-//        interviews.add(new Date(2013,10,24,20,0));
-//        interviews.add(20);
-//        interviews.add(new Date(2013,10,26,16,0));
-//        interviews.add(new Date(2013,10,26,19,0));
-//        interviews.add(15);
-//        interviews.add(new Date(2013,10,27,16,0));
-//        interviews.add(new Date(2013,10,27,19,0));
-//        interviews.add(0);
+        List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
         layout.addComponent(dates,1,0);
-        for (int i=0; i<interviews.size(); i=i+3) {
-            Date startDate = (Date) interviews.get(i);
-            Date endDate = (Date) interviews.get(i+1);
-            String availability = interviews.get(i+2).toString();
-            String strDate = getStrFromDate(startDate, endDate, availability);
-            dates.addItem(strDate);
-            if (Integer.parseInt(availability) == 0) {
-                dates.setItemEnabled(strDate, false);
+        for(StudentInterview stInterview : interviews) {
+            String strDate = getStrFromDate(stInterview.getInterviewStartDate(), 
+                    stInterview.getInterviewEndDate(), stInterview.getRestOfPositions());
+            dates.addItem(stInterview);
+            dates.setItemCaption(stInterview, strDate);
+            if (stInterview.getRestOfPositions() == 0) {
+                dates.setItemEnabled(stInterview, false);
             }
         }
         dates.addListener(this);
         dates.setImmediate(true);
-        List selectedInterview = ua.netcrackerteam.controller.RegistrationToInterview.getInterview(userName);
+        
+        StudentInterview selectedInterview = ua.netcrackerteam.controller.RegistrationToInterview.getInterview(userName);
         if(selectedInterview != null) {
             saveEdit = new Button("Редактировать");
             dates.setReadOnly(true);
-            dates.setValue(getStrFromDate((Date) selectedInterview.get(0),
-                                        (Date)selectedInterview.get(1),
-                                        selectedInterview.get(2).toString()));
+            dates.setValue(selectedInterview);
         } else {
             saveEdit = new Button("Сохранить");
         }
@@ -110,7 +100,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             @Override
             public void buttonClick(ClickEvent event) {
                 if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
-                    ua.netcrackerteam.controller.RegistrationToInterview.updateRegistrationToInterview(userName, selectedDate);
+                    ua.netcrackerteam.controller.RegistrationToInterview.updateRegistrationToInterview(userName, selectedInterviewID);
                     dates.setReadOnly(true);
                     saveEdit.setCaption("Редактировать");
                 } else {
@@ -123,26 +113,12 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
 
     @Override
     public void valueChange(ValueChangeEvent event) {
-        String strDate = event.getProperty().getValue().toString();
-        Date date = getDateFromStr(strDate);
-        selectedDate = date;
-        calendar.setValue(selectedDate);
+        StudentInterview itemID = (StudentInterview) event.getProperty().getValue();
+        selectedInterviewID = itemID.getStudentInterviewId();
+        calendar.setValue(itemID.getInterviewStartDate());
     }
 
-    private Date getDateFromStr(String sdate) {
-        sdate = sdate.substring(0,sdate.indexOf("-"));
-        String year = new SimpleDateFormat("yyyy").format(new Date());
-        sdate = sdate + year;
-        Date date = null;
-        try {
-             date = new SimpleDateFormat("dd MMMM HH:mmyyyy", myDateFormatSymbols).parse(sdate);
-        } catch (ParseException ex) {
-            Logger.getLogger(InterviewLayout.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return date;
-    }
-
-    private String getStrFromDate(Date startDate, Date endDate, String availability) {
+    private String getStrFromDate(Date startDate, Date endDate, int availability) {
         Format formatter = new SimpleDateFormat("dd MMMM HH:mm",myDateFormatSymbols);
         String strDate = formatter.format(startDate);
         formatter = new SimpleDateFormat("-HH:mm");
