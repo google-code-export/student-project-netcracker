@@ -21,7 +21,9 @@ public class RegistrationToInterview implements  Logable{
      */
     public static void updateRegistrationToInterview(String userName, int interviewId) {        
             
-                Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);  
+                Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName); 
+                Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
+                form.setInterview(interview);
                 HibernateFactory.getInstance().getStudentDAO().updateForm(form);             
     }
     
