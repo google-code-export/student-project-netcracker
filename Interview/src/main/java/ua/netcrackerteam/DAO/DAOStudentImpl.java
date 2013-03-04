@@ -243,7 +243,7 @@ public class DAOStudentImpl implements DAOStudent
     * @return List of forms which have id of interview equaled to param specified
     */    
     @Override
-   public List<Form> getFormsByInterviewId(int idInterview){       
+   public List<Form>getFormsByInterviewId(int idInterview) {       
         Session session = null;
         Query query;        
         List<Form> forms = null;                

@@ -27,33 +27,6 @@ public class InterviewDAOImpl {
 
    //Получает все интервью 
    public List<Interview> getInterview(){
-       
-       /*List<Interview> interwievs = new  ArrayList<Interview>();
-        Interview interwiev = new Interview();
-        interwiev.setStartDate(new Date(2012, 9, 28, 17, 30));
-        interwiev.setEndDate(new Date(2012, 9, 28, 18, 30));
-        interwiev.setMaxNumber(40);
-        interwievs.add(interwiev);
-         interwiev.setStartDate(new Date(2012, 9, 28, 18, 30));
-        interwiev.setEndDate(new Date(2012, 9, 28, 19, 30));
-        interwiev.setMaxNumber(40);
-        interwievs.add(interwiev);
-        interwiev.setStartDate(new Date(2012, 9, 29, 17, 30));
-        interwiev.setEndDate(new Date(2012, 9, 29, 18, 30));
-        interwiev.setMaxNumber(40);
-        interwievs.add(interwiev);
-        interwiev.setStartDate(new Date(2012, 9, 29, 18, 30));
-        interwiev.setEndDate(new Date(2012, 9, 29, 19, 30));
-        interwiev.setMaxNumber(40);
-        interwievs.add(interwiev);
-        interwiev.setStartDate(new Date(2012, 9, 30, 17, 30));
-        interwiev.setEndDate(new Date(2012, 9, 30, 18, 30));
-        interwiev.setMaxNumber(40);
-        interwievs.add(interwiev);
-        interwiev.setStartDate(new Date(2012, 9, 30, 18, 30));
-        interwiev.setEndDate(new Date(2012, 9, 30, 19, 30));
-        interwiev.setMaxNumber(40);
-        interwievs.add(interwiev);  */
 
        Session session = null;
        Query query;
