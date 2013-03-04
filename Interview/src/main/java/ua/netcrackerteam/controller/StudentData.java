@@ -2,8 +2,6 @@ package ua.netcrackerteam.controller;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import ua.netcrackerteam.DAO.Cathedra;
 import ua.netcrackerteam.DAO.Faculty;
 import ua.netcrackerteam.DAO.Institute;

@@ -14,43 +14,43 @@ import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 
 public class RegistrationToInterview implements  Logable{
-    
-    public static void updateRegistrationToInterview(String userName, Date dateInterview) {        
+     
+    //Anna changed this
+    public static void updateRegistrationToInterview(String userName, int interviewId) {        
             
                 Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);  
-                Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(dateInterview);
-                form.setInterview(interview);
+                //Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(dateInterview);
+                //form.setInterview(interview);
                 HibernateFactory.getInstance().getStudentDAO().updateForm(form);             
     }
     
-    
-    public static List getInterviews(){ 
+     //Anna changed this
+    public static List<StudentInterview> getInterviews(){ 
        
        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
        ListIterator iterator = interviews.listIterator();
        
-       List dataInterviews = new ArrayList(interviews.size()*3);
+       List<StudentInterview> listInterviews = new ArrayList();
        Interview interview = null;
+       int restOfPositions = 10; //temp
        while(iterator.hasNext()){
             interview = (Interview)iterator.next();
-            dataInterviews.add(interview.getStartDate());
-            dataInterviews.add(interview.getEndDate());
+            StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
+                    interview.getStartDate(), interview.getEndDate(), restOfPositions);
+            listInterviews.add(stInterview);
             //dataInterviews.add(HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size());
-             dataInterviews.add(10);
        }
-
-       
-       return dataInterviews;
-        
+       return listInterviews;
     }
+    
     //Anna changed this
-    public static List getInterview(String userName){
+    public static StudentInterview getInterview(String userName){
           Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
-          List currentInterview = new ArrayList();
+          StudentInterview currentInterview = null;
+          int restOfPositions = 10; //temp
           if (interview != null) {
-              currentInterview.add(interview.getStartDate());
-              currentInterview.add(interview.getEndDate());
-              currentInterview.add(10);
+              currentInterview = new StudentInterview(interview.getIdInterview(),
+                    interview.getStartDate(), interview.getEndDate(), restOfPositions);
           }
           return currentInterview;
     }
