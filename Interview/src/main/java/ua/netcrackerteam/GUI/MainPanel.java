@@ -26,6 +26,7 @@ public class MainPanel extends Panel {
 
     public MainPanel(HeaderLayout hlayout, MainPage mainPage) {
         setStyleName(Reindeer.PANEL_LIGHT);
+        setScrollable(true);
         setWidth("800px");
         layout = (VerticalLayout) getContent();
         layout.setMargin(false);

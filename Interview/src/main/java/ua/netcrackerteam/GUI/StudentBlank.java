@@ -449,14 +449,14 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWhatInterest = new GridLayout(3,1);
         glayoutWhatInterest.setSpacing(true);
         interests.setContent(vlayout);
-        Label whatInterest = new Label("Что заинтересовало:");
+        Label whatInterest = new Label("<h3>Что заинтересовало:</h3>",Label.CONTENT_XHTML);
         vlayout.addComponent(whatInterest);
         vlayout.addComponent(glayoutWhatInterest);
         eduCenter = new InterestSelection("Учебный центр/стажировка:", bean.getItemProperty("studentInterestStudy"));
         glayoutWhatInterest.addComponent(eduCenter);  
         workNC = new InterestSelection("Работа в компании NetCracker:", bean.getItemProperty("studentInterestWork"));
         glayoutWhatInterest.addComponent(workNC);
-        Label workSphere = new Label("Интересующая область деятельности:");
+        Label workSphere = new Label("<h3>Интересующая область деятельности:</h3>",Label.CONTENT_XHTML);
         vlayout.addComponent(workSphere);
         glayoutWorkSphere = new GridLayout(3,1);
         glayoutWorkSphere.setSpacing(true);
@@ -467,7 +467,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWorkSphere.addComponent(development);
         glayoutWorkSphere.addComponent(anotherWorkSphere);
         glayoutWorkSphere.setComponentAlignment(development, Alignment.BOTTOM_LEFT);
-        Label whatWorkType = new Label("Тип работы:");
+        Label whatWorkType = new Label("<h3>Тип работы:</h3>",Label.CONTENT_XHTML);
         vlayout.addComponent(whatWorkType);
         glayoutWorkType = new GridLayout(2,3);
         glayoutWorkType.setSpacing(true);
@@ -840,14 +840,14 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         StreamResource.StreamSource imagesource = new StreamResource.StreamSource() {
             @Override
             public InputStream getStream() {
-                    photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray);
+                    photoArray = ua.netcrackerteam.controller.StudentPage.scalePhoto(photoArray,200,300);
                     return new ByteArrayInputStream(photoArray);
             }
         };
         StreamResource imageresource = new StreamResource(imagesource, "photo.jpg", mainPage);
         imageresource.setCacheTime(0);
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        String filename = "photo-" + df.format(new Date()) + ".png";
+        String filename = "photo-" + df.format(new Date()) + ".jpg";
         imageresource.setFilename(filename);
         photo.setType(Embedded.TYPE_IMAGE);
         photo.setMimeType("image/jpeg");

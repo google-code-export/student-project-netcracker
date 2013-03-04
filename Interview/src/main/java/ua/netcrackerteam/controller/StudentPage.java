@@ -792,13 +792,13 @@ public class StudentPage {
 
     }
     
-    public static byte[] scalePhoto(byte[] photoArray) {
+    public static byte[] scalePhoto(byte[] photoArray, int maxWidth, int maxHeight) {
         byte[] newPhotoArray = null;
         ImageIcon imageIcon = new ImageIcon(photoArray);
         Image image = imageIcon.getImage();
         int width = image.getWidth(null);
         int height = image.getHeight(null);
-        double ratio = Math.min((double) 200/width, (double) 300/height);
+        double ratio = Math.min((double) maxWidth/width, (double) maxHeight/height);
         double newWidth = ratio * width;
         double newHeight = ratio * height;
         BufferedImage bi = new BufferedImage((int)Math.round(newWidth), (int)Math.round(newHeight), BufferedImage.TYPE_INT_RGB);
