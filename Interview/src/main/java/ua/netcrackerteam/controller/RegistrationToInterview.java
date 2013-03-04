@@ -47,7 +47,7 @@ public class RegistrationToInterview implements  Logable{
        return listInterviews;
     }
     
-    /**
+    /** 
      * Get interview student by the student login
      * @param userName
      * @return 
@@ -59,13 +59,20 @@ public class RegistrationToInterview implements  Logable{
             interview = form.getInterview();
           }
           StudentInterview currentInterview = null;
-          int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size(); 
-          
+                   
           if (interview != null) {
+               int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview()).size(); 
               currentInterview = new StudentInterview(interview.getIdInterview(),
                     interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
           }
           return currentInterview;
+    }
+    
+    public static void main(String[] args) {
+        List<StudentInterview> list = getInterviews();
+        for(int i = 0; i < list.size(); i++){
+            System.out.println(HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(list.get(i).getStudentInterviewId()).size());
+        }
     }
     
     
