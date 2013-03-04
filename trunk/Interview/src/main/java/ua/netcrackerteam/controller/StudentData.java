@@ -60,7 +60,7 @@ public class StudentData implements Serializable{
     private double studentEnglishReadMark  = 1;
     private double studentEnglishWriteMark  = 1;
     private double studentEnglishSpeakMark  = 1;
-    private Collection studentHowHearAboutCentre;                //Maksym changed here
+    private Collection studentHowHearAboutCentre;                
     private String studentHowHearAboutCentreOther = "";
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
