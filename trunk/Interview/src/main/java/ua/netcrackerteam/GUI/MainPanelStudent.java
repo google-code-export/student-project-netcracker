@@ -18,18 +18,14 @@ import com.vaadin.ui.VerticalLayout;
 public class MainPanelStudent extends MainPanel{
     private StudentBlank blankLayout;
     private InterviewLayout interviewLayout;
-    private SettingsLayout settingsLayout;
-    
     
     public MainPanelStudent(final HeaderLayout hlayout,final MainPage mainPage) {
         super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         final Component c1 = new VerticalLayout();
         final Component c2 = new VerticalLayout();
-        final Component c3 = new VerticalLayout();
         tabSheet.addTab(c1,"Анкета");
         tabSheet.addTab(c2,"Собеседование");
-        tabSheet.addTab(c3,"Настройки");
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
 
             @Override
@@ -41,10 +37,7 @@ public class MainPanelStudent extends MainPanel{
                 } else if (source.getSelectedTab() == c2) {
                     interviewLayout = new InterviewLayout(hlayout.getUsername(), mainPage);
                     source.replaceComponent(c2, interviewLayout);
-                } else if (source.getSelectedTab() == c3) {
-                    settingsLayout = new SettingsLayout(hlayout.getUsername());
-                    source.replaceComponent(c3, settingsLayout);
-                }
+                } 
             }
         });
     }
