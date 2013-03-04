@@ -776,7 +776,8 @@ public class StudentPage {
             while(iterAdv.hasNext()) {
                 Advert advert = (Advert) iterAdv.next();
                 String advertDecription = advert.getAdvertCategory().getDescription();
-                if(advertDecription.trim().equalsIgnoreCase("Другое")) {
+                if(advertDecription.trim().equalsIgnoreCase("Другое (уточните)")) {
+                    linkedAdverts.add(advertDecription);
                     std.setStudentHowHearAboutCentreOther(advert.getOther());
                     iterAdv.remove();
                 } else {

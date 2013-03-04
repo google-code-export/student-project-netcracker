@@ -57,7 +57,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                                    Upload.Receiver, Upload.StartedListener {
     private String username;
     private int status = 1;
-    private Button save;
+    private Button saveEdit;
     private Panel contacts;
     private Button addAnotherContactsBut;
     private Window addContact;
@@ -167,21 +167,15 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         hlayout.setWidth("100%");
         hlayout.setSpacing(true);
         addComponent(hlayout);
-        save = new Button("Сохранить");
-        save.setWidth("200");
-        save.addListener(buttonsListener);
-        hlayout.addComponent(save);
-        edit = new Button("Редактировать");
-        edit.setVisible(false);
-        edit.setWidth("200");
-        edit.setVisible(false);
-        edit.addListener(buttonsListener);
-        print = new Button("Отправить PDF");
-        print.setVisible(false);
-        print.setWidth("200");
-        print.addListener(buttonsListener);
-        hlayout.addComponent(edit);
-        hlayout.addComponent(print);
+        saveEdit = new Button("Сохранить");
+        saveEdit.setWidth("200");
+        saveEdit.addListener(buttonsListener);
+        hlayout.addComponent(saveEdit);
+        hlayout.setComponentAlignment(saveEdit, Alignment.MIDDLE_CENTER);
+//        print = new Button("Отправить PDF");
+//        print.setVisible(false);
+//        print.setWidth("200");
+//        print.addListener(buttonsListener);
         if(!stData.getStudentFirstName().equals("")) {
             getSavedData();
             setEditable(false);
@@ -710,9 +704,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         agreement.setVisible(editable);
         agreementText.setVisible(editable);
-        save.setVisible(editable);
-        edit.setVisible(!editable);
-        print.setVisible(!editable);
+        if(editable) {
+            saveEdit.setCaption("Сохранить");
+        } else {
+            saveEdit.setCaption("Редактировать");
+        }
     }
 
     private boolean checkAllValid() {
@@ -881,22 +877,26 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     else {
                         getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество разделов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
                     }  
-                } else if(source == save) {
-                    if(checkAllValid()) {
+                } else if(source == saveEdit) {
+                    if(saveEdit.getCaption().equals("Сохранить")) {
+                        if(checkAllValid()) {
                         stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
                         setEditable(false);
                         ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status);
+                        } else {
+                            Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
+                            n.setDescription("Все поля помеченные * обязательны к заполнению.");
+                            getWindow().showNotification(n);
+                        }
                     } else {
-                        Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
-                        n.setDescription("Все поля помеченные * обязательны к заполнению.");
-                        getWindow().showNotification(n);
+                        setEditable(true);
+                        status = 2;
                     }
-                } else if(source == edit) {
-                    setEditable(true);
-                    status = 2;
-                } else if(source == print) {
-                    ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(username);
-                }
+                    
+                } 
+//                else if(source == print) {
+//                    ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(username);
+//                }
         }
     }
     
