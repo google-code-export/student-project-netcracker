@@ -49,7 +49,7 @@ public class InterviewDAOImpl {
    
    //Получает интервью по конкретной дате 
    public Interview getInterview(int idInterview){
-      //return new Interview();
+      return new Interview();
        /*Session session = null;
        Query query;
        Interview interviewList = null;
@@ -70,25 +70,7 @@ public class InterviewDAOImpl {
        }
        return interviewList;*/
        
-        Session session = null;
-        Query query;        
-        Interview interview = null;                
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from interview "                                        
-                                        + "where id_interview = " + idInterview);
-            interview = (Interview) query.uniqueResult();                      
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return interview ;
+      
    } 
    
    
