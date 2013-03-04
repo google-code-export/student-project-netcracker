@@ -381,12 +381,14 @@ public class StudentPage {
         currDAOStImpl.addForm(newForm);
         //advert
         for (Object currAdvert:newStudentData.getStudentHowHearAboutCentre()) {
-            List<Object> listOfAdvertCat = searchSomething("AdvertCategory", "description", (String)currAdvert);
-            AdvertCategory currAdvertCat = (AdvertCategory)listOfAdvertCat.get(0);
-            Advert newAdvert = new Advert();
-            newAdvert.setAdvertCategory(currAdvertCat);
-            newAdvert.setForm(newForm);
-            currDAOComm.addSomethingNew(newAdvert);
+            if(!currAdvert.equals("Другое (уточните)")) {
+                List<Object> listOfAdvertCat = searchSomething("AdvertCategory", "description", (String)currAdvert);
+                AdvertCategory currAdvertCat = (AdvertCategory)listOfAdvertCat.get(0);
+                Advert newAdvert = new Advert();
+                newAdvert.setAdvertCategory(currAdvertCat);
+                newAdvert.setForm(newForm);
+                currDAOComm.addSomethingNew(newAdvert);
+            }
         }
         //advert other
         List<Object> listOfAdvertCatOther = searchSomething("AdvertCategory", "description", "Другое (уточните)");
