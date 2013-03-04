@@ -22,7 +22,7 @@ public class InterviewDAOImpl {
         InterviewDAOImpl interviewAO = new InterviewDAOImpl();
         List <Interview> interviews = interviewAO.getInterview();
 
-        Interview currInterview = interviewAO.getInterview(new Date(112, 9, 28, 17, 30));
+        //Interview currInterview = interviewAO.getInterview(new Date(112, 9, 28, 17, 30));
     }
 
    //Получает все интервью 
@@ -48,8 +48,8 @@ public class InterviewDAOImpl {
    } 
    
    //Получает интервью по конкретной дате 
-   public Interview getInterview(Date startInterview){
-      return new Interview();
+   public Interview getInterview(int idInterview){
+      //return new Interview();
        /*Session session = null;
        Query query;
        Interview interviewList = null;
@@ -69,6 +69,26 @@ public class InterviewDAOImpl {
            }
        }
        return interviewList;*/
+       
+        Session session = null;
+        Query query;        
+        Interview interview = null;                
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from interview "                                        
+                                        + "where id_interview = " + idInterview);
+            interview = (Interview) query.uniqueResult();                      
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return interview ;
    } 
    
    
