@@ -35,7 +35,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                 return new String[]{"января", "февраля", "марта", "апреля", "мая", "июня",
                     "июля", "августа", "сентября", "октября", "ноября", "декабря"};
             }
-        };;
+        };
     private final InlineDateField calendar;
     private final OptionGroup dates;
     private final Button saveEdit;
@@ -132,7 +132,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                     saveEdit.setCaption("Сохранить");
                 }
             } else {
-                ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(userName);
+                (new ua.netcrackerteam.applicationForm.ApplicationForm()).sendPDFToStudent(userName);
             }
         }
     }

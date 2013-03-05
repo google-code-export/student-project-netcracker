@@ -5,6 +5,7 @@
 package ua.netcrackerteam.applicationForm;
 
 import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
@@ -43,17 +44,17 @@ import ua.netcrackerteam.controller.StudentData;
  */
 public class ApplicationForm{  
     
-    private final static String pathToMailConfig = "src/main/java/mail.properties";
-    private final static String pathToMailAuthentification = "src/main/java/authentification.properties";
-    private final static String pathMailToStudent = "src/main/java/NetCrackerHTML.html";
-    private final static String pathPDFTemplate = "src/main/java/Template.pdf";
-    private final static String pathTimesTTF = "src/main/java/times.ttf";
+    private final  String pathToMailConfig = "src/main/java/mail.properties";
+    private final  String pathToMailAuthentification = "src/main/java/authentification.properties";
+    private final  String pathMailToStudent = "src/main/java/NetCrackerHTML.html";
+    private final  String pathPDFTemplate = "src/main/java/Template.pdf";
+    private final  String pathTimesTTF = "src/main/java/times.ttf";
     
     /**
      * Generate pdf with pdf-template and write it to binary stream
      * @param OutputStream memory
      */
-    public static void generateFormPDF(OutputStream memory) {
+    public void generateFormPDF(OutputStream memory) {
              
         try {
                        
@@ -82,7 +83,7 @@ public class ApplicationForm{
      * @throws IOException
      * @throws DocumentException 
      */
-    public static void fillFormData(AcroFields form) throws IOException, DocumentException{
+    public void fillFormData(AcroFields form) throws IOException, DocumentException{
         
         StudentData studentData = new StudentData();
 
@@ -151,7 +152,7 @@ public class ApplicationForm{
      * @throws MalformedURLException
      * @throws IOException 
      */
-    public static Image reciveImage() throws BadElementException, MalformedURLException, IOException{
+    public Image reciveImage() throws BadElementException, MalformedURLException, IOException{
         
         Image img = Image.getInstance("src\\main\\java\\1.jpg");
         img.setAbsolutePosition(70f, 615f);
@@ -164,7 +165,7 @@ public class ApplicationForm{
      * Read html file, generated for create letter to send student
      * @return String
      */
-    private static String readHTMLContent(){
+    private String readHTMLContent(){
         
         StringBuilder builder = new StringBuilder();
         
@@ -194,7 +195,7 @@ public class ApplicationForm{
      * Send mail to the student with attachment pdf file for interview
      * @param userName 
      */   
-    public static void sendPDFToStudent(String userName){
+    public void sendPDFToStudent(String userName){
         
         try {
             Properties propertiesMail = new Properties();
@@ -242,13 +243,12 @@ public class ApplicationForm{
      * @return MimeBodyPart
      * @throws MessagingException 
      */
-    private static MimeBodyPart getHTMLBodyPart(String userName) throws MessagingException{
+    private MimeBodyPart getHTMLBodyPart(String userName) throws MessagingException{
         
-       Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
-       MimeBodyPart messageBodyPart = new MimeBodyPart();
+        Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+    
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
                                
-       Date dataInterview = interview.getStartDate();
-       dataInterview.getTime();
        String htmlText = readHTMLContent();
        htmlText = htmlText.replace("[userName]",  userName);
        htmlText = htmlText.replace("[dateStart]", getDate(interview.getStartDate()));
@@ -264,7 +264,7 @@ public class ApplicationForm{
      * @throws IOException
      * @throws MessagingException 
      */
-    private static MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{
+    private MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{
         
        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
        generateFormPDF(outputStream);
@@ -282,7 +282,7 @@ public class ApplicationForm{
      * @param date
      * @return String
      */
-    private static String getTime(Date date){
+    private  String getTime(Date date){
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         return dateFormat.format(date);
     }
@@ -292,14 +292,21 @@ public class ApplicationForm{
      * @param date
      * @return String
      */
-    private static String getDate(Date date){
+    private  String getDate(Date date){
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM");
         return dateFormat.format(date);
     }
-    
+    public byte[] pdfForView(){
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        generateFormPDF(outputStream);
+        byte[] bytes = outputStream.toByteArray();
+        
+        return bytes;
+    }
+       
         public static void main(String[] args) {
-          sendPDFToStudent("Tresh");
+          (new ApplicationForm()).sendPDFToStudent("Tresh");
        }
     
 }
