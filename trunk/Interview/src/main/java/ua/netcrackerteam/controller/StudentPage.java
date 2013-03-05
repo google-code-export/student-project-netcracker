@@ -464,10 +464,10 @@ public class StudentPage {
         List<Object> listOfBranchCatProgLang = searchSomething("BranchCategory", "description", "Языки программирования");
         BranchCategory branchCategoryProgLang = (BranchCategory)listOfBranchCatProgLang.get(0);
 
-        List<Object> listOfBranchCatIT = searchSomething("BranchCategory", "discription", "Знания в области IT технологий");
+        List<Object> listOfBranchCatIT = searchSomething("BranchCategory", "description", "Знания в области IT технологий");
         BranchCategory branchCategoryIT = (BranchCategory)listOfBranchCatIT.get(0);
 
-        List<Object> listOfBranchCatLang = searchSomething("BranchCategory", "discription", "Знания иностранных языков");
+        List<Object> listOfBranchCatLang = searchSomething("BranchCategory", "description", "Знания иностранных языков");
         BranchCategory branchCategoryLang = (BranchCategory)listOfBranchCatLang.get(0);
         //lang//other 1
         if (!newStudentData.getStudentLanguage1().trim().equals("")) {
