@@ -39,6 +39,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
     private final InlineDateField calendar;
     private final OptionGroup dates;
     private final Button saveEdit;
+    private final Button print;
     private String userName;
     private int selectedInterviewID;
 
@@ -78,7 +79,11 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         }
         dates.addListener(this);
         dates.setImmediate(true);
-        
+        print = new Button("Отправить PDF");
+        print.setWidth("150");
+        layout.addComponent(print,1,1);
+        layout.setComponentAlignment(print, Alignment.TOP_CENTER);
+        print.addListener(new ButtonsListener());
         StudentInterview selectedInterview = ua.netcrackerteam.controller.RegistrationToInterview.getInterview(userName);
         if(selectedInterview != null) {
             saveEdit = new Button("Редактировать");
@@ -86,23 +91,12 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             dates.setValue(selectedInterview);
         } else {
             saveEdit = new Button("Сохранить");
+            print.setVisible(false);
         }
         layout.addComponent(saveEdit,0,1);
+        saveEdit.setWidth("150");
         layout.setComponentAlignment(saveEdit, Alignment.TOP_CENTER);
-        saveEdit.addListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
-                    ua.netcrackerteam.controller.RegistrationToInterview.updateRegistrationToInterview(userName, selectedInterviewID);
-                    dates.setReadOnly(true);
-                    saveEdit.setCaption("Редактировать");
-                } else {
-                    dates.setReadOnly(false);
-                    saveEdit.setCaption("Сохранить");
-                }
-            }
-        });
+        saveEdit.addListener(new ButtonsListener());
     }
 
     @Override
@@ -121,4 +115,25 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         return strDate;
     }
     
+    private class ButtonsListener implements Button.ClickListener {
+
+        @Override
+        public void buttonClick(ClickEvent event) {
+            Button source = event.getButton();
+            if(source == saveEdit) {
+                if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
+                ua.netcrackerteam.controller.RegistrationToInterview.updateRegistrationToInterview(userName, selectedInterviewID);
+                dates.setReadOnly(true);
+                print.setVisible(true);
+                saveEdit.setCaption("Редактировать");
+                } else {
+                    print.setVisible(false);
+                    dates.setReadOnly(false);
+                    saveEdit.setCaption("Сохранить");
+                }
+            } else {
+                ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(userName);
+            }
+        }
+    }
 }

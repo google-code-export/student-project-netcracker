@@ -172,10 +172,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         saveEdit.addListener(buttonsListener);
         hlayout.addComponent(saveEdit);
         hlayout.setComponentAlignment(saveEdit, Alignment.MIDDLE_CENTER);
-//        print = new Button("Отправить PDF");
-//        print.setVisible(false);
-//        print.setWidth("200");
-//        print.addListener(buttonsListener);
         if(!stData.getStudentFirstName().equals("")) {
             getSavedData();
             setEditable(false);
