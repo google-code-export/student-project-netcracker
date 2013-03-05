@@ -744,6 +744,35 @@ public class StudentPage {
             }
             Iterator iterOtherKnow = otherKnowledges.iterator();
             Knowledge know;
+            ArrayList<Knowledge> progLangs = new ArrayList<Knowledge>();
+            while(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                if(know.getBranch().getBranchCategory().getName()
+                        .trim().equalsIgnoreCase("Языки программирования"))
+                {
+                    progLangs.add(know);
+                    iterOtherKnow.remove();
+                }
+            }
+            
+            Iterator iterProgLangs = progLangs.iterator();
+            if(iterProgLangs.hasNext()) {
+                know = (Knowledge) iterProgLangs.next();
+                std.setStudentLanguage1(know.getBranch().getName());
+                std.setStudentLanguage1Mark(know.getScore());
+            }
+            if(iterProgLangs.hasNext()) {
+                know = (Knowledge) iterProgLangs.next();
+                std.setStudentLanguage2(know.getBranch().getName());
+                std.setStudentLanguage2Mark(know.getScore());
+            }
+            if(iterProgLangs.hasNext()) {
+                know = (Knowledge) iterProgLangs.next();
+                std.setStudentLanguage3(know.getBranch().getName());
+                std.setStudentLanguage3Mark(know.getScore());
+            }            
+            
+            
             if(iterOtherKnow.hasNext()) {
                 know = (Knowledge) iterOtherKnow.next();
                 std.setStudentKnowledgeOther1(know.getBranch().getName());
@@ -760,12 +789,6 @@ public class StudentPage {
                 std.setStudentKnowledgeOther3Mark(know.getScore());
             }
 
-//            std.setStudentLanguage1();
-//            std.setStudentLanguage1Mark();
-//            std.setStudentLanguage2();
-//            std.setStudentLanguage2Mark();
-//            std.setStudentLanguage3();
-//            std.setStudentLanguage3Mark();
 
             std.setStudentExperienceProjects(form.getExecProject());
 
