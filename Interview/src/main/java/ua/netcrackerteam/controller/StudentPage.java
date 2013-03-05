@@ -461,7 +461,7 @@ public class StudentPage {
         currDAOComm.addSomethingNew(knowJava);
 
 
-        List<Object> listOfBranchCatProgLang = searchSomething("BranchCategory", "discription", "Языки программирования");
+        List<Object> listOfBranchCatProgLang = searchSomething("BranchCategory", "description", "Языки программирования");
         BranchCategory branchCategoryProgLang = (BranchCategory)listOfBranchCatProgLang.get(0);
 
         List<Object> listOfBranchCatIT = searchSomething("BranchCategory", "discription", "Знания в области IT технологий");
