@@ -202,6 +202,28 @@ public class StudentPage {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
+    public static List<Object> searchSomethingByID (String tableForSearch, String inWhichColumn, int someThing) {
+        Session session = null;
+        org.hibernate.Query re = null;
+        List selectedSomething = null;
+
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from " + tableForSearch + " where upper(" + inWhichColumn + ") =" + someThing);
+            selectedSomething = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return selectedSomething;
+    }
+
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static void insertNewBranch(String branchName, BranchCategory currBranchCat) {
 
         Session session = null;
@@ -624,7 +646,7 @@ public class StudentPage {
         knowEngSpeak.setForm   (newForm);
         knowEngSpeak.setScore    (newStudentData.getStudentEnglishSpeakMark());
         currDAOComm.addSomethingNew(knowEngSpeak);
-        if (statusParam == 1) {
+       /* if (statusParam == 1) {
             List<Object> listOfStatus = searchSomething("Status", "name", "Зарегистрирована");
             Status currStatus = (Status)listOfStatus.get(0);
             newForm.setStatus(currStatus);
@@ -633,7 +655,7 @@ public class StudentPage {
             List<Object> listOfStatus = searchSomething("Status", "name", "Требует подтверждения");
             Status currStatus = (Status)listOfStatus.get(0);
             newForm.setStatus(currStatus);
-        }
+        }*/
 
     }
 
@@ -745,6 +767,9 @@ public class StudentPage {
             Iterator iterOtherKnow = otherKnowledges.iterator();
             Knowledge know;
             ArrayList<Knowledge> progLangs = new ArrayList<Knowledge>();
+            //Filipenko//+
+            ArrayList<Knowledge> itKnow = new ArrayList<Knowledge>();
+            //Filipenko//=
             while(iterOtherKnow.hasNext()) {
                 know = (Knowledge) iterOtherKnow.next();
                 if(know.getBranch().getBranchCategory().getName()
@@ -753,6 +778,11 @@ public class StudentPage {
                     progLangs.add(know);
                     iterOtherKnow.remove();
                 }
+                //Filipenko//+
+                else if (know.getBranch().getBranchCategory().getName().trim().equalsIgnoreCase("Знания в области IT технологий")) {
+                    itKnow.add(know);
+                }
+                //Filipenko//=
             }
             
             Iterator iterProgLangs = progLangs.iterator();
@@ -770,10 +800,10 @@ public class StudentPage {
                 know = (Knowledge) iterProgLangs.next();
                 std.setStudentLanguage3(know.getBranch().getName());
                 std.setStudentLanguage3Mark(know.getScore());
-            }            
-            
-            
-            if(iterOtherKnow.hasNext()) {
+            }
+
+            //Filipenko//+
+            /*if(iterOtherKnow.hasNext()) {
                 know = (Knowledge) iterOtherKnow.next();
                 std.setStudentKnowledgeOther1(know.getBranch().getName());
                 std.setStudentKnowledgeOther1Mark(know.getScore());
@@ -787,8 +817,24 @@ public class StudentPage {
                 know = (Knowledge) iterOtherKnow.next();
                 std.setStudentKnowledgeOther3(know.getBranch().getName());
                 std.setStudentKnowledgeOther3Mark(know.getScore());
+            }*/
+            Iterator iterITLangs = itKnow.iterator();
+            if(iterITLangs.hasNext()) {
+                know = (Knowledge) iterITLangs.next();
+                std.setStudentKnowledgeOther1(know.getBranch().getName());
+                std.setStudentKnowledgeOther1Mark(know.getScore());
             }
-
+            if(iterITLangs.hasNext()) {
+                know = (Knowledge) iterITLangs.next();
+                std.setStudentKnowledgeOther2(know.getBranch().getName());
+                std.setStudentKnowledgeOther2Mark(know.getScore());
+            }
+            if(iterITLangs.hasNext()) {
+                know = (Knowledge) iterITLangs.next();
+                std.setStudentKnowledgeOther3(know.getBranch().getName());
+                std.setStudentKnowledgeOther3Mark(know.getScore());
+            }
+            //Filipenko//=
 
             std.setStudentExperienceProjects(form.getExecProject());
 
