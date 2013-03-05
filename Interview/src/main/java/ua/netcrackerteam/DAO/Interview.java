@@ -20,7 +20,7 @@ import java.util.Date;
 public class Interview implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "interview_seq_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "interview_seq_gen")
     @SequenceGenerator(name = "interview_seq_gen", sequenceName = "interview_seq")
     @Column(name= "ID_INTERVIEW")
     private int idInterview;
