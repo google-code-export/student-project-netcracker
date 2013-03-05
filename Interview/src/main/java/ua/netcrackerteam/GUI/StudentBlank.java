@@ -803,10 +803,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage1Mark"),glayoutPrLang);
         }
         if(!stData.getStudentLanguage2().equals("")) {
-            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage2Mark"),glayoutPrLang);
+            addNewSavedSlider(stData.getStudentLanguage2(),bean.getItemProperty("studentLanguage2Mark"),glayoutPrLang);
         }
         if(!stData.getStudentLanguage3().equals("")) {
-            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage3Mark"),glayoutPrLang);
+            addNewSavedSlider(stData.getStudentLanguage3(),bean.getItemProperty("studentLanguage3Mark"),glayoutPrLang);
         }
         if(!stData.getStudentKnowledgeOther1().equals("")) {
             addNewSavedSlider(stData.getStudentKnowledgeOther1(),bean.getItemProperty("studentKnowledgeOther1Mark"),glayoutKnow);
