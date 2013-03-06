@@ -65,6 +65,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.addComponent(calendar,0,0);
         layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
         List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
+        int selectedInterview = ua.netcrackerteam.controller.RegistrationToInterview.getInterview(userName);
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
         layout.addComponent(dates,1,0);
@@ -76,6 +77,12 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             if (stInterview.getRestOfPositions() == 0) {
                 dates.setItemEnabled(stInterview, false);
             }
+            if(selectedInterview != 0) {
+                if(selectedInterview == stInterview.getStudentInterviewId()) {
+                    dates.setValue(stInterview);
+                    calendar.setValue(stInterview.getInterviewStartDate());
+                }
+            }
         }
         dates.addListener(this);
         dates.setImmediate(true);
@@ -84,11 +91,9 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.addComponent(print,1,1);
         layout.setComponentAlignment(print, Alignment.TOP_CENTER);
         print.addListener(new ButtonsListener());
-        StudentInterview selectedInterview = ua.netcrackerteam.controller.RegistrationToInterview.getInterview(userName);
-        if(selectedInterview != null) {
+        if(selectedInterview != 0) {
             saveEdit = new Button("Редактировать");
             dates.setReadOnly(true);
-            dates.setValue(selectedInterview);
         } else {
             saveEdit = new Button("Сохранить");
             print.setVisible(false);

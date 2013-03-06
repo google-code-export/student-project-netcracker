@@ -11,6 +11,7 @@ import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -26,7 +27,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import ua.netcrackerteam.controller.StudentInterview;
-import ua.netcrackerteam.controller.StudentPage;
 
 /**
  * Panel for Interviewer view
@@ -40,19 +40,25 @@ public class MainPanelInterviewer extends MainPanel{
     public MainPanelInterviewer(HeaderLayout hlayout,MainPage mainPage) {
         super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
-        interviewsLo = new VerticalLayout();
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
         height = webBrowser.getScreenHeight()-250;
-        interviewsLo.setHeight(height,UNITS_PIXELS);
-        interviewsLo.setWidth("100%");
-        interviewsLo.setMargin(true, false, false, false);
-        tabSheet.addTab(interviewsLo,"Собеседования");
+        
+        final Component c = new VerticalLayout();
+        tabSheet.addTab(c,"Собеседования");
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
 
             @Override
             public void selectedTabChange(SelectedTabChangeEvent event) {
-                fillInterviewsLayout();
+                final TabSheet source = (TabSheet) event.getSource();
+                if(source.getSelectedTab() == c) {
+                    interviewsLo = new VerticalLayout();
+                    interviewsLo.setHeight(height,UNITS_PIXELS);
+                    interviewsLo.setWidth("100%");
+                    interviewsLo.setMargin(true, false, false, false);
+                    fillInterviewsLayout();
+                    tabSheet.replaceComponent(c, interviewsLo);
+                }
             }
         });
     }
@@ -106,10 +112,10 @@ public class MainPanelInterviewer extends MainPanel{
         splitV.setSplitPosition(height - 300, Sizeable.UNITS_PIXELS);
         splitV.setLocked(true);
         
-        GridLayout grid = new GridLayout(2, 1);
+        GridLayout grid = new GridLayout(1, 1);
         grid.setWidth("100%");
+        grid.setMargin(false);
         grid.setHeight(height - 300,UNITS_PIXELS);
-        grid.setMargin(true);
         grid.addStyleName(Runo.LAYOUT_DARKER);
         splitV.setFirstComponent(grid);
         
@@ -124,7 +130,5 @@ public class MainPanelInterviewer extends MainPanel{
         top.setContent(splitV);
         splitH.setSecondComponent(top);
     }
-    
-    
-    
+
 }

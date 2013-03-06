@@ -56,6 +56,4 @@ public class StudentInterview {
         this.restOfPositions = restOfPositions;
     }
     
-    
-    
 }
