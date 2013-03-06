@@ -55,21 +55,17 @@ public class RegistrationToInterview implements  Logable{
      * @param userName
      * @return 
      */
-    public static StudentInterview getInterview(String userName){
+    public static int getInterview(String userName){
           Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
           Interview interview = null;
           if (form != null) {
             interview = form.getInterview();
           }
-          StudentInterview currentInterview = null;
-                   
+          int currentInterviewID = 0;
           if (interview != null) {
-            List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-            int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
-              currentInterview = new StudentInterview(interview.getIdInterview(),
-                    interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
+              currentInterviewID = interview.getIdInterview();
           }
-          return currentInterview;
+          return currentInterviewID;
     }
     
     public static void main(String[] args) {
