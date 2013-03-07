@@ -50,6 +50,7 @@ public class ApplicationForm{
     private final  String pathMailToStudent = "G:/Проект1/interview/Interview/src/main/java/NetCrackerHTML.html";
     private final  String pathPDFTemplate = "G:/Проект1/interview/Interview/src/main/java/Template.pdf";
     private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/java/times.ttf";
+    private final  String pathImg ="G:/Проект1/interview/Interview/src/main/java/1.jpg";
     
     /**
      * Generate pdf with pdf-template and write it to binary stream
@@ -155,7 +156,7 @@ public class ApplicationForm{
      */
     public Image reciveImage() throws BadElementException, MalformedURLException, IOException{
         
-        Image img = Image.getInstance("G:/Проект1/interview/Interview/src/main/java/1.jpg");
+        Image img = Image.getInstance(pathImg);
         img.setAbsolutePosition(70f, 615f);
         img.scaleToFit(150, 140);
         
