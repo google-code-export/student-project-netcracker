@@ -16,7 +16,7 @@ public class SendMails implements Logable{
             email.setTLS(true);
             email.setFrom("NetcrackerTeamOdessaOspu@gmail.com");
             email.setSubject("Registration successful");
-            email.setMsg("Hello " + userName + ", we glad to see you in our Trining Center !!!\n" +
+            email.setMsg("Hello " + userName + ", we glad to see you in our Training Center !!!\n" +
                     "Your login information :\n" +
                     "login - " + userName + "\n" +
                     "password - " + userPassword + "");
