@@ -156,28 +156,9 @@ public class MainPanelInterviewer extends MainPanel{
     }
     
     public class PdfStreamSource implements StreamResource.StreamSource {
-        private final ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-        public PdfStreamSource() {
-            Document document = null;
-
-            try {
-                document = new Document(PageSize.A4, 50, 50, 50, 50);
-                PdfWriter.getInstance(document, os);
-                document.open();
-                document.add(new Paragraph("This is some content for the sample PDF!"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (document != null) {
-                    document.close();
-                }
-            }
-        }
-
         @Override
         public InputStream getStream() {
-            return new ByteArrayInputStream(os.toByteArray());
+            return new ByteArrayInputStream(new ua.netcrackerteam.applicationForm.ApplicationForm().pdfForView());
         }
     }
 

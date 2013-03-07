@@ -63,8 +63,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private GridLayout glayoutWhatInterest;
     private final OptionGroup agreement;
     private final Label agreementText;
-    private Button edit;
-    private Button print;
     private long maxSize = 300000; //300Kb
     private StudentData stData;
     private final BeanItem<StudentData> bean;
