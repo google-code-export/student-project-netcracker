@@ -4,7 +4,12 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
@@ -12,8 +17,7 @@ import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TabSheet;
@@ -21,10 +25,13 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.themes.Runo;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import ua.netcrackerteam.controller.StudentInterview;
 
@@ -36,9 +43,12 @@ public class MainPanelInterviewer extends MainPanel{
     private VerticalLayout interviewsLo;
     private Accordion accordion;
     private int height;
+    private Embedded pdfForm;
+    private final MainPage mainPage;
     
     public MainPanelInterviewer(HeaderLayout hlayout,MainPage mainPage) {
         super(hlayout,mainPage);
+        this.mainPage = mainPage;
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
@@ -70,28 +80,18 @@ public class MainPanelInterviewer extends MainPanel{
         interviewsLo.addComponent(splitH);
         
         Panel sidebar = new Panel("Навигация");
+        fillSideBar(sidebar);
         splitH.setFirstComponent(sidebar);
-        VerticalLayout layout = (VerticalLayout) sidebar.getContent();
-        layout.setMargin(false);
+        
+        Panel rightPanel = new Panel("Информация");
+        fillRightPanel(rightPanel);
+        splitH.setSecondComponent(rightPanel);
+    }
+
+    private void fillSideBar(Panel sidebar) {
         sidebar.setHeight("100%");
         accordion = new Accordion();
         accordion.setSizeFull();
-        
-        VerticalLayout treeLayout = new VerticalLayout();
-        List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
-        Tree tree = new Tree();
-        String caption = "Дата собеседования";
-        tree.addItem(caption);
-        tree.setItemIcon(caption,new ThemeResource("icons/32/calendar.png"));
-        tree.setChildrenAllowed(caption, true);
-        tree.expandItem(caption);
-        for(StudentInterview stInterview : interviews) {
-            Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");      
-            String strDate = formatter.format(stInterview.getInterviewStartDate());
-            tree.addItem(strDate);
-            tree.setParent(strDate, "Дата собеседования");
-        }
-        treeLayout.addComponent(tree);
                 
         VerticalLayout searchLayout = new VerticalLayout();
         searchLayout.setSpacing(true);
@@ -103,32 +103,82 @@ public class MainPanelInterviewer extends MainPanel{
         searchLayout.addComponent(searchButton);
         searchLayout.setComponentAlignment(searchButton, Alignment.TOP_CENTER);
         
-        accordion.addTab(treeLayout, "Списки");
+        accordion.addTab(getTreeMenu(), "Списки");
         accordion.addTab(searchLayout, "Быстрый поиск");
         sidebar.setContent(accordion);
-        
-        VerticalSplitPanel splitV = new VerticalSplitPanel();
-        splitV.setStyleName(Runo.SPLITPANEL_SMALL);
-        splitV.setSplitPosition(height - 300, Sizeable.UNITS_PIXELS);
-        splitV.setLocked(true);
-        
-        GridLayout grid = new GridLayout(1, 1);
-        grid.setWidth("100%");
-        grid.setMargin(false);
-        grid.setHeight(height - 300,UNITS_PIXELS);
-        grid.addStyleName(Runo.LAYOUT_DARKER);
-        splitV.setFirstComponent(grid);
-        
-        CssLayout bottom = new CssLayout();
-        bottom.setSizeFull();
-        splitV.setSecondComponent(bottom);
-        
-        Panel top = new Panel("Абитуриенты");
-        VerticalLayout topLo = (VerticalLayout) top.getContent();
-        top.setSizeFull();
-        topLo.setMargin(false);
-        top.setContent(splitV);
-        splitH.setSecondComponent(top);
+    }
+
+    private void fillRightPanel(Panel rightPanel) {
+        rightPanel.setHeight("100%");
+        VerticalLayout vl = (VerticalLayout) rightPanel.getContent();
+        vl.setMargin(false);
+        pdfForm = new Embedded();
+        pdfForm.setWidth("600");
+        pdfForm.setHeight(height-10,UNITS_PIXELS);
+        StreamResource resource = new StreamResource(new PdfStreamSource(), "form.pdf", mainPage);
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String filename = "form-" + df.format(new Date()) + ".pdf";
+        resource.setFilename(filename);
+        resource.setCacheTime(0);
+        pdfForm.setType(Embedded.TYPE_BROWSER);
+        pdfForm.setSource(resource);
+        pdfForm.setMimeType("application/pdf");
+        pdfForm.requestRepaint();
+        rightPanel.addComponent(pdfForm);
+    }
+
+    private Tree getTreeMenu() {
+        List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
+        Tree tree = new Tree();
+        String caption = "Дата собеседования";
+        tree.addItem(caption);
+        tree.setItemIcon(caption,new ThemeResource("icons/32/calendar.png"));
+        tree.setChildrenAllowed(caption, true);
+        tree.expandItem(caption);
+        for(StudentInterview stInterview : interviews) {
+            Format formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");      
+            String strDate = formatter.format(stInterview.getInterviewStartDate());
+            tree.addItem(stInterview);
+            tree.setItemCaption(stInterview,strDate);
+            tree.setParent(stInterview, "Дата собеседования");
+            
+            String withMark = "С оценкой";
+            String withoutMark = "Без оценки";
+            tree.addItem(strDate+withMark);
+            tree.setItemCaption(strDate+withMark, withMark);
+            tree.addItem(strDate+withoutMark);
+            tree.setItemCaption(strDate+withoutMark, withoutMark);
+            
+            tree.setParent(strDate+withMark,stInterview);
+            tree.setParent(strDate+withoutMark,stInterview);
+        }
+        return tree;
+    }
+    
+    public class PdfStreamSource implements StreamResource.StreamSource {
+        private final ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+        public PdfStreamSource() {
+            Document document = null;
+
+            try {
+                document = new Document(PageSize.A4, 50, 50, 50, 50);
+                PdfWriter.getInstance(document, os);
+                document.open();
+                document.add(new Paragraph("This is some content for the sample PDF!"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (document != null) {
+                    document.close();
+                }
+            }
+        }
+
+        @Override
+        public InputStream getStream() {
+            return new ByteArrayInputStream(os.toByteArray());
+        }
     }
 
 }
