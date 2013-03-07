@@ -9,8 +9,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,8 +33,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.servlet.*;
-import javax.servlet.http.HttpServlet;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.DefaultAuthenticator;
 import ua.netcrackerteam.DAO.Interview;
@@ -51,7 +51,7 @@ public class ApplicationForm{
     private final  String pathPDFTemplate = "G:/Проект1/interview/Interview/src/main/java/Template.pdf";
     private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/java/times.ttf";
     private final  String pathImg ="G:/Проект1/interview/Interview/src/main/java/1.jpg";
-    
+   
     /**
      * Generate pdf with pdf-template and write it to binary stream
      * @param OutputStream memory
