@@ -40,8 +40,8 @@ class EnterWindow extends Window {
         addComponent(layout);
         loginForm.addListener(new LoginForm.LoginListener() {
             public void onLogin(LoginForm.LoginEvent event) {
-                //mode = GeneralController.checkLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
-                mainPage.changeMode(3, event.getLoginParameter("username"));
+                mode = GeneralController.checkLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
+                mainPage.changeMode(mode, event.getLoginParameter("username"));
                 loginForm.removeListener(this);
                 EnterWindow.this.close();
             }
