@@ -49,17 +49,23 @@ public class DAOCommon {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public int deleteUserById(int user_Id) {
+    public void deleteUserByName(String userName) {
         Session session = null;
         Query re = null;
         Transaction transaction = null;
-        int number = 0;
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            re = session.createQuery("delete from UserList where idUser = '" + user_Id + "'");
-            number = re.executeUpdate();
+            String hql = "delete from UserList where userName = '" + userName + "'";
+            Query query = session.createQuery(hql);
+            int row = query.executeUpdate();
+            if (row == 0){
+                System.out.println("Doesn't deleted any row!");
+            }
+            else{
+                System.out.println("Deleted Row: " + row);
+            }
+            session.close();
             transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
@@ -68,7 +74,6 @@ public class DAOCommon {
                 session.close();
             }
         }
-        return number;
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
@@ -155,5 +160,26 @@ public class DAOCommon {
         return listOfUsers;
     }
 
-
+    public void resetOnNewPassword(String userName, String password){
+        Session session = null;
+        Query re = null;
+        UserList userList = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            userList = (UserList) re.uniqueResult();
+            userList.setPassword(password);
+            session.save(userList);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
 }
