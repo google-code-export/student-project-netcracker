@@ -40,7 +40,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
 
     @Override
     public void init() {
-	buildMainLayout();
+	    buildMainLayout();
     }
     /**
      * Build components of GUI

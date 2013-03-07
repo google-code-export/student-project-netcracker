@@ -1,6 +1,7 @@
 package ua.netcrackerteam.controller;
 
 
+import ua.netcrackerteam.DAO.DAOCommon;
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
@@ -67,6 +68,25 @@ public class GeneralController implements Logable {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
+    public static boolean checkUserName(String user){
+        List<UserList> listOfForms = null;
+        String userName = null;
+        try {
+            listOfForms = HibernateFactory.getInstance().getCommonDao().getUser();
+            for (UserList userList : listOfForms) {
+                userName = userList.getUserName();
+                if (user.equals(userName)){
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+        }
+        return false;
+    }
+
+    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Integer> checkLoginIdUser(String user, String pass){
         List<UserList> listOfForms = null;
         List<Integer> checkedUserIds = new ArrayList<Integer>();
@@ -104,6 +124,47 @@ public class GeneralController implements Logable {
         }
     }
 
+    public static void setAdminUser(String userName, String userPassword, String userEmail){
+        String active = "active";
+        int idUserCategory = 1;
+        String hashPassword = passwordHashing(userPassword);
+        try {
+            HibernateFactory.getInstance().getCommonDao().setUser(userName, hashPassword, userEmail, active, idUserCategory);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+        }
+    }
+
+    public static void setInterviewerUser(String userName, String userPassword, String userEmail){
+        String active = "active";
+        int idUserCategory = 3;
+        String hashPassword = passwordHashing(userPassword);
+        try {
+            HibernateFactory.getInstance().getCommonDao().setUser(userName, hashPassword, userEmail, active, idUserCategory);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+        }
+    }
+
+    public static void setHRUser(String userName, String userPassword, String userEmail){
+        String active = "active";
+        int idUserCategory = 2;
+        String hashPassword = passwordHashing(userPassword);
+        try {
+            HibernateFactory.getInstance().getCommonDao().setUser(userName, hashPassword, userEmail, active, idUserCategory);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+        }
+    }
+
+    public static void deleteUserByName(String userName){
+        DAOCommon daoCommon = new DAOCommon();
+        daoCommon.deleteUserByName(userName);
+    }
+
     public static void deleteDirectory(File dir) {
         try {
             if (dir.isDirectory()) {
@@ -120,6 +181,11 @@ public class GeneralController implements Logable {
             e.printStackTrace();
             logger.getLog().error("Something wrong with folder deleting", e);
         }
+    }
+
+    public static void setNewPassword(String userName, String newPassword){
+        String newHashedPassword = GeneralController.passwordHashing(newPassword);
+        HibernateFactory.getInstance().getCommonDao().resetOnNewPassword(userName, newHashedPassword);
     }
 
    /* public static String checkInputText(String inputText){
