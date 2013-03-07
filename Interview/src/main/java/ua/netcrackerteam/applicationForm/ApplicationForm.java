@@ -31,6 +31,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.servlet.*;
+import javax.servlet.http.HttpServlet;
 import org.apache.commons.mail.ByteArrayDataSource;
 import org.apache.commons.mail.DefaultAuthenticator;
 import ua.netcrackerteam.DAO.Interview;
@@ -44,11 +46,10 @@ import ua.netcrackerteam.controller.StudentData;
  */
 public class ApplicationForm{  
     
-    private final  String pathToMailConfig = "src/main/java/mail.properties";
-    private final  String pathToMailAuthentification = "src/main/java/authentification.properties";
-    private final  String pathMailToStudent = "src/main/java/NetCrackerHTML.html";
-    private final  String pathPDFTemplate = "src/main/java/Template.pdf";
-    private final  String pathTimesTTF = "src/main/java/times.ttf";
+   
+    private final  String pathMailToStudent = "G:/Проект1/interview/Interview/src/main/java/NetCrackerHTML.html";
+    private final  String pathPDFTemplate = "G:/Проект1/interview/Interview/src/main/java/Template.pdf";
+    private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/java/times.ttf";
     
     /**
      * Generate pdf with pdf-template and write it to binary stream
@@ -57,7 +58,7 @@ public class ApplicationForm{
     public void generateFormPDF(OutputStream memory) {
              
         try {
-                       
+                     
             BaseFont font = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED);
             PdfReader reader = new PdfReader(pathPDFTemplate);
             PdfStamper stamper = new PdfStamper(reader, memory);
@@ -154,7 +155,7 @@ public class ApplicationForm{
      */
     public Image reciveImage() throws BadElementException, MalformedURLException, IOException{
         
-        Image img = Image.getInstance("src\\main\\java\\1.jpg");
+        Image img = Image.getInstance("G:/Проект1/interview/Interview/src/main/java/1.jpg");
         img.setAbsolutePosition(70f, 615f);
         img.scaleToFit(150, 140);
         
@@ -174,7 +175,7 @@ public class ApplicationForm{
         try{
             reader = new BufferedReader(new FileReader(pathMailToStudent));
             String currentStr = "";
-            while((currentStr = reader.readLine()) != null){
+            while((currentStr =reader.readLine()) != null){
                 builder.append(currentStr);
             }
         } catch(IOException e){
@@ -199,10 +200,19 @@ public class ApplicationForm{
         
         try {
             Properties propertiesMail = new Properties();
-            propertiesMail.load(new FileInputStream(pathToMailConfig)); 
+            propertiesMail.setProperty("mail.debug","false");
+            propertiesMail.setProperty("mail.smtp.port","465");
+            propertiesMail.setProperty("mail.smtp.socketFactory.port","465");
+            propertiesMail.setProperty("mail.transport.protocol","smtp");
+            propertiesMail.setProperty("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+            propertiesMail.setProperty("mail.smtp.auth","true");
+            propertiesMail.setProperty("mail.smtp.host","smtp.gmail.com");
+            propertiesMail.setProperty("mail.smtp.ssl.enable","true");
+
             
             Properties propertiesAuthentification = new Properties();
-            propertiesAuthentification.load(new FileInputStream(pathToMailAuthentification));
+            propertiesAuthentification.setProperty("mail", "NetcrackerTeamOdessaOspu@gmail.com");
+            propertiesAuthentification.setProperty("password", "12345odessa");
                                                                
             String sender = propertiesAuthentification.getProperty("mail");
             String senderPassword = propertiesAuthentification.getProperty("password");
@@ -224,11 +234,12 @@ public class ApplicationForm{
             mimeMessage.setSubject(subject);
             mimeMessage.setRecipient(Message.RecipientType.TO, iaRecipient);           
             mimeMessage.setContent(mimeMultipart);                  	             
-         
-           Transport transport = session.getTransport();
+            
+            Transport.send(mimeMessage);
+           /*Transport transport = session.getTransport();
            transport.connect();
            transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
-           transport.close();
+           transport.close();*/
         } catch (IOException ex) {
             Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {
