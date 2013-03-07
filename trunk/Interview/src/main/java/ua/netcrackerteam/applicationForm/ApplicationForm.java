@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
@@ -51,7 +52,7 @@ public class ApplicationForm{
     private final  String pathPDFTemplate = "G:/Проект1/interview/Interview/src/main/java/Template.pdf";
     private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/java/times.ttf";
     private final  String pathImg ="G:/Проект1/interview/Interview/src/main/java/1.jpg";
-   
+
     /**
      * Generate pdf with pdf-template and write it to binary stream
      * @param OutputStream memory
@@ -173,8 +174,8 @@ public class ApplicationForm{
         
         BufferedReader reader= null;
         
-        try{
-            reader = new BufferedReader(new FileReader(pathMailToStudent));
+        try{           
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(pathMailToStudent), "UTF-8"));
             String currentStr = "";
             while((currentStr =reader.readLine()) != null){
                 builder.append(currentStr);
@@ -237,10 +238,7 @@ public class ApplicationForm{
             mimeMessage.setContent(mimeMultipart);                  	             
             
             Transport.send(mimeMessage);
-           /*Transport transport = session.getTransport();
-           transport.connect();
-           transport.sendMessage(mimeMessage, mimeMessage.getRecipients(Message.RecipientType.TO));
-           transport.close();*/
+        
         } catch (IOException ex) {
             Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessagingException ex) {
