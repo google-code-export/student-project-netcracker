@@ -23,8 +23,8 @@ import ua.netcrackerteam.controller.StudentPage;
  */
 public class ApplicationForm{   
   
-    private final  String pathPDFTemplate = "G:/Проект1/interview/Interview/src/main/java/Template.pdf";
-    private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/java/times.ttf";
+    private final  String pathPDFTemplate = "resources/Template.pdf";
+    private final  String pathTimesTTF = "resources/times.ttf";
        
     private StudentData studentData;
     
@@ -43,9 +43,9 @@ public class ApplicationForm{
     public void generateFormPDF(OutputStream memory) {
              
         try {
-                     
-            BaseFont font = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED);
-            PdfReader reader = new PdfReader(pathPDFTemplate);
+            String path = ClassPath.getInstance().getWebInfPath();
+            BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);            
+            PdfReader reader = new PdfReader(path + pathPDFTemplate);
             PdfStamper stamper = new PdfStamper(reader, memory);
             AcroFields form = stamper.getAcroFields();
             form.addSubstitutionFont(font);
