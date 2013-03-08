@@ -523,6 +523,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 (Property) bean.getItemProperty("studentExperienceProjects"));
         expirience.setWidth("700");
         expirience.setRows(4);
+        expirience.setMaxLength(200);
         expirience.setRequired(true);
         expirience.setWordwrap(true);
         expirience.addListener(this);
@@ -556,11 +557,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         vlayout.addComponent(advert);
         anotherAdvert = new TextField(bean.getItemProperty("studentHowHearAboutCentreOther"));
         anotherAdvert.setWidth("220");
+        anotherAdvert.setMaxLength(30);
         vlayout.addComponent(anotherAdvert);
         whyYou = new TextArea("Почему тебя обязательно надо взять в NetCracker (важные достоинства; возможно, обещания :) )",
                 (Property) bean.getItemProperty("studentReasonOffer"));
         whyYou.setWidth("700");
         whyYou.setRows(3);
+        whyYou.setMaxLength(200);
         whyYou.setRequired(true);
         whyYou.addListener(this);
         vlayout.addComponent(whyYou);
@@ -569,6 +572,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         moreInfo.setWidth("700");
         moreInfo.setRequired(true);
         moreInfo.setRows(3);
+        moreInfo.setMaxLength(200);
         moreInfo.addListener(this);
         vlayout.addComponent(moreInfo);   
     }
@@ -871,9 +875,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }
                     
                 } 
-//                else if(source == print) {
-//                    ua.netcrackerteam.applicationForm.ApplicationForm.sendPDFToStudent(username);
-//                }
         }
     }
     
