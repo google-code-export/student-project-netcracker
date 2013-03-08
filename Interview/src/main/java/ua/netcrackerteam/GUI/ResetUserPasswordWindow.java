@@ -74,7 +74,7 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
             GeneralController.setNewPassword(userName, userPassword);
             Notification n = new Notification("Изменение пароля юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
             n.setDescription("На email " + userName + " выслано письмо с новым паролем.\n" +
-                    "Теперы юзер может зайти под своими новыми аккаунт данными.");
+                    "Теперь юзер может зайти под своими новыми аккаунт данными.");
             n.setPosition(Notification.POSITION_CENTERED);
             adminUserManagementLayout.getWindow().showNotification(n);
             adminUserManagementLayout.refreshTableData();

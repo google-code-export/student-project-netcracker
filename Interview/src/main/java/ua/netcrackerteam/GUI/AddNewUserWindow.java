@@ -142,7 +142,7 @@ public class AddNewUserWindow extends Window implements FieldEvents.BlurListener
                     GeneralController.setInterviewerUser(userName, userPassword, userEmail);
                     Window.Notification n = new Window.Notification("Регистрация нового Интервьювера завершена успешно!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     n.setDescription("На email нового юзера(Интервьювера) выслано письмо с регистрационными данными.\n" +
-                            "Теперы юзер(Интервьювер) может зайти под своими аккаунт данными.");
+                            "Теперь юзер(Интервьювер) может зайти под своими аккаунт данными.");
                     n.setPosition(Window.Notification.POSITION_CENTERED);
                 /*try {
                     SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);

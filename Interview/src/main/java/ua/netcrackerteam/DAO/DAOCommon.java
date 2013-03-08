@@ -160,26 +160,5 @@ public class DAOCommon {
         return listOfUsers;
     }
 
-    public void resetOnNewPassword(String userName, String password){
-        Session session = null;
-        Query re = null;
-        UserList userList = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
-            userList = (UserList) re.uniqueResult();
-            userList.setPassword(password);
-            session.save(userList);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }
+
 }

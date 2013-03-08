@@ -30,9 +30,8 @@ public class DeleteUserWindow extends Window implements Button.ClickListener{
         layout.setSpacing(true);
         layout.setMargin(true);
 
-
         deleteButton = new Button("delete");
-        cancelButton = new Button("cancelButton");
+        cancelButton = new Button("cancel");
         message = new Label("Вы действительно хотите удалить " + currentUser + " ?");
 
         deleteButton.setVisible(true);
