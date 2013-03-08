@@ -15,24 +15,14 @@ import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
-import com.vaadin.ui.Accordion;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.Tree;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.controller.InterviewerPage;
+import ua.netcrackerteam.controller.StudentDataShort;
+import ua.netcrackerteam.controller.StudentInterview;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.Format;
@@ -40,7 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import ua.netcrackerteam.controller.*;
 
 /**
  * Panel for Interviewer view
@@ -66,18 +55,21 @@ public class MainPanelInterviewer extends MainPanel{
     private NativeSelect searchFilter;
     private Tree tree;
     private TextField searchField;
+    private SettingsLayout settingsLayout;
     
-    public MainPanelInterviewer(HeaderLayout hlayout,MainPage mainPage) {
+    public MainPanelInterviewer(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
         this.mainPage = mainPage;
         this.username = hlayout.getUsername();
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
-        height = webBrowser.getScreenHeight()-250;
+        height = webBrowser.getScreenHeight()-290;
         
         final Component c = new VerticalLayout();
+        final Component c2 = new VerticalLayout();
         tabSheet.addTab(c,"Собеседования");
+        tabSheet.addTab(c2,"Настройки");
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
 
             @Override
@@ -90,6 +82,9 @@ public class MainPanelInterviewer extends MainPanel{
                     interviewsLo.setMargin(true, false, false, false);
                     fillInterviewsLayout();
                     tabSheet.replaceComponent(c, interviewsLo);
+                } else if (source.getSelectedTab() == c2) {
+                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
+                    source.replaceComponent(c2, settingsLayout);
                 }
             }
         });
