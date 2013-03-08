@@ -16,9 +16,60 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
     PasswordField password2;
     Label message;
     String currentUser = null;
+    SettingsLayout settingsLayout;
 
     public ResetUserPasswordWindow(AdminUserManagementLayout adminUserManagement, String currentUser) {
         this.adminUserManagementLayout = adminUserManagement;
+        this.currentUser = currentUser;
+        this.setIcon(new ThemeResource("icons/32/group_key.png"));
+        setModal(true);
+        setWidth("30%");
+        setResizable(false);
+        center();
+        setCaption("New Password for User");
+        VerticalLayout layout = (VerticalLayout) getContent();
+        layout.setWidth("100%");
+        layout.setSpacing(true);
+        layout.setMargin(true);
+
+        message = new Label("Смена пароля для юзера - " + currentUser);
+        layout.addComponent(message);
+
+        password = new PasswordField("Введите новый пароль: ");
+        password.setRequired(true);
+        password.addListener(this);
+        password.setMaxLength(25);
+        layout.addComponent(password);
+
+        password2 = new PasswordField("Повторите пароль: ");
+        password2.setRequired(true);
+        password2.addListener(this);
+        password2.setMaxLength(25);
+        layout.addComponent(password2);
+
+        layout.setComponentAlignment(password, Alignment.BOTTOM_CENTER);
+        layout.setComponentAlignment(password2, Alignment.BOTTOM_CENTER);
+        layout.setComponentAlignment(message, Alignment.TOP_CENTER);
+
+        password.addValidator(new RegexpValidator("\\w{6,}", "Пароль должен содержать буквы английского алфавита и/или цифры, и быть не короче 6 символов."));
+        password2.addValidator(new AbstractValidator("Пароли должны совпадать.") {
+            public boolean isValid(Object value) {
+                return password.getValue().equals(password2.getValue());
+            }
+        });
+
+        Button okBut = new Button("reset user password");
+        okBut.addListener(new Button.ClickListener() {
+            public void buttonClick(Button.ClickEvent event) {
+                buttonClickRegistr();
+            }
+        });
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+    }
+
+    public ResetUserPasswordWindow(SettingsLayout settingsLayout, String currentUser) {
+        this.settingsLayout = settingsLayout;
         this.currentUser = currentUser;
         this.setIcon(new ThemeResource("icons/32/group_key.png"));
         setModal(true);
@@ -76,9 +127,7 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
             n.setDescription("На email " + userName + " выслано письмо с новым паролем.\n" +
                     "Теперь юзер может зайти под своими новыми аккаунт данными.");
             n.setPosition(Notification.POSITION_CENTERED);
-            adminUserManagementLayout.getWindow().showNotification(n);
-            adminUserManagementLayout.refreshTableData();
-            adminUserManagementLayout.refreshTableData();
+            settingsLayout.getWindow().showNotification(n);
             ResetUserPasswordWindow.this.close();
             /*try {
                 SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);

@@ -32,7 +32,7 @@ public class MainPanelAdmin extends MainPanel {
                     blankLayout = new AdminUserManagementLayout(hlayout.getUsername(),mainPage);
                     source.replaceComponent(c1, blankLayout);
                 }  else if (source.getSelectedTab() == c2) {
-                    settingsLayout = new SettingsLayout(hlayout.getUsername());
+                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
                     source.replaceComponent(c2, settingsLayout);
                 }
             }

@@ -4,7 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
-
+import ua.netcrackerteam.controller.StudentPage;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -168,6 +168,33 @@ public class DAOAdminImpl {
             re = session.createQuery("from UserList where upper(userName) ='" + oldUserName.toUpperCase() + "'");
             userList = (UserList) re.uniqueResult();
             userList.setUserName(newUserName);
+            session.save(userList);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public void changeUserType(String userName, int newType){
+        //prepare data for filling user
+        List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", newType);
+        UserCategory currUserCat = (UserCategory)userTypes.get(0);
+        //change user type value
+        Session session = null;
+        Query re = null;
+        UserList userList = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            userList = (UserList) re.uniqueResult();
+            userList.setIdUserCategory(currUserCat);
             session.save(userList);
             transaction.commit();
         } catch (Exception e) {
