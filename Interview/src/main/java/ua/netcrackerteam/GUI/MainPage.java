@@ -73,7 +73,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             enterWindow = new EnterWindow(this);
             getMainWindow().addWindow(enterWindow);
         } else if (source == exit) {
-            changeModeGuest();
+            getMainWindow().getApplication().close();
         } else if (source == registr) {
             if (regWindow == null) {
                 registr.removeListener(this);
@@ -148,14 +148,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
     }
 
-    private void changeModeGuest() {
-        MainPanel oldPanel = panel;
-        panel = new MainPanel(hlayoutGuest,this);
-        layoutfull.replaceComponent(oldPanel, panel);
-        VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
-        vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
-    }
-  
+ 
     /*TEST VAADIN SESSION*/
 
     public static MainPage getInstance() {
