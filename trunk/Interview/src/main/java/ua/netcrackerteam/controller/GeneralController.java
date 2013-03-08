@@ -1,7 +1,6 @@
 package ua.netcrackerteam.controller;
 
 
-import ua.netcrackerteam.DAO.DAOCommon;
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
@@ -161,8 +160,20 @@ public class GeneralController implements Logable {
     }
 
     public static void deleteUserByName(String userName){
-        DAOCommon daoCommon = new DAOCommon();
-        daoCommon.deleteUserByName(userName);
+        HibernateFactory.getInstance().getCommonDao().deleteUserByName(userName);
+    }
+
+    public static void bunUserByName(String userName){
+        HibernateFactory.getInstance().getAdminDAO().banUserByName(userName);
+    }
+
+    public static void activateUserByName(String userName){
+        HibernateFactory.getInstance().getAdminDAO().activateUserByName(userName);
+    }
+
+    public static boolean checkUserBan(String userName) {
+        boolean checkResult = HibernateFactory.getInstance().getAdminDAO().checkUserBanStatus(userName);
+        return checkResult;
     }
 
     public static void deleteDirectory(File dir) {

@@ -7,62 +7,61 @@ import ua.netcrackerteam.controller.GeneralController;
 /**
  * @author krygin
  */
-public class DeleteUserWindow extends Window implements Button.ClickListener{
+public class BanUserWindow extends Window implements Button.ClickListener{
     AdminUserManagementLayout adminUserManagementLayout;
-    Button deleteButton;
+    Button banButton;
     Button cancelButton;
-    VerticalLayout layout = (VerticalLayout) getContent();
-    HorizontalLayout buttonsPanel = new HorizontalLayout();
     String currentUser = null;
     Label message = null;
+    VerticalLayout layout = (VerticalLayout) getContent();
+    HorizontalLayout buttonsPanel = new HorizontalLayout();
 
-    public DeleteUserWindow(AdminUserManagementLayout adminUserManagement, String currentUser) {
-        this.adminUserManagementLayout = adminUserManagement;
+    public BanUserWindow(AdminUserManagementLayout adminUserManagementLayout, String currentUser) {
+        this.adminUserManagementLayout = adminUserManagementLayout;
         this.currentUser = currentUser;
-        this.setIcon(new ThemeResource("icons/32/remove-user.png"));
+        this.setIcon(new ThemeResource("icons/32/ban-user.png"));
         setModal(true);
         setWidth("30%");
         setResizable(false);
         center();
-        setCaption("Delete User");
-
+        setCaption("Ban User");
         layout.setWidth("100%");
         layout.setSpacing(true);
         layout.setMargin(true);
 
-
-        deleteButton = new Button("delete");
+        banButton = new Button("ban");
         cancelButton = new Button("cancelButton");
-        message = new Label("Вы действительно хотите удалить " + currentUser + " ?");
+        message = new Label("Вы действительно хотите забанить " + currentUser + " ?");
 
-        deleteButton.setVisible(true);
+        banButton.setVisible(true);
         cancelButton.setVisible(true);
 
-        deleteButton.addListener(this);
+        banButton.addListener(this);
         cancelButton.addListener(this);
 
         layout.addComponent(message);
         layout.setComponentAlignment(message, Alignment.TOP_CENTER);
         layout.addComponent(buttonsPanel);
         layout.setComponentAlignment(buttonsPanel, Alignment.BOTTOM_CENTER);
-        buttonsPanel.addComponent(deleteButton);
+        buttonsPanel.addComponent(banButton);
         buttonsPanel.addComponent(cancelButton);
     }
 
+    @Override
     public void buttonClick(Button.ClickEvent event) {
         Button source = event.getButton();
-        if (source == deleteButton) {
+        if (source == banButton) {
             String userName = currentUser;
-            GeneralController.deleteUserByName(userName);
-            Notification n = new Notification("Удаление юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
-            n.setDescription(" Юзер " + userName + " был удалён");
+            GeneralController.bunUserByName(userName);
+            Notification n = new Notification("Блокироваие юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
+            n.setDescription(" Юзер " + userName + " был забанен. Уведомление о блокировке отправлено юзеру на его e-mail.");
             n.setPosition(Notification.POSITION_CENTERED);
             adminUserManagementLayout.getWindow().showNotification(n);
             adminUserManagementLayout.refreshTableData();
             adminUserManagementLayout.refreshTableData();
-            DeleteUserWindow.this.close();
+            BanUserWindow.this.close();
         } else if (source == cancelButton) {
-            DeleteUserWindow.this.close();
+            BanUserWindow.this.close();
         }
     }
 }
