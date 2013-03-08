@@ -32,7 +32,10 @@ import org.apache.commons.mail.DefaultAuthenticator;
  */
 public class CreateLetterWithPDF {
     
-    private final  String pathMailToStudent = "G:/Проект1/interview/Interview/src/main/java/NetCrackerHTML.html";
+    private final  String pathMailToStudent = "resources/NetCrackerHTML.html";
+    private final  String pathPropertiesMail = "resources/mail.properties";
+    private final  String pathPropertiesAuthentification = "resources/Authentification.properties";
+            
     private String userName;
     
     public CreateLetterWithPDF(String userName){
@@ -48,8 +51,8 @@ public class CreateLetterWithPDF {
         
         BufferedReader reader= null;
         
-        try{           
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(pathMailToStudent), "UTF-8"));
+        try{         
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(ClassPath.getInstance().getWebInfPath() + pathMailToStudent), "UTF-8"));
             String currentStr = "";
             while((currentStr =reader.readLine()) != null){
                 builder.append(currentStr);
@@ -75,20 +78,12 @@ public class CreateLetterWithPDF {
     public void sendPDFToStudent(){
         
         try {
+          
             Properties propertiesMail = new Properties();
-            propertiesMail.setProperty("mail.debug", "false");
-            propertiesMail.setProperty("mail.smtp.port","465");
-            propertiesMail.setProperty("mail.smtp.socketFactory.port", "465");
-            propertiesMail.setProperty("mail.transport.protocol","smtp");
-            propertiesMail.setProperty("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-            propertiesMail.setProperty("mail.smtp.auth","true");
-            propertiesMail.setProperty("mail.smtp.host","smtp.gmail.com");
-            propertiesMail.setProperty("mail.smtp.ssl.enable","true");
-
+            propertiesMail.load(new FileInputStream(ClassPath.getInstance().getWebInfPath() + pathPropertiesMail));
             
             Properties propertiesAuthentification = new Properties();
-            propertiesAuthentification.setProperty("mail", "NetcrackerTeamOdessaOspu@gmail.com");
-            propertiesAuthentification.setProperty("password", "12345odessa");
+            propertiesAuthentification.load(new FileInputStream(ClassPath.getInstance().getWebInfPath() + pathPropertiesAuthentification));
                                                                
             String sender = propertiesAuthentification.getProperty("mail");
             String senderPassword = propertiesAuthentification.getProperty("password");
