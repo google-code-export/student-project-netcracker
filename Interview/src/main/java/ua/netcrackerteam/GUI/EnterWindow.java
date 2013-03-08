@@ -40,10 +40,16 @@ class EnterWindow extends Window {
         addComponent(layout);
         loginForm.addListener(new LoginForm.LoginListener() {
             public void onLogin(LoginForm.LoginEvent event) {
-                mode = GeneralController.checkLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
-                mainPage.changeMode(mode, event.getLoginParameter("username"));
-                loginForm.removeListener(this);
-                EnterWindow.this.close();
+                if (GeneralController.checkUserBan(event.getLoginParameter("username"))){
+                    getWindow().showNotification("Вы забанены ! Уважаемый, " + event.getLoginParameter("username") + ", Вы были забанены. \n" +
+                            "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
+                } else {
+                    mode = GeneralController.checkLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
+                    mainPage.changeMode(mode, event.getLoginParameter("username"));
+                    loginForm.removeListener(this);
+                    EnterWindow.this.close();
+                }
+
             }
         });
     }

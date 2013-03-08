@@ -5,46 +5,48 @@ import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
 
 /**
  * @author krygin
  */
-public class UsersData implements Logable{
-    private List<UserList> userList = null;
+public class UsersData implements Serializable, Logable {
+    private List<UserList> usersNonBannedList = null;
+    private List<UserList> usersBannedList = null;
 
-    public List<UserList> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<UserList> userList) {
-        this.userList = userList;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UsersData usersData = (UsersData) o;
-
-        if (userList != null ? !userList.equals(usersData.userList) : usersData.userList != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return userList != null ? userList.hashCode() : 0;
-    }
-
-    public void setUserData() throws IOException {
+    public void getUserDataNonBanned() throws IOException {
         try {
-            List<UserList> userList = HibernateFactory.getInstance().getCommonDao().getUser();
-            this.setUserList(userList);
+            List<UserList> usersNonBannedList = HibernateFactory.getInstance().getAdminDAO().getUsersNonBanned();
+            this.setUsersNonBannedList(usersNonBannedList);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getUserDataBanned() throws IOException {
+        try {
+            List<UserList> usersNonBannedList = HibernateFactory.getInstance().getAdminDAO().getUsersBanned();
+            this.setUsersBannedList(usersNonBannedList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<UserList> getUsersNonBannedList() {
+        return usersNonBannedList;
+    }
+
+    public void setUsersNonBannedList(List<UserList> usersNonBannedList) {
+        this.usersNonBannedList = usersNonBannedList;
+    }
+
+    public List<UserList> getUsersBannedList() {
+        return usersBannedList;
+    }
+
+    public void setUsersBannedList(List<UserList> usersBannedList) {
+        this.usersBannedList = usersBannedList;
     }
 }

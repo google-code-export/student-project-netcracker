@@ -10,6 +10,7 @@ public class HibernateFactory {
     private static DAOCommon commonDao = null;
     private static DAOStudentImpl studentDAO = null;    
     private static InterviewDAOImpl interviewDAO = null;
+    private static DAOAdminImpl adminDAO = null;
         
     private static HibernateFactory instance = null;
 
@@ -40,6 +41,11 @@ public class HibernateFactory {
         }
         return interviewDAO;
     }
-    
 
+    public DAOAdminImpl getAdminDAO(){
+        if (adminDAO == null){
+            adminDAO = new DAOAdminImpl();
+        }
+        return adminDAO;
+    }
 }
