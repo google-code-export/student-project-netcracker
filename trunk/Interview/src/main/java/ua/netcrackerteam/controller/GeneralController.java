@@ -196,7 +196,11 @@ public class GeneralController implements Logable {
 
     public static void setNewPassword(String userName, String newPassword){
         String newHashedPassword = GeneralController.passwordHashing(newPassword);
-        HibernateFactory.getInstance().getCommonDao().resetOnNewPassword(userName, newHashedPassword);
+        HibernateFactory.getInstance().getAdminDAO().resetOnNewPassword(userName, newHashedPassword);
+    }
+
+    public static void setNewLogin(String oldUserName, String newUserName){
+        HibernateFactory.getInstance().getAdminDAO().resetOnNewLogin(oldUserName, newUserName);
     }
 
    /* public static String checkInputText(String inputText){

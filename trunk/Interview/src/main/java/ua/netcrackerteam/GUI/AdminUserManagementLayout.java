@@ -22,15 +22,17 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
     private Button addNewUserButton = new Button          ("Add New User");
     private Button refreshDataButton = new Button         ("Refresh Table");
     private Button resetUserPasswordButton = new Button   ("Reset Password");
+    private Button resetUserLoginButton = new Button      ("Reset Login");
     private Button banUserButton = new Button             ("Ban user");
     private Button banUsersListButton = new Button        ("Ban list");
     private Table table;
     private UsersData usersData = null;
-    private Label current = new Label("Selected: -");
+    //private Label current = new Label("Selected: -");
     private String currentUser = "noUser";
     private AddNewUserWindow addNewUserWindow = null;
     private DeleteUserWindow deleteUserWindow = null;
     private ResetUserPasswordWindow resetUserPasswordWindow = null;
+    private ResetUserLoginWindow resetUserLoginWindow = null;
     private BanUserWindow banUserWindow = null;
     private BanUsersListWindow banUsersListWindow = null;
     private int height;
@@ -47,6 +49,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         deleteUserButton.setVisible(true);
         refreshDataButton.setVisible(true);
         resetUserPasswordButton.setVisible(true);
+        resetUserLoginButton.setVisible(true);
         banUserButton.setVisible(true);
         banUsersListButton.setVisible(true);
 
@@ -54,6 +57,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         addNewUserButton.setIcon(new ThemeResource("icons/32/add-user.png"));
         deleteUserButton.setIcon(new ThemeResource("icons/32/remove-user.png"));
         resetUserPasswordButton.setIcon(new ThemeResource("icons/32/group_key.png"));
+        resetUserLoginButton.setIcon(new ThemeResource("icons/32/change-login.png"));
         banUserButton.setIcon(new ThemeResource("icons/32/ban-user.png"));
         banUsersListButton.setIcon(new ThemeResource("icons/32/ban-list.png"));
 
@@ -87,6 +91,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
 
         VerticalLayout modifyUsersLayout = new VerticalLayout();
         modifyUsersLayout.addComponent(resetUserPasswordButton);
+        modifyUsersLayout.addComponent(resetUserLoginButton);
 
         VerticalLayout banUserLayout = new VerticalLayout();
         banUserLayout.addComponent(banUserButton);
@@ -112,7 +117,6 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         table.setWidth("100%");
         table.setHeight(height);
         table.setImmediate(true);
-        //table.setMultiSelect(true);
         try {
             usersData = new UsersData();
             usersData.getUserDataNonBanned();
@@ -125,16 +129,14 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
             }
             table.addListener(new Table.ValueChangeListener() {
                 public void valueChange(Property.ValueChangeEvent event) {
-                    if (event.getProperty() == null) {
-                        current.setValue("Selected: -");
-                        currentUser = "noUser";
-                    } else if (event.getProperty() != null) {
-                        currentUser = "noUser";
-                        current.setValue("Selected: " + table.getContainerProperty(table.getValue(), "Login").getValue());
+                    try {
+                        //current.setValue("Selected: " + table.getContainerProperty(table.getValue(), "Login").getValue());
                         currentUser = String.valueOf(table.getContainerProperty(table.getValue(), "Login").getValue());
+                    } catch (NullPointerException e) {
+                        currentUser = "noUser";
+                        //current.setValue("Selected: -");
                     }
                 }
-
             });
         }  catch (Exception e) {
             e.printStackTrace();
@@ -144,13 +146,14 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         splitH.setSecondComponent(tableLayout);
 
         tableLayout.setMargin(false);
-        tableLayout.addComponent(current);
+        //tableLayout.addComponent(current);
         tableLayout.addComponent(table);
 
         deleteUserButton.addListener(this);
         addNewUserButton.addListener(this);
         refreshDataButton.addListener(this);
         resetUserPasswordButton.addListener(this);
+        resetUserLoginButton.addListener(this);
         banUserButton.addListener(this);
         banUsersListButton.addListener(this);
     }
@@ -200,7 +203,17 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
                 resetUserPasswordWindow = new ResetUserPasswordWindow(this, currentUser);
                 getWindow().addWindow(resetUserPasswordWindow);
             }
-        } else if (source == banUserButton) {
+        } else if (source == resetUserLoginButton) {
+            if (currentUser.equals("noUser")){
+                Window.Notification n = new Window.Notification("Юзер не выбран", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                n.setDescription("Для смены логина пожалуйста выбирите юзера из списка!");
+                n.setPosition(Window.Notification.POSITION_CENTERED);
+                getWindow().showNotification(n);
+            } else {
+                resetUserLoginWindow = new ResetUserLoginWindow(this, currentUser);
+                getWindow().addWindow(resetUserLoginWindow);
+            }
+        }else if (source == banUserButton) {
             if (currentUser.equals("noUser")){
                 Window.Notification n = new Window.Notification("Юзер не выбран", Window.Notification.TYPE_TRAY_NOTIFICATION);
                 n.setDescription("Для того, чтобы забанить юзера, пожалйста выбирите его из списка !");

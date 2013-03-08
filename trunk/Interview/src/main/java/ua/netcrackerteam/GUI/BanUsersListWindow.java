@@ -16,7 +16,7 @@ public class BanUsersListWindow extends Window implements Button.ClickListener{
     AdminUserManagementLayout adminUserManagementLayout;
     private Table table;
     private UsersData usersData = null;
-    private Label current = new Label("Selected: -");
+    //private Label current = new Label("Selected: -");
     private String currentUser = "noUser";
     private int height;
     HorizontalLayout buttonsLayout;
@@ -92,24 +92,23 @@ public class BanUsersListWindow extends Window implements Button.ClickListener{
                         userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
                 i++;
             }
-            table.addListener(new Table.ValueChangeListener() {
+            table.addListener(new Property.ValueChangeListener() {
                 public void valueChange(Property.ValueChangeEvent event) {
-                    if (event.getProperty() == null) {
-                        current.setValue("Selected: -");
-                        currentUser = "noUser";
-                    } else if (event.getProperty() != null) {
-                        current.setValue("Selected: " + table.getContainerProperty(table.getValue(), "Login").getValue());
+                    try {
+                        //current.setValue("Selected: " + table.getContainerProperty(table.getValue(), "Login").getValue());
                         currentUser = String.valueOf(table.getContainerProperty(table.getValue(), "Login").getValue());
+                    } catch (NullPointerException e) {
+                        currentUser = "noUser";
+                        //current.setValue("Selected: -");
                     }
                 }
-
             });
         }  catch (Exception e) {
             e.printStackTrace();
         }
 
         tableLayout.setMargin(false);
-        tableLayout.addComponent(current);
+        //tableLayout.addComponent(current);
         tableLayout.addComponent(table);
     }
 
