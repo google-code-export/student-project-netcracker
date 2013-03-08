@@ -4,17 +4,10 @@
  */
 package ua.netcrackerteam.applicationForm;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.commons.mail.ByteArrayDataSource;
+import ua.netcrackerteam.DAO.Interview;
+import ua.netcrackerteam.configuration.HibernateFactory;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.Message;
@@ -25,14 +18,17 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import org.apache.commons.mail.ByteArrayDataSource;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.mail.DefaultAuthenticator;
-import ua.netcrackerteam.DAO.Interview;
-import ua.netcrackerteam.configuration.HibernateFactory;
 
 /**
  *
- * @author home
+ * @author Klitna
  */
 public class CreateLetterWithPDF {
     
@@ -42,8 +38,7 @@ public class CreateLetterWithPDF {
     public CreateLetterWithPDF(String userName){
         this.userName = userName;
     }
-    
-    /**
+      /**
      * Read html file, generated for create letter to send student
      * @return String
      */
@@ -61,21 +56,19 @@ public class CreateLetterWithPDF {
             }
         } catch(IOException e){
             e.printStackTrace();
-        }finally{           
-                try {
-                   
-                    reader.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
-                }
-      
+        }finally{
+            try {
+                reader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         
         return  builder.toString();
     }
     
-     /**
+    /**
      * Send mail to the student with attachment pdf file for interview
      * @param userName 
      */   
@@ -83,9 +76,9 @@ public class CreateLetterWithPDF {
         
         try {
             Properties propertiesMail = new Properties();
-            propertiesMail.setProperty("mail.debug","false");
+            propertiesMail.setProperty("mail.debug", "false");
             propertiesMail.setProperty("mail.smtp.port","465");
-            propertiesMail.setProperty("mail.smtp.socketFactory.port","465");
+            propertiesMail.setProperty("mail.smtp.socketFactory.port", "465");
             propertiesMail.setProperty("mail.transport.protocol","smtp");
             propertiesMail.setProperty("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
             propertiesMail.setProperty("mail.smtp.auth","true");
@@ -106,7 +99,7 @@ public class CreateLetterWithPDF {
             Session session = Session.getDefaultInstance(propertiesMail, new DefaultAuthenticator(sender, senderPassword));                              
                                                                
             MimeMultipart mimeMultipart = new MimeMultipart();
-            mimeMultipart.addBodyPart(getHTMLBodyPart(userName));	       
+            mimeMultipart.addBodyPart(getHTMLBodyPart());	       
             mimeMultipart.addBodyPart(getPDFBodyPart());	             
             
             InternetAddress iaSender = new InternetAddress(sender);
@@ -128,12 +121,37 @@ public class CreateLetterWithPDF {
      
     }
     
-        private MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{
+    /**
+     * Insert to the letter for student - name, date start and end interview
+     * @param userName
+     * @return MimeBodyPart
+     * @throws MessagingException 
+     */
+    private MimeBodyPart getHTMLBodyPart() throws MessagingException{
+        
+        Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+    
+        MimeBodyPart messageBodyPart = new MimeBodyPart();
+                               
+       String htmlText = readHTMLContent();
+       htmlText = htmlText.replace("[userName]",  userName);
+       htmlText = htmlText.replace("[dateStart]", getDate(interview.getStartDate()));
+       htmlText = htmlText.replace("[timeStart]", getTime(interview.getStartDate()));   
+       messageBodyPart.setContent(htmlText, "text/html; charset=utf-8");
+            
+       return messageBodyPart;
+    }
+    
+    /**
+     * Attachment to the letter pdf from binary stream
+     * @return MimeBodyPart
+     * @throws IOException
+     * @throws MessagingException 
+     */
+    private MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{
         
        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-       
        (new ApplicationForm(userName)).generateFormPDF(outputStream);
-       
        byte[] bytes = outputStream.toByteArray();	             
        DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
        MimeBodyPart pdfBodyPart = new MimeBodyPart();
@@ -142,8 +160,8 @@ public class CreateLetterWithPDF {
        
        return pdfBodyPart;
     }
-        
-        /**
+    
+    /**
      * Get time from date for add to letter
      * @param date
      * @return String
@@ -162,28 +180,5 @@ public class CreateLetterWithPDF {
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM");
         return dateFormat.format(date);
-    }
-    
-     /**
-     * Insert to the letter for student - name, date start and end interview
-     * @param userName
-     * @return MimeBodyPart
-     * @throws MessagingException 
-     */
-    private MimeBodyPart getHTMLBodyPart(String userName) throws MessagingException{
-        
-        Interview interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
-    
-        MimeBodyPart messageBodyPart = new MimeBodyPart();
-                               
-       String htmlText = readHTMLContent();
-       htmlText = htmlText.replace("[userName]",  userName);
-       htmlText = htmlText.replace("[dateStart]", getDate(interview.getStartDate()));
-       htmlText = htmlText.replace("[timeStart]", getTime(interview.getStartDate()));   
-       messageBodyPart.setContent(htmlText, "text/html; charset=utf-8");
-            
-       return messageBodyPart;
-    }
-    
-    
+    } 
 }
