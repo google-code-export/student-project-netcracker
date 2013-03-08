@@ -29,7 +29,7 @@ public class ApplicationForm{
     private StudentData studentData;
     
     public ApplicationForm(int idForm){
-        studentData = new StudentData();
+        studentData = StudentPage.getStudentDataByIdForm(idForm);
     }
     
     public ApplicationForm(String userName){
