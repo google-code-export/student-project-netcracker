@@ -137,7 +137,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                     saveEdit.setCaption("Сохранить");
                 }
             } else {
-                (new ua.netcrackerteam.applicationForm.ApplicationForm()).sendPDFToStudent(userName);
+                (new ua.netcrackerteam.applicationForm.CreateLetterWithPDF(userName)).sendPDFToStudent();
             }
         }
     }

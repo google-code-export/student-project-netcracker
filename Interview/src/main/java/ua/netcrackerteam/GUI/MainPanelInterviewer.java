@@ -156,9 +156,10 @@ public class MainPanelInterviewer extends MainPanel{
     }
     
     public class PdfStreamSource implements StreamResource.StreamSource {
+            
         @Override
         public InputStream getStream() {
-            return new ByteArrayInputStream(new ua.netcrackerteam.applicationForm.ApplicationForm().pdfForView());
+            return new ByteArrayInputStream(new ua.netcrackerteam.applicationForm.ApplicationForm(0).pdfForView());
         }
     }
 
