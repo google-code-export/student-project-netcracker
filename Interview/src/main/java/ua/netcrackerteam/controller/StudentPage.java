@@ -304,8 +304,8 @@ public class StudentPage {
 //        newStudentData.setStudentSelfAdditionalInformation("I'm a best of the best");
 
 
-        StudentData std = StudentPage.getStudentDataByUserName("iviarkiz");
-        System.out.println(std);
+        //StudentData std = StudentPage.getStudentDataByUserName("iviarkiz");
+        //System.out.println(std);
 
         /*StudentData newStudentData = new StudentData();
         newStudentData.setStudentFirstName("Алексей");
@@ -342,7 +342,8 @@ public class StudentPage {
         newStudentData.setStudentEnglishWriteMark(2);
         addNewForm(newStudentData, "briarey");*/
 
-
+        int idForm = 130;
+        StudentData newStData = getStudentDataByIdForm(idForm);
 
     }
 
@@ -886,6 +887,17 @@ public class StudentPage {
         }
         newPhotoArray = baos.toByteArray();
         return newPhotoArray;
+    }
+
+    //Filipenko//+//08.03.13
+    public static StudentData getStudentDataByIdForm(int formId) {
+
+        List userForms = searchSomethingByID("Form", "idForm", formId);
+        Form currInForm = (Form)userForms.get(0);
+        UserList userInForm = currInForm.getUser();
+        StudentData newStData = getStudentDataByUserName(userInForm.getUserName());
+        return newStData;
+
     }
 
 }
