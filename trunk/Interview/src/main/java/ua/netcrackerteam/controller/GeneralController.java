@@ -203,6 +203,29 @@ public class GeneralController implements Logable {
         HibernateFactory.getInstance().getAdminDAO().resetOnNewLogin(oldUserName, newUserName);
     }
 
+    public static void setNewEmail(String userName, String userEmail){
+        HibernateFactory.getInstance().getCommonDao().resetOnNewEmail(userName, userEmail);
+    }
+
+    public static String getEmailFromUserName(String userName) {
+        String currentEmail = HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName);
+        return currentEmail;
+    }
+
+    public static void changeUserType(String userName, String newTypeString){
+        int newTypeInt = 0;
+        if (newTypeString.equals("Admin")){
+            newTypeInt = 1;
+            HibernateFactory.getInstance().getAdminDAO().changeUserType(userName, newTypeInt);
+        } else if (newTypeString.equals("HR")){
+            newTypeInt = 2;
+            HibernateFactory.getInstance().getAdminDAO().changeUserType(userName, newTypeInt);
+        } else if (newTypeString.equals("Interviewer")){
+            newTypeInt = 3;
+            HibernateFactory.getInstance().getAdminDAO().changeUserType(userName, newTypeInt);
+        }
+    }
+
    /* public static String checkInputText(String inputText){
         String result = inputText.replaceAll("\n", " ");
         return result;
