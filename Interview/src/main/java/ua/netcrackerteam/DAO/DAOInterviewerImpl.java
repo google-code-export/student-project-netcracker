@@ -156,6 +156,11 @@ public class DAOInterviewerImpl implements DAOInterviewer
             }
         }
     }
+
+    @Override
+    public List<Form> search(String fieldName, String searchText) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 
 }

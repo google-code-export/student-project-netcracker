@@ -36,6 +36,6 @@ public interface DAOInterviewer {
      */    
     void saveStudentInterviewMark(int idForm, String interviewerUsername, String mark);  
     
-    
+    List<Form> search(String fieldName, String searchText);
     
 }
