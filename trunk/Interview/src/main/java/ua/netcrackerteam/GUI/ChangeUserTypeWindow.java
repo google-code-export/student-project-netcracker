@@ -57,14 +57,19 @@ public class ChangeUserTypeWindow extends Window implements AbstractSelect.NewIt
             if (selectedUserType.equals("")) {
                 getWindow().showNotification("Братиша, выбери-ка Тип юзера А??!!!", Notification.TYPE_TRAY_NOTIFICATION);
             }  else {
-                GeneralController.changeUserType(currentUser, selectedUserType);
-                Notification n = new Notification("Смена типа юзера завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
-                n.setDescription("На email юзера " + currentUser + " выслано письмо с уведомлением.");
-                n.setPosition(Notification.POSITION_CENTERED);
-                adminUserManagementLayout.getWindow().showNotification(n);
-                adminUserManagementLayout.refreshTableData();
-                adminUserManagementLayout.refreshTableData();
-                ChangeUserTypeWindow.this.close();
+                if (!GeneralController.checkUserTypeCategoty(currentUser, selectedUserType)){
+                    GeneralController.changeUserType(currentUser, selectedUserType);
+                    Notification n = new Notification("Смена типа юзера " + currentUser + " на " + selectedUserType + " завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
+                    n.setDescription("На email юзера " + currentUser + " выслано письмо с уведомлением.");
+                    n.setPosition(Notification.POSITION_CENTERED);
+                    adminUserManagementLayout.getWindow().showNotification(n);
+                    adminUserManagementLayout.refreshTableData();
+                    adminUserManagementLayout.refreshTableData();
+                    ChangeUserTypeWindow.this.close();
+                } else {
+                    getWindow().showNotification("Юзер уже является - " + selectedUserType + ". Выбирите для него другой тип юзера.", Notification.TYPE_TRAY_NOTIFICATION);
+                }
+
             }
         }
     }

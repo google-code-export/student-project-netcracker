@@ -226,6 +226,20 @@ public class GeneralController implements Logable {
         }
     }
 
+    public static boolean checkUserEmail(String userName, String userEmail){
+        if (userEmail.trim().equals(HibernateFactory.getInstance().getAdminDAO().checkUserEmail(userName).trim())){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkUserTypeCategoty(String userName, String userType){
+        if (userType.toUpperCase().equals(HibernateFactory.getInstance().getAdminDAO().checkUserCategory(userName).toUpperCase())){
+            return true;
+        }
+        return false;
+    }
+
    /* public static String checkInputText(String inputText){
         String result = inputText.replaceAll("\n", " ");
         return result;
