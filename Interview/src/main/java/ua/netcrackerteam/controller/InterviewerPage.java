@@ -22,30 +22,44 @@ public class InterviewerPage {
         return new ApplicationForm(formID).pdfForView();
     }
     
-    public static List<StudentDataShort> getAllStudents() {
+    private static List<StudentDataShort> getStudentDataList(List<Form> forms) {
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
-        StudentDataShort test2 = new StudentDataShort();
-        Form form2 = new DAOStudentImpl().getFormByUserName("Anna");
-        test2.setIdForm(form2.getIdForm());
-        test2.setStudentLastName(form2.getLastName());
-        test2.setStudentCathedra(form2.getCathedra().toString());
-        test2.setStudentFaculty(form2.getCathedra().getFaculty().toString());
-        test2.setStudentInstitute(form2.getCathedra().getFaculty().getInstitute().toString());
-        test2.setStudentFirstName(form2.getFirstName());
-        test2.setStudentMiddleName(form2.getMiddleName());
-        test2.setStudentInstituteCourse(form2.getInstituteYear().toString());
-        studentList.add(test2);
+        StudentDataShort stDataShort = null;
+        for(Form form : forms) {
+            stDataShort = new StudentDataShort();
+            stDataShort.setIdForm(form.getIdForm());
+            stDataShort.setStudentLastName(form.getLastName());
+            stDataShort.setStudentCathedra(form.getCathedra().toString());
+            stDataShort.setStudentFaculty(form.getCathedra().getFaculty().toString());
+            stDataShort.setStudentInstitute(form.getCathedra().getFaculty().getInstitute().toString());
+            stDataShort.setStudentFirstName(form.getFirstName());
+            stDataShort.setStudentMiddleName(form.getMiddleName());
+            stDataShort.setStudentInstituteCourse(form.getInstituteYear().toString());
+            studentList.add(stDataShort);
+        }
+        return studentList;
+    }
+    
+    public static List<StudentDataShort> getAllStudents() {
+        List<Form> allForms = new DAOInterviewerImpl().getAllBasicForms();
+        List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
+        if(allForms != null) {
+            studentList = getStudentDataList(allForms);
+        }
         return studentList;
     }
     
     public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
+        List<Form> allForms = new DAOInterviewerImpl().getAllFormsByInterview(interviewID);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
+        if(allForms != null) {
+            studentList = getStudentDataList(allForms);
+        }
         return studentList;
     }
     
     public static String getStudentMark(int formID, String interviewerUsername) {
-        return "";
-        //return new DAOInterviewerImpl().getStudentInterviewMark(formID,interviewerUsername);
+        return new DAOInterviewerImpl().getStudentInterviewMark(formID,interviewerUsername);
     }
     
     public static void setStudentMark(int formID, String interviewerName, String Mark) {
