@@ -9,9 +9,11 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -38,8 +40,9 @@ import ua.netcrackerteam.configuration.HibernateFactory;
  */
 public class ReportAmountRegistrationForms implements TypeOfViewReport{
     
-    private final static String pathTimesTTF = "src/main/java/times.ttf";
+    private final static String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/times.ttf";
     private static final String path = "C:/Report.pdf";
+    private static final String pathImage = "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/Logotip.png";
 
     public void viewReport(ArrayList dataForView) {
         
@@ -47,32 +50,46 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
        PdfWriter writer = null;  
  
         try {
-            
+           
+           BaseFont bf = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
+           Font fontTitle = new Font(bf, 16, Font.BOLDITALIC);
+           Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
+           
            writer = PdfWriter.getInstance(document , new FileOutputStream(path));   
            document.addCreationDate();
            document.addProducer();
            document.addTitle("Статистика зарегестрированных студентов");
            document.setPageSize(PageSize.A4);
            document.open();  
-  
-           Paragraph paragraph = new Paragraph("");
            
-           PdfPTable table = new PdfPTable(1);
-           PdfPCell cell1 = new PdfPCell(new Phrase("Cell 1"));
-           PdfPCell cell2 = new PdfPCell(new Phrase("Cell 2"));
-           PdfPCell cell3 = new PdfPCell(new Phrase("Cell 3"));
-            PdfPCell cell4 = new PdfPCell(new Phrase("Cell 4"));
-            
-           cell3.addElement(createTable());                   
+           PdfPTable table = new PdfPTable(2);    
+           //Image
+           PdfPCell cellImage = new PdfPCell(Image.getInstance(pathImage)); 
+           cellImage.setBorder(Rectangle.NO_BORDER);
+           cellImage.setHorizontalAlignment(Element.ALIGN_RIGHT);
+           //Create data
+           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
+           String currentDate = dateFormat.format(java.util.Calendar.getInstance().getTime());
+           PdfPCell cellDateCreate = new PdfPCell(new Phrase(currentDate, fontCurrentDate));
+           cellDateCreate.setBorder(Rectangle.NO_BORDER);
+           cellDateCreate.setVerticalAlignment(Element.ALIGN_TOP);
+           //title
+           PdfPCell cellTitle = new PdfPCell(new Phrase("Статистика зарегестрированных студентов", fontTitle));
+           cellTitle.setHorizontalAlignment(Element.ALIGN_CENTER);
+           cellTitle.setBorder(Rectangle.NO_BORDER);
+           cellTitle.setColspan(2);
+           //table
+           PdfPCell cellTable = new PdfPCell();      
+           cellTable.addElement(createTable());  
+           cellTable.setColspan(2);
+           cellTable.setBorder(Rectangle.NO_BORDER);
            
-           
-            table.addCell(cell1);
-            table.addCell(cell2);
-            table.addCell(cell3);
-            table.addCell(cell4);
-            
-           paragraph.add(table);
-           document.add(paragraph);
+           table.addCell(cellDateCreate);  
+           table.addCell(cellImage);                                 
+           table.addCell(cellTitle);            
+           table.addCell(cellTable);              
+       
+           document.add(table);
            
         }catch (DocumentException dex)
                  {
@@ -92,44 +109,46 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
                            }
                  }
 }
+
     
     private PdfPTable createTable() throws DocumentException, IOException{ 
-
-           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
-                  
+        
+           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");                  
            List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
            ListIterator<Interview> iterator = interviews.listIterator();      
                   
            BaseFont font = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
-           Font bfBold12 = new Font(font, 11, Font.BOLD, new BaseColor(0, 0, 0)); 
-           Font bf12 = new Font(font, 10);  
+           Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
+           Font bf12 = new Font(font, 10, Font.ITALIC);  
           
-           PdfPTable table = new PdfPTable(new float[]{1.5f, 1f, 1f, 1f, 1f}); 
+           PdfPTable table = new PdfPTable(new float[]{2f, 1.5f, 1.5f, 1.5f}); 
            table.setWidthPercentage(100f);
-                 
+                           
            BaseColor fColor = BaseColor.BLACK;
-           BaseColor bColor = BaseColor.BLUE;
+           BaseColor bColor = WebColors.getRGBColor("#99CC99");
+           
            insertCell(table, "Время", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);
-           insertCell(table, "Зарегестрировано", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);
-           insertCell(table, "Зарегестрировано, %", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);
-           insertCell(table, "Свободно", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);
-           insertCell(table, "Свободно, %", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);
+           insertCell(table, "Зарегестрировано", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);       
+           insertCell(table, "Свободно", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);   
+           insertCell(table, "Зарегестрировано,%", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor); 
            table.setHeaderRows(1); 
                  
-                         
+           int i = 0;              
            while(iterator.hasNext()){
+                    if(i%2 == 0) {
+                   bColor = WebColors.getRGBColor("#99CCCC"); } 
+                    else {
+                   bColor = WebColors.getRGBColor("#CCFFCC");}                      
                      
                     Interview interview = iterator.next();
                     List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-                    int amountForms =  (forms == null? 0: forms.size());                 
-                    
-                                         
-                    insertCell(table, dateFormat.format(interview.getStartDate()), Element.ALIGN_LEFT, 1, bf12, fColor, bColor);
-                    insertCell(table, "" + amountForms, Element.ALIGN_RIGHT, 1, bf12, fColor, bColor);
-                    insertCell(table, "This is Customer Number ABC00" + 1, Element.ALIGN_RIGHT, 1, bf12, fColor, bColor);
-                    insertCell(table, "" + (interview.getMaxNumber() - amountForms), Element.ALIGN_RIGHT, 1, bf12, fColor, bColor);
-                    insertCell(table, "This is Customer Number ABC00" + 1, Element.ALIGN_RIGHT, 1, bf12, fColor, bColor);
-
+                    int amountForms =  (forms == null? 0: forms.size());              
+                                                             
+                    insertCell(table, dateFormat.format(interview.getStartDate()), Element.ALIGN_CENTER, 1, bf12, fColor, bColor);
+                    insertCell(table, "" + amountForms, Element.ALIGN_CENTER, 1, bf12, fColor, bColor);                    
+                    insertCell(table, "" + (interview.getMaxNumber() - amountForms), Element.ALIGN_CENTER, 1, bf12, fColor, bColor);
+                    insertCell(table, String.format("%.2f", ((double)amountForms*100/interview.getMaxNumber())), Element.ALIGN_CENTER, 1, bf12, fColor, bColor);
+                    i++;
            }   
 
            return  table;
@@ -144,10 +163,11 @@ private void insertCell(PdfPTable table, String text, int align, int colspan, Fo
         PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font)); 
         cell.setBackgroundColor(bColor);
         cell.setHorizontalAlignment(align);        
-        cell.setColspan(colspan);      
+        cell.setColspan(colspan);   
+        cell.setBorderColor(WebColors.getRGBColor("#999966"));
         if(text.trim().equalsIgnoreCase("")){
          cell.setMinimumHeight(10f);
-        }List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+        }
         table.addCell(cell);
    
    } 
