@@ -15,23 +15,9 @@ import java.util.List;
  */
 public interface DAOInterviewer {
     
-    /**
-     * Returns forms of students which don't have marks from this interviewer
-     * @param idInterview id of interview assigned for students
-     * @param interviewerUsername username of interviewer 
-     * @return list of form objects related to the specified interview
-     */
-    List<Form> getFormsWithoutMark(int idInterview, String interviewerUsername);
+    List<Form> getAllBasicForms();
     
-    /**
-     * Returns list of form objects related to the specified interview and
-     * have marks from specified interviewer
-     * @param idInterview id of interview assigned for students
-     * @param interviewerUsername username of interviewer 
-     * @return list of form objects related to the specified interview and
-     * have marks from specified interviewer
-     */
-    List<Form> getFormsWithMark(int idInterview, String interviewerUsername);
+    List<Form> getAllFormsByInterview(int idInterview);
     
     /**
      * Returns mark which interviewer gave to the student and which is presented

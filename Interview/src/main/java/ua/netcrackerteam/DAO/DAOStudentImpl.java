@@ -63,8 +63,8 @@ public class DAOStudentImpl implements DAOStudent
 //        HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
 
         //Test getting form by user name          
-//        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("briarey");
-//        System.out.println(form.getUser().getIdUser());
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("Tresh");
+        System.out.println(form.getUser().getIdUser());
          
         //Test how to get form by form id
 //         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -77,20 +77,20 @@ public class DAOStudentImpl implements DAOStudent
 //        System.out.println(forms);
         
         //Test getting user email by username
-        String email = new DAOStudentImpl().getEmailByUserName("FirstLogin");
-        System.out.println(email);
+//        String email = new DAOStudentImpl().getEmailByUserName("FirstLogin");
+//        System.out.println(email);
         
         
     }
     
     /**
      * Returns Form object appropriate to certain user by user id specified
+     * Returns basic form. So if user has few forms the basic one is returned
      * @param idUser - user id, whose form is looked
      * @return Returns Form object of the user with id specified in parameter idUser
-     */
-    @Override
+     */   
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public Form getFormByUserId(int idUser) {
+    private Form getFormByUserId(int idUser) {
         Session session = null;
         Query query;        
         Form form = null;
