@@ -1,10 +1,12 @@
 package ua.netcrackerteam.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.interceptor.Interceptors;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
@@ -14,38 +16,43 @@ import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
  */
 public class DAOInterviewerImpl implements DAOInterviewer
 {
+    public static void main(String[] args)
+    {
+//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//        List<Form> forms = interviewer.getAllBasicForms();
+//        System.out.println(forms);
+        
+        
+//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//        List<Form> forms = interviewer.getAllFormsByInterview(4);
+//        System.out.println(forms);
+        
+        
+//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//        String mark = interviewer.getStudentInterviewMark(116, "interMaks");
+//        System.out.println(mark);
+        
+        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+        interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
+        System.out.println("blabla");
+        
+    }
     
-    /**
-     * Returns forms of students which don't have marks from this interviewer
-     * @param idInterview id of interview assigned for students
-     * @param interviewerUsername username of interviewer 
-     * @return list of form objects related to the specified interview
-     */    
+    
     @Override
-    @Interceptors(ShowHibernateSQLInterceptor.class)
-    public List<Form> getFormsWithoutMark(int idInterview, String interviewerUsername) {
-//        select f.id_form from form f, interview i
-//        where 
-//        f.id_interview = i.id_interview
-//        minus
-//        select f.id_form from form f, interview i, interview_res ir
-//        where f.id_form = ir.id_form and
-//        f.id_interview = i.id_interview
-//        and ir.score is not null;
-
+    public List<Form> getAllBasicForms()
+    {
         Session session = null;
-        Query query;        
-        Form form = null;
-        UserList user = null;
-        int idUser=0;
+        Query query;                
+        List<Form> formList = null;        
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from UserList "                                        
-                                        + "where userName = '" + "userName" + "'");
-            user = (UserList) query.uniqueResult();
-            idUser = user.getIdUser();           
+            session.beginTransaction();            
+            query = session.createQuery("from Form f where f.status.name ="
+                    + " 'Записан на собеседование'");
+            formList =  query.list();
+            
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -53,29 +60,32 @@ public class DAOInterviewerImpl implements DAOInterviewer
                 session.close();
             }
         }
-        throw new UnsupportedOperationException("Not supported yet.");        
+        return formList;    
     }
-    
-    
 
-    /**
-     * Returns list of form objects related to the specified interview and
-     * have marks from specified interviewer
-     * @param idInterview id of interview assigned for students
-     * @param interviewerUsername username of interviewer 
-     * @return list of form objects related to the specified interview and
-     * have marks from specified interviewer
-     */
-    @Override
-    @Interceptors(ShowHibernateSQLInterceptor.class)
-    public List<Form> getFormsWithMark(int idInterview, String interviewerUsername) {
-//        select f.id_form from form f, interview i, interview_res ir
-//        where f.id_form = ir.id_form and
-//        f.id_interview = i.id_interview
-//        and ir.score is not null;
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
+    @Override
+    public List<Form> getAllFormsByInterview(int idInterview) {
+        Session session = null;
+        Query query;                
+        List<Form> formList = null;        
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();            
+            query = session.createQuery("from Form where interview = "
+                    + idInterview);
+            formList =  query.list();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return formList;
+    }
     
 
     /**
@@ -88,7 +98,27 @@ public class DAOInterviewerImpl implements DAOInterviewer
     @Override
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public String getStudentInterviewMark(int idForm, String interviewerUsername) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Session session = null;
+        Query query;                
+        InterviewRes interviewRes = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();            
+            query = session.createQuery("from InterviewRes where form = " 
+                    + idForm
+                    + " and user = (select idUser from UserList where user_name = '"
+                    +  interviewerUsername +"')");
+            interviewRes =  (InterviewRes) query.uniqueResult();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return interviewRes.getScore();
     }
     
     
@@ -102,7 +132,30 @@ public class DAOInterviewerImpl implements DAOInterviewer
     @Override
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public void saveStudentInterviewMark(int idForm, String interviewerUsername, String mark) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Session session = null;
+        Query query;
+        Transaction transaction = null;
+        InterviewRes interviewRes = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            query = session.createQuery("from InterviewRes where form = " 
+                    + idForm
+                    + " and user = (select idUser from UserList where user_name = '"
+                    +  interviewerUsername +"')");
+            interviewRes =  (InterviewRes) query.uniqueResult();
+            interviewRes.setScore(mark);
+            session.save(interviewRes);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
     }
     
+
 }

@@ -26,14 +26,14 @@ public class InterviewRes implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_FORM")
-    private Form idForm;
+    private Form form;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_USER")
-    private UserList idUser;
+    private UserList user;
 
     @Column(name= "SCORE")
-    private Double scope;
+    private String score;
 
     public Integer getIdInterviewRes() {
         return idInterviewRes;
@@ -43,28 +43,28 @@ public class InterviewRes implements Serializable {
         this.idInterviewRes = idInterviewRes;
     }
 
-    public Form getIdForm() {
-        return idForm;
+    public Form getForm() {
+        return form;
     }
 
-    public void setIdForm(Form idForm) {
-        this.idForm = idForm;
+    public void setIdForm(Form form) {
+        this.form = form;
     }
 
-    public UserList getIdUser() {
-        return idUser;
+    public UserList getUser() {
+        return user;
     }
 
-    public void setIdUser(UserList idUser) {
-        this.idUser = idUser;
+    public void setIdUser(UserList user) {
+        this.user = user;
     }
 
-    public Double getScope() {
-        return scope;
+    public String getScore() {
+        return score;
     }
 
-    public void setScope(Double scope) {
-        this.scope = scope;
+    public void setScore(String score) {
+        this.score = score;
     }
 
     @Override
@@ -75,9 +75,9 @@ public class InterviewRes implements Serializable {
         InterviewRes that = (InterviewRes) o;
 
         if (idInterviewRes != that.idInterviewRes) return false;
-        if (!idForm.equals(that.idForm)) return false;
-        if (!idUser.equals(that.idUser)) return false;
-        if (!scope.equals(that.scope)) return false;
+        if (!form.equals(that.form)) return false;
+        if (!user.equals(that.user)) return false;
+        if (!score.equals(that.score)) return false;
 
         return true;
     }
@@ -85,9 +85,9 @@ public class InterviewRes implements Serializable {
     @Override
     public int hashCode() {
         int result = idInterviewRes;
-        result = 31 * result + idForm.hashCode();
-        result = 31 * result + idUser.hashCode();
-        result = 31 * result + scope.hashCode();
+        result = 31 * result + form.hashCode();
+        result = 31 * result + user.hashCode();
+        result = 31 * result + score.hashCode();
         return result;
     }
 }
