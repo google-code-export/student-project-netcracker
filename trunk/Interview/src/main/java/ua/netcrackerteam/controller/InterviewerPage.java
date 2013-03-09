@@ -67,11 +67,11 @@ public class InterviewerPage {
     }
     
     public static List<StudentDataShort> searchStudents(String searchFilter, String value) {
+        List<Form> allForms = new DAOInterviewerImpl().search(searchFilter, value);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
+        if(allForms != null) {
+            studentList = getStudentDataList(allForms);
+        }
         return studentList;
-    }
-    
-    public static void main(String[] args) {
-        
     }
 }
