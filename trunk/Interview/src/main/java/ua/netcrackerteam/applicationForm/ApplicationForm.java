@@ -11,6 +11,7 @@ import com.itextpdf.text.pdf.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.Buffer;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,14 +94,14 @@ public class ApplicationForm{
         fields.setField("email 1", studentData.getStudentEmailFirst());
         fields.setField("email 2", studentData.getStudentEmailSecond());
         fields.setField("interestDevelopment", studentData.getStudentInterestDevelopment());
-        fields.setField("interestOther", String.valueOf(studentData.getStudentInterestOther()));//-
+        fields.setField("interestOther", String.valueOf((studentData.getStudentInterestOther() == null? "": studentData.getStudentInterestOther())));
         fields.setField("interestStudy", studentData.getStudentInterestStudy());
         fields.setField("interestWork", studentData.getStudentInterestWork());
         fields.setField("tel", studentData.getStudentTelephone());
         fields.setField("otherContacts", studentData.getStudentOtherContact());
         fields.setField("typeWorkDifferent", studentData.getStudentWorkTypeVarious());
         fields.setField("typeWorkLead", studentData.getStudentWorkTypeManagement());
-        fields.setField("typeWorkOther", String.valueOf(studentData.getStudentWorkTypeOther()));//--
+        fields.setField("typeWorkOther", String.valueOf((studentData.getStudentWorkTypeOther() == null? "": studentData.getStudentWorkTypeOther())));
         fields.setField("typeWorkSales", studentData.getStudentWorkTypeSale());
         fields.setField("typeWorkSpeciality", studentData.getStudentWorkTypeDeepSpec());
         fields.setField("technology1", String.valueOf(studentData.getStudentKnowledgeNetwork()));
@@ -110,9 +111,9 @@ public class ApplicationForm{
         fields.setField("technology5", String.valueOf(studentData.getStudentKnowledgeWeb()));
         fields.setField("technology6", String.valueOf(studentData.getStudentKnowledgeGUI()));
         fields.setField("technology9", String.valueOf(studentData.getStudentKnowledgeProgramDesign()));
-        fields.setField("technology8_1", studentData.getStudentKnowledgeOther1() + " " + studentData.getStudentKnowledgeOther1Mark());
-        fields.setField("technology8_2", studentData.getStudentKnowledgeOther2() + " " + studentData.getStudentKnowledgeOther2Mark());
-        fields.setField("technology8_3", studentData.getStudentKnowledgeOther3() + " " + studentData.getStudentKnowledgeOther3Mark());
+        fields.setField("technology8_1", (studentData.getStudentKnowledgeOther1().equals("")? "": studentData.getStudentKnowledgeOther1() + " " + (int)studentData.getStudentKnowledgeOther1Mark()));
+        fields.setField("technology8_2", (studentData.getStudentKnowledgeOther2().equals("")? "": studentData.getStudentKnowledgeOther2() + " " + (int)studentData.getStudentKnowledgeOther2Mark()));
+        fields.setField("technology8_3", (studentData.getStudentKnowledgeOther3().equals("")? "": studentData.getStudentKnowledgeOther3() + " " + (int)studentData.getStudentKnowledgeOther3Mark()));
         fields.setField("technology7", String.valueOf(studentData.getStudentKnowledgeNetworkProgramming()));
         fields.setField("language1", studentData.getStudentLanguage1());
         fields.setField("language2", studentData.getStudentLanguage2());
@@ -127,24 +128,30 @@ public class ApplicationForm{
         fields.setField("english1", String.valueOf(studentData.getStudentEnglishWriteMark()));
         fields.setField("english2", String.valueOf(studentData.getStudentEnglishReadMark()));
         fields.setField("english3", String.valueOf(studentData.getStudentEnglishSpeakMark()));
-        //fields.setField("aboutCenter", studentData.getStudentHowHearAboutCentre());
+        fields.setField("aboutCenter", getHowHearAboutCentre());
         fields.setField("additional", studentData.getStudentSelfAdditionalInformation());               
     }
+     
+    private String getHowHearAboutCentre(){
         
-    /**
-     * Get photo student for add to the Form
-     * @return Image
-     * @throws BadElementException
-     * @throws MalformedURLException
-     * @throws IOException 
-     */
-    /*public Image reciveImage() throws BadElementException, MalformedURLException, IOException{
+        Collection howHearAboutCentre = studentData.getStudentHowHearAboutCentre();
+        Iterator iterator = howHearAboutCentre.iterator();
         
-        Image img = Image.getInstance(pathImg);
-        img.setAbsolutePosition(70f, 615f);
-        img.scaleToFit(150, 140);        
-        return img; 
-    }*/
+        StringBuilder buffer = new StringBuilder();
+        while(iterator.hasNext()){
+            String temp = iterator.next().toString();           
+            if(temp.equals("Другое (уточните)")){
+                buffer.append(studentData.getStudentHowHearAboutCentreOther());}
+            else{
+                buffer.append(temp);                
+            }
+            buffer.append("; ");
+           
+        }
+        
+        return buffer.toString();
+    }
+ 
     
     public byte[] pdfForView(){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
