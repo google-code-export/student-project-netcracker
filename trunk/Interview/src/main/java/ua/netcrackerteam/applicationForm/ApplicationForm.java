@@ -53,7 +53,7 @@ public class ApplicationForm{
             fillFormData(form);          
             PdfContentByte content = stamper.getOverContent(1);
             Image image = Image.getInstance(studentData.getPhoto());
-            image.scaleToFit(150, 140);  
+            image.scaleAbsolute(130, 130);
             image.setAbsolutePosition(60f, 625f);
             content.addImage(image);        
             stamper.close();
@@ -120,9 +120,9 @@ public class ApplicationForm{
         fields.setField("language3", studentData.getStudentLanguage3());
         fields.setField("mark1", String.valueOf(studentData.getStudentCPlusPlusMark()));
         fields.setField("mark2", String.valueOf(studentData.getStudentJavaMark()));
-        fields.setField("mark3", String.valueOf(studentData.getStudentLanguage1Mark()));
-        fields.setField("mark4", String.valueOf(studentData.getStudentLanguage2Mark()));
-        fields.setField("mark5", String.valueOf(studentData.getStudentLanguage3Mark()));
+        fields.setField("mark3", (studentData.getStudentLanguage1().equals("")? "": String.valueOf(studentData.getStudentLanguage1Mark())));
+        fields.setField("mark4", (studentData.getStudentLanguage2().equals("")? "": String.valueOf(studentData.getStudentLanguage2Mark())));
+        fields.setField("mark5", (studentData.getStudentLanguage3().equals("")? "": String.valueOf(studentData.getStudentLanguage3Mark())));
         fields.setField("project", studentData.getStudentExperienceProjects());
         fields.setField("promises", studentData.getStudentReasonOffer());
         fields.setField("english1", String.valueOf(studentData.getStudentEnglishWriteMark()));
@@ -145,7 +145,7 @@ public class ApplicationForm{
             else{
                 buffer.append(temp);                
             }
-            buffer.append("; ");
+            buffer.append("  ");
            
         }
         
