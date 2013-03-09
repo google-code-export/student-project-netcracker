@@ -12,8 +12,9 @@ import java.util.Locale;
 /**
  * @author krygin
  */
-public class DAOAdminImpl {
+public class DAOAdminImpl implements DAOAdmin {
 
+    @Override
     public void banUserByName(String userName) {
         Session session = null;
         Query re = null;
@@ -39,6 +40,7 @@ public class DAOAdminImpl {
         }
     }
 
+    @Override
     public boolean checkUserBanStatus(String userName){
         Session session = null;
         Query re = null;
@@ -64,6 +66,7 @@ public class DAOAdminImpl {
         return false;
     }
 
+    @Override
     public List getUsersNonBanned() throws SQLException {
         Session session = null;
         Query re = null;
@@ -86,6 +89,7 @@ public class DAOAdminImpl {
         return listOfForms;
     }
 
+    @Override
     public List getUsersBanned() throws SQLException {
         Session session = null;
         Query re = null;
@@ -95,7 +99,7 @@ public class DAOAdminImpl {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            activity = "banned".toUpperCase();;
+            activity = "banned".toUpperCase();
             re = session.createQuery("from UserList where upper(active) = '" + activity + "'");
             listOfForms = re.list();
         } catch (Exception e) {
@@ -108,6 +112,7 @@ public class DAOAdminImpl {
         return listOfForms;
     }
 
+    @Override
     public void activateUserByName(String userName) {
         Session session = null;
         Query re = null;
@@ -133,6 +138,7 @@ public class DAOAdminImpl {
         }
     }
 
+    @Override
     public void resetOnNewPassword(String userName, String password){
         Session session = null;
         Query re = null;
@@ -156,6 +162,7 @@ public class DAOAdminImpl {
         }
     }
 
+    @Override
     public void resetOnNewLogin(String oldUserName, String newUserName){
         Session session = null;
         Query re = null;
@@ -179,6 +186,7 @@ public class DAOAdminImpl {
         }
     }
 
+    @Override
     public void changeUserType(String userName, int newType){
         //prepare data for filling user
         List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", newType);
@@ -204,5 +212,115 @@ public class DAOAdminImpl {
                 session.close();
             }
         }
+    }
+
+    @Override
+    public String checkUserEmail(String userName){
+        Session session = null;
+        Query re = null;
+        UserList userList = null;
+        String userEmail = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            userList = (UserList) re.uniqueResult();
+            userEmail = userList.getEmail();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return userEmail;
+    }
+
+    @Override
+    public String checkUserCategory(String userName){
+        Session session = null;
+        Query re = null;
+        UserList userList = null;
+        String userCategory = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            userList = (UserList) re.uniqueResult();
+            userCategory = userList.getIdUserCategory().getName();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return userCategory;
+    }
+
+    public List getUsersFiltered(int userCategory) throws SQLException {
+        Session session = null;
+        Query re = null;
+        List listOfForms = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(idUserCategory) = " + userCategory);
+            listOfForms = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return listOfForms;
+    }
+
+    public List getUsersSearchResultNonBanned(String searchString){
+        Session session = null;
+        Query re = null;
+        List listOfForms = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where active = 'active' and " +
+                    "(upper(userName) like upper('%" + searchString + "%') or " +
+                    "idUser like '%" + searchString + "%' or upper(email) like upper('%" + searchString + "%'))");
+            listOfForms = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return listOfForms;
+    }
+
+    public List getUsersSearchResultByCategoryNonBanned(String searchString, int userCategory){
+        Session session = null;
+        Query re = null;
+        List listOfForms = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where idUserCategory = " + userCategory + " and active = 'active' and " +
+                    "(upper(userName) like upper('%" + searchString + "%') or " +
+                    "idUser like '%" + searchString + "%' or upper(email) like upper('%" + searchString + "%'))");
+            listOfForms = re.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return listOfForms;
     }
 }

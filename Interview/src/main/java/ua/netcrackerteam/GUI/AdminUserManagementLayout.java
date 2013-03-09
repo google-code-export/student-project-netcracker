@@ -1,6 +1,7 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
@@ -10,10 +11,13 @@ import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.controller.UsersData;
 
+import static com.vaadin.data.Property.ValueChangeEvent;
+
 /**
  * @author krygin
  */
-public class AdminUserManagementLayout extends VerticalLayout implements Button.ClickListener {
+public class AdminUserManagementLayout extends VerticalLayout implements Button.ClickListener, AbstractSelect.NewItemHandler,
+        Property.ValueChangeListener, FieldEvents.BlurListener {
     private final String username;
     private final MainPage mainPage;
     private Accordion accordion;
@@ -26,8 +30,12 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
     private Button banUserButton = new Button             ("Ban user");
     private Button banUsersListButton = new Button        ("Ban list");
     private Button changeUserTypeButton = new Button      ("Change User Type");
-    private Table table;
+    private Button clearSearchButton = new Button         ();
+    private Button searchButton = new Button              ("Search");
+    private Button userActionsButton = new Button         ("Users Actions");
+    private Table tableCommon;
     private UsersData usersData = null;
+    private UsersData usersDataFiltered = null;
     //private Label current = new Label("Selected: -");
     private String currentUser = "noUser";
     private AddNewUserWindow addNewUserWindow = null;
@@ -37,8 +45,15 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
     private BanUserWindow banUserWindow = null;
     private BanUsersListWindow banUsersListWindow = null;
     private ChangeUserTypeWindow changeUserTypeWindow = null;
+    private UsersActionsListWindow usersActionsListWindow;
     private int height;
     private int width = 170;
+    private ComboBox searchUserCategoryComboBox;
+    private static final String[] userTypes = new String[] { "Admin", "HR", "Interviewer", "Student" };
+    private String selectedUserType = "";
+    private Boolean lastAdded = false;
+    private TextField searchField;
+    VerticalLayout tableLayout = new VerticalLayout();
 
     public AdminUserManagementLayout(String username, MainPage mainPage) {
         this.username = username;
@@ -56,6 +71,9 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         banUserButton.setVisible(true);
         banUsersListButton.setVisible(true);
         changeUserTypeButton.setVisible(true);
+        clearSearchButton.setVisible(true);
+        searchButton.setVisible(true);
+        userActionsButton.setVisible(true);
 
         refreshDataButton.setIcon(new ThemeResource("icons/32/reload.png"));
         addNewUserButton.setIcon(new ThemeResource("icons/32/add-user.png"));
@@ -65,30 +83,50 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         banUserButton.setIcon(new ThemeResource("icons/32/ban-user.png"));
         banUsersListButton.setIcon(new ThemeResource("icons/32/ban-list.png"));
         changeUserTypeButton.setIcon(new ThemeResource("icons/32/change-user-type.png"));
+        clearSearchButton.setIcon(new ThemeResource("icons/32/clear.png"));
+        searchButton.setIcon(new ThemeResource("icons/32/search.png"));
+        userActionsButton.setIcon(new ThemeResource("icons/32/monitoring.png"));
 
         addNewUserButton.setWidth(width);
         deleteUserButton.setWidth(width);
-        refreshDataButton.setWidth(width);
+        refreshDataButton.setWidth(190);
         resetUserPasswordButton.setWidth(width);
         resetUserLoginButton.setWidth(width);
         banUserButton.setWidth(width);
         banUsersListButton.setWidth(width);
         changeUserTypeButton.setWidth(width);
+        searchButton.setWidth(130);
+        userActionsButton.setWidth(width);
+
+        deleteUserButton.addListener((Button.ClickListener)this);
+        addNewUserButton.addListener((Button.ClickListener)this);
+        refreshDataButton.addListener((Button.ClickListener)this);
+        resetUserPasswordButton.addListener((Button.ClickListener)this);
+        resetUserLoginButton.addListener((Button.ClickListener)this);
+        banUserButton.addListener((Button.ClickListener)this);
+        banUsersListButton.addListener((Button.ClickListener)this);
+        changeUserTypeButton.addListener((Button.ClickListener)this);
+        searchButton.addListener((Button.ClickListener)this);
+        clearSearchButton.addListener((Button.ClickListener)this);
+        userActionsButton.addListener((Button.ClickListener)this);
+
+        clearSearchButton.setDescription("Click for clear search field");
+        deleteUserButton.setDescription("Click for delete user from base");
+        addNewUserButton.setDescription("Click for add new user in base");
+        refreshDataButton.setDescription("Click for refresh table");
+        resetUserPasswordButton.setDescription("Click for change user password");
+        resetUserLoginButton.setDescription("Click for change user login");
+        banUserButton.setDescription("Click for ban user");
+        banUsersListButton.setDescription("Click for open ban list");
+        changeUserTypeButton.setDescription("Click for change user type");
+        searchButton.setDescription("Click for search in base");
+        userActionsButton.setDescription("Click for watch users actions in program");
 
         userManagementLayout = new VerticalLayout();
         userManagementLayout.setHeight("100%");
         userManagementLayout.setWidth("100%");
         userManagementLayout.setMargin(true, false, false, false);
         addComponent(userManagementLayout);
-
-        deleteUserButton.addListener(this);
-        addNewUserButton.addListener(this);
-        refreshDataButton.addListener(this);
-        resetUserPasswordButton.addListener(this);
-        resetUserLoginButton.addListener(this);
-        banUserButton.addListener(this);
-        banUsersListButton.addListener(this);
-        changeUserTypeButton.addListener(this);
 
         HorizontalSplitPanel splitH = new HorizontalSplitPanel();
         splitH.setStyleName(Runo.SPLITPANEL_REDUCED);
@@ -106,8 +144,8 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         VerticalLayout addButtonsLayout = new VerticalLayout();
         addButtonsLayout.addComponent(addNewUserButton);
 
-        VerticalLayout refreshButtonLayout = new VerticalLayout();
-        refreshButtonLayout.addComponent(refreshDataButton);
+        VerticalLayout userMonitoringLayout = new VerticalLayout();
+        userMonitoringLayout.addComponent(userActionsButton);
 
         VerticalLayout deleteButtonLayout = new VerticalLayout();
         deleteButtonLayout.addComponent(deleteUserButton);
@@ -121,41 +159,67 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         banUserLayout.addComponent(banUserButton);
         banUserLayout.addComponent(banUsersListButton);
 
+        VerticalLayout searchVerticalLayout = new VerticalLayout();
+        searchUserCategoryComboBox = new ComboBox("User category filter for search");
+        for (int i = 0; i < userTypes.length; i++) {
+            searchUserCategoryComboBox.addItem(userTypes[i]);
+        }
+        searchUserCategoryComboBox.setNewItemHandler(this);
+        searchUserCategoryComboBox.setNewItemsAllowed(false);
+        searchUserCategoryComboBox.setImmediate(true);
+        searchUserCategoryComboBox.addListener((Property.ValueChangeListener) this);
+        searchVerticalLayout.addComponent(searchUserCategoryComboBox);
+        HorizontalLayout searchFieldLayout = new HorizontalLayout();
+        searchField = new TextField("Input text for search :");
+        searchField.setRequired(true);
+        searchField.addListener((FieldEvents.BlurListener) this);
+        searchVerticalLayout.addComponent(searchField);
+        searchFieldLayout.addComponent(searchButton);
+        searchFieldLayout.addComponent(clearSearchButton);
+        searchVerticalLayout.addComponent(searchFieldLayout);
+        searchVerticalLayout.addComponent(refreshDataButton);
+
         accordion = new Accordion();
         accordion.setSizeFull();
         accordion.addTab(addButtonsLayout, "Add users");
+        accordion.addTab(searchVerticalLayout, "Search");
         accordion.addTab(modifyUsersLayout, "Modify Users");
-        accordion.addTab(refreshButtonLayout, "Refresh Table");
+        accordion.addTab(userMonitoringLayout, "Monitoring");
         accordion.addTab(banUserLayout, "User Bans");
         accordion.addTab(deleteButtonLayout, "Delete User");
         sidebar.setContent(accordion);
 
-        table = new Table();
-        table.addContainerProperty("#", Integer.class,  null);
-        table.addContainerProperty("User ID", String.class,  null);
-        table.addContainerProperty("Login",  String.class,  null);
-        table.addContainerProperty("e-Mail",  String.class, null);
-        table.addContainerProperty("Status",  String.class, null);
-        table.addContainerProperty("User Type",  String.class, null);
-        table.setSelectable(true);
-        table.setWidth("100%");
-        table.setHeight(height);
-        table.setImmediate(true);
+        tableCommon = new Table();
+        tableCommon.addContainerProperty("#", Integer.class, null);
+        tableCommon.addContainerProperty("User ID", String.class, null);
+        tableCommon.addContainerProperty("Login", String.class, null);
+        tableCommon.addContainerProperty("e-Mail", String.class, null);
+        tableCommon.addContainerProperty("Status", String.class, null);
+        tableCommon.addContainerProperty("User Type", String.class, null);
+        tableCommon.setSelectable(true);
+        tableCommon.setWidth("100%");
+        tableCommon.setHeight(height);
+        tableCommon.setImmediate(true);
+
+        tableCommon.setStyleName("iso3166");
+        tableCommon.setColumnReorderingAllowed(true);
+        tableCommon.setColumnCollapsingAllowed(true);
+
         try {
             usersData = new UsersData();
-            usersData.getUserDataNonBanned();
+            usersData.setUserDataNonBanned();
             int i = 1;
             for (UserList userListIter : usersData.getUsersNonBannedList()){
                 Integer itemId = new Integer(i);
-                table.addItem(new Object[] {i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
+                tableCommon.addItem(new Object[]{i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
                         userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
                 i++;
             }
-            table.addListener(new Table.ValueChangeListener() {
-                public void valueChange(Property.ValueChangeEvent event) {
+            tableCommon.addListener(new Table.ValueChangeListener() {
+                public void valueChange(ValueChangeEvent event) {
                     try {
-                        //current.setValue("Selected: " + table.getContainerProperty(table.getValue(), "Login").getValue());
-                        currentUser = String.valueOf(table.getContainerProperty(table.getValue(), "Login").getValue());
+                        //current.setValue("Selected: " + tableCommon.getContainerProperty(tableCommon.getValue(), "Login").getValue());
+                        currentUser = String.valueOf(tableCommon.getContainerProperty(tableCommon.getValue(), "Login").getValue());
                     } catch (NullPointerException e) {
                         currentUser = "noUser";
                         //current.setValue("Selected: -");
@@ -166,29 +230,103 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
             e.printStackTrace();
         }
 
-        VerticalLayout tableLayout = new VerticalLayout();
         splitH.setSecondComponent(tableLayout);
-
         tableLayout.setMargin(false);
         //tableLayout.addComponent(current);
-        tableLayout.addComponent(table);
+        tableLayout.addComponent(tableCommon);
     }
 
     public void refreshTableData(){
         try {
-            table.removeAllItems();
+            tableCommon.removeAllItems();
             usersData = new UsersData();
-            usersData.getUserDataNonBanned();
+            if(selectedUserType.equals("")){
+                usersData.setUserDataNonBanned();
+                int i = 1;
+                for (UserList userListIter : usersData.getUsersNonBannedList()){
+                    Integer itemId = new Integer(i);
+                    tableCommon.addItem(new Object[]{i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
+                            userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
+                    i++;
+                }
+            } else {
+                usersData.setUserListFilteredNonBanned(selectedUserType);
+                int i = 1;
+                for (UserList userListIter : usersData.getUserListFilteredNonBanned()){
+                    Integer itemId = new Integer(i);
+                    tableCommon.addItem(new Object[]{i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
+                            userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
+                    i++;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshTableDataFiltered(){
+        try {
+            tableCommon.removeAllItems();
+            usersData = new UsersData();
+            usersData.setUserListFilteredNonBanned(selectedUserType);
             int i = 1;
-            for (UserList userListIter : usersData.getUsersNonBannedList()){
+            for (UserList userListIter : usersData.getUserListFilteredNonBanned()){
                 Integer itemId = new Integer(i);
-                table.addItem(new Object[] {i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
+                tableCommon.addItem(new Object[]{i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
                         userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
                 i++;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void refreshTableDataSearchedNonFiltered(){
+        try {
+            tableCommon.removeAllItems();
+            usersData = new UsersData();
+            usersData.setUsersListSearchNonFilteredNonBanned(String.valueOf(searchField.getValue()));
+            int i = 1;
+            for (UserList userListIter : usersData.getUserListSearchNonBannedNonFiltered()){
+                Integer itemId = new Integer(i);
+                tableCommon.addItem(new Object[]{i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
+                        userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
+                i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshTableDataSearchedFiltered(){
+        try {
+            tableCommon.removeAllItems();
+            usersData = new UsersData();
+            usersData.setUsersListSearchFilteredNonBanned(String.valueOf(searchField.getValue()), selectedUserType);
+            int i = 1;
+            for (UserList userListIter : usersData.getUserListSearchNonBannedFiltered()){
+                Integer itemId = new Integer(i);
+                tableCommon.addItem(new Object[]{i, userListIter.getIdUser(), userListIter.getUserName(), userListIter.getEmail(),
+                        userListIter.getActive(), userListIter.getIdUserCategory().getName()}, itemId);
+                i++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void valueChange(ValueChangeEvent event) {
+        if (!lastAdded) {
+            getWindow().showNotification("Selected user type: " + event.getProperty(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+            selectedUserType = String.valueOf(event.getProperty());
+            refreshTableDataFiltered();
+            if (selectedUserType == null) {
+                selectedUserType = "";
+                refreshTableData();
+            }
+        }
+        lastAdded = false;
     }
 
     @Override
@@ -252,6 +390,50 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
                 changeUserTypeWindow = new ChangeUserTypeWindow(this, currentUser);
                 getWindow().addWindow(changeUserTypeWindow);
             }
+        } else if (source == clearSearchButton) {
+            searchField.setValue("");
+            if(selectedUserType.equals("")){
+                refreshTableData();
+            } else {
+                refreshTableDataFiltered();
+            }
+        } else if (source == userActionsButton){
+            usersActionsListWindow = new UsersActionsListWindow(this, mainPage);
+            getWindow().addWindow(usersActionsListWindow);
+        } else if (source == searchButton){
+            if (selectedUserType.equals("")) {
+                if(searchField.getValue().equals("")){
+                    getWindow().showNotification("Please type any text for searching", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                } else {
+                    refreshTableDataSearchedNonFiltered();
+                }
+            }  else {
+                if(searchField.getValue().equals("")){
+                    getWindow().showNotification("Please type any text for searching", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                } else {
+                    refreshTableDataSearchedFiltered();
+                }
+            }
         }
+    }
+
+    /*private boolean isValid() {
+        if(searchField.isValid()) {
+            return true;
+        }
+        return false;
+    }*/
+
+    public void blur(FieldEvents.BlurEvent event) {
+        Object source = event.getComponent();
+        if(source instanceof TextField) {
+            TextField tf = (TextField) source;
+            tf.isValid();
+        }
+    }
+
+    @Override
+    public void addNewItem(String newItemCaption) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

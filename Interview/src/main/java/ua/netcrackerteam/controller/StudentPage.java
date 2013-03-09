@@ -350,7 +350,7 @@ public class StudentPage {
     public static void addNewForm(StudentData newStudentData, String userName, int statusParam) {
 
         DAOStudentImpl currDAOStImpl = new DAOStudentImpl();
-        DAOCommon currDAOComm = new DAOCommon();
+        DAOCommonImpl currDAOComm = new DAOCommonImpl();
 
         Form newForm = new Form();
         newForm.setFirstName        (newStudentData.getStudentFirstName());

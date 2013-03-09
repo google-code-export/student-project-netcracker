@@ -84,7 +84,7 @@ public class BanUsersListWindow extends Window implements Button.ClickListener{
         //table.setMultiSelect(true);
         try {
             usersData = new UsersData();
-            usersData.getUserDataBanned();
+            usersData.setUserDataBanned();
             int i = 1;
             for (UserList userListIter : usersData.getUsersBannedList()){
                 Integer itemId = new Integer(i);
@@ -116,7 +116,7 @@ public class BanUsersListWindow extends Window implements Button.ClickListener{
         try {
             table.removeAllItems();
             usersData = new UsersData();
-            usersData.getUserDataBanned();
+            usersData.setUserDataBanned();
             int i = 1;
             for (UserList userListIter : usersData.getUsersBannedList()){
                 Integer itemId = new Integer(i);

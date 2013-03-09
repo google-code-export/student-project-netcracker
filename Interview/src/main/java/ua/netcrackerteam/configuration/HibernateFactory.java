@@ -7,7 +7,7 @@ import ua.netcrackerteam.DAO.*;
  */
 public class HibernateFactory {
     
-    private static DAOCommon commonDao = null;
+    private static DAOCommonImpl commonDao = null;
     private static DAOStudentImpl studentDAO = null;    
     private static InterviewDAOImpl interviewDAO = null;
     private static DAOAdminImpl adminDAO = null;
@@ -21,9 +21,9 @@ public class HibernateFactory {
         return instance;
     }
 
-    public DAOCommon getCommonDao(){
+    public DAOCommonImpl getCommonDao(){
         if(commonDao == null){
-            commonDao = new DAOCommon();
+            commonDao = new DAOCommonImpl();
         }
         return commonDao;
     }

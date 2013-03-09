@@ -103,11 +103,16 @@ public class SettingsLayout extends VerticalLayout implements Button.ClickListen
         if (b == saveButton) {
             if (isValid()){
                 if (!(newEmail.getValue().equals(""))){
-                    GeneralController.setNewEmail(userName, String.valueOf(newEmail));
-                    getWindow().showNotification("Изменение электронной почты юзера завершено успешно! " +
-                            "На email " + newEmail + " выслано тестовое письмо.", Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    refrachTextField();
-                    refreshLable();
+                    if (!GeneralController.checkUserEmail(userName, String.valueOf(newEmail))){
+                        GeneralController.setNewEmail(userName, String.valueOf(newEmail));
+                        getWindow().showNotification("Изменение электронной почты юзера завершено успешно! " +
+                                "На email " + newEmail + " выслано тестовое письмо.", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                        refrachTextField();
+                        refreshLable();
+                    } else {
+                        getWindow().showNotification("У Вас уже такой email - " + newEmail.toString().trim() + ". " +
+                                "Введите пожалуйста другой.", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    }
                 } else {
                     getWindow().showNotification("Введите имейл для изменения", Window.Notification.TYPE_TRAY_NOTIFICATION);
                 }

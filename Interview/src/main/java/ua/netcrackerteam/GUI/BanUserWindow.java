@@ -30,7 +30,7 @@ public class BanUserWindow extends Window implements Button.ClickListener{
         layout.setMargin(true);
 
         banButton = new Button("ban");
-        cancelButton = new Button("cancelButton");
+        cancelButton = new Button("cancel");
         message = new Label("Вы действительно хотите забанить " + currentUser + " ?");
 
         banButton.setVisible(true);
