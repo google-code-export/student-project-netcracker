@@ -102,6 +102,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         saveEdit.setWidth("150");
         layout.setComponentAlignment(saveEdit, Alignment.TOP_CENTER);
         saveEdit.addListener(new ButtonsListener());
+        
     }
 
     @Override
@@ -141,4 +142,6 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             }
         }
     }
+    
+    
 }
