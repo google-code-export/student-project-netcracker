@@ -4,12 +4,21 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.terminal.StreamResource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import ua.netcrackerteam.applicationForm.ReportAmountRegistrationForms;
 
 /**
  * Panel for HR view
@@ -24,9 +33,11 @@ public class MainPanelHR extends MainPanel{
     private RichTextArea editor = new RichTextArea();
     private int height;
     private SettingsLayout settingsLayout;
+    private final MainPage mainPage;
     
     public MainPanelHR(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
+        this.mainPage = mainPage;
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
@@ -39,8 +50,8 @@ public class MainPanelHR extends MainPanel{
         tabSheet.addTab(blanksLo,"Анкеты");
         interviewsLo = new VerticalLayout();
         tabSheet.addTab(interviewsLo,"Собеседования");
-        reportsLo = new VerticalLayout();
-        tabSheet.addTab(reportsLo,"Статистика");
+        final Component c2 = new VerticalLayout();
+        tabSheet.addTab(c2,"Статистика");
         settingsLo = new VerticalLayout();
         tabSheet.addTab(settingsLo,"Настройки");
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
@@ -56,9 +67,10 @@ public class MainPanelHR extends MainPanel{
                 }  else if (source.getSelectedTab() == interviewsLo) {
                    // settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
                     //source.replaceComponent(c2, settingsLayout);
-                }  else if (source.getSelectedTab() == reportsLo) {
-                    // settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
-                    //source.replaceComponent(c2, settingsLayout);
+                }  else if (source.getSelectedTab() == c2) {
+                     reportsLo = new VerticalLayout();
+                     fillReportsLayout();
+                     source.replaceComponent(c2, reportsLo);
                 }  else if (source.getSelectedTab() == settingsLo) {
                     settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
                     source.replaceComponent(settingsLo, settingsLayout);
@@ -104,11 +116,39 @@ public class MainPanelHR extends MainPanel{
         
     }
 
-    private void fillReportsLayout() {
-        
-    }
+    
 
     private void fillSettingsLayout() {
         
     }*/
+    
+    ///// Test component for Tanya
+    
+    private void fillReportsLayout() {
+        Link pdfLink = getPDFLink();
+        reportsLo.addComponent(pdfLink);
+    }
+    private class PdfStreamSource implements StreamResource.StreamSource {
+            
+        @Override
+        public InputStream getStream() {
+            return new ByteArrayInputStream(new ReportAmountRegistrationForms().viewReport());
+        } 
+    }
+    private Link getPDFLink() {
+        StreamResource resource = new StreamResource(new PdfStreamSource(), "form.pdf", mainPage);
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String filename = "form-" + df.format(new Date()) + ".pdf";
+        resource.setFilename(filename);
+        resource.setCacheTime(0);
+        Link pdfLink = new Link("Тест",resource);
+        pdfLink.setTargetName("_blank");
+        pdfLink.setTargetWidth(600);
+        pdfLink.setTargetHeight(800);
+        pdfLink.setTargetBorder(Link.TARGET_BORDER_NONE);
+        pdfLink.setDescription("Временно");
+        ThemeResource icon = new ThemeResource("icons/32/document-pdf.png");
+        pdfLink.setIcon(icon);
+        return pdfLink;
+    }
 }
