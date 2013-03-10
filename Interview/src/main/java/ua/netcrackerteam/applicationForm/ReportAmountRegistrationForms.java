@@ -4,32 +4,12 @@
  */
 package ua.netcrackerteam.applicationForm;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.html.WebColors;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.hibernate.metamodel.relational.Loggable;
 import ua.netcrackerteam.DAO.Form;
 import ua.netcrackerteam.DAO.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
@@ -40,141 +20,167 @@ import ua.netcrackerteam.configuration.HibernateFactory;
  */
 public class ReportAmountRegistrationForms implements TypeOfViewReport{
     
-    private final static String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/times.ttf";
-    private static final String path = "C:/Report.pdf";
-    private static final String pathImage = "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/Logotip.png";
-
-    public void viewReport(ArrayList dataForView) {
-        
-       Document document = new Document();
-       PdfWriter writer = null;  
- 
-        try {
-           
-           BaseFont bf = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
-           Font fontTitle = new Font(bf, 16, Font.BOLDITALIC);
-           Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
-           
-           writer = PdfWriter.getInstance(document , new FileOutputStream(path));   
-           document.addCreationDate();
-           document.addProducer();
-           document.addTitle("Статистика зарегестрированных студентов");
-           document.setPageSize(PageSize.A4);
-           document.open();  
-           
-           PdfPTable table = new PdfPTable(2);    
-           //Image
-           PdfPCell cellImage = new PdfPCell(Image.getInstance(pathImage)); 
-           cellImage.setBorder(Rectangle.NO_BORDER);
-           cellImage.setHorizontalAlignment(Element.ALIGN_RIGHT);
-           //Create data
-           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
-           String currentDate = dateFormat.format(java.util.Calendar.getInstance().getTime());
-           PdfPCell cellDateCreate = new PdfPCell(new Phrase(currentDate, fontCurrentDate));
-           cellDateCreate.setBorder(Rectangle.NO_BORDER);
-           cellDateCreate.setVerticalAlignment(Element.ALIGN_TOP);
-           //title
-           PdfPCell cellTitle = new PdfPCell(new Phrase("Статистика зарегестрированных студентов", fontTitle));
-           cellTitle.setHorizontalAlignment(Element.ALIGN_CENTER);
-           cellTitle.setBorder(Rectangle.NO_BORDER);
-           cellTitle.setColspan(2);
-           //table
-           PdfPCell cellTable = new PdfPCell();      
-           cellTable.addElement(createTable());  
-           cellTable.setColspan(2);
-           cellTable.setBorder(Rectangle.NO_BORDER);
-           
-           table.addCell(cellDateCreate);  
-           table.addCell(cellImage);                                 
-           table.addCell(cellTitle);            
-           table.addCell(cellTable);              
-       
-           document.add(table);
-           
-        }catch (DocumentException dex)
-                 {
-                  dex.printStackTrace();
-                 }
-                 catch (Exception ex)
-                 {
-                  ex.printStackTrace();
-                 }
-                 finally
-                 {
-                           if (document != null){                          
-                               document.close();
-                           }
-                           if (writer != null){                          
-                            writer.close();
-                           }
-                 }
-}
-
     
-    private PdfPTable createTable() throws DocumentException, IOException{ 
+    public byte[] viewReport() {  
+    
+        Report report = new Report(getReport());        
+        ByteArrayOutputStream outputStream = report.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
         
-           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");                  
+        byte[] bytes = outputStream.toByteArray();
+        
+        return bytes;
+     }
+    
+     private String[][] getReport(){
+         int column = 4;
+         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
+         
+         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+         if(interviews == null){
+             interviews = new ArrayList<Interview>();
+         }
+         String[][] report = new String[interviews.size() + 2][column];
+         
+         //Fill header
+         report[0][0] = "Дата";     report[0][1] = "Зарегестрировано";
+         report[0][2] = "Свободно"; report[0][3] = "Всего";
+         
+         int summaStudentsSeatsInterviews = 0;
+         int summaSeatsInterviews =0;
+         ListIterator<Interview> iterator = interviews.listIterator(); 
+         for(int i = 1; iterator.hasNext(); i++){ 
+             
+             Interview interview = iterator.next();
+             List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+             int summaForms = (forms == null? 0: forms.size());
+             int summa = interview.getMaxNumber();
+                     
+             report[i][0] = dateFormat.format(interview.getStartDate());
+             report[i][1] = "" + summaForms;
+             report[i][2] = "" + (summa - summaForms);
+             report[i][3] = "" + summa;
+             
+             summaStudentsSeatsInterviews += summaForms;
+             summaSeatsInterviews += summa;
+             
+         }
+         
+         // Fill footer
+         report[report.length - 1][0] = "Итого"; 
+         report[report.length - 1][1] = "" + (summaSeatsInterviews - summaStudentsSeatsInterviews);
+         report[report.length - 1][2] = "" + summaStudentsSeatsInterviews;
+         report[report.length - 1][3] = "" + summaSeatsInterviews;
+         
+         return report;
+     }
+   
+     /*private CategoryDataset getCategoryDataset() {
+            
+        return  DatasetUtilities.createCategoryDataset(new String[]{""}, date, data);         
+
+     }
+     
+     private String[][] getDataReport(){
+         return new String[1][1];
+     }
+    
+    private PdfPTable createTable() throws DocumentException, IOException{        
+               
            List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-           ListIterator<Interview> iterator = interviews.listIterator();      
-                  
-           BaseFont font = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
-           Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
-           Font bf12 = new Font(font, 10, Font.ITALIC);  
-          
-           PdfPTable table = new PdfPTable(new float[]{2f, 1.5f, 1.5f, 1.5f}); 
-           table.setWidthPercentage(100f);
-                           
-           BaseColor fColor = BaseColor.BLACK;
-           BaseColor bColor = WebColors.getRGBColor("#99CC99");
+           if(interviews == null){
+               interviews = new ArrayList<Interview>();
+           }
+           ListIterator<Interview> iterator = interviews.listIterator();  
            
-           insertCell(table, "Время", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);
-           insertCell(table, "Зарегестрировано", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);       
-           insertCell(table, "Свободно", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor);   
-           insertCell(table, "Зарегестрировано,%", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor); 
+            date = new String[interviews.size()];  
+            data = new double[1][interviews.size()];           
+                   
+           PdfPTable table = new PdfPTable(new float[]{2f, 1.5f, 1.5f, 1.5f}); 
+           table.setWidthPercentage(100f);                           
+                    
+           insertCell(table, "Дата", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+           insertCell(table, "Зарегестрировано", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);       
+           insertCell(table, "Свободно", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);   
+           insertCell(table, "Зарегестрировано,%", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor); 
            table.setHeaderRows(1); 
                  
-           int i = 0;              
-           while(iterator.hasNext()){
-                    if(i%2 == 0) {
-                   bColor = WebColors.getRGBColor("#99CCCC"); } 
-                    else {
-                   bColor = WebColors.getRGBColor("#CCFFCC");}                      
+           int i = 0; 
+           int amount = 0;
+           int max = 0;
+           
+           while(iterator.hasNext()){         
+                  
+                    BaseColor bColorLine = (i%2 == 0? bColorTableLine1: bColorTableLine2);                          
                      
                     Interview interview = iterator.next();
                     List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-                    int amountForms =  (forms == null? 0: forms.size());              
-                                                             
-                    insertCell(table, dateFormat.format(interview.getStartDate()), Element.ALIGN_CENTER, 1, bf12, fColor, bColor);
-                    insertCell(table, "" + amountForms, Element.ALIGN_CENTER, 1, bf12, fColor, bColor);                    
-                    insertCell(table, "" + (interview.getMaxNumber() - amountForms), Element.ALIGN_CENTER, 1, bf12, fColor, bColor);
-                    insertCell(table, String.format("%.2f", ((double)amountForms*100/interview.getMaxNumber())), Element.ALIGN_CENTER, 1, bf12, fColor, bColor);
+                    int amountForms =  (forms == null? 0: forms.size());      
+                    
+                    // date[i] = dateFormat.format(interview.getStartDate()); 
+                    // data [0][i] = (double)amountForms*100/interview.getMaxNumber();
+                     
+                    insertCell(table, dateFormat.format(interview.getStartDate()), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
+                    insertCell(table, "" + amountForms, Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);                    
+                    insertCell(table, "" + (interview.getMaxNumber() - amountForms), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
+                    insertCell(table, String.format("%.2f", ((double)amountForms*100/interview.getMaxNumber())), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
                     i++;
-           }   
-
+                    
+                    amount = amount + amountForms;                    
+                    max = max + interview.getMaxNumber();
+           }
+          
+            insertCell(table, "Итого:", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+            insertCell(table, "" + amount, Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+            insertCell(table, "" + (max - amount), Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+            insertCell(table, String.format("%.2f", ((double)amount*100/max)), Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+            
            return  table;
 }
-
-                 
     
-    
-private void insertCell(PdfPTable table, String text, int align, int colspan, Font font, BaseColor fColor, BaseColor bColor){   
+ private String[][] getInterviews(){  
+     
+           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm"); 
+     
+           String[][] report = null;
+       
+           List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+           if(interviews == null)
+               return report;
+           
+           report = new String[interviews.size()][3];
+           ListIterator<Interview> iterator = interviews.listIterator();  
+           
+           while(iterator.hasNext()){ 
+              Interview interview = iterator.next();
+              List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+              int amountForms =  (forms == null? 0: forms.size());  
+           }
+ }
+     
+private void insertCell(PdfPTable table, String text, int align,
+                        int colspan, Font font, 
+                        BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
         
-        font.setColor(fColor);
+        font.setColor(foregroudColor);
+        
         PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font)); 
-        cell.setBackgroundColor(bColor);
+        
+        cell.setBackgroundColor(backgroundColor);
         cell.setHorizontalAlignment(align);        
         cell.setColspan(colspan);   
-        cell.setBorderColor(WebColors.getRGBColor("#999966"));
+        cell.setBorderColor(borderColor);
+        
         if(text.trim().equalsIgnoreCase("")){
          cell.setMinimumHeight(10f);
         }
         table.addCell(cell);
    
-   } 
-    
+   } */
+
+
     public static void main(String arrgs[]) {    
      
-        (new ReportAmountRegistrationForms()).viewReport(new ArrayList());
+        (new ReportAmountRegistrationForms()).viewReport();
     } 
 
     
