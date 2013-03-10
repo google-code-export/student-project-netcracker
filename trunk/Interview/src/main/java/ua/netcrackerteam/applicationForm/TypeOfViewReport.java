@@ -15,5 +15,6 @@ public interface TypeOfViewReport {
      * Reflection of information of report
      * @param dataForView 
      */
-    public void viewReport(ArrayList dataForView);
+    public byte[]  viewReport();
+ 
 }

@@ -12,8 +12,10 @@ import java.util.ArrayList;
  */
 public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
 
-    public void viewReport(ArrayList dataForView) {
+    public byte[] viewReport() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+  
     
 }
