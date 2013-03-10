@@ -201,6 +201,47 @@ public class StudentPage {
         return selectedSomething;
     }
 
+    public static Form searchBlankByUserAndStatus (UserList currUser, Status currStatus) {
+        Session session = null;
+        org.hibernate.Query re = null;
+        Form selectedSomething = null;
+
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from Form where user =" + currUser.getIdUser() + " and status = " + currStatus.getIdStatus());
+            selectedSomething = (Form)re.uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return selectedSomething;
+    }
+
+    public static void DeleteFormByUserAndStatus(Form removableForm) {
+
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.delete(removableForm);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Object> searchSomethingByID (String tableForSearch, String inWhichColumn, int someThing) {
         Session session = null;
@@ -376,8 +417,10 @@ public class StudentPage {
         newForm.setInterestBranchOther(newStudentData.getStudentInterestOther());
         newForm.setInterestBranchSoft(newStudentData.getStudentInterestDevelopment());
         newForm.setInterestOther    (newStudentData.getStudentWorkTypeOther());
+        UserList currUser = null;
         try {
-            newForm.setUser             ((UserList)currDAOComm.getUserByName(userName).get(0));
+            currUser = (UserList)currDAOComm.getUserByName(userName).get(0);
+            newForm.setUser     (currUser);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -399,6 +442,14 @@ public class StudentPage {
         else if(statusParam == 2) {
             List<Object> listOfStatus = searchSomething("Status", "name", "Требует подтверждения");
             Status currStatus = (Status)listOfStatus.get(0);
+            //before adding - we need search for another user's blanks with current status
+            Form oldForm = searchBlankByUserAndStatus(currUser, currStatus);
+            if (!(oldForm == null)) {
+                //before delete we will save student's interview
+                newForm.setInterview(oldForm.getInterview());
+                //OK, we made all the necessary... rest in peace
+                DeleteFormByUserAndStatus(oldForm);
+            }
             newForm.setStatus(currStatus);
         }
         currDAOStImpl.addForm(newForm);

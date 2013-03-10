@@ -3,13 +3,11 @@ package ua.netcrackerteam.DAO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -63,8 +61,8 @@ public class DAOStudentImpl implements DAOStudent
 //        HibernateFactory.getInstance().getStudentDAO().updateForm(form1);
 
         //Test getting form by user name          
-        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("Tresh");
-        System.out.println(form.getUser().getIdUser());
+        /*Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName("Tresh");
+        System.out.println(form.getUser().getIdUser());*/
          
         //Test how to get form by form id
 //         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
