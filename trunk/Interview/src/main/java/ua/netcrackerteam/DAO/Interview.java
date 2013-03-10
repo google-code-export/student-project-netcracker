@@ -35,6 +35,17 @@ public class Interview implements Serializable {
 
     @Column(name= "MAX_NUMBER")
     private Integer maxNumber;
+    
+    @Column(name= "INTERVIEWERS_NUMBER")
+    private Integer interviwerNumber;
+
+    public Integer getInterviwerNumber() {
+        return interviwerNumber;
+    }
+
+    public void setInterviwerNumber(Integer interviwerNumber) {
+        this.interviwerNumber = interviwerNumber;
+    }
 
     public int getIdInterview() {
         return idInterview;
@@ -79,7 +90,7 @@ public class Interview implements Serializable {
         if (!endDate.equals(interview.endDate)) return false;
         if (!maxNumber.equals(interview.maxNumber)) return false;
         if (!startDate.equals(interview.startDate)) return false;
-
+        if (!interviwerNumber.equals(interview.interviwerNumber)) return false;
         return true;
     }
 
@@ -89,6 +100,7 @@ public class Interview implements Serializable {
         result = 31 * result + startDate.hashCode();
         result = 31 * result + endDate.hashCode();
         result = 31 * result + maxNumber.hashCode();
+        result = 31 * result + interviwerNumber.hashCode();
         return result;
     }
 }
