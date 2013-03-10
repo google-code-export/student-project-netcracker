@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import ua.netcrackerteam.applicationForm.ReportAmountRegistrationForms;
+import ua.netcrackerteam.applicationForm.TypeOfViewReport;
 
 /**
  * Panel for HR view
@@ -132,7 +133,8 @@ public class MainPanelHR extends MainPanel{
             
         @Override
         public InputStream getStream() {
-            return new ByteArrayInputStream(new ReportAmountRegistrationForms().viewReport());
+            TypeOfViewReport report = ReportAmountRegistrationForms.getInstance();
+            return new ByteArrayInputStream(report.viewReport());
         } 
     }
     private Link getPDFLink() {
