@@ -80,6 +80,10 @@ public class Form implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_STATUS")
     private Status status;
+    
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_STATUS_ATTEND")
+    private Status statusAttend;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_CATHEDRA")
@@ -320,6 +324,14 @@ public class Form implements Serializable {
     public void setAdverts(Set<Advert> adverts) {
         this.adverts = adverts;
     }
+
+    public Status getStatusAttend() {
+        return statusAttend;
+    }
+
+    public void setStatusAttend(Status statusAttend) {
+        this.statusAttend = statusAttend;
+    }
     
     @Override
     public boolean equals(Object o) {
@@ -357,6 +369,8 @@ public class Form implements Serializable {
         if (photo != null ? !photo.equals(form.photo) : form.photo != null) return false;
         if (reason != null ? !reason.equals(form.reason) : form.reason != null)
             return false;
+        if (statusAttend != null ? !statusAttend.equals(form.statusAttend) : form.statusAttend != null)
+            return false;
         return true;
     }
 
@@ -382,6 +396,7 @@ public class Form implements Serializable {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (interview != null ? interview.hashCode() : 0);
 //        result = 31 * result + (contacts != null ? contacts.hashCode() : 0);
+        result = 31 * result + (statusAttend != null ? statusAttend.hashCode() : 0);
         return result;
     }    
 
