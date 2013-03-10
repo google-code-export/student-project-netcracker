@@ -102,10 +102,22 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     public void changeMode(int mode, String username) {
         userName = username;
         switch(mode) {
-            case 1:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(userName); break;
-            case 2:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(userName); break;
-            case 3:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeInterviewer(userName); break;
-            case 4:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeStudent(userName); break;
+            case 1:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION);
+                changeModeAdmin(userName);
+                GeneralController.setAuditInterviews(2, "User logon to application", getUserName(), new Date());
+                break;
+            case 2:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION);
+                changeModeHR(userName);
+                GeneralController.setAuditInterviews(2, "User logon to application", getUserName(), new Date());
+                break;
+            case 3:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION);
+                changeModeInterviewer(userName);
+                GeneralController.setAuditInterviews(2, "User logon to application", getUserName(), new Date());
+                break;
+            case 4:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION);
+                changeModeStudent(userName);
+                GeneralController.setAuditInterviews(2, "User logon to application", getUserName(), new Date());
+                break;
             default: {
                 Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
                 error.setPosition(Notification.POSITION_CENTERED);

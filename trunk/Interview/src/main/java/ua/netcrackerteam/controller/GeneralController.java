@@ -267,6 +267,7 @@ public class GeneralController implements Logable {
             } else {
                 List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", 5);
                 UserCategory currUserCat = (UserCategory)userTypes.get(0);
+                currUserCat.getIdUSerCategory();
                 AuditInterview auditInterview = new AuditInterview();
                 auditInterview.setAction(currActCat);
                 auditInterview.setActionDescription(actionDescription);

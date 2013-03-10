@@ -46,6 +46,7 @@ class EnterWindow extends Window {
                 userName = event.getLoginParameter("username");
                 if(GeneralController.checkUsersAvailability(userName)){
                     if(GeneralController.checkUserBan(userName)){
+                        GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
                         getWindow().showNotification("Вы забанены ! Уважаемый, " + userName + ", Вы были забанены. \n" +
                                 "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
                     } else {

@@ -31,4 +31,12 @@ public class SendMails implements Logable{
             logger.getLog().error(ex);
         }
     }
+
+    public static void main(String[] args){
+        try {
+            sendMailToUserAfterReg("krygina.ua@gmail.com", "dggdfg", "sff");
+        } catch (EmailException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 }
