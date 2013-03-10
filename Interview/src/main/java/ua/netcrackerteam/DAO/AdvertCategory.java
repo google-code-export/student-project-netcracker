@@ -1,9 +1,8 @@
 package ua.netcrackerteam.DAO;
 
 
-import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  *
@@ -12,7 +11,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="ADVERT_CATEGORY")
 public class AdvertCategory implements Serializable {
-    
     private static final long serialVersionUID = -3254111777751188881L;    
 
     @Id
@@ -23,11 +21,7 @@ public class AdvertCategory implements Serializable {
     
     @Column(name="DESCRIPTION")
     private String description;    
-    
-    
-    
-    
-    
+
     public AdvertCategory() {        
     }
 

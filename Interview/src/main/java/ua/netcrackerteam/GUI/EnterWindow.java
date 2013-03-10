@@ -10,6 +10,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import ua.netcrackerteam.controller.GeneralController;
 
+import java.util.Date;
+
 /**
  * Login form
  * @author Anna Kushnirenko
@@ -18,6 +20,7 @@ class EnterWindow extends Window {
     private LoginForm loginForm = null;
     public static final int MODE_GUEST = -1;
     private int mode = MODE_GUEST;
+    String userName;
 
     public EnterWindow(final MainPage mainPage) {
         setModal(true);
@@ -40,16 +43,24 @@ class EnterWindow extends Window {
         addComponent(layout);
         loginForm.addListener(new LoginForm.LoginListener() {
             public void onLogin(LoginForm.LoginEvent event) {
-                if (GeneralController.checkUserBan(event.getLoginParameter("username"))){
-                    getWindow().showNotification("Вы забанены ! Уважаемый, " + event.getLoginParameter("username") + ", Вы были забанены. \n" +
-                            "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
+                userName = event.getLoginParameter("username");
+                if(GeneralController.checkUsersAvailability(userName)){
+                    if(GeneralController.checkUserBan(userName)){
+                        getWindow().showNotification("Вы забанены ! Уважаемый, " + userName + ", Вы были забанены. \n" +
+                                "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
+                    } else {
+                        GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                        mode = GeneralController.checkLogin(userName, event.getLoginParameter("password"));
+                        mainPage.changeMode(mode, userName);
+                        loginForm.removeListener(this);
+                        EnterWindow.this.close();
+                    }
                 } else {
-                    mode = GeneralController.checkLogin(event.getLoginParameter("username"), event.getLoginParameter("password"));
-                    mainPage.changeMode(mode, event.getLoginParameter("username"));
-                    loginForm.removeListener(this);
-                    EnterWindow.this.close();
+                    GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                    Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
+                    error.setPosition(Notification.POSITION_CENTERED);
+                    getWindow().showNotification(error);
                 }
-
             }
         });
     }

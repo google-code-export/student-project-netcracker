@@ -23,8 +23,9 @@ public class MainPanelHR extends MainPanel{
     private Button edit;
     private RichTextArea editor = new RichTextArea();
     private int height;
+    private SettingsLayout settingsLayout;
     
-    public MainPanelHR(HeaderLayout hlayout, MainPage mainPage) {
+    public MainPanelHR(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
@@ -59,8 +60,8 @@ public class MainPanelHR extends MainPanel{
                     // settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
                     //source.replaceComponent(c2, settingsLayout);
                 }  else if (source.getSelectedTab() == settingsLo) {
-                    // settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
-                    //source.replaceComponent(c2, settingsLayout);
+                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
+                    source.replaceComponent(settingsLo, settingsLayout);
                 }
             }
         });

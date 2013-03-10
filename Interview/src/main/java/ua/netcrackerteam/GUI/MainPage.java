@@ -8,16 +8,15 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.controller.GeneralController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * GUI start class
@@ -37,6 +36,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private EnterWindow enterWindow = null;
     private Panel layoutfull = null;
     private RegistrationWindow regWindow = null;
+    private String userName;
 
     @Override
     public void init() {
@@ -74,6 +74,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             getMainWindow().addWindow(enterWindow);
         } else if (source == exit) {
             getMainWindow().getApplication().close();
+            GeneralController.setAuditInterviews(3, "User logoff from application", getUserName(), new Date());
         } else if (source == registr) {
             if (regWindow == null) {
                 registr.removeListener(this);
@@ -99,11 +100,12 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
      * according the user role
      */
     public void changeMode(int mode, String username) {
+        userName = username;
         switch(mode) {
-            case 1:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(username); break;
-            case 2:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(username); break;
-            case 3:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION);changeModeInterviewer(username); break;
-            case 4:getMainWindow().showNotification("Добро пожаловать, "+username,Notification.TYPE_TRAY_NOTIFICATION);changeModeStudent(username); break;
+            case 1:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeAdmin(userName); break;
+            case 2:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeHR(userName); break;
+            case 3:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeInterviewer(userName); break;
+            case 4:getMainWindow().showNotification("Добро пожаловать, "+userName,Notification.TYPE_TRAY_NOTIFICATION); changeModeStudent(userName); break;
             default: {
                 Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
                 error.setPosition(Notification.POSITION_CENTERED);
@@ -146,6 +148,14 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
  

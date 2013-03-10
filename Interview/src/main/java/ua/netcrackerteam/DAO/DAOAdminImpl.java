@@ -41,6 +41,29 @@ public class DAOAdminImpl implements DAOAdmin {
     }
 
     @Override
+    public boolean checkUserAvailability(String userName){
+        Session session = null;
+        Query re = null;
+        UserList userList = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            if (re.list().isEmpty()){
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return true;
+    }
+
+    @Override
     public boolean checkUserBanStatus(String userName){
         Session session = null;
         Query re = null;
@@ -260,6 +283,7 @@ public class DAOAdminImpl implements DAOAdmin {
         return userCategory;
     }
 
+    @Override
     public List getUsersFiltered(int userCategory) throws SQLException {
         Session session = null;
         Query re = null;
@@ -280,6 +304,7 @@ public class DAOAdminImpl implements DAOAdmin {
         return listOfForms;
     }
 
+    @Override
     public List getUsersSearchResultNonBanned(String searchString){
         Session session = null;
         Query re = null;
@@ -302,6 +327,7 @@ public class DAOAdminImpl implements DAOAdmin {
         return listOfForms;
     }
 
+    @Override
     public List getUsersSearchResultByCategoryNonBanned(String searchString, int userCategory){
         Session session = null;
         Query re = null;
@@ -322,5 +348,65 @@ public class DAOAdminImpl implements DAOAdmin {
             }
         }
         return listOfForms;
+    }
+
+    public void addAudit(AuditInterview auditInterview){
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.save(auditInterview);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public List getAuditInterview(){
+        Session session = null;
+        Query query;
+        List<AuditInterview> auditInterviews = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from AuditInterview where userName is not null");
+            auditInterviews = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return auditInterviews;
+    }
+
+    public int getUserCategoryIDByUserName(String userName){
+        Session session = null;
+        Query re = null;
+        UserList userList = null;
+        int userCategory = 0;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            userList = (UserList) re.uniqueResult();
+            userCategory = userList.getIdUserCategory().getIdUSerCategory();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return userCategory;
     }
 }

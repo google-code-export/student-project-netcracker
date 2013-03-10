@@ -47,7 +47,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
     private ChangeUserTypeWindow changeUserTypeWindow = null;
     private UsersActionsListWindow usersActionsListWindow;
     private int height;
-    private int width = 170;
+    private int width = 200;
     private ComboBox searchUserCategoryComboBox;
     private static final String[] userTypes = new String[] { "Admin", "HR", "Interviewer", "Student" };
     private String selectedUserType = "";
@@ -89,7 +89,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
 
         addNewUserButton.setWidth(width);
         deleteUserButton.setWidth(width);
-        refreshDataButton.setWidth(190);
+        refreshDataButton.setWidth(width);
         resetUserPasswordButton.setWidth(width);
         resetUserLoginButton.setWidth(width);
         banUserButton.setWidth(width);
@@ -187,6 +187,12 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
         accordion.addTab(userMonitoringLayout, "Monitoring");
         accordion.addTab(banUserLayout, "User Bans");
         accordion.addTab(deleteButtonLayout, "Delete User");
+        accordion.addListener(new TabSheet.SelectedTabChangeListener() {
+            @Override
+            public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
+                refreshTableData();
+            }
+        });
         sidebar.setContent(accordion);
 
         tableCommon = new Table();
