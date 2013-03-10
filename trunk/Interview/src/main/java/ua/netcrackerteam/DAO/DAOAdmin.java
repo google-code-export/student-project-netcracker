@@ -27,4 +27,12 @@ public interface DAOAdmin {
     String checkUserEmail(String userName);
 
     String checkUserCategory(String userName);
+
+    List getUsersFiltered(int userCategory) throws SQLException;
+
+    List getUsersSearchResultNonBanned(String searchString);
+
+    List getUsersSearchResultByCategoryNonBanned(String searchString, int userCategory);
+
+    boolean checkUserAvailability(String userName);
 }

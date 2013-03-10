@@ -13,10 +13,10 @@ public class SendMails implements Logable{
             Email email = new SimpleEmail();
             email.setHostName("smtp.gmail.com");
             //email.setSmtpPort(587);
-            email.setSmtpPort(465);
+            email.setSmtpPort(587);
             email.setAuthenticator(new DefaultAuthenticator("NetcrackerTeamOdessaOspu@gmail.com", "12345odessa"));
-            //email.setTLS(true);
-            email.setSSLOnConnect(true);
+            email.setTLS(true);
+            //email.setSSLOnConnect(true);
 
             email.setFrom("NetcrackerTeamOdessaOspu@gmail.com");
             email.setSubject("Registration successful");

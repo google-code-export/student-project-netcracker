@@ -37,7 +37,7 @@ public class DAOCommonImpl implements DAOCommon{
             //---------
             //userList.setIdUserCategory(idUserCategory);
             //+++++++++
-            userList.setIdUserCategory(getUserCategoeyByID(idUserCategory, session));
+            userList.setIdUserCategory(getUserCategoryByID(idUserCategory, session));
             session.save(userList);
             transaction.commit();
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class DAOCommonImpl implements DAOCommon{
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public static UserCategory getUserCategoeyByID(int currUserCategoryID, Session session) throws SQLException {
+    public static UserCategory getUserCategoryByID(int currUserCategoryID, Session session) throws SQLException {
         //Session session = null;
         Query re = null;
         List listOfCategories = null;

@@ -1,6 +1,9 @@
 package ua.netcrackerteam.controller;
 
 
+import ua.netcrackerteam.DAO.ActionCategories;
+import ua.netcrackerteam.DAO.AuditInterview;
+import ua.netcrackerteam.DAO.UserCategory;
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
@@ -12,6 +15,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GeneralController implements Logable {
@@ -171,6 +175,11 @@ public class GeneralController implements Logable {
         HibernateFactory.getInstance().getAdminDAO().activateUserByName(userName);
     }
 
+    public static boolean checkUsersAvailability(String userName){
+        boolean checkUsers = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName);
+        return checkUsers;
+    }
+
     public static boolean checkUserBan(String userName) {
         boolean checkResult = HibernateFactory.getInstance().getAdminDAO().checkUserBanStatus(userName);
         return checkResult;
@@ -240,6 +249,37 @@ public class GeneralController implements Logable {
         return false;
     }
 
+    public static void setAuditInterviews(int actionType, String actionDescription, String userName, Date actionTime){
+        List actionTypes = StudentPage.searchSomethingByID("ActionCategories", "idAction", actionType);
+        ActionCategories currActCat = (ActionCategories)actionTypes.get(0);
+        try{
+            if(GeneralController.checkUsersAvailability(userName)){
+                int userCategory = HibernateFactory.getInstance().getAdminDAO().getUserCategoryIDByUserName(userName);
+                List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", userCategory);
+                UserCategory currUserCat = (UserCategory)userTypes.get(0);
+                AuditInterview auditInterview = new AuditInterview();
+                auditInterview.setAction(currActCat);
+                auditInterview.setActionDescription(actionDescription);
+                auditInterview.setUserName(userName);
+                auditInterview.setUserCategory(currUserCat);
+                auditInterview.setActionDate(actionTime);
+                HibernateFactory.getInstance().getAdminDAO().addAudit(auditInterview);
+            } else {
+                List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", 5);
+                UserCategory currUserCat = (UserCategory)userTypes.get(0);
+                AuditInterview auditInterview = new AuditInterview();
+                auditInterview.setAction(currActCat);
+                auditInterview.setActionDescription(actionDescription);
+                auditInterview.setUserName(userName);
+                auditInterview.setUserCategory(currUserCat);
+                auditInterview.setActionDate(actionTime);
+                HibernateFactory.getInstance().getAdminDAO().addAudit(auditInterview);
+            }
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
    /* public static String checkInputText(String inputText){
         String result = inputText.replaceAll("\n", " ");
         return result;
@@ -252,26 +292,6 @@ public class GeneralController implements Logable {
     }*/
 
     public static void main(String[] args) throws SQLException {
-        setUsualUser("gglex34zfzd2e", "1234556", "sdfsdf@sdfsdf.df");
-        /*String nickName = userNameSplitFromEmail("fdgdfg@gdfgdf.com");
-        System.out.println(nickName);*/
-        /*List<Integer> ids = checkLoginIdUser("admin", "abyrabyrabyr");
-        for(int i = 0; i < ids.size(); i++){
-            System.out.println(ids.get(i));
-        }*/
-
-//        String hashedPass = passwordHashingMD5("abyrabyrabyr");
-//        String hashedPass2 = passwordHashingMD5("abyrabyraby");
-//        String hashedPass3 = passwordHashingMD5("abyrabyrabyr");
-//        String hashedPass4 = passwordHashingMD5("abyrabyrabr");
-//        System.out.println(hashedPass);
-//        System.out.println(hashedPass2);
-//        System.out.println(hashedPass3);
-//        System.out.println(hashedPass4);
-//
-//        List<UserList> userLists = HibernateFactory.getInstance().getCommonDao().getUser();
-//        for (UserList userList : userLists){
-//            System.out.println(userList.getUserName() + "   " + userList.getPassword());
-//        }
+        System.out.println(checkUsersAvailability("klatt"));
     }
 }

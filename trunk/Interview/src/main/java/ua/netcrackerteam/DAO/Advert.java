@@ -1,7 +1,7 @@
 package ua.netcrackerteam.DAO;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  *
@@ -29,11 +29,7 @@ public class Advert implements Serializable {
     
     @Column(name = "OTHER")
     private String other;
-    
-    
-    
-    
-    
+
     public Advert() {        
     }
 

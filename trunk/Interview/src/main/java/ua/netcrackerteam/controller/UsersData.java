@@ -1,5 +1,6 @@
 package ua.netcrackerteam.controller;
 
+import ua.netcrackerteam.DAO.AuditInterview;
 import ua.netcrackerteam.DAO.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
@@ -13,11 +14,19 @@ import java.util.List;
  * @author krygin
  */
 public class UsersData implements Serializable, Logable {
+    private static final long serialVersionUID = -1212126055681181451L;
+
     private List<UserList> usersNonBannedList = null;
     private List<UserList> usersBannedList = null;
     private List<UserList> userListFilteredNonBanned = null;
     private List<UserList> userListSearchNonBannedNonFiltered = null;
     private List<UserList> userListSearchNonBannedFiltered = null;
+    private List<AuditInterview> auditInterviews = null;
+
+    public void setAuditInterviews(){
+        List<AuditInterview> auditInterviews = HibernateFactory.getInstance().getAdminDAO().getAuditInterview();
+        this.setAuditInterviews(auditInterviews);
+    }
 
     public void setUsersListSearchNonFilteredNonBanned(String searchString) {
         List<UserList> userListNonFilteredNonBanned = HibernateFactory.getInstance().getAdminDAO().getUsersSearchResultNonBanned(searchString);
@@ -120,5 +129,41 @@ public class UsersData implements Serializable, Logable {
 
     public void setUserListSearchNonBannedFiltered(List<UserList> userListSearchNonBannedFiltered) {
         this.userListSearchNonBannedFiltered = userListSearchNonBannedFiltered;
+    }
+
+    public List<AuditInterview> getAuditInterviews() {
+        return auditInterviews;
+    }
+
+    public void setAuditInterviews(List<AuditInterview> auditInterviews) {
+        this.auditInterviews = auditInterviews;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UsersData usersData = (UsersData) o;
+        if (userListFilteredNonBanned != null ? !userListFilteredNonBanned.equals(usersData.userListFilteredNonBanned) : usersData.userListFilteredNonBanned != null)
+            return false;
+        if (userListSearchNonBannedFiltered != null ? !userListSearchNonBannedFiltered.equals(usersData.userListSearchNonBannedFiltered) : usersData.userListSearchNonBannedFiltered != null)
+            return false;
+        if (userListSearchNonBannedNonFiltered != null ? !userListSearchNonBannedNonFiltered.equals(usersData.userListSearchNonBannedNonFiltered) : usersData.userListSearchNonBannedNonFiltered != null)
+            return false;
+        if (usersBannedList != null ? !usersBannedList.equals(usersData.usersBannedList) : usersData.usersBannedList != null)
+            return false;
+        if (usersNonBannedList != null ? !usersNonBannedList.equals(usersData.usersNonBannedList) : usersData.usersNonBannedList != null)
+            return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = usersNonBannedList != null ? usersNonBannedList.hashCode() : 0;
+        result = 31 * result + (usersBannedList != null ? usersBannedList.hashCode() : 0);
+        result = 31 * result + (userListFilteredNonBanned != null ? userListFilteredNonBanned.hashCode() : 0);
+        result = 31 * result + (userListSearchNonBannedNonFiltered != null ? userListSearchNonBannedNonFiltered.hashCode() : 0);
+        result = 31 * result + (userListSearchNonBannedFiltered != null ? userListSearchNonBannedFiltered.hashCode() : 0);
+        return result;
     }
 }
