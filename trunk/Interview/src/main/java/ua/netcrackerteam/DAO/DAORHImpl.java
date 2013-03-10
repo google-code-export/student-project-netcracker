@@ -23,4 +23,8 @@ public class DAORHImpl {
 
     }
 
+    public static void deleteBlank(StudentDataShort selectedForm) {
+
+    }
+
 }
