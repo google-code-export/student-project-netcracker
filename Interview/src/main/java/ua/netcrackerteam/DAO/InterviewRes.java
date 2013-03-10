@@ -47,7 +47,7 @@ public class InterviewRes implements Serializable {
         return form;
     }
 
-    public void setIdForm(Form form) {
+    public void setForm(Form form) {
         this.form = form;
     }
 

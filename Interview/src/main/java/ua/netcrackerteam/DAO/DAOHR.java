@@ -17,5 +17,8 @@ public interface DAOHR {
     public List<Form> getAllRegisteredForms();
     public List<Form> getNonVerificatedForms();
     public void verificateForm(int formID);
+    public void deleteForm(int formID);
+    public void setStudentAttendStatus(int statusID, int formID);
+    public List<InterviewRes> getInterviewersMarks(int selectedFormID);
     
 } 
