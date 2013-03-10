@@ -15,8 +15,7 @@ public class DAOHRImpl implements DAOHR{
     public static void main(String[] args) {
         DAOHRImpl test = new DAOHRImpl();
         //test.setHRMark(233, "молодец (HR)", "Hum");
-        List<InterviewRes> list = test.getInterviewersMarks(233);
-        System.out.println("");
+        
     }
 
     @Override
@@ -62,7 +61,7 @@ public class DAOHRImpl implements DAOHR{
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();            
-            query = session.createQuery("from Form where status = 1");
+            query = session.createQuery("from Form where status = 1 and interview is not null");
             formList =  query.list();
         } catch (Exception e) {
             System.out.println(e);
@@ -193,6 +192,29 @@ public class DAOHRImpl implements DAOHR{
             }
         }
         return marks;
+    }
+
+    @Override
+    public String getInterviewerNameByID(int userID) {
+        Session session = null;
+        Query query;                
+        String name = "";        
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();    
+            query = session.createQuery("from UserList"
+                    + " where idUser = " + userID);
+            UserList ul = (UserList) query.uniqueResult();
+            name = ul.getUserName();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return name;
     }
  
 }

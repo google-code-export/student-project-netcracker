@@ -20,5 +20,6 @@ public interface DAOHR {
     public void deleteForm(int formID);
     public void setStudentAttendStatus(int statusID, int formID);
     public List<InterviewRes> getInterviewersMarks(int selectedFormID);
+    public String getInterviewerNameByID(int userID);
     
 } 
