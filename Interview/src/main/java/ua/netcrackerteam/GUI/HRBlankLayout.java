@@ -1,14 +1,17 @@
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.DAO.DAORHImpl;
 import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.StudentDataShort;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +27,19 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private GridLayout blankGridLO;
     private GridLayout searchGridLO;
     private Table tableOfBlanks = new Table();
+    private Button searchButton;
+    private TextField something;
+    private NativeSelect searchSelect;
+    private StudentDataShort selectedValueInTable = null;
+
+
+    private HorizontalLayout    buttonPanel;
+    private Label               markLabel;
+    private TextArea            markTextArea;
+    private Button              markSaveButton;
+    private Button              viewAndPrintButton;
+    private Button              deleteButton;
+    private Button              editButton;
 
     private static final List<String> categories = Arrays.asList(new String[]{"Фамилия", "Имя", "Номер анкеты",
             "ВУЗ", "Курс", "Факультет", "Кафедра"});
@@ -49,8 +65,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         blankGridLO = new GridLayout(1,1);
         blankGridLO.setSpacing(true);
         FillBlankGridLO();
-        //create grid layout for search, filling it with native select
-        //Label labelSearch = new Label("Search");
         searchGridLO = new GridLayout(1,1);
         searchGridLO.setSpacing(true);
         FillSearchGridLO();
@@ -69,19 +83,27 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        Button source = event.getButton();
+        if (source == searchButton) {
+            onButtonSearchClick();
+        }
+    }
+
+    private void onButtonSearchClick() {
+        String somethingValue = (String)something.getValue();
+        String inWhichColumn = (String)searchSelect.getValue();
+        List <StudentDataShort> searchResults = DAORHImpl.searchSomethingSomewere(inWhichColumn, somethingValue);
+        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, searchResults);
+        tableOfBlanks.setContainerDataSource(bean);
     }
 
     private void FillBlankGridLO(){
-        //Button allBlanks = new Button("Все анкеты");
-        //allBlanks.addListener(this);
-        Label allBlanks = new Label("Список анкет приведен в таблице справа");
-        blankGridLO.addComponent(allBlanks);
+
     }
 
     private void FillSearchGridLO(){
         //creating native select
-        NativeSelect searchSelect = new NativeSelect("Критерии поиска:");
+        searchSelect = new NativeSelect("Критерии поиска:");
         //filling ns
         for (String currCategory:categories) {
             searchSelect.addItem(currCategory);
@@ -92,13 +114,13 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         //add to LO
         searchGridLO.addComponent(searchSelect);
         //add text field
-        TextField something = new TextField();
+        something = new TextField();
         something.setInputPrompt("Что ищем...");
         something.setImmediate(true);
         something.setRequired(true);
         searchGridLO.addComponent(something);
         //add search buttom
-        Button searchButton = new Button("Найти");
+        searchButton = new Button("Найти");
         searchButton.addListener(this);
         searchGridLO.addComponent(searchButton);
     }
@@ -129,7 +151,94 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         //headers
         tableOfBlanks.setColumnHeaders(COL_HEADERS_RUSSIAN);
 
+        tableOfBlanks.addListener(new Table.ValueChangeListener() {
+            public void valueChange(Property.ValueChangeEvent event) {
+                Set<?> value = (Set<?>) event.getProperty().getValue();
+                if (null == value || value.size() == 0) {
+                    selectedValueInTable = (StudentDataShort) value;
+                }
+            }
+        });
+
         rightPanel.addComponent(tableOfBlanks);
 
+        markLabel = new Label("Введите оценку:");
+        rightPanel.addComponent(markLabel);
+        markTextArea = new TextArea();
+        markTextArea.setRows(5);
+        markTextArea.setColumns(40);
+        markTextArea.setRequired(true);
+        rightPanel.addComponent(markTextArea);
+
+        markSaveButton = new Button("Сохранить оценку");
+        markSaveButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                String insertedBlankValue = "";
+                if (!insertedBlankValue.equals("")&&(!(selectedValueInTable==null))) {
+                    DAORHImpl.setBlankMark(selectedValueInTable, insertedBlankValue);
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед сохранением выберите анкету из списка и введите оценку!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        rightPanel.addComponent(markSaveButton);
+
+        //button panels
+        buttonPanel = new HorizontalLayout();
+        viewAndPrintButton = new Button("Распечатать анкету");
+        viewAndPrintButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(selectedValueInTable==null)) {
+                    //some actions
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед печатью выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        buttonPanel.addComponent(viewAndPrintButton);
+        deleteButton = new Button("Удалить анкету");
+        deleteButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(selectedValueInTable==null)) {
+                    //some actions
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед удалением выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        buttonPanel.addComponent(deleteButton);
+        editButton = new Button("Редактировать анкету");
+        editButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(selectedValueInTable==null)) {
+                    //some actions
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед редактированием выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        buttonPanel.addComponent(editButton);
+        rightPanel.addComponent(buttonPanel);
     }
+
 }
