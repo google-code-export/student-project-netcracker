@@ -14,8 +14,9 @@ public class DAOHRImpl implements DAOHR{
     
     public static void main(String[] args) {
         DAOHRImpl test = new DAOHRImpl();
-        //test.setHRMark(239, "молодец", "Hum");
-        test.verificateForm(202);
+        //test.setHRMark(233, "молодец (HR)", "Hum");
+        List<InterviewRes> list = test.getInterviewersMarks(233);
+        System.out.println("");
     }
 
     @Override
@@ -36,7 +37,7 @@ public class DAOHRImpl implements DAOHR{
             transaction = session.beginTransaction();    
             query = session.createQuery("from Form where idForm = " + selectedFormID);
             Form selectedForm = (Form) query.uniqueResult();
-            interviewRes.setIdForm(selectedForm);
+            interviewRes.setForm(selectedForm);
             query = session.createQuery("from UserList where userName = '" +userNameHR+"'");
             UserList hr = (UserList) query.uniqueResult();
             interviewRes.setIdUser(hr);
@@ -123,7 +124,75 @@ public class DAOHRImpl implements DAOHR{
             }
         }
     }
-    
-    
+
+    @Override
+    public void deleteForm(int formID) {
+        Session session = null;
+        Query query = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();   
+            query = session.createQuery("from Form where idForm = " + formID);
+            Form selectedForm = (Form) query.uniqueResult();
+            session.delete(selectedForm);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public void setStudentAttendStatus(int statusID, int formID) {
+        Session session = null;
+        Query query = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();   
+            query = session.createQuery("from Form where idForm = " + formID);
+            Form selectedForm = (Form) query.uniqueResult();
+            query = session.createQuery("from Status where idStatus = " + statusID);
+            Status status = (Status) query.uniqueResult();
+            selectedForm.setStatusAttend(status);
+            session.save(selectedForm);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public List<InterviewRes> getInterviewersMarks(int selectedFormID) {
+        Session session = null;
+        Query query;                
+        List<InterviewRes> marks = null;        
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();    
+            query = session.createQuery("from InterviewRes"
+                    + " where form = " + selectedFormID + " and user IN "
+                    + "(select idUser from UserList where idUserCategory = 3)");
+            marks = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return marks;
+    }
  
 }
