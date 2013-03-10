@@ -222,26 +222,6 @@ public class StudentPage {
         return selectedSomething;
     }
 
-    public static void DeleteFormByUserAndStatus(Form removableForm) {
-
-        Session session = null;
-        Transaction transaction = null;
-
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            session.delete(removableForm);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }
-
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Object> searchSomethingByID (String tableForSearch, String inWhichColumn, int someThing) {
         Session session = null;
@@ -448,7 +428,7 @@ public class StudentPage {
                 //before delete we will save student's interview
                 newForm.setInterview(oldForm.getInterview());
                 //OK, we made all the necessary... rest in peace
-                DeleteFormByUserAndStatus(oldForm);
+                DAOStudentImpl.DeleteFormByUserAndStatus(oldForm);
             }
             newForm.setStatus(currStatus);
         }

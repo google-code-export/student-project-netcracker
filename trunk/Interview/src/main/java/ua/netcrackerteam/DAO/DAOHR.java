@@ -12,6 +12,10 @@ import java.util.List;
  */
 public interface DAOHR {
     
-    List<Form> search(String category, String value); 
-    void setHRMark(int selectedFormID, String insertedMark, String userNameHR);
-}
+    public List<Form> search(String category, String value); 
+    public void setHRMark(int selectedFormID, String insertedMark, String userNameHR);
+    public List<Form> getAllRegisteredForms();
+    public List<Form> getNonVerificatedForms();
+    public void verificateForm(int formID);
+    
+} 

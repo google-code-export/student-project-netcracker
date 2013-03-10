@@ -5,7 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
-import ua.netcrackerteam.DAO.DAORHImpl;
+import ua.netcrackerteam.DAO.DAOHRImpl;
 import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.StudentDataShort;
 
@@ -92,9 +92,9 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private void onButtonSearchClick() {
         String somethingValue = (String)something.getValue();
         String inWhichColumn = (String)searchSelect.getValue();
-        List <StudentDataShort> searchResults = DAORHImpl.searchSomethingSomewere(inWhichColumn, somethingValue);
-        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, searchResults);
-        tableOfBlanks.setContainerDataSource(bean);
+        //List <StudentDataShort> searchResults = DAOHRImpl.searchSomethingSomewere(inWhichColumn, somethingValue);
+        //BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, searchResults);
+        //tableOfBlanks.setContainerDataSource(bean);
     }
 
     private void FillBlankGridLO(){
@@ -176,7 +176,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             public void buttonClick(Button.ClickEvent event) {
                 String insertedBlankValue = "";
                 if (!insertedBlankValue.equals("")&&(!(selectedValueInTable==null))) {
-                    DAORHImpl.setBlankMark(selectedValueInTable, insertedBlankValue);
+                    //DAOHRImpl.setBlankMark(selectedValueInTable, insertedBlankValue);
                 }
                 else {
                     getWindow().showNotification(

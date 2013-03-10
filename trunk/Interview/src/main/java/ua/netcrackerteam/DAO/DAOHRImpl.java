@@ -11,6 +11,12 @@ import ua.netcrackerteam.configuration.HibernateUtil;
  * @author Kushnirenko Anna
  */
 public class DAOHRImpl implements DAOHR{
+    
+    public static void main(String[] args) {
+        DAOHRImpl test = new DAOHRImpl();
+        //test.setHRMark(239, "молодец", "Hum");
+        test.verificateForm(202);
+    }
 
     @Override
     public List<Form> search(String category, String value) {
@@ -45,10 +51,79 @@ public class DAOHRImpl implements DAOHR{
             }
         }
     }
-    
-    public static void main(String[] args) {
-        DAOHRImpl test = new DAOHRImpl();
-        test.setHRMark(239, "молодец", "Hum");
+ 
+    @Override
+    public List<Form> getAllRegisteredForms() {
+        Session session = null;
+        Query query;                
+        List<Form> formList = null;        
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();            
+            query = session.createQuery("from Form where status = 1");
+            formList =  query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return formList;
     }
+
+    @Override
+    public List<Form> getNonVerificatedForms() {
+        Session session = null;
+        Query query;                
+        List<Form> formList = null;        
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();            
+            query = session.createQuery("from Form where status = 5");
+            formList =  query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return formList;
+    }
+
+    @Override
+    public void verificateForm(int formID) {
+        Session session = null;
+        Query query = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();   
+            query = session.createQuery("from Status where idStatus = " + 1);
+            Status status = (Status) query.uniqueResult();
+            query = session.createQuery("from Form where idForm = " + formID);
+            Form selectedForm = (Form) query.uniqueResult();
+            UserList user = selectedForm.getUser();
+            query = session.createQuery("from Form where user = " + user.getIdUser() 
+                    + " and status = " + status.getIdStatus());
+            Form oldForm = (Form) query.uniqueResult();
+            session.delete(oldForm);
+            selectedForm.setStatus(status);
+            session.save(selectedForm);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+    
+    
  
 }

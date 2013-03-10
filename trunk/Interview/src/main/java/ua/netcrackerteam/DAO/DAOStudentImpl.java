@@ -80,6 +80,24 @@ public class DAOStudentImpl implements DAOStudent
         
         
     }
+
+    public static void DeleteFormByUserAndStatus(Form removableForm) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.delete(removableForm);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
     
     /**
      * Returns Form object appropriate to certain user by user id specified
