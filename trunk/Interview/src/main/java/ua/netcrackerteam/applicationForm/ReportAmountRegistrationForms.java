@@ -20,6 +20,16 @@ import ua.netcrackerteam.configuration.HibernateFactory;
  */
 public class ReportAmountRegistrationForms implements TypeOfViewReport{
     
+    private static ReportAmountRegistrationForms reportAmountRegistrationForms;
+    
+    private ReportAmountRegistrationForms(){}
+    
+    public static synchronized ReportAmountRegistrationForms getInstance(){
+        if(reportAmountRegistrationForms == null){
+            reportAmountRegistrationForms = new ReportAmountRegistrationForms();}
+        
+        return reportAmountRegistrationForms;
+    }
     
     public byte[] viewReport() {  
     
