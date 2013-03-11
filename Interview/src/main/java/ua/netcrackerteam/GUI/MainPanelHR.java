@@ -49,8 +49,8 @@ public class MainPanelHR extends MainPanel{
         edit.addListener(this);*/
         blanksLo = new VerticalLayout();
         tabSheet.addTab(blanksLo,"Анкеты");
-        interviewsLo = new VerticalLayout();
-        tabSheet.addTab(interviewsLo,"Собеседования");
+        final Component c1 = new VerticalLayout();
+        tabSheet.addTab(c1,"Собеседования");
         final Component c2 = new VerticalLayout();
         tabSheet.addTab(c2,"Статистика");
         settingsLo = new VerticalLayout();
@@ -65,9 +65,9 @@ public class MainPanelHR extends MainPanel{
                     blankLayout.setWidth("100%");
                     blankLayout.setMargin(true, false, false, false);
                     source.replaceComponent(blanksLo, blankLayout);
-                }  else if (source.getSelectedTab() == interviewsLo) {
-                   // settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
-                    //source.replaceComponent(c2, settingsLayout);
+                }  else if (source.getSelectedTab() == c1) {
+                    interviewsLo = new HRInterviewsLayout(height);
+                    source.replaceComponent(c1, interviewsLo);
                 }  else if (source.getSelectedTab() == c2) {
                      reportsLo = new VerticalLayout();
                      fillReportsLayout();

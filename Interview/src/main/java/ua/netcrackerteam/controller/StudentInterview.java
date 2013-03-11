@@ -16,12 +16,32 @@ public class StudentInterview {
     private Date interviewStartDate;
     private Date interviewEndDate;
     private int restOfPositions;
+    private int maxStudents;
+    private int interviewersNum;
 
-    public StudentInterview(int studentInterviewId, Date interviewStartDate, Date interviewEndDate, int restOfPositions) {
+    public StudentInterview(int studentInterviewId, Date interviewStartDate, Date interviewEndDate, int restOfPositions, int maxStudents, int interviewersNum) {
         this.studentInterviewId = studentInterviewId;
         this.interviewStartDate = interviewStartDate;
         this.interviewEndDate = interviewEndDate;
         this.restOfPositions = restOfPositions;
+        this.maxStudents = maxStudents;
+        this.interviewersNum = interviewersNum;
+    }
+
+    public void setInterviewersNum(int interviewersNum) {
+        this.interviewersNum = interviewersNum;
+    }
+
+    public int getInterviewersNum() {
+        return interviewersNum;
+    }
+
+    public int getMaxStudents() {
+        return maxStudents;
+    }
+
+    public void setMaxStudents(int maxStudents) {
+        this.maxStudents = maxStudents;
     }
 
     public int getStudentInterviewId() {

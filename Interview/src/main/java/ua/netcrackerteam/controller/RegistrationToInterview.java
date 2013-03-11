@@ -45,7 +45,7 @@ public class RegistrationToInterview implements  Logable{
             List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
             int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
             StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
-                    interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
+                    interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview, interview.getMaxNumber(),interview.getInterviwerNumber());
             listInterviews.add(stInterview);
        }
        return listInterviews;
