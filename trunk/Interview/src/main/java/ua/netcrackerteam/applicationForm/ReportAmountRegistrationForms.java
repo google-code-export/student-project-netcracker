@@ -41,8 +41,8 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
     }
     
     public byte[] viewReport() {  
-    
-        Report report = new Report(getReport(), createChart(getDataSet()));        
+        JFreeChart chart = (new Chart(getDataSet())).createChart("","interviews","registration student, %");
+        Report report = new Report(getReport(), chart);        
         ByteArrayOutputStream outputStream = report.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
         
         byte[] bytes = outputStream.toByteArray();
@@ -94,17 +94,6 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
          return report;
      }
      
-         
-    private JFreeChart createChart(CategoryDataset dataSet) {//String titleChart, String categoryAsisLabel, String valueAsisLabel
-      
-        final JFreeChart chart = ChartFactory.createStackedBarChart3D("", "interview", "registration student ,%", 
-              dataSet, PlotOrientation.HORIZONTAL, false, false, false);
-            chart.setBackgroundPaint(Color.WHITE);     
-            BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
-            r.setSeriesPaint(0, Color.blue); 
-             
-        return chart;
-  }
     
     private CategoryDataset getDataSet(){
         
@@ -135,13 +124,5 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
           return DatasetUtilities.createCategoryDataset(new String[]{""}, dateInterview, percent ); 
 
     }
-   
-   
-
-    public static void main(String arrgs[]) {    
-     
-        (new ReportAmountRegistrationForms()).viewReport();
-    } 
-
     
 }
