@@ -34,7 +34,9 @@ public interface DAOInterviewer {
      * @param interviewerUsername username of interviewer 
      * @param mark mark represented in text field
      */    
-    void saveStudentInterviewMark(int idForm, String interviewerUsername, String mark);  
+    void saveStudentInterviewMark(int idForm, String interviewerUsername, String mark);
+    
+    
     
     List<Form> search(String fieldName, String searchText);
     
