@@ -16,6 +16,18 @@ import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
  */
 public class DAOInterviewerImpl implements DAOInterviewer
 {
+    //Parameters to give them into search method
+    public static final String LAST_NAME = "lastName";
+    public static final String FIRST_NAME = "firstName";
+    public static final String ID_FORM = "idForm";
+    public static final String INSTITUTE_YEAR = "instituteYear";
+    public static final String CATHEDRA = "cathedra";
+    public static final String FACULTY = "faculty";
+    public static final String INSTITUTE = "institute";
+    
+    
+    
+    
     public static void main(String[] args)
     {
 //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
@@ -32,15 +44,19 @@ public class DAOInterviewerImpl implements DAOInterviewer
 //        String mark = interviewer.getStudentInterviewMark(116, "interMaks");
 //        System.out.println(mark);
         
+//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//        interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
+//        System.out.println("blabla");
+        
         DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-        interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
+        List<Form> forms= interviewer.search("Фамилия", "Жоха");
         System.out.println("blabla");
         
     }
     
     
     @Override
-    public List<Form> getAllBasicForms()
+    public List<Form> getAllBasicForms()          //Исправить метод, чтобы выбиралась одна анкета для каждого студента
     {
         Session session = null;
         Query query;                
@@ -49,10 +65,8 @@ public class DAOInterviewerImpl implements DAOInterviewer
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();            
-            query = session.createQuery("from Form f where f.status.name ="
-                    + " 'Записан на собеседование'");
-            formList =  query.list();
-            
+            query = session.createQuery("from Form f where f.interview is not null");
+            formList =  query.list();            
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -158,8 +172,51 @@ public class DAOInterviewerImpl implements DAOInterviewer
     }
 
     @Override
-    public List<Form> search(String fieldName, String searchText) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Form> search(String filter, String searchText) {
+        Session session = null;
+        Query query;
+        List<Form> formList = null;
+        String fieldName = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            if(filter.equalsIgnoreCase("Фамилия") ||
+                    filter.equalsIgnoreCase("Имя"))
+            {
+                if(filter.equalsIgnoreCase("Фамилия")) {
+                    fieldName = LAST_NAME;
+                } else if(filter.equalsIgnoreCase("Имя")) {
+                    fieldName = FIRST_NAME;                
+                }
+                query = session.createQuery("from Form where " + fieldName + " like '%" + searchText +"%'");
+                formList =  query.list();
+            }
+            else if(filter.equalsIgnoreCase("Номер анкеты") ||
+                    filter.equalsIgnoreCase("Курс"))
+            {
+                if(filter.equalsIgnoreCase("Номер анкеты")) {
+                    fieldName = ID_FORM;
+                } else if(filter.equalsIgnoreCase("Курс")) {
+                    fieldName = INSTITUTE_YEAR;                
+                }                
+                query = session.createQuery("from Form where " + fieldName + " = " + Integer.parseInt(searchText));
+                formList =  query.list();
+            }
+            else if(filter.equalsIgnoreCase("ВУЗ") ||
+                    filter.equalsIgnoreCase("Факультет") ||
+                    filter.equalsIgnoreCase("Кафедра")) {
+                
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return formList;
     }
     
 
