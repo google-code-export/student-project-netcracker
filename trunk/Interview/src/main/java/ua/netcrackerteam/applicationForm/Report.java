@@ -40,6 +40,7 @@ public class Report {
 
     private final  String pathTimesTTF = "resources/times.ttf";
     private final  String pathImage =    "resources/Logotip.png";
+    private String path = ClassPath.getInstance().getWebInfPath();
     
     private String[][] report;
     JFreeChart chart;
@@ -60,7 +61,7 @@ public class Report {
        PdfWriter writer = null;  
  
         try {
-            String path = ClassPath.getInstance().getWebInfPath();
+            
            BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
            Font fontTitle = new Font(bf, 16, Font.BOLDITALIC);
            Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
@@ -162,7 +163,7 @@ private PdfPTable createTable(float[] sizeTable) throws DocumentException, IOExc
            BaseColor bColorTableLine1 = WebColors.getRGBColor("#99CCCC");            
            BaseColor bColorTableLine2 = WebColors.getRGBColor("#CCFFCC");
            
-           BaseFont font = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
+           BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
            Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
            Font bf12 = new Font(font, 10, Font.ITALIC);              
            //---------------------------------------------------------------    
