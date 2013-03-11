@@ -6,6 +6,8 @@ package ua.netcrackerteam.applicationForm;
 
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,7 +42,7 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
     
     public byte[] viewReport() {  
     
-        Report report = new Report(getReport(), createChart());        
+        Report report = new Report(getReport(), createChart(getDataSet()));        
         ByteArrayOutputStream outputStream = report.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
         
         byte[] bytes = outputStream.toByteArray();
@@ -49,6 +51,7 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
      }
     
      private String[][] getReport(){
+         
          int column = 4;
          DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
          
@@ -92,12 +95,9 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
      }
      
          
-    private JFreeChart createChart() {//String titleChart, String categoryAsisLabel, String valueAsisLabel
-        double[][] data = { 
-                            {1.0, 2.0,3.0}
-                          };
-        CategoryDataset dataSet = DatasetUtilities.createCategoryDataset(new String[]{""}, new String[]{"1", "2", "3"}, data ); 
-        final JFreeChart chart = ChartFactory.createStackedBarChart3D("Динамика регестрации абитуриентов", "собеседование", "зарегестрировано ,%", 
+    private JFreeChart createChart(CategoryDataset dataSet) {//String titleChart, String categoryAsisLabel, String valueAsisLabel
+      
+        final JFreeChart chart = ChartFactory.createStackedBarChart3D("", "interview", "registration student ,%", 
               dataSet, PlotOrientation.HORIZONTAL, false, false, false);
             chart.setBackgroundPaint(Color.WHITE);     
             BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
@@ -105,110 +105,38 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
              
         return chart;
   }
-   
-     /*private CategoryDataset getCategoryDataset() {
-            
-        return  DatasetUtilities.createCategoryDataset(new String[]{""}, date, data);         
-
-     }
-     
-     private String[][] getDataReport(){
-         return new String[1][1];
-     }
     
-    private PdfPTable createTable() throws DocumentException, IOException{        
-               
-           List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-           if(interviews == null){
-               interviews = new ArrayList<Interview>();
-           }
-           ListIterator<Interview> iterator = interviews.listIterator();  
-           
-            date = new String[interviews.size()];  
-            data = new double[1][interviews.size()];           
-                   
-           PdfPTable table = new PdfPTable(new float[]{2f, 1.5f, 1.5f, 1.5f}); 
-           table.setWidthPercentage(100f);                           
-                    
-           insertCell(table, "Дата", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
-           insertCell(table, "Зарегестрировано", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);       
-           insertCell(table, "Свободно", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);   
-           insertCell(table, "Зарегестрировано,%", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor); 
-           table.setHeaderRows(1); 
-                 
-           int i = 0; 
-           int amount = 0;
-           int max = 0;
-           
-           while(iterator.hasNext()){         
-                  
-                    BaseColor bColorLine = (i%2 == 0? bColorTableLine1: bColorTableLine2);                          
-                     
-                    Interview interview = iterator.next();
-                    List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-                    int amountForms =  (forms == null? 0: forms.size());      
-                    
-                    // date[i] = dateFormat.format(interview.getStartDate()); 
-                    // data [0][i] = (double)amountForms*100/interview.getMaxNumber();
-                     
-                    insertCell(table, dateFormat.format(interview.getStartDate()), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
-                    insertCell(table, "" + amountForms, Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);                    
-                    insertCell(table, "" + (interview.getMaxNumber() - amountForms), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
-                    insertCell(table, String.format("%.2f", ((double)amountForms*100/interview.getMaxNumber())), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
-                    i++;
-                    
-                    amount = amount + amountForms;                    
-                    max = max + interview.getMaxNumber();
-           }
-          
-            insertCell(table, "Итого:", Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
-            insertCell(table, "" + amount, Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
-            insertCell(table, "" + (max - amount), Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
-            insertCell(table, String.format("%.2f", ((double)amount*100/max)), Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+    private CategoryDataset getDataSet(){
+        
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
             
-           return  table;
-}
-    
- private String[][] getInterviews(){  
-     
-           DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm"); 
-     
-           String[][] report = null;
-       
-           List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-           if(interviews == null)
-               return report;
-           
-           report = new String[interviews.size()][3];
-           ListIterator<Interview> iterator = interviews.listIterator();  
-           
-           while(iterator.hasNext()){ 
-              Interview interview = iterator.next();
-              List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-              int amountForms =  (forms == null? 0: forms.size());  
-           }
- }
-     
-private void insertCell(PdfPTable table, String text, int align,
-                        int colspan, Font font, 
-                        BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
-        
-        font.setColor(foregroudColor);
-        
-        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font)); 
-        
-        cell.setBackgroundColor(backgroundColor);
-        cell.setHorizontalAlignment(align);        
-        cell.setColspan(colspan);   
-        cell.setBorderColor(borderColor);
-        
-        if(text.trim().equalsIgnoreCase("")){
-         cell.setMinimumHeight(10f);
-        }
-        table.addCell(cell);
-   
-   } */
+        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+         if(interviews == null){
+             interviews = new ArrayList<Interview>();             
+         } 
+         
+         String[] dateInterview = new String[interviews.size()];
+         double[][] percent = new double[1][interviews.size()];
+         
+         ListIterator<Interview> iterator = interviews.listIterator();
+         
+         for(int i = 0; iterator.hasNext(); i++){ 
+             
+             Interview interview = iterator.next();
+             
+             dateInterview[i] = dateFormat.format(interview.getStartDate());
+             
+             int maxForms = interview.getMaxNumber();
+             List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+             int summaForms = (forms == null? 0: forms.size());
+             percent[0][i] = new BigDecimal((maxForms == 0? 0: 100*summaForms/maxForms)).setScale(2, RoundingMode.UP).doubleValue();
+         } 
+         
+          return DatasetUtilities.createCategoryDataset(new String[]{""}, dateInterview, percent ); 
 
+    }
+   
+   
 
     public static void main(String arrgs[]) {    
      
