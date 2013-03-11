@@ -35,4 +35,20 @@ public interface DAOAdmin {
     List getUsersSearchResultByCategoryNonBanned(String searchString, int userCategory);
 
     boolean checkUserAvailability(String userName);
+
+    List getAuditInterview();
+
+    int getUserCategoryIDByUserName(String userName);
+
+    Long getCountTotalActions();
+
+    Long getCountRegisteredUsersTotal();
+
+    Long getCountRegisteredUsersByUserCategory(int id);
+
+    Long getCountUsersLoginTriedAll();
+
+    Long getCountUsersLoginTriedNonRegUsers();
+
+    Long getCountUsersByActivity(String status);
 }

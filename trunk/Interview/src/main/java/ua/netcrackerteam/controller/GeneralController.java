@@ -292,6 +292,61 @@ public class GeneralController implements Logable {
         return splitedName;
     }*/
 
+    public static Long getCountedTotalActions(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountTotalActions();
+        return count;
+    }
+
+    public static Long getCountedRegisteredUsersAll(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountRegisteredUsersTotal();
+        return count;
+    }
+
+    public static Long getCountedRegisteredAdmins(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountRegisteredUsersByUserCategory(1);
+        return count;
+    }
+
+    public static Long getCountedRegisteredHRs(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountRegisteredUsersByUserCategory(2);
+        return count;
+    }
+
+    public static Long getCountedRegisteredInterviewers(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountRegisteredUsersByUserCategory(3);
+        return count;
+    }
+
+    public static Long getCountedRegisteredStudents(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountRegisteredUsersByUserCategory(4);
+        return count;
+    }
+
+    public static Long getCountedLoginTriedAllUsers(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountUsersLoginTriedAll();
+        return count;
+    }
+
+    public static Long getCountedLoginTriedNonRegisteredUsers(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountUsersLoginTriedNonRegUsers();
+        return count;
+    }
+
+    public static Long getCountedLoginTriedRegisteredUsers(){
+        Long count = getCountedLoginTriedAllUsers() - getCountedLoginTriedNonRegisteredUsers();
+        return count;
+    }
+
+    public static Long getCountedActiveUsers(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountUsersByActivity("active");
+        return count;
+    }
+
+    public static Long getCountedBannedUsers(){
+        Long count = HibernateFactory.getInstance().getAdminDAO().getCountUsersByActivity("banned");
+        return count;
+    }
+
     public static void main(String[] args) throws SQLException {
         System.out.println(checkUsersAvailability("klatt"));
     }

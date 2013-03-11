@@ -368,6 +368,7 @@ public class DAOAdminImpl implements DAOAdmin {
         }
     }
 
+    @Override
     public List getAuditInterview(){
         Session session = null;
         Query query;
@@ -376,7 +377,7 @@ public class DAOAdminImpl implements DAOAdmin {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createQuery("from AuditInterview where userName is not null");
+            query = session.createQuery("from AuditInterview where userName is not null order by idAudit desc");
             auditInterviews = query.list();
         } catch (Exception e) {
             System.out.println(e);
@@ -388,6 +389,7 @@ public class DAOAdminImpl implements DAOAdmin {
         return auditInterviews;
     }
 
+    @Override
     public int getUserCategoryIDByUserName(String userName){
         Session session = null;
         Query re = null;
@@ -408,5 +410,126 @@ public class DAOAdminImpl implements DAOAdmin {
             }
         }
         return userCategory;
+    }
+
+    @Override
+    public Long getCountTotalActions(){
+        Session session = null;
+        Query re = null;
+        Long count = null;
+        try{
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            count = (Long) session.createQuery("select count(idAudit) from AuditInterview").uniqueResult();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()){
+                session.close();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public Long getCountRegisteredUsersTotal(){
+        Session session = null;
+        Query re = null;
+        Long count = null;
+        try{
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            count = (Long) session.createQuery("select count(idUser) from UserList").uniqueResult();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()){
+                session.close();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public Long getCountRegisteredUsersByUserCategory(int id){
+        Session session = null;
+        Query re = null;
+        Long count = null;
+        try{
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            count = (Long) session.createQuery("select count(idUser) from UserList where idUserCategory = " + id).uniqueResult();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()){
+                session.close();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public Long getCountUsersLoginTriedAll(){
+        Session session = null;
+        Query re = null;
+        Long count = null;
+        try{
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            count = (Long) session.createQuery("select count(idAudit) from AuditInterview where actionCategories = 1").uniqueResult();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()){
+                session.close();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public Long getCountUsersLoginTriedNonRegUsers(){
+        Session session = null;
+        Query re = null;
+        Long count = null;
+        try{
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            count = (Long) session.createQuery("select count(idAudit) from AuditInterview where actionCategories = 1 and idUserCategory = 5").uniqueResult();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()){
+                session.close();
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public Long getCountUsersByActivity(String status){
+        Session session = null;
+        Query re = null;
+        Long count = null;
+        String upperStatus = status.toUpperCase();
+        try{
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            count = (Long) session.createQuery("select count(idUser) from UserList where upper(active) = '" + upperStatus + "'").uniqueResult();
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()){
+                session.close();
+            }
+        }
+        return count;
     }
 }
