@@ -4,14 +4,12 @@
  */
 package ua.netcrackerteam.applicationForm;
 
-import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.Buffer;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
