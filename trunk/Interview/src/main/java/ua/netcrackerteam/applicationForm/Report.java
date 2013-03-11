@@ -38,8 +38,8 @@ import com.itextpdf.text.pdf.PdfTemplate;
  */
 public class Report {
 
-    private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/times.ttf";
-    private final  String pathImage =    "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/Logotip.png";
+    private final  String pathTimesTTF = "resources/times.ttf";
+    private final  String pathImage =    "resources/Logotip.png";
     
     private String[][] report;
     JFreeChart chart;
@@ -60,8 +60,8 @@ public class Report {
        PdfWriter writer = null;  
  
         try {
-           
-           BaseFont bf = BaseFont.createFont(pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
+            String path = ClassPath.getInstance().getWebInfPath();
+           BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
            Font fontTitle = new Font(bf, 16, Font.BOLDITALIC);
            Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
            
@@ -76,7 +76,7 @@ public class Report {
            
            PdfPTable table = new PdfPTable(2);    
            //Image
-           PdfPCell cellImage = new PdfPCell(Image.getInstance(pathImage)); 
+           PdfPCell cellImage = new PdfPCell(Image.getInstance(path + pathImage)); 
            cellImage.setBorder(Rectangle.NO_BORDER);
            cellImage.setHorizontalAlignment(Element.ALIGN_RIGHT);
            //Create data
