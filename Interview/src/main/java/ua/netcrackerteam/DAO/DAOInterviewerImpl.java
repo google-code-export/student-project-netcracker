@@ -30,9 +30,9 @@ public class DAOInterviewerImpl implements DAOInterviewer
     
     public static void main(String[] args)
     {
-//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-//        List<Form> forms = interviewer.getAllBasicForms();
-//        System.out.println(forms);
+        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+        List<Form> forms = interviewer.getAllBasicForms();
+        System.out.println(forms);
         
         
 //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
@@ -48,9 +48,9 @@ public class DAOInterviewerImpl implements DAOInterviewer
 //        interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
 //        System.out.println("blabla");
         
-        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-        List<Form> forms= interviewer.search("Фамилия", "Жоха");
-        System.out.println("blabla");
+//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//        List<Form> forms= interviewer.search("Фамилия", "Жоха");
+//        System.out.println("blabla");
         
     }
     
@@ -132,7 +132,11 @@ public class DAOInterviewerImpl implements DAOInterviewer
                 session.close();
             }
         }
-        return interviewRes.getScore();
+        if(interviewRes != null ) {
+            return interviewRes.getScore();
+        } else {
+            return "";
+        }
     }
     
     

@@ -202,15 +202,23 @@ public class MainPanelInterviewer extends MainPanel{
         String filename = "form-" + df.format(new Date()) + ".pdf";
         resource.setFilename(filename);
         resource.setCacheTime(0);
-        pdfLink = new Link("Анкета",resource);
-        pdfLink.setTargetName("_blank");
-        pdfLink.setTargetWidth(600);
-        pdfLink.setTargetHeight(height-10);
-        pdfLink.setTargetBorder(Link.TARGET_BORDER_NONE);
-        pdfLink.setDescription("Анкета студента (откроется в новом окне)");
+        Link pdf = new Link("Анкета",resource);
+        pdf.setTargetName("_blank");
+        pdf.setTargetWidth(600);
+        pdf.setTargetHeight(height-10);
+        pdf.setTargetBorder(Link.TARGET_BORDER_NONE);
+        pdf.setDescription("Анкета студента (откроется в новом окне)");
         ThemeResource icon = new ThemeResource("icons/32/document-pdf.png");
-        pdfLink.setIcon(icon);
-        return pdfLink;
+        pdf.setIcon(icon);
+        return pdf;
+    }
+    
+    private TextArea getMarkField() {
+        TextArea markField = new TextArea("Оценка интервьюера:");
+        markField.setWidth("100%");
+        markField.setRequired(true);
+        markField.setRows(4);
+        return markField;
     }
     
     private void refreshTable(List<StudentDataShort> stData) {
@@ -270,7 +278,12 @@ public class MainPanelInterviewer extends MainPanel{
             if (student != null) {
                 bottomLayout.setVisible(true);
                 currFormID = student.getIdForm();
+                
+                TextArea oldMarkField = markField;
+                markField = getMarkField();
                 markField.setValue(InterviewerPage.getStudentMark(currFormID, username));
+                bottomLayout.replaceComponent(oldMarkField, markField);
+                
                 if(markField.getValue().equals("")) {
                     markField.setReadOnly(false);
                     saveEdit.setCaption("Сохранить");
@@ -278,6 +291,7 @@ public class MainPanelInterviewer extends MainPanel{
                     markField.setReadOnly(true);
                     saveEdit.setCaption("Редактировать");
                 }
+                
                 Link oldPDFLink = pdfLink;
                 pdfLink = getPDFLink();
                 bottomLayout.replaceComponent(oldPDFLink, pdfLink);
