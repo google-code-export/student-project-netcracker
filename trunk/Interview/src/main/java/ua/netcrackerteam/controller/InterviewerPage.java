@@ -10,7 +10,7 @@ import ua.netcrackerteam.DAO.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 /**
  *
- * @author akush_000
+ * @author Anna Kushnirenko
  */
 public class InterviewerPage {
     
@@ -74,4 +74,5 @@ public class InterviewerPage {
         }
         return studentList;
     }
+    
 }

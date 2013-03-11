@@ -53,7 +53,7 @@ public class ApplicationForm{
             fillFormData(form);          
             PdfContentByte content = stamper.getOverContent(1);
             Image image = Image.getInstance(studentData.getPhoto());
-            image.scaleAbsolute(130, 130);
+            image.scaleToFit(130, 130);
             image.setAbsolutePosition(60f, 625f);
             content.addImage(image);        
             stamper.close();
