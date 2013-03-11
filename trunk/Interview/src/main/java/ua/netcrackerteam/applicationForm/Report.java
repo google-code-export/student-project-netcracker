@@ -4,9 +4,6 @@
  */
 package ua.netcrackerteam.applicationForm;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
@@ -22,6 +19,17 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import org.jfree.chart.JFreeChart;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D; 
+import com.itextpdf.awt.PdfGraphics2D;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+
+
 
 
 /**
@@ -32,12 +40,17 @@ public class Report {
 
     private final  String pathTimesTTF = "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/times.ttf";
     private final  String pathImage =    "G:/Проект1/interview/Interview/src/main/webapp/WEB-INF/resources/Logotip.png";
-
     
     private String[][] report;
+    JFreeChart chart;
+    
+    public Report(String[][] report, JFreeChart chart){
+        this.report = report;
+        this.chart = chart;
+    }
     
     public Report(String[][] report){
-        this.report = report;
+      this.report = report;  
     }
        
     public ByteArrayOutputStream createTemplate(String title, float[] sizeTable){
@@ -90,18 +103,20 @@ public class Report {
            
            document.add(table);
            
-           /*if(useChart){
-                // Bar chart       
+           //add chart to report
+           if(chart != null){                     
                 PdfContentByte cb = writer.getDirectContent();
-                float width = PageSize.A4.getWidth();
-                float height = PageSize.A4.getHeight()/3; 
+                float width = PageSize.A4.getWidth()*2/3;
+                float height = PageSize.A4.getHeight()/2; 
                 PdfTemplate bar = cb.createTemplate(width, height);
                 Graphics2D g2d2 = new PdfGraphics2D(bar, width, height); 
                 Rectangle2D r2d2 = new Rectangle2D.Double(0, 0, width, height);        
-                createChart().draw(g2d2, r2d2);       
-                g2d2.dispose();
-                cb.addTemplate(bar, 0, 0);  
-           } */  
+                chart.draw(g2d2, r2d2);       
+                g2d2.dispose();                
+      
+                Image chartImage = Image.getInstance(bar);
+                document.add(chartImage);
+           }  
            
            
         }catch (DocumentException dex){
@@ -116,20 +131,8 @@ public class Report {
         } 
         
         return memory;
-    }
+    }   
     
-    
-    /* private JFreeChart createChart() {
-
-        final JFreeChart chart = ChartFactory.createStackedBarChart3D(titleChart, categoryAsisLabel, valueAsisLabel, 
-              dataSet, PlotOrientation.HORIZONTAL, false, false, false);
-            chart.setBackgroundPaint(Color.WHITE);     
-            BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
-            r.setSeriesPaint(0, Color.DARK_GRAY); 
-             
-        return chart;
-  }*/
-     
           
 private void insertCell(PdfPTable table, String text, int align,
                         int colspan, Font font, 
@@ -171,7 +174,7 @@ private PdfPTable createTable(float[] sizeTable) throws DocumentException, IOExc
            }
            table.setHeaderRows(1); 
            //Content table     
-           for(int i = 0; i < report.length; i++){         
+           for(int i = 1; i < report.length - 1; i++){         
                   
                     BaseColor bColorLine = (i%2 == 0? bColorTableLine1: bColorTableLine2);                          
                     for(int j = 0; j < report[i].length; j++){         

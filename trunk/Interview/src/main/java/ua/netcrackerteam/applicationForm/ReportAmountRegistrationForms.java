@@ -4,12 +4,19 @@
  */
 package ua.netcrackerteam.applicationForm;
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.general.DatasetUtilities;
 import ua.netcrackerteam.DAO.Form;
 import ua.netcrackerteam.DAO.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
@@ -33,7 +40,7 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
     
     public byte[] viewReport() {  
     
-        Report report = new Report(getReport());        
+        Report report = new Report(getReport(), createChart());        
         ByteArrayOutputStream outputStream = report.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
         
         byte[] bytes = outputStream.toByteArray();
@@ -83,6 +90,21 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
          
          return report;
      }
+     
+         
+    private JFreeChart createChart() {//String titleChart, String categoryAsisLabel, String valueAsisLabel
+        double[][] data = { 
+                            {1.0, 2.0,3.0}
+                          };
+        CategoryDataset dataSet = DatasetUtilities.createCategoryDataset(new String[]{""}, new String[]{"1", "2", "3"}, data ); 
+        final JFreeChart chart = ChartFactory.createStackedBarChart3D("Динамика регестрации абитуриентов", "собеседование", "зарегестрировано ,%", 
+              dataSet, PlotOrientation.HORIZONTAL, false, false, false);
+            chart.setBackgroundPaint(Color.WHITE);     
+            BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
+            r.setSeriesPaint(0, Color.blue); 
+             
+        return chart;
+  }
    
      /*private CategoryDataset getCategoryDataset() {
             
