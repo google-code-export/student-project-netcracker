@@ -50,28 +50,7 @@ public class InterviewDAOImpl {
    
    //Получает интервью по конкретной дате
    //Correct Tanya
-   public Interview getInterview(int idInterview){
-      //return new Interview();
-       /*Session session = null;
-       Query query;
-       Interview interviewList = null;
-       try {
-           Locale.setDefault(Locale.ENGLISH);
-           session = HibernateUtil.getSessionFactory().getCurrentSession();
-           session.beginTransaction();
-           query = session.createQuery("from Interview where year(startDate) = " + startInterview.getYear() +
-                   " and month(startDate)= " + startInterview.getMonth()+ " and day(startDate) = " +startInterview.getDay() +
-                   " and hour(startDate)= " + startInterview.getHours() + " and minute(startDate) = " +startInterview.getMinutes());
-           interviewList = (Interview)query.uniqueResult();
-       } catch (Exception e) {
-           System.out.println(e);
-       } finally {
-           if (session != null && session.isOpen()) {
-               session.close();
-           }
-       }
-       return interviewList;*/
-      
+   public Interview getInterview(int idInterview){    
       Session session = null;
         Query query;        
        
