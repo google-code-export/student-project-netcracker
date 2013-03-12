@@ -8,18 +8,14 @@ import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+import ua.netcrackerteam.applicationForm.ReportAmountRegistrationForms;
+import ua.netcrackerteam.applicationForm.TypeOfViewReport;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import ua.netcrackerteam.applicationForm.ReportAmountRegistrationForms;
-import ua.netcrackerteam.applicationForm.TypeOfViewReport;
 
 /**
  * Panel for HR view
@@ -60,7 +56,7 @@ public class MainPanelHR extends MainPanel{
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == blanksLo) {
-                    HRBlankLayout blankLayout = new HRBlankLayout();
+                    HRBlankLayout blankLayout = new HRBlankLayout(hlayout.getUsername());
                     blankLayout.setHeight(height,UNITS_PIXELS);
                     blankLayout.setWidth("100%");
                     blankLayout.setMargin(true, false, false, false);

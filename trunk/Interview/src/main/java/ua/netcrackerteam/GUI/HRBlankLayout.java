@@ -2,16 +2,15 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
-import ua.netcrackerteam.DAO.DAOHRImpl;
-import ua.netcrackerteam.controller.InterviewerPage;
+import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.StudentDataShort;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,8 +30,11 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private TextField something;
     private NativeSelect searchSelect;
     private StudentDataShort selectedValueInTable = null;
+    private final String username;
 
+    private Tree rightPanelTree;
 
+    private Button              verificateBlankButton;
     private HorizontalLayout    buttonPanel;
     private Label               markLabel;
     private TextArea            markTextArea;
@@ -51,7 +53,9 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             "Номер анкеты", "Фамилия", "Имя", "Отчество",
             "ВУЗ", "Курс", "Факультет", "Кафедра" };
 
-    public HRBlankLayout() {
+    public HRBlankLayout(String userName) {
+
+        this.username = userName;
 
         final HorizontalSplitPanel horiz = new HorizontalSplitPanel();
         horiz.setStyleName(Runo.SPLITPANEL_REDUCED);
@@ -60,6 +64,9 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         //list of blanks, search - left panel
         leftPanel = new Panel("Навигация");
         leftPanel.setHeight("100%");
+        VerticalLayout leftVL = (VerticalLayout) leftPanel.getContent();
+        leftVL.setMargin(false);
+        leftVL.setSpacing(true);
 
         //create grid layout for blanks, filling it with button
         blankGridLO = new GridLayout(1,1);
@@ -70,13 +77,16 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         FillSearchGridLO();
         Accordion leftSideAcc = new Accordion();
         leftSideAcc.setSizeFull();
-        leftSideAcc.addTab(blankGridLO,  "Анкеты");
+        leftSideAcc.addTab(blankGridLO, "Анкеты");
         leftSideAcc.addTab(searchGridLO, "Поиск");
         leftPanel.addComponent(leftSideAcc);
         horiz.addComponent(leftPanel);
         //blank view - right panel
         rightPanel = new Panel("Информация");
         rightPanel.setHeight("100%");
+        VerticalLayout rightVL = (VerticalLayout) rightPanel.getContent();
+        rightVL.setMargin(false);
+        rightVL.setSpacing(true);
         FillInformationPanel();
         horiz.addComponent(rightPanel);
     }
@@ -98,6 +108,33 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     }
 
     private void FillBlankGridLO(){
+
+        rightPanelTree = new Tree();
+        String firstTreeTitle = "Все";
+        rightPanelTree.addItem(firstTreeTitle);
+        rightPanelTree.setValue(firstTreeTitle);
+        rightPanelTree.setNullSelectionAllowed(false);
+        rightPanelTree.setChildrenAllowed(firstTreeTitle,false);
+        String secondTreeTitle = "Не проверенные";
+        rightPanelTree.addItem(secondTreeTitle);
+        rightPanelTree.setChildrenAllowed(secondTreeTitle, false);
+
+
+        rightPanelTree.addListener(new ItemClickEvent.ItemClickListener() {
+            @Override
+            public void itemClick(ItemClickEvent event) {
+                if (event.getItemId().equals("Все"))  {
+                    FillBlankTable(HRPage.getAllForms());
+                    verificateBlankButton.setEnabled(false);
+                }
+                else if(event.getItemId().equals("Не проверенные"))  {
+                    FillBlankTable(HRPage.getNonVerificatedForms());
+                    verificateBlankButton.setEnabled(true);
+                }
+            }
+        });
+
+        blankGridLO.addComponent(rightPanelTree);
 
     }
 
@@ -125,6 +162,13 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         searchGridLO.addComponent(searchButton);
     }
 
+    private void FillBlankTable(List<StudentDataShort> data) {
+
+        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, data);
+        tableOfBlanks.setContainerDataSource(bean);
+
+    }
+
     private void FillInformationPanel() {
 
         tableOfBlanks.setWidth("100%");
@@ -136,11 +180,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         tableOfBlanks.setImmediate      (true);
 
         //data source
-        List<StudentDataShort> stData = InterviewerPage.getAllStudents();
-        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
-
-        // connect data source
-        tableOfBlanks.setContainerDataSource(bean);
+        FillBlankTable(HRPage.getAllForms());
 
         // turn on column reordering and collapsing
         tableOfBlanks.setColumnReorderingAllowed(true);
@@ -153,8 +193,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
         tableOfBlanks.addListener(new Table.ValueChangeListener() {
             public void valueChange(Property.ValueChangeEvent event) {
-                Set<?> value = (Set<?>) event.getProperty().getValue();
-                if (null == value || value.size() == 0) {
+                Object value = event.getProperty().getValue();
+                if (!(null == value)) {
                     selectedValueInTable = (StudentDataShort) value;
                 }
             }
@@ -174,9 +214,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         markSaveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                String insertedBlankValue = "";
-                if (!insertedBlankValue.equals("")&&(!(selectedValueInTable==null))) {
-                    //DAOHRImpl.setBlankMark(selectedValueInTable, insertedBlankValue);
+                if (!markTextArea.getValue().equals("")&&(!(selectedValueInTable==null))) {
+                    HRPage.setStudentMark(selectedValueInTable.getIdForm(), username,markTextArea.getValue().toString());
                 }
                 else {
                     getWindow().showNotification(
@@ -211,7 +250,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (!(selectedValueInTable==null)) {
-                    //some actions
+                    HRPage.deleteStudentBlank(selectedValueInTable.getIdForm());
                 }
                 else {
                     getWindow().showNotification(
@@ -227,7 +266,12 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (!(selectedValueInTable==null)) {
-                    //some actions
+                    HRPage.deleteStudentBlank(selectedValueInTable.getIdForm());
+                    /*getWindow().showNotification(
+                            "Анкета подтверждена!",
+                            "",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    FillBlankTable(HRPage.getNonVerificatedForms());*/
                 }
                 else {
                     getWindow().showNotification(
@@ -238,6 +282,29 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             }
         });
         buttonPanel.addComponent(editButton);
+
+        verificateBlankButton = new Button("Подтвердить");
+        verificateBlankButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(selectedValueInTable==null)) {
+                    HRPage.verificateForm(selectedValueInTable.getIdForm());
+                    getWindow().showNotification(
+                            "Анкета подтверждена!",
+                            "",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    FillBlankTable(HRPage.getNonVerificatedForms());
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед подтверждением выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        verificateBlankButton.setEnabled(false);
+        buttonPanel.addComponent(verificateBlankButton);
         rightPanel.addComponent(buttonPanel);
     }
 

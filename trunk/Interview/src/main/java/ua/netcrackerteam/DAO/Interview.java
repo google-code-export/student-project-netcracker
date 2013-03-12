@@ -26,7 +26,7 @@ public class Interview implements Serializable {
     private int idInterview;
 
     @Column(name= "START_DATE")
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @Column(name= "END_DATE")
