@@ -22,7 +22,8 @@ public class DAOHRImpl implements DAOHR{
     public List<Form> search(String category, String value) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
+//Add check if mark contains 
     @Override
     public void setHRMark(int selectedFormID, String insertedMark, String userNameHR) {
         Session session = null;
@@ -30,7 +31,6 @@ public class DAOHRImpl implements DAOHR{
         Transaction transaction = null;
         InterviewRes interviewRes = new InterviewRes();
         try {
-            
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();    
