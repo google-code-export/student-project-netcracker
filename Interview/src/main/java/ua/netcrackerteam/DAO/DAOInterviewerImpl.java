@@ -153,19 +153,33 @@ public class DAOInterviewerImpl implements DAOInterviewer
         Session session = null;
         Query query;
         Transaction transaction = null;
-        InterviewRes interviewRes = null;
+        InterviewRes interviewRes = new InterviewRes(); //Аня. Временно, надо сделать чтобы заменяло оценку если она есть
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            query = session.createQuery("from InterviewRes where form = " 
-                    + idForm
-                    + " and user = (select idUser from UserList where user_name = '"
-                    +  interviewerUsername +"')");
-            interviewRes =  (InterviewRes) query.uniqueResult();
+            transaction = session.beginTransaction();    
+            query = session.createQuery("from Form where idForm = " + idForm);
+            Form selectedForm = (Form) query.uniqueResult();
+            interviewRes.setForm(selectedForm);
+            query = session.createQuery("from UserList where userName = '" +interviewerUsername+"'");
+            UserList hr = (UserList) query.uniqueResult();
+            interviewRes.setIdUser(hr);
             interviewRes.setScore(mark);
             session.save(interviewRes);
-            transaction.commit();
+            transaction.commit();  
+//        InterviewRes interviewRes = null;
+//        try {
+//            Locale.setDefault(Locale.ENGLISH);
+//            session = HibernateUtil.getSessionFactory().getCurrentSession();
+//            transaction = session.beginTransaction();
+//            query = session.createQuery("from InterviewRes where form = " 
+//                    + idForm
+//                    + " and user = (select idUser from UserList where user_name = '"
+//                    +  interviewerUsername +"')");
+//            interviewRes =  (InterviewRes) query.uniqueResult();
+//            interviewRes.setScore(mark);
+//            session.save(interviewRes);
+//            transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
