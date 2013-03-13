@@ -21,9 +21,9 @@ public class DAOInterviewerImpl implements DAOInterviewer
     public static final String FIRST_NAME = "firstName";
     public static final String ID_FORM = "idForm";
     public static final String INSTITUTE_YEAR = "instituteYear";
-    public static final String CATHEDRA = "cathedra";
-    public static final String FACULTY = "faculty";
-    public static final String INSTITUTE = "institute";
+    public static final String CATHEDRA = "cathedra.name";
+    public static final String FACULTY = "cathedra.faculty.name";
+    public static final String INSTITUTE = "cathedra.faculty.institute.name";
     
     
     
@@ -35,9 +35,9 @@ public class DAOInterviewerImpl implements DAOInterviewer
 //        System.out.println(forms);
         
         
-                DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-                List<Form> forms = interviewer.getAllFormsByInterview(1);
-                System.out.println(forms);
+//                DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//                List<Form> forms = interviewer.getAllFormsByInterview(1);
+//                System.out.println(forms);
         
         
         //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
@@ -45,7 +45,7 @@ public class DAOInterviewerImpl implements DAOInterviewer
         //        System.out.println(mark);
         
 //                DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-//                interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
+//                interviewer.saveStudentInterviewMark(233, "interview123456", "Новая оценка от interview123456");
 //                System.out.println("blabla");
         
         //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
@@ -216,7 +216,13 @@ public class DAOInterviewerImpl implements DAOInterviewer
                 } else if(filter.equalsIgnoreCase("Имя")) {
                     fieldName = FIRST_NAME;
                 }
-                query = session.createQuery("from Form where " + fieldName + " like '%" + searchText +"%'");
+                query = session.createQuery("from Form where upper(" + fieldName + ") like upper('%" + searchText +"%')"
+                        + " and ("
+                        + " status.name = 'Зарегистрирована'"
+                        + " or status.name = 'Прошел собеседование'"
+                        + " or status.name = 'Не прошел собеседование'"
+                        + ")"
+                        );
                 formList =  query.list();
             }
             else if(filter.equalsIgnoreCase("Номер анкеты") ||
@@ -227,15 +233,36 @@ public class DAOInterviewerImpl implements DAOInterviewer
                 } else if(filter.equalsIgnoreCase("Курс")) {
                     fieldName = INSTITUTE_YEAR;
                 }
-                query = session.createQuery("from Form where " + fieldName + " = " + Integer.parseInt(searchText));
+                query = session.createQuery("from Form where " + fieldName + " = " + Integer.parseInt(searchText)
+                        + " and ("
+                        + " status.name = 'Зарегистрирована'"
+                        + " or status.name = 'Прошел собеседование'"
+                        + " or status.name = 'Не прошел собеседование'"
+                        + ")"
+                        );
                 formList =  query.list();
             }
-            else if(filter.equalsIgnoreCase("ВУЗ") ||
-                    filter.equalsIgnoreCase("Факультет") ||
-                    filter.equalsIgnoreCase("Кафедра")) {
-                
-            }
-            
+            else if(filter.equalsIgnoreCase("Кафедра") ||
+                    filter.equalsIgnoreCase("ВУЗ") ||
+                    filter.equalsIgnoreCase("Факультет")) {
+                if(filter.equalsIgnoreCase("Кафедра")) {
+                    fieldName = CATHEDRA;
+                }
+                else if(filter.equalsIgnoreCase("Факультет")) {
+                    fieldName = FACULTY;
+                }
+                else if(filter.equalsIgnoreCase("ВУЗ")) {
+                    fieldName = INSTITUTE;
+                }
+                query = session.createQuery("from Form where upper(" + fieldName + ") like upper('%" + searchText +"%')"
+                        + " and ("
+                        + " status.name = 'Зарегистрирована'"
+                        + " or status.name = 'Прошел собеседование'"
+                        + " or status.name = 'Не прошел собеседование'"
+                        + ")"
+                        );
+                formList =  query.list();
+            }            
         } catch (Exception e) {
             System.out.println(e);
         } finally {
