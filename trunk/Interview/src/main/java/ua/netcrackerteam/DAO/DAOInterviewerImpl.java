@@ -30,67 +30,50 @@ public class DAOInterviewerImpl implements DAOInterviewer
     
     public static void main(String[] args)
     {
-        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-        List<Form> forms = interviewer.getAllBasicForms();
-        System.out.println(forms);
-        
-        
 //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-//        List<Form> forms = interviewer.getAllFormsByInterview(4);
+//        List<Form> forms = interviewer.getAllBasicForms();
 //        System.out.println(forms);
         
         
-//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-//        String mark = interviewer.getStudentInterviewMark(116, "interMaks");
-//        System.out.println(mark);
+                DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+                List<Form> forms = interviewer.getAllFormsByInterview(1);
+                System.out.println(forms);
         
-//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-//        interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
-//        System.out.println("blabla");
         
-//        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
-//        List<Form> forms= interviewer.search("Фамилия", "Жоха");
-//        System.out.println("blabla");
+        //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+        //        String mark = interviewer.getStudentInterviewMark(116, "interMaks");
+        //        System.out.println(mark);
+        
+//                DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+//                interviewer.saveStudentInterviewMark(116, "interMaks", "Новая оценка от интервьювера");
+//                System.out.println("blabla");
+        
+        //        DAOInterviewerImpl interviewer = new DAOInterviewerImpl();
+        //        List<Form> forms= interviewer.search("Фамилия", "Жоха");
+        //        System.out.println("blabla");
         
     }
     
     
     @Override
-    public List<Form> getAllBasicForms()          //Исправить метод, чтобы выбиралась одна анкета для каждого студента
+    public List<Form> getAllBasicForms()          
     {
         Session session = null;
-        Query query;                
-        List<Form> formList = null;        
+        Query query;
+        List<Form> formList = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();            
-            query = session.createQuery("from Form f where f.interview is not null");
-            formList =  query.list();            
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return formList;    
-    }
-
-    
-    @Override
-    public List<Form> getAllFormsByInterview(int idInterview) {
-        Session session = null;
-        Query query;                
-        List<Form> formList = null;        
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();            
-            query = session.createQuery("from Form where interview = "
-                    + idInterview);
-            formList =  query.list();
+            session.beginTransaction();
+            query = session.createQuery("from Form f where f.interview is not null"
+                    + " and ("
+                    + " status.name = 'Зарегистрирована'"
+                    + " or status.name = 'Прошел собеседование'"
+                    + " or status.name = 'Не прошел собеседование'"
+                    + ")"
+                    );
             
+            formList =  query.list();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -101,30 +84,58 @@ public class DAOInterviewerImpl implements DAOInterviewer
         return formList;
     }
     
-
+    
+    @Override
+    public List<Form> getAllFormsByInterview(int idInterview) {
+        Session session = null;
+        Query query;
+        List<Form> formList = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from Form where interview = "
+                    + idInterview
+                    + " and ("
+                    + " status.name = 'Зарегистрирована'"
+                    + " or status.name = 'Прошел собеседование'"
+                    + " or status.name = 'Не прошел собеседование'"
+                    + ")"
+                    );
+            formList =  query.list();            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return formList;
+    }
+    
+    
     /**
      * Returns mark which interviewer gave to the student and which is presented
      * in text
      * @param idForm id form of student
-     * @param interviewerUsername username of interviewer 
+     * @param interviewerUsername username of interviewer
      * @return mark which interviewer gave to the student
      */
     @Override
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public String getStudentInterviewMark(int idForm, String interviewerUsername) {
         Session session = null;
-        Query query;                
+        Query query;
         InterviewRes interviewRes = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();            
-            query = session.createQuery("from InterviewRes where form = " 
+            session.beginTransaction();
+            query = session.createQuery("from InterviewRes where form = "
                     + idForm
                     + " and user = (select idUser from UserList where user_name = '"
                     +  interviewerUsername +"')");
-            interviewRes =  (InterviewRes) query.uniqueResult();
-            
+            interviewRes =  (InterviewRes) query.uniqueResult();            
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -140,46 +151,44 @@ public class DAOInterviewerImpl implements DAOInterviewer
     }
     
     
-
+    
     /**
      * Saves interview mark for student which interviewer gave to this student
      * @param idForm id form of student
-     * @param interviewerUsername username of interviewer 
+     * @param interviewerUsername username of interviewer
      * @param mark mark represented in text field
-     */    
+     */
     @Override
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public void saveStudentInterviewMark(int idForm, String interviewerUsername, String mark) {
         Session session = null;
         Query query;
-        Transaction transaction = null;
-        InterviewRes interviewRes = new InterviewRes(); //Аня. Временно, надо сделать чтобы заменяло оценку если она есть
+        Transaction transaction = null;        
         try {
+            InterviewRes interviewRes = null;
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();    
-            query = session.createQuery("from Form where idForm = " + idForm);
-            Form selectedForm = (Form) query.uniqueResult();
-            interviewRes.setForm(selectedForm);
-            query = session.createQuery("from UserList where userName = '" +interviewerUsername+"'");
-            UserList hr = (UserList) query.uniqueResult();
-            interviewRes.setIdUser(hr);
-            interviewRes.setScore(mark);
+            transaction = session.beginTransaction();
+            query = session.createQuery("from InterviewRes where form = "
+                    + idForm
+                    + " and user = (select idUser from UserList where user_name = '"
+                    +  interviewerUsername +"')");
+            interviewRes =  (InterviewRes) query.uniqueResult();
+            if(interviewRes != null) {
+                interviewRes.setScore(mark);    //if score once had been given already(this is not first time)
+            }
+            else {                             //if it is first time, when interviewer give score to this form
+                interviewRes = new InterviewRes();
+                query = session.createQuery("from Form where idForm = " + idForm);
+                Form selectedForm = (Form) query.uniqueResult();
+                interviewRes.setForm(selectedForm);
+                query = session.createQuery("from UserList where userName = '" +interviewerUsername+"'");
+                UserList hr = (UserList) query.uniqueResult();
+                interviewRes.setIdUser(hr);
+                interviewRes.setScore(mark);                
+            }            
             session.save(interviewRes);
-            transaction.commit();  
-//        InterviewRes interviewRes = null;
-//        try {
-//            Locale.setDefault(Locale.ENGLISH);
-//            session = HibernateUtil.getSessionFactory().getCurrentSession();
-//            transaction = session.beginTransaction();
-//            query = session.createQuery("from InterviewRes where form = " 
-//                    + idForm
-//                    + " and user = (select idUser from UserList where user_name = '"
-//                    +  interviewerUsername +"')");
-//            interviewRes =  (InterviewRes) query.uniqueResult();
-//            interviewRes.setScore(mark);
-//            session.save(interviewRes);
-//            transaction.commit();
+            transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -188,7 +197,7 @@ public class DAOInterviewerImpl implements DAOInterviewer
             }
         }
     }
-
+    
     @Override
     public List<Form> search(String filter, String searchText) {
         Session session = null;
@@ -205,7 +214,7 @@ public class DAOInterviewerImpl implements DAOInterviewer
                 if(filter.equalsIgnoreCase("Фамилия")) {
                     fieldName = LAST_NAME;
                 } else if(filter.equalsIgnoreCase("Имя")) {
-                    fieldName = FIRST_NAME;                
+                    fieldName = FIRST_NAME;
                 }
                 query = session.createQuery("from Form where " + fieldName + " like '%" + searchText +"%'");
                 formList =  query.list();
@@ -216,8 +225,8 @@ public class DAOInterviewerImpl implements DAOInterviewer
                 if(filter.equalsIgnoreCase("Номер анкеты")) {
                     fieldName = ID_FORM;
                 } else if(filter.equalsIgnoreCase("Курс")) {
-                    fieldName = INSTITUTE_YEAR;                
-                }                
+                    fieldName = INSTITUTE_YEAR;
+                }
                 query = session.createQuery("from Form where " + fieldName + " = " + Integer.parseInt(searchText));
                 formList =  query.list();
             }
