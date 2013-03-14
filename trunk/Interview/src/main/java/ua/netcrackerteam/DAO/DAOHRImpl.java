@@ -14,13 +14,42 @@ public class DAOHRImpl implements DAOHR{
     
     public static void main(String[] args) {
         DAOHRImpl test = new DAOHRImpl();
-        //test.setHRMark(233, "молодец (HR)", "Hum");
+        //test.setHRMark(233, "молодец (HR)", "HR");
+        System.out.println(test.search("institute", "Одеський"));
         
     }
 
     @Override
     public List<Form> search(String category, String value) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Session session = null;
+        Query query;
+        List<Form> formList = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            if (category.equals("institute")) {
+               query = session.createQuery("from Form where status = 1 and interview is not null and " 
+                       + "cathedra.faculty.institute.name like '%" + value + "%')");
+            } else if (category.equals("faculty")) {
+               query = session.createQuery("from Form where status = 1 and interview is not null and " 
+                        + "cathedra.faculty.name like '%" + value + "%')");
+            } else if (category.equals("cathedra")) {
+               query = session.createQuery("from Form where status = 1 and interview is not null and " 
+                       + "cathedra.name like '%" + value + "%')");
+            } else {
+                query = session.createQuery("from Form where status = 1 and interview is not null and " 
+                        + category + " like '%" + value + "%'");
+            }
+            formList =  query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return formList;
     }
     
 //Add check if mark contains 
@@ -29,18 +58,28 @@ public class DAOHRImpl implements DAOHR{
         Session session = null;
         Query query = null;
         Transaction transaction = null;
-        InterviewRes interviewRes = new InterviewRes();
         try {
+            InterviewRes interviewRes = null;
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();    
-            query = session.createQuery("from Form where idForm = " + selectedFormID);
-            Form selectedForm = (Form) query.uniqueResult();
-            interviewRes.setForm(selectedForm);
-            query = session.createQuery("from UserList where userName = '" +userNameHR+"'");
-            UserList hr = (UserList) query.uniqueResult();
-            interviewRes.setIdUser(hr);
-            interviewRes.setScore(insertedMark);
+            transaction = session.beginTransaction();
+            query = session.createQuery("from InterviewRes where form = "
+                    + selectedFormID
+                    + " and user.userName = '" +  userNameHR +"'");
+            interviewRes =  (InterviewRes) query.uniqueResult();
+            if(interviewRes != null) {
+                interviewRes.setScore(insertedMark);    
+            }
+            else {                            
+                interviewRes = new InterviewRes();
+                query = session.createQuery("from Form where idForm = " + selectedFormID);
+                Form selectedForm = (Form) query.uniqueResult();
+                interviewRes.setForm(selectedForm);
+                query = session.createQuery("from UserList where userName = '" +userNameHR+"'");
+                UserList hr = (UserList) query.uniqueResult();
+                interviewRes.setIdUser(hr);
+                interviewRes.setScore(insertedMark);                
+            }            
             session.save(interviewRes);
             transaction.commit();
         } catch (Exception e) {
