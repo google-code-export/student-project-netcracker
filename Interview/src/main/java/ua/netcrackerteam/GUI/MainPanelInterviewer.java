@@ -309,8 +309,10 @@ public class MainPanelInterviewer extends MainPanel{
             if (saveEdit.getCaption().equals("Сохранить") && markField.isValid()) {
                 InterviewerPage.setStudentMark(currFormID,username,markField.getValue().toString());
                 markField.setReadOnly(true);
+                saveEdit.setCaption("Редактировать");
             } else if (saveEdit.getCaption().equals("Редактировать")) {
                 markField.setReadOnly(false);
+                saveEdit.setCaption("Сохранить");
             } else {
                 getWindow().showNotification("Введите оценку!",Window.Notification.TYPE_TRAY_NOTIFICATION);
             }
