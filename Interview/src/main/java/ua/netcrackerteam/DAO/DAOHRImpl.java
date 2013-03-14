@@ -15,7 +15,7 @@ public class DAOHRImpl implements DAOHR{
     public static void main(String[] args) {
         DAOHRImpl test = new DAOHRImpl();
         //test.setHRMark(233, "молодец (HR)", "HR");
-        System.out.println(test.search("institute", "Одеський"));
+        System.out.println(test.search("institute", "ОДЕСЬкий"));
         
     }
 
@@ -28,18 +28,15 @@ public class DAOHRImpl implements DAOHR{
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
+            String queryStart = "from Form where status = 1 and interview is not null and upper(";
             if (category.equals("institute")) {
-               query = session.createQuery("from Form where status = 1 and interview is not null and " 
-                       + "cathedra.faculty.institute.name like '%" + value + "%')");
+               query = session.createQuery(queryStart + "cathedra.faculty.institute.name) like upper('%" + value + "%')");
             } else if (category.equals("faculty")) {
-               query = session.createQuery("from Form where status = 1 and interview is not null and " 
-                        + "cathedra.faculty.name like '%" + value + "%')");
+               query = session.createQuery(queryStart + "cathedra.faculty.name) like upper('%" + value + "%')");
             } else if (category.equals("cathedra")) {
-               query = session.createQuery("from Form where status = 1 and interview is not null and " 
-                       + "cathedra.name like '%" + value + "%')");
+               query = session.createQuery(queryStart + "cathedra.name) like upper('%" + value + "%')");
             } else {
-                query = session.createQuery("from Form where status = 1 and interview is not null and " 
-                        + category + " like '%" + value + "%'");
+                query = session.createQuery(queryStart + category + ") like upper('%" + value + "%')");
             }
             formList =  query.list();
         } catch (Exception e) {
