@@ -5,17 +5,24 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Container;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Runo;
 import java.util.List;
-import ua.netcrackerteam.controller.StudentInterview;
+import java.util.Locale;
+import ua.netcrackerteam.controller.HRInterview;
+import ua.netcrackerteam.controller.HRPage;
 
 /**
  *
@@ -68,27 +75,58 @@ public class HRInterviewsLayout extends VerticalLayout{
         VerticalLayout vl = (VerticalLayout) rightPanel.getContent();
         vl.setMargin(false);
         vl.setSpacing(true);
-        List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
-        BeanItemContainer<StudentInterview> bean = new BeanItemContainer(StudentInterview.class, interviews);
+        List<HRInterview> interviews = HRPage.getInterviewsList();
+        BeanItemContainer<HRInterview> bean = new BeanItemContainer(HRInterview.class, interviews);
         table = new InterviewsTable(bean);
         rightPanel.addComponent(table);
         
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setSpacing(true);
         bottomLayout.setMargin(true);
-        bottomLayout.setVisible(false);
+        //bottomLayout.setVisible(false);
+        fillBottomLayout(bottomLayout);
         rightPanel.addComponent(bottomLayout);
+    }
+
+    private void fillBottomLayout(VerticalLayout bottomLayout) {
+        PopupDateField startDate = new PopupDateField("Дата и время собеседования");
+        startDate.setResolution(PopupDateField.RESOLUTION_MIN);
+        startDate.setImmediate(true);
+        startDate.setWidth("150");
+        bottomLayout.addComponent(startDate);
+        
+        TextField intervNum = new TextField("Количество интервьюеров");
+        intervNum.setWidth("150");
+        intervNum.setRequired(true);
+        intervNum.addValidator(new IntegerValidator("Ошибка! Введите число"));
+        bottomLayout.addComponent(intervNum);
+        
+        TextField duration = new TextField("Длительность одного собеседования");
+        duration.setWidth("150");
+        duration.setRequired(true);
+        duration.addValidator(new IntegerValidator("Ошибка! Введите число"));
+        bottomLayout.addComponent(duration);
+        
+        
+    }
+
+    private class SelectInterviewListener implements Property.ValueChangeListener {
+
+        @Override
+        public void valueChange(ValueChangeEvent event) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 
     private class InterviewsTable extends Table {
         
         public String[] NATURAL_COL_ORDER = new String[] {
-                "date", "time", "intervNum", "duration",
-                "posNum", "restPosNum"};
+                "date", "startTime", "endTime", 
+                "positionNum", "restOfPositions", "interviewersNum"};
         
         public String[] COL_HEADERS_RUSSIAN = new String[] {
-                "Дата собеседования", "Время собеседования", "Количество интервьюеров", "Продолжительность",
-                "Количество мест", "Остаток мест"};
+                "Дата", "Время начала", "Время окончания",
+                "Количество мест", "Остаток мест", "Количество интервьюеров"};
         
         private InterviewsTable(Container dataSource) {
             super();
@@ -99,9 +137,9 @@ public class HRInterviewsLayout extends VerticalLayout{
             setContainerDataSource(dataSource);
             setColumnReorderingAllowed(true);
             setColumnCollapsingAllowed(true);
-//            setVisibleColumns(NATURAL_COL_ORDER);
-//            setColumnHeaders(COL_HEADERS_RUSSIAN);
-            
+            setVisibleColumns(NATURAL_COL_ORDER);
+            setColumnHeaders(COL_HEADERS_RUSSIAN);
+            addListener(new SelectInterviewListener());
         }
     }
     

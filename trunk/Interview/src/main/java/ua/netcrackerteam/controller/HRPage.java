@@ -1,12 +1,18 @@
 package ua.netcrackerteam.controller;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import ua.netcrackerteam.DAO.DAOHRImpl;
 import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Form;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import ua.netcrackerteam.DAO.Interview;
+import ua.netcrackerteam.configuration.HibernateFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -89,6 +95,43 @@ public class HRPage {
             studentList = getStudentDataList(allForms);
         }
         return studentList;
+    }
+    
+    /*
+     * Anna
+     */
+    public static List<HRInterview> getInterviewsList() {
+        List<HRInterview> intervList = new ArrayList<HRInterview>();
+        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+        for(Interview interview : interviews) {
+            HRInterview hrInterview = new HRInterview();
+            
+            Date startDate = interview.getStartDate();
+            Format formatter = new SimpleDateFormat("dd/MM/yyyy");      
+            String strDate = formatter.format(startDate);
+            hrInterview.setDate(strDate);
+            
+            formatter = new SimpleDateFormat("HH:mm");     
+            String strStartTime = formatter.format(startDate);
+            hrInterview.setStartTime(strStartTime);
+            
+            String strEndTime = formatter.format(interview.getEndDate());
+            hrInterview.setEndTime(strEndTime);
+            
+            hrInterview.setInterviewersNum(interview.getInterviwerNumber());
+            hrInterview.setPositionNum(interview.getMaxNumber());
+            
+            List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+            int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
+            hrInterview.setRestOfPositions(hrInterview.getPositionNum() - amountStudentsToInterview);
+            
+            intervList.add(hrInterview);
+        }
+        return intervList;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(getInterviewsList());
     }
 
 }
