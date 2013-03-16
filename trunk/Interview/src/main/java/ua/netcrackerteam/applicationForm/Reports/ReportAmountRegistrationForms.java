@@ -4,7 +4,6 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
-import ua.netcrackerteam.applicationForm.Reports.TypeOfViewReport;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,28 +15,14 @@ import java.util.ListIterator;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
-import ua.netcrackerteam.DAO.Form;
-import ua.netcrackerteam.DAO.Interview;
 import ua.netcrackerteam.DAO.Reports.DAOReport;
 import ua.netcrackerteam.DAO.Reports.DAOReportAmountRegistrationForms;
-import ua.netcrackerteam.configuration.HibernateFactory;
 
 /**
  *
  * @author tanya
  */
 public class ReportAmountRegistrationForms implements TypeOfViewReport{
-    
-    private static ReportAmountRegistrationForms reportAmountRegistrationForms;
-    
-    private ReportAmountRegistrationForms(){}
-    
-    public static synchronized ReportAmountRegistrationForms getInstance(){
-        if(reportAmountRegistrationForms == null){
-            reportAmountRegistrationForms = new ReportAmountRegistrationForms();}
-        
-        return reportAmountRegistrationForms;
-    }
     
     public byte[] viewReport() {  
          

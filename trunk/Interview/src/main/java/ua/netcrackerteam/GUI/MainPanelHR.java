@@ -128,7 +128,7 @@ public class MainPanelHR extends MainPanel{
             
         @Override
         public InputStream getStream() {
-            TypeOfViewReport report = ReportAmountRegistrationForms.getInstance();
+            TypeOfViewReport report = new ReportAmountRegistrationForms();
             return new ByteArrayInputStream(report.viewReport());
         } 
     }
