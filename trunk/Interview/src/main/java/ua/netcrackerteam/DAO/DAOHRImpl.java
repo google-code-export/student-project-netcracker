@@ -49,7 +49,6 @@ public class DAOHRImpl implements DAOHR{
         return formList;
     }
     
-//Add check if mark contains 
     @Override
     public void setHRMark(int selectedFormID, String insertedMark, String userNameHR) {
         Session session = null;
@@ -66,8 +65,7 @@ public class DAOHRImpl implements DAOHR{
             interviewRes =  (InterviewRes) query.uniqueResult();
             if(interviewRes != null) {
                 interviewRes.setScore(insertedMark);    
-            }
-            else {                            
+            } else {                            
                 interviewRes = new InterviewRes();
                 query = session.createQuery("from Form where idForm = " + selectedFormID);
                 Form selectedForm = (Form) query.uniqueResult();
@@ -252,5 +250,25 @@ public class DAOHRImpl implements DAOHR{
         }
         return name;
     }
+
+    @Override
+    public void addNewInterview(Interview newInterview) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.save(newInterview);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+    
  
 }

@@ -9,18 +9,30 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.IntegerValidator;
+import com.vaadin.event.FieldEvents;
+import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Runo;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import ua.netcrackerteam.controller.HRInterview;
 import ua.netcrackerteam.controller.HRPage;
 
@@ -28,11 +40,13 @@ import ua.netcrackerteam.controller.HRPage;
  *
  * @author Anna Kushnirenko
  */
-public class HRInterviewsLayout extends VerticalLayout{
+public class HRInterviewsLayout extends VerticalLayout {
     private final Panel rightPanel;
     private final Panel sidebar;
     private final int screenHeight;
     private InterviewsTable table;
+
+    private BottomLayout bottomLayout;
 
     public HRInterviewsLayout(int height) {
         this.screenHeight = height;
@@ -62,6 +76,15 @@ public class HRInterviewsLayout extends VerticalLayout{
         Button addInterview = new Button("Создать собеседование");
         addInterview.setStyleName(Runo.BUTTON_LINK);
         addInterview.setIcon(new ThemeResource("icons/32/document-add.png"));
+        addInterview.addListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                BottomLayout old = bottomLayout;
+                bottomLayout = new BottomLayout();
+                rightPanel.replaceComponent(old, bottomLayout);
+            }
+        });
         sidebar.addComponent(addInterview);
         
         Button addTime = new Button("Ввод запасного времени");
@@ -75,46 +98,20 @@ public class HRInterviewsLayout extends VerticalLayout{
         VerticalLayout vl = (VerticalLayout) rightPanel.getContent();
         vl.setMargin(false);
         vl.setSpacing(true);
-        List<HRInterview> interviews = HRPage.getInterviewsList();
-        BeanItemContainer<HRInterview> bean = new BeanItemContainer(HRInterview.class, interviews);
-        table = new InterviewsTable(bean);
+        
+        table = new InterviewsTable();
         rightPanel.addComponent(table);
         
-        VerticalLayout bottomLayout = new VerticalLayout();
-        bottomLayout.setSpacing(true);
-        bottomLayout.setMargin(true);
-        //bottomLayout.setVisible(false);
-        fillBottomLayout(bottomLayout);
+        bottomLayout = new BottomLayout();
+        bottomLayout.setVisible(false);
         rightPanel.addComponent(bottomLayout);
-    }
-
-    private void fillBottomLayout(VerticalLayout bottomLayout) {
-        PopupDateField startDate = new PopupDateField("Дата и время собеседования");
-        startDate.setResolution(PopupDateField.RESOLUTION_MIN);
-        startDate.setImmediate(true);
-        startDate.setWidth("150");
-        bottomLayout.addComponent(startDate);
-        
-        TextField intervNum = new TextField("Количество интервьюеров");
-        intervNum.setWidth("150");
-        intervNum.setRequired(true);
-        intervNum.addValidator(new IntegerValidator("Ошибка! Введите число"));
-        bottomLayout.addComponent(intervNum);
-        
-        TextField duration = new TextField("Длительность одного собеседования");
-        duration.setWidth("150");
-        duration.setRequired(true);
-        duration.addValidator(new IntegerValidator("Ошибка! Введите число"));
-        bottomLayout.addComponent(duration);
-        
-        
     }
 
     private class SelectInterviewListener implements Property.ValueChangeListener {
 
         @Override
         public void valueChange(ValueChangeEvent event) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            
         }
     }
 
@@ -128,13 +125,15 @@ public class HRInterviewsLayout extends VerticalLayout{
                 "Дата", "Время начала", "Время окончания",
                 "Количество мест", "Остаток мест", "Количество интервьюеров"};
         
-        private InterviewsTable(Container dataSource) {
+        private InterviewsTable() {
             super();
+            List<HRInterview> interviews = HRPage.getInterviewsList();
+            BeanItemContainer<HRInterview> bean = new BeanItemContainer(HRInterview.class, interviews);
+            setContainerDataSource(bean);
             setWidth("100%");
             setHeight(screenHeight-300,UNITS_PIXELS);
             setSelectable(true);
             setImmediate(true);
-            setContainerDataSource(dataSource);
             setColumnReorderingAllowed(true);
             setColumnCollapsingAllowed(true);
             setVisibleColumns(NATURAL_COL_ORDER);
@@ -143,4 +142,193 @@ public class HRInterviewsLayout extends VerticalLayout{
         }
     }
     
+    private class TimeSelection extends GridLayout implements Property.ValueChangeListener{
+        private final NativeSelect hours;
+        private final NativeSelect minutes;
+
+        public TimeSelection(String caption) {
+            setWidth("120");
+            setColumns(3);
+            setRows(2);
+            addComponent(new Label(caption),0,0,2,0);
+            hours = new NativeSelect();
+            minutes = new NativeSelect();
+            for (int i = 0; i < 24; i++) {
+                String strHours = i + "";
+                if(i<10) {
+                    strHours = "0" + i;
+                }
+                hours.addItem(strHours);
+            }
+            minutes.addItem("00");
+            minutes.addItem("15");
+            minutes.addItem("30");
+            minutes.setImmediate(true);
+            minutes.addItem("45");
+            hours.setValue("00");
+            minutes.setValue("00");
+            hours.setNullSelectionAllowed(false);
+            hours.setImmediate(true);
+            minutes.setNullSelectionAllowed(false);
+            addComponent(hours,0,1);
+            addComponent(new Label(": "),1,1);
+            addComponent(minutes,2,1);
+            minutes.addListener(this);
+            hours.addListener(this);
+        }
+
+        public Date getDate(Date day) throws ParseException {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy ");
+            String strDate = formatter.format(day) + hours.getValue() + minutes.getValue();
+            formatter = new SimpleDateFormat("dd/MM/yyyy HHmm");
+            Date date = formatter.parse(strDate);
+            return date;
+        }
+        
+        public void setTime(String strTime) throws ParseException {
+            int index = strTime.indexOf(":");
+            hours.setValue(strTime.substring(0,index));
+            minutes.setValue(strTime.substring(index+1));
+        }
+
+        @Override
+        public void valueChange(ValueChangeEvent event) {
+            bottomLayout.setRecommendedStNum();
+        }
+    }
+    
+    private class BottomLayout extends GridLayout implements FieldEvents.BlurListener{
+        private TextField positionNum;
+        private TextField intervNum;
+        private TextField duration;
+        private TimeSelection startTime;
+        private TimeSelection endTime;
+        private PopupDateField date;
+        private Button saveEdit;
+
+        public BottomLayout() {
+            setWidth("100%");
+            setSpacing(true);
+            setMargin(true);
+            setColumns(3);
+            setRows(3);
+            fillBottomLayout();
+        }
+        
+        private void fillBottomLayout() {
+            date = new PopupDateField("Дата собеседования");
+            date.setResolution(PopupDateField.RESOLUTION_DAY);
+            date.setImmediate(true);
+            date.setWidth("150");
+            date.setValue(new Date());
+            addComponent(date,0,0);
+            setComponentAlignment(date, Alignment.BOTTOM_LEFT);
+
+            startTime = new TimeSelection("Начало собеседования: ");
+            addComponent(startTime,1,0);
+
+            endTime = new TimeSelection("Конец собеседования: ");
+            addComponent(endTime,2,0);
+
+            intervNum = new TextField("Количество интервьюеров");
+            intervNum.setWidth("150");
+            intervNum.setRequired(true);
+            intervNum.addListener(this);
+            intervNum.addValidator(new IntegerValidator("Ошибка! Введите число"));
+            addComponent(intervNum,0,1);
+
+            duration = new TextField("Длительность 1го (мин)");
+            duration.setWidth("150");
+            duration.addListener(this);
+            duration.addValidator(new IntegerValidator("Ошибка! Введите число"));
+            addComponent(duration,1,1);
+
+            positionNum = new TextField("Количество студентов");
+            positionNum.setWidth("150");
+            positionNum.setInputPrompt("Рекомендуемое: ?");
+            positionNum.setRequired(true);
+            positionNum.addValidator(new IntegerValidator("Ошибка! Введите число"));
+            addComponent(positionNum,2,1);
+            
+            saveEdit = new Button("Сохранить");
+            saveEdit.setWidth("150");
+            saveEdit.addListener(new Button.ClickListener() {
+
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    saveInterview();
+                }
+            });
+            addComponent(saveEdit,1,2);
+        }
+        
+        @Override
+        public void blur(BlurEvent event) {
+            setRecommendedStNum();
+        }
+        
+        public boolean isValid() {
+            if(intervNum.isValid() && duration.isValid() && !duration.getValue().equals("")) {
+                return true;
+            }
+            return false;
+        }
+        
+        public boolean isValidForSave() {
+            if(intervNum.isValid() && duration.isValid() && positionNum.isValid() ) {
+                return true;
+            }
+            return false;
+        }
+        
+        public void setRecommendedStNum() {
+            if(bottomLayout.isValid()) {
+                try {
+                    Date start = startTime.getDate((Date) date.getValue());
+                    Date end = endTime.getDate((Date) date.getValue());
+                    int dur = Integer.parseInt(duration.getValue().toString());
+                    int intNum = Integer.parseInt(intervNum.getValue().toString());
+                    int recNum = HRPage.getRecommendedStudentsNum(start, end, dur, intNum);
+                    if(recNum < 0) {
+                        getWindow().showNotification("Время начала не может быть меньше времени окончания!",
+                                Window.Notification.TYPE_TRAY_NOTIFICATION);
+                        positionNum.setInputPrompt("Рекомендуемое: ?");
+                    } else {
+                        positionNum.setInputPrompt("Рекомендуемое: "+recNum);
+                    }
+                } catch (ParseException ex) {
+                    Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        private void saveInterview() {
+            if(isValidForSave()) {
+                try {
+                    Date start = startTime.getDate((Date) date.getValue());
+                    Date end = endTime.getDate((Date) date.getValue());
+                    int dur = Integer.parseInt(duration.getValue().toString());
+                    int intNum = Integer.parseInt(intervNum.getValue().toString());
+                    int posNum = Integer.parseInt(positionNum.getValue().toString());
+                    int recNum = HRPage.getRecommendedStudentsNum(start, end, dur, intNum);
+                    if(recNum < 0) {
+                        getWindow().showNotification("Время начала не может быть меньше времени окончания!",
+                                Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    } else {
+                        HRPage.saveNewInterview(start, end, intNum, posNum);
+                        getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                        setVisible(false);
+                        Table old = table;
+                        table = new InterviewsTable();
+                        rightPanel.replaceComponent(old, table);
+                    }
+                    
+                } catch (ParseException ex) {
+                    Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }
+   
 }
