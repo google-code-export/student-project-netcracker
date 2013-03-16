@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.applicationForm;
+package ua.netcrackerteam.applicationForm.Reports;
 
+import ua.netcrackerteam.applicationForm.Reports.TypeOfViewReport;
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -37,8 +38,14 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
     }
     
     public byte[] viewReport() {  
-        JFreeChart chart = (new Chart(getDataSet())).createChart("","interviews","registration student, %");
-        Report report = new Report(getReport(), chart);        
+        
+         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+         if(interviews == null){
+             interviews = new ArrayList<Interview>();
+         }
+         
+        JFreeChart chart = (new Chart(getDataSet(interviews))).createChart("","interviews","registration student, %");
+        Report report = new Report(getReport(interviews), chart);        
         ByteArrayOutputStream outputStream = report.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
         
         byte[] bytes = outputStream.toByteArray();
@@ -46,15 +53,11 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
         return bytes;
      }
     
-     private String[][] getReport(){
+     private String[][] getReport(List<Interview> interviews){
          
          int column = 4;
          DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
          
-         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-         if(interviews == null){
-             interviews = new ArrayList<Interview>();
-         }
          String[][] report = new String[interviews.size() + 2][column];
          
          //Fill header
@@ -91,15 +94,10 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
      }
      
     
-    private CategoryDataset getDataSet(){
+    private CategoryDataset getDataSet(List<Interview> interviews){
         
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
-            
-        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-         if(interviews == null){
-             interviews = new ArrayList<Interview>();             
-         } 
-         
+               
          String[] dateInterview = new String[interviews.size()];
          double[][] percent = new double[1][interviews.size()];
          

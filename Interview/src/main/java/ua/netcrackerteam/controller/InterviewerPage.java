@@ -19,7 +19,7 @@ public class InterviewerPage {
      * @return byte array 
      */
     public static byte[] getPdfForView(int formID) {
-        return new ApplicationForm(formID).pdfForView();
+        return new ApplicationForm(formID).generateFormPDF();
     }
     
     private static List<StudentDataShort> getStudentDataList(List<Form> forms) {

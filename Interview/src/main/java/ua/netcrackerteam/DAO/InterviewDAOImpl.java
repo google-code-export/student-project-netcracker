@@ -14,17 +14,10 @@ import java.util.Locale;
 
 /**
  *
- * @author home, Filipenko
+ * @author Klitna, Filipenko
  */
 public class InterviewDAOImpl {
 
-    public static void main(String arrgs[]) {
-        InterviewDAOImpl interviewAO = new InterviewDAOImpl();
-        List <Interview> interviews = interviewAO.getInterview();
-        //System.out.println((new InterviewDAOImpl()).getInterview(1).getMaxNumber());
-
-        //Interview currInterview = interviewAO.getInterview(new Date(112, 9, 28, 17, 30));
-    }
 
    //Получает все интервью 
    public List<Interview> getInterview(){
@@ -49,8 +42,7 @@ public class InterviewDAOImpl {
    } 
    
    //Получает интервью по конкретной дате
-   //Correct Tanya
-   public Interview getInterview(int idInterview){    
+     public Interview getInterview(int idInterview){    
       Session session = null;
         Query query;        
        

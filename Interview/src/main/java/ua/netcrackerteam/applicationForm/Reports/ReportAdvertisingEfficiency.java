@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.applicationForm;
+package ua.netcrackerteam.applicationForm.Reports;
 
-import java.util.ArrayList;
+import ua.netcrackerteam.applicationForm.Reports.TypeOfViewReport;
 
 /**
  *

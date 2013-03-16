@@ -8,6 +8,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
@@ -22,9 +23,10 @@ import ua.netcrackerteam.controller.StudentPage;
  */
 public class ApplicationForm{   
   
-    private final  String pathPDFTemplate = "resources/Template.pdf";
-    private final  String pathTimesTTF = "resources/times.ttf";
-       
+    private String pathPDFTemplate = "resources\\Template.pdf";
+    private String pathTimesTTF = "resources\\times.ttf";
+    private String path = ClassPath.getInstance().getWebInfPath();
+    
     private StudentData studentData;
     
     public ApplicationForm(int idForm){
@@ -39,30 +41,36 @@ public class ApplicationForm{
      * Generate pdf with pdf-template and write it to binary stream
      * @param OutputStream memory
      */
-    public void generateFormPDF(OutputStream memory) {
-             
-        try {
-            String path = ClassPath.getInstance().getWebInfPath();
-            BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);            
-            PdfReader reader = new PdfReader(path + pathPDFTemplate);
-            PdfStamper stamper = new PdfStamper(reader, memory);
+    public byte[] generateFormPDF() {
+           byte[] pdfForView = null;
+        try { 
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BaseFont font = BaseFont.createFont(path+pathTimesTTF, "cp1251", BaseFont.EMBEDDED);            
+            PdfReader reader = new PdfReader(path+pathPDFTemplate);
+            PdfStamper stamper = new PdfStamper(reader, baos);
             AcroFields form = stamper.getAcroFields();
             form.addSubstitutionFont(font);
             fillFormData(form);          
             PdfContentByte content = stamper.getOverContent(1);
-            Image image = Image.getInstance(studentData.getPhoto());
-            image.scaleToFit(130, 130);
-            image.setAbsolutePosition(60f, 625f);
-            content.addImage(image);        
+            byte[] foto = studentData.getPhoto();            
+            if(foto != null){
+                Image image = Image.getInstance(foto);
+                image.scaleToFit(130, 130);
+                image.setAbsolutePosition(60f, 625f);
+                content.addImage(image); 
+            } 
             stamper.close();
+            reader.close();
+            pdfForView = baos.toByteArray();
             
         } catch (DocumentException ex) {
             Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ApplicationForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-              
-      
+        
+        return pdfForView;
+   
     }
     
     /**
@@ -150,13 +158,5 @@ public class ApplicationForm{
         return buffer.toString();
     }
  
-    
-    public byte[] pdfForView(){
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        generateFormPDF(outputStream);
-        byte[] bytes = outputStream.toByteArray();
-        
-        return bytes;
-    }
-       
+          
 }

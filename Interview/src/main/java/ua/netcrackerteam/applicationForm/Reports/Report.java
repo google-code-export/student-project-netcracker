@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.applicationForm;
+package ua.netcrackerteam.applicationForm.Reports;
 
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -28,6 +28,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
+import ua.netcrackerteam.applicationForm.ClassPath;
 
 
 

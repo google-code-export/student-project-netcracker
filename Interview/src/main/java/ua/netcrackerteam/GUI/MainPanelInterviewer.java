@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import ua.netcrackerteam.applicationForm.ApplicationForm;
 
 /**
  * Panel for Interviewer view
@@ -195,7 +196,7 @@ public class MainPanelInterviewer extends MainPanel{
         searchLayout.setComponentAlignment(searchButton, Alignment.TOP_CENTER);
         return searchLayout;
     }
-
+    
     private Link getPDFLink() {
         StreamResource resource = new StreamResource(new PdfStreamSource(), "form.pdf", mainPage);
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
@@ -228,7 +229,17 @@ public class MainPanelInterviewer extends MainPanel{
             rightPanel.replaceComponent(oldTable, table);
             bottomLayout.setVisible(false);
     }
-
+    
+          private class PdfStreamSource implements StreamResource.StreamSource {
+            
+        @Override
+        public InputStream getStream() {
+            //return new ByteArrayInputStream(InterviewerPage.getPdfForView(currFormID));
+            ApplicationForm form = new ApplicationForm(currFormID);
+            return new ByteArrayInputStream(form.generateFormPDF());
+        } 
+    }
+  
     private class SearchListener implements Button.ClickListener{
 
         @Override
@@ -260,15 +271,7 @@ public class MainPanelInterviewer extends MainPanel{
         }
              
     }
-    
-    private class PdfStreamSource implements StreamResource.StreamSource {
-            
-        @Override
-        public InputStream getStream() {
-            return new ByteArrayInputStream(InterviewerPage.getPdfForView(currFormID));
-        } 
-    }
-    
+        
     private class SelectStudentListener implements Property.ValueChangeListener {
        
 
