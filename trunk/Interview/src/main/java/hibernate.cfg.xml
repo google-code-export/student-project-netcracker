@@ -30,5 +30,6 @@
       <mapping class="ua.netcrackerteam.DAO.BranchCategory" />
       <mapping class="ua.netcrackerteam.DAO.AuditInterview" />
       <mapping class="ua.netcrackerteam.DAO.ActionCategories" />
+      <mapping class="ua.netcrackerteam.DAO.HrTempInfo" />
   </session-factory>
 </hibernate-configuration>
