@@ -18,6 +18,8 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
 import ua.netcrackerteam.DAO.Form;
 import ua.netcrackerteam.DAO.Interview;
+import ua.netcrackerteam.DAO.Reports.DAOReport;
+import ua.netcrackerteam.DAO.Reports.DAOReportAmountRegistrationForms;
 import ua.netcrackerteam.configuration.HibernateFactory;
 
 /**
@@ -38,49 +40,46 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
     }
     
     public byte[] viewReport() {  
-        
-         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-         if(interviews == null){
-             interviews = new ArrayList<Interview>();
+         
+         DAOReport report = new DAOReportAmountRegistrationForms();
+         List dataReport = report.getReportFoView();
+         
+         if(dataReport == null){
+             dataReport = new ArrayList();
          }
          
-        JFreeChart chart = (new Chart(getDataSet(interviews))).createChart("","interviews","registration student, %");
-        Report report = new Report(getReport(interviews), chart);        
-        ByteArrayOutputStream outputStream = report.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
+        JFreeChart chart = (new Chart(getDataSet(dataReport))).createChart("","interviews","registration student, %");
+        Report reportDocument = new Report(getReport(dataReport), chart);        
+        ByteArrayOutputStream outputStream = reportDocument.createTemplate("Статистика зарегестрированных студентов", new float[]{2f, 1.5f, 1.5f, 1.5f}); 
         
-        byte[] bytes = outputStream.toByteArray();
-        
-        return bytes;
+        return outputStream.toByteArray();
      }
     
-     private String[][] getReport(List<Interview> interviews){
+     private String[][] getReport(List reportData){
          
          int column = 4;
          DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
          
-         String[][] report = new String[interviews.size() + 2][column];
+         String[][] report = new String[reportData.size() + 2][column];
          
          //Fill header
          report[0][0] = "Дата";     report[0][1] = "Зарегестрировано";
          report[0][2] = "Свободно"; report[0][3] = "Всего";
          
          int summaStudentsSeatsInterviews = 0;
-         int summaSeatsInterviews =0;
-         ListIterator<Interview> iterator = interviews.listIterator(); 
+         int summaSeatsInterviews = 0;
+         ListIterator iterator = reportData.listIterator(); 
          for(int i = 1; iterator.hasNext(); i++){ 
              
-             Interview interview = iterator.next();
-             List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-             int summaForms = (forms == null? 0: forms.size());
-             int summa = interview.getMaxNumber();
+             Object[] rowReportData = (Object[])iterator.next();
                      
-             report[i][0] = dateFormat.format(interview.getStartDate());
-             report[i][1] = "" + summaForms;
-             report[i][2] = "" + (summa - summaForms);
-             report[i][3] = "" + summa;
+             report[i][0] = dateFormat.format(rowReportData[0]);
+             report[i][1] = "" + rowReportData[1];
+             report[i][2] = "" + rowReportData[2];
+             report[i][3] = "" + rowReportData[3];
              
-             summaStudentsSeatsInterviews += summaForms;
-             summaSeatsInterviews += summa;
+             summaStudentsSeatsInterviews += Integer.parseInt(rowReportData[2].toString());
+             summaSeatsInterviews += Integer.parseInt(rowReportData[1].toString());
              
          }
          
@@ -94,24 +93,24 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
      }
      
     
-    private CategoryDataset getDataSet(List<Interview> interviews){
+    private CategoryDataset getDataSet(List reportData){
         
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
+         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
                
-         String[] dateInterview = new String[interviews.size()];
-         double[][] percent = new double[1][interviews.size()];
+         String[] dateInterview = new String[reportData.size()];
+         double[][] percent = new double[1][reportData.size()];
          
-         ListIterator<Interview> iterator = interviews.listIterator();
+         ListIterator iterator = reportData.listIterator();
          
          for(int i = 0; iterator.hasNext(); i++){ 
              
-             Interview interview = iterator.next();
+             Object[] rowReportData = (Object[])iterator.next();
              
-             dateInterview[i] = dateFormat.format(interview.getStartDate());
+             dateInterview[i] = dateFormat.format(rowReportData[0]);
              
-             int maxForms = interview.getMaxNumber();
-             List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-             int summaForms = (forms == null? 0: forms.size());
+             int maxForms = Integer.parseInt(rowReportData[1].toString());
+             int summaForms = Integer.parseInt(rowReportData[2].toString());
+             
              percent[0][i] = new BigDecimal((maxForms == 0? 0: 100*summaForms/maxForms)).setScale(2, RoundingMode.UP).doubleValue();
          } 
          
