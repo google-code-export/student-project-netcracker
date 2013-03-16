@@ -48,4 +48,5 @@ public interface DAOHR {
     public String getInterviewerNameByID(int userID);
     public void addNewInterview(Interview newInterview);
     public void deleteInterview(int interviewId);
+    public void editInterview(Interview interview);
 } 

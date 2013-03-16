@@ -157,6 +157,16 @@ public class HRPage {
         new DAOHRImpl().deleteInterview(idInterview);
     }
     
+    public static void editInterview(int id, Date start, Date end, int intervNum, int maxStudents) {
+        Interview interview = new Interview();
+        interview.setIdInterview(id);
+        interview.setEndDate(end);
+        interview.setStartDate(start);
+        interview.setInterviwerNumber(intervNum);
+        interview.setMaxNumber(maxStudents);
+        new DAOHRImpl().editInterview(interview);
+    }
+    
     public static void main(String[] args) {
         System.out.println(getInterviewsList());
     }

@@ -30,6 +30,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Runo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,6 +47,7 @@ public class HRInterviewsLayout extends VerticalLayout {
     private final Panel sidebar;
     private final int screenHeight;
     private InterviewsTable table;
+    private boolean editable = false;
 
     private BottomLayout bottomLayout;
 
@@ -81,6 +83,8 @@ public class HRInterviewsLayout extends VerticalLayout {
 
             @Override
             public void buttonClick(ClickEvent event) {
+                editable = false;
+                table.setValue(null);
                 BottomLayout old = bottomLayout;
                 bottomLayout = new BottomLayout();
                 rightPanel.replaceComponent(old, bottomLayout);
@@ -97,6 +101,9 @@ public class HRInterviewsLayout extends VerticalLayout {
             public void buttonClick(ClickEvent event) {
                 if(table.getValue() == null) {
                     getWindow().showNotification("Выберите собеседование!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                } else {
+                    editable = true;
+                    editInterview();
                 }
             }
         });
@@ -115,8 +122,6 @@ public class HRInterviewsLayout extends VerticalLayout {
                     deleteInterview();
                 }
             }
-
-            
         });
         sidebar.addComponent(deleteInterview);
         
@@ -180,13 +185,32 @@ public class HRInterviewsLayout extends VerticalLayout {
          getWindow().addWindow(confirm);
     }
     
+    private void editInterview() {
+        BottomLayout old = bottomLayout;
+        bottomLayout = new BottomLayout();
+        HRInterview interview = (HRInterview) table.getValue();
+        bottomLayout.setDate(interview.getDate());
+        bottomLayout.setStartTime(interview.getStartTime());
+        bottomLayout.setEndTime(interview.getEndTime());
+        bottomLayout.setIntervCount(interview.getInterviewersNum());
+        bottomLayout.setPositionsCount(interview.getPositionNum());
+        rightPanel.replaceComponent(old, bottomLayout);
+    }
+    
     private void refreshTable() {
         Table old = table;
         table = new InterviewsTable();
+        table.addListener(new Property.ValueChangeListener() {
+
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                bottomLayout.setVisible(false);
+            }
+        });
         rightPanel.replaceComponent(old, table);
     }
 
-    private class InterviewsTable extends Table {
+    private class InterviewsTable extends Table{
         
         public String[] NATURAL_COL_ORDER = new String[] {
                 "date", "startTime", "endTime", 
@@ -255,7 +279,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             return date;
         }
         
-        public void setTime(String strTime) throws ParseException {
+        public void setTime(String strTime) {
             int index = strTime.indexOf(":");
             hours.setValue(strTime.substring(0,index));
             minutes.setValue(strTime.substring(index+1));
@@ -281,6 +305,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             setSpacing(true);
             setMargin(true);
             setColumns(3);
+            setImmediate(true);
             setRows(3);
             fillBottomLayout();
         }
@@ -345,10 +370,27 @@ public class HRInterviewsLayout extends VerticalLayout {
         }
         
         public boolean isValidForSave() {
-            if(intervNum.isValid() && duration.isValid() && positionNum.isValid() ) {
-                return true;
-            }
+            try {
+                if(intervNum.isValid() && duration.isValid() && positionNum.isValid() ) {
+                    Date start = startTime.getDate((Date) date.getValue());
+                    Date end = endTime.getDate((Date) date.getValue());
+                    Calendar calStart = Calendar.getInstance();
+                    calStart.setTime(start);
+                    Calendar calEnd = Calendar.getInstance();
+                    calEnd.setTime(end);
+                    long diff = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
+                    if(diff<0) {
+                        getWindow().showNotification("Время начала не может быть меньше времени окончания!",
+                                Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    } else {
+                        return true; 
+                    }
+                }
+             } catch (ParseException ex) {
+                    Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
+             }
             return false;
+            
         }
         
         public void setRecommendedStNum() {
@@ -377,24 +419,49 @@ public class HRInterviewsLayout extends VerticalLayout {
                 try {
                     Date start = startTime.getDate((Date) date.getValue());
                     Date end = endTime.getDate((Date) date.getValue());
-                    int dur = Integer.parseInt(duration.getValue().toString());
                     int intNum = Integer.parseInt(intervNum.getValue().toString());
                     int posNum = Integer.parseInt(positionNum.getValue().toString());
-                    int recNum = HRPage.getRecommendedStudentsNum(start, end, dur, intNum);
-                    if(recNum < 0) {
-                        getWindow().showNotification("Время начала не может быть меньше времени окончания!",
-                                Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    } else {
+                    if(!editable) {
                         HRPage.saveNewInterview(start, end, intNum, posNum);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
-                        setVisible(false);
-                        refreshTable();
+                    } else {
+                        HRInterview interview = (HRInterview) table.getValue();
+                        HRPage.editInterview(interview.getId(), start, end, intNum, posNum);
+                        getWindow().showNotification("Собеседование успешно изменено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
-                    
+                    setVisible(false);
+                    refreshTable();
                 } catch (ParseException ex) {
                     Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+
+        private void setDate(String newStrDate) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date newDate = new Date();
+            try {
+                newDate = formatter.parse(newStrDate);
+            } catch (ParseException ex) {
+                Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            date.setValue(newDate);
+        }
+
+        private void setStartTime(String newStartTime) {
+            startTime.setTime(newStartTime);
+        }
+
+        private void setEndTime(String newEndTime) {
+            endTime.setTime(newEndTime);
+        }
+
+        private void setIntervCount(int newInterviewersNum) {
+            intervNum.setValue(newInterviewersNum);
+        }
+
+        private void setPositionsCount(int newPositionNum) {
+            positionNum.setValue(newPositionNum);
         }
         
     }
