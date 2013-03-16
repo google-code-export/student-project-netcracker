@@ -15,7 +15,8 @@ public class DAOHRImpl implements DAOHR{
     public static void main(String[] args) {
         DAOHRImpl test = new DAOHRImpl();
         //test.setHRMark(233, "молодец (HR)", "HR");
-        System.out.println(test.search("institute", "ОДЕСЬкий"));
+        //System.out.println(test.search("institute", "ОДЕСЬкий"));
+        test.deleteInterview(1050);
         
     }
 
@@ -260,6 +261,28 @@ public class DAOHRImpl implements DAOHR{
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
             session.save(newInterview);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
+    public void deleteInterview(int interviewId) {
+        Session session = null;
+        Query query = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();   
+            query = session.createQuery("from Interview where idInterview = " + interviewId);
+            Interview selectedInterview = (Interview) query.uniqueResult();
+            session.delete(selectedInterview);
             transaction.commit();
         } catch (Exception e) {
             System.out.println(e);

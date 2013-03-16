@@ -106,6 +106,8 @@ public class HRPage {
         for(Interview interview : interviews) {
             HRInterview hrInterview = new HRInterview();
             
+            hrInterview.setId(interview.getIdInterview());
+            
             Date startDate = interview.getStartDate();
             Format formatter = new SimpleDateFormat("dd/MM/yyyy");      
             String strDate = formatter.format(startDate);
@@ -149,6 +151,10 @@ public class HRPage {
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
         new DAOHRImpl().addNewInterview(interview);
+    }
+    
+    public static void deleteInterview(int idInterview) {
+        new DAOHRImpl().deleteInterview(idInterview);
     }
     
     public static void main(String[] args) {
