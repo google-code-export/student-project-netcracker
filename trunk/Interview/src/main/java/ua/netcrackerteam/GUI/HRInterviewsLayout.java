@@ -17,6 +17,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
@@ -73,7 +74,7 @@ public class HRInterviewsLayout extends VerticalLayout {
         vl.setSpacing(true);
         
         sidebar.setHeight("100%");
-        Button addInterview = new Button("Создать собеседование");
+        Button addInterview = new Button("Добавить собеседование");
         addInterview.setStyleName(Runo.BUTTON_LINK);
         addInterview.setIcon(new ThemeResource("icons/32/document-add.png"));
         addInterview.addListener(new Button.ClickListener() {
@@ -87,10 +88,44 @@ public class HRInterviewsLayout extends VerticalLayout {
         });
         sidebar.addComponent(addInterview);
         
+        Button editInterview = new Button("Редактировать собеседование");
+        editInterview.setStyleName(Runo.BUTTON_LINK);
+        editInterview.setIcon(new ThemeResource("icons/32/document-edit.png"));
+        editInterview.addListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(table.getValue() == null) {
+                    getWindow().showNotification("Выберите собеседование!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        sidebar.addComponent(editInterview);
+        
+        Button deleteInterview = new Button("Удалить собеседование");
+        deleteInterview.setStyleName(Runo.BUTTON_LINK);
+        deleteInterview.setIcon(new ThemeResource("icons/32/document-delete.png"));
+        deleteInterview.addListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(table.getValue() == null) {
+                    getWindow().showNotification("Выберите собеседование!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                } else {
+                    deleteInterview();
+                }
+            }
+
+            
+        });
+        sidebar.addComponent(deleteInterview);
+        
         Button addTime = new Button("Ввод запасного времени");
         addTime.setStyleName(Runo.BUTTON_LINK);
         addTime.setIcon(new ThemeResource("icons/32/time-icon.png"));
         sidebar.addComponent(addTime);
+        
+        
     }
 
     private void fillRightPanel() {
@@ -106,13 +141,49 @@ public class HRInterviewsLayout extends VerticalLayout {
         bottomLayout.setVisible(false);
         rightPanel.addComponent(bottomLayout);
     }
+    
+    private void deleteInterview() {
+         final Window confirm = new Window("Внимание!");
+         VerticalLayout vl = (VerticalLayout) confirm.getContent();
+         vl.setSpacing(true);
+         vl.setMargin(true);
+         confirm.setModal(true);
+         confirm.setWidth("20%");
+         confirm.setResizable(false);
+         confirm.center();
+         confirm.addComponent(new Label("Вы уверены что хотите удалить собеседование?"));
+         HorizontalLayout layout = new HorizontalLayout();
+         Button ok = new Button("ОК");
+         ok.setWidth("100");
+         ok.addListener(new Button.ClickListener() {
 
-    private class SelectInterviewListener implements Property.ValueChangeListener {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                HRInterview interview = (HRInterview) table.getValue();
+                HRPage.deleteInterview(interview.getId());
+                refreshTable();
+                getWindow().removeWindow(confirm);
+            }
+        });
+         Button cancel = new Button("Отмена");
+         cancel.setWidth("100");
+         cancel.addListener(new Button.ClickListener() {
 
-        @Override
-        public void valueChange(ValueChangeEvent event) {
-            
-        }
+            @Override
+            public void buttonClick(ClickEvent event) {
+                getWindow().removeWindow(confirm);
+            }
+        });
+         layout.addComponent(ok);
+         layout.addComponent(cancel);
+         confirm.addComponent(layout);
+         getWindow().addWindow(confirm);
+    }
+    
+    private void refreshTable() {
+        Table old = table;
+        table = new InterviewsTable();
+        rightPanel.replaceComponent(old, table);
     }
 
     private class InterviewsTable extends Table {
@@ -138,7 +209,6 @@ public class HRInterviewsLayout extends VerticalLayout {
             setColumnCollapsingAllowed(true);
             setVisibleColumns(NATURAL_COL_ORDER);
             setColumnHeaders(COL_HEADERS_RUSSIAN);
-            addListener(new SelectInterviewListener());
         }
     }
     
@@ -318,9 +388,7 @@ public class HRInterviewsLayout extends VerticalLayout {
                         HRPage.saveNewInterview(start, end, intNum, posNum);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                         setVisible(false);
-                        Table old = table;
-                        table = new InterviewsTable();
-                        rightPanel.replaceComponent(old, table);
+                        refreshTable();
                     }
                     
                 } catch (ParseException ex) {

@@ -9,13 +9,22 @@ package ua.netcrackerteam.controller;
  * @author Kushnirenko Anna
  */
 public class HRInterview {
-
+    
+    private int id;
     private String date;
     private String startTime;
     private String endTime;
     private int interviewersNum;
     private int positionNum;
     private int restOfPositions;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDate() {
         return date;
