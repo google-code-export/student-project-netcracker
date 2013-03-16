@@ -167,7 +167,7 @@ private PdfPTable createTable(float[] sizeTable) throws DocumentException, IOExc
            BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
            Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
            Font bf12 = new Font(font, 10, Font.ITALIC);              
-           //---------------------------------------------------------------    
+            
            PdfPTable table = new PdfPTable(sizeTable); 
            table.setWidthPercentage(100f);                         
            //Header table

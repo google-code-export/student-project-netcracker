@@ -8,9 +8,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +17,7 @@ import ua.netcrackerteam.controller.StudentPage;
 
 /**
  *
- * @author tanya
+ * @author Klitna Tetiana
  */
 public class ApplicationForm{   
   

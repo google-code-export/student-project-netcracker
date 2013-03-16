@@ -43,7 +43,7 @@ public class InterviewDAOImpl {
    
    //Получает интервью по конкретной дате
      public Interview getInterview(int idInterview){    
-      Session session = null;
+        Session session = null;
         Query query;        
        
         Interview interview = null;
