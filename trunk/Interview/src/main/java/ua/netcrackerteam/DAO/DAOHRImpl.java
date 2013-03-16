@@ -292,6 +292,25 @@ public class DAOHRImpl implements DAOHR{
             }
         }
     }
+
+    @Override
+    public void editInterview(Interview interview) {
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();   
+            session.update(interview);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
     
  
 }
