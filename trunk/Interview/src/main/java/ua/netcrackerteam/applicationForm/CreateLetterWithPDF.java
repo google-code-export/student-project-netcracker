@@ -32,9 +32,11 @@ import org.apache.commons.mail.DefaultAuthenticator;
  */
 public class CreateLetterWithPDF {
     
-    private final  String pathMailToStudent = "resources/NetCrackerHTML.html";
-    private final  String pathPropertiesMail = "resources/mail.properties";
-    private final  String pathPropertiesAuthentification = "resources/Authentification.properties";
+    private String pathMailToStudent = "resources/NetCrackerHTML.html";
+    private String pathPropertiesMail = "resources/mail.properties";
+    private String pathPropertiesAuthentification = "resources/Authentification.properties";
+    private String path = ClassPath.getInstance().getWebInfPath();
+    
             
     private String userName;
     
@@ -52,7 +54,7 @@ public class CreateLetterWithPDF {
         BufferedReader reader= null;
         
         try{         
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(ClassPath.getInstance().getWebInfPath() + pathMailToStudent), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(path + pathMailToStudent), "UTF-8"));
             String currentStr = "";
             while((currentStr =reader.readLine()) != null){
                 builder.append(currentStr);
@@ -80,10 +82,10 @@ public class CreateLetterWithPDF {
         try {
           
             Properties propertiesMail = new Properties();
-            propertiesMail.load(new FileInputStream(ClassPath.getInstance().getWebInfPath() + pathPropertiesMail));
+            propertiesMail.load(new FileInputStream(path + pathPropertiesMail));
             
             Properties propertiesAuthentification = new Properties();
-            propertiesAuthentification.load(new FileInputStream(ClassPath.getInstance().getWebInfPath() + pathPropertiesAuthentification));
+            propertiesAuthentification.load(new FileInputStream(path+ pathPropertiesAuthentification));
                                                                
             String sender = propertiesAuthentification.getProperty("mail");
             String senderPassword = propertiesAuthentification.getProperty("password");
@@ -143,11 +145,10 @@ public class CreateLetterWithPDF {
      * @throws IOException
      * @throws MessagingException 
      */
-    private MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{
-        
-       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-       (new ApplicationForm(userName)).generateFormPDF(outputStream);
-       byte[] bytes = outputStream.toByteArray();	             
+    private MimeBodyPart getPDFBodyPart() throws IOException, MessagingException{        
+      
+       ApplicationForm form = new ApplicationForm(userName);
+       byte[] bytes = form.generateFormPDF();	             
        DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
        MimeBodyPart pdfBodyPart = new MimeBodyPart();
        pdfBodyPart.setDataHandler(new DataHandler(dataSource));
