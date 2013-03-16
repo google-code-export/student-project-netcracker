@@ -46,5 +46,6 @@ public interface DAOHR {
      * Gets username of interviewer by his id
      */
     public String getInterviewerNameByID(int userID);
+    public void addNewInterview(Interview newInterview);
     
 } 

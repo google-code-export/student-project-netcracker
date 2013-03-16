@@ -130,6 +130,27 @@ public class HRPage {
         return intervList;
     }
     
+    public static int getRecommendedStudentsNum(Date start, Date end, int duration, int intervCount) {
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTime(start);
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTime(end);
+        long diff = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        double num = minutes/duration*intervCount;
+        return (int) Math.round(num);
+    }
+    
+    public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents) {
+        Interview interview = new Interview();
+        interview.setEndDate(end);
+        interview.setStartDate(start);
+        interview.setInterviwerNumber(intervNum);
+        interview.setMaxNumber(maxStudents);
+        new DAOHRImpl().addNewInterview(interview);
+    }
+    
     public static void main(String[] args) {
         System.out.println(getInterviewsList());
     }
