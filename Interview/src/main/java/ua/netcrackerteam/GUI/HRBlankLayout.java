@@ -286,6 +286,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     markTextArea.setEnabled(false);
                     markSaveButton.setEnabled(false);
                     RefrashBlankGridLO();
+                    List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValueInTable.getIdForm());
+                    FillResultsTable(currMarks);
                 } else {
                     getWindow().showNotification(
                             "Ошибка!",
