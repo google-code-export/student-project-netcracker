@@ -1,18 +1,15 @@
 package ua.netcrackerteam.controller;
 
+import ua.netcrackerteam.DAO.*;
+import ua.netcrackerteam.applicationForm.ApplicationForm;
+import ua.netcrackerteam.configuration.HibernateFactory;
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import ua.netcrackerteam.DAO.DAOHRImpl;
-import ua.netcrackerteam.DAO.DAOInterviewerImpl;
-import ua.netcrackerteam.DAO.Form;
-import ua.netcrackerteam.applicationForm.ApplicationForm;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import ua.netcrackerteam.DAO.Interview;
-import ua.netcrackerteam.configuration.HibernateFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,6 +51,23 @@ public class HRPage {
         return studentList;
     }
 
+    public static int getCountOfAllForms() {
+        int count = 0;
+        count = new DAOHRImpl().getAllRegisteredForms().size();
+        return count;
+    }
+
+    public static int getCountOfNonVerificatedForms() {
+        int count = 0;
+        count = new DAOHRImpl().getNonVerificatedForms().size();
+        return count;
+    }
+
+    public static String getUserNameByFormId(int formId) {
+        String userName = new DAOHRImpl().getUserNameByFormId(formId);
+        return userName;
+    }
+
     public static List<StudentDataShort> getNonVerificatedForms() {
         List<Form> allForms = new DAOHRImpl().getNonVerificatedForms();
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
@@ -72,8 +86,19 @@ public class HRPage {
         return studentList;
     }
 
-    public static String getStudentMark(int formID, String interviewerUsername) {
-        return new DAOInterviewerImpl().getStudentInterviewMark(formID,interviewerUsername);
+    public static List<StudentsMarks> getStudentMark(int formID) {
+
+        List<InterviewRes> currInterviewRes = new DAOHRImpl().getAllStudentsMarks(formID);
+        List<StudentsMarks> currStudentsMarks = new ArrayList<StudentsMarks>();
+        for(InterviewRes currRes:currInterviewRes) {
+            StudentsMarks currMark = new StudentsMarks();
+            currMark.setIdUser(currRes.getUser().getIdUser());
+            currMark.setUserName(currRes.getUser().getUserName());
+            currMark.setStudentMark(currRes.getScore());
+            currStudentsMarks.add(currMark);
+        }
+
+        return currStudentsMarks;
     }
 
     public static void setStudentMark(int formID, String hrName, String Mark) {
@@ -89,7 +114,7 @@ public class HRPage {
     }
 
     public static List<StudentDataShort> searchStudents(String searchFilter, String value) {
-        List<Form> allForms = new DAOInterviewerImpl().search(searchFilter, value);
+        List<Form> allForms = new DAOHRImpl().search(searchFilter, value);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
         if(allForms != null) {
             studentList = getStudentDataList(allForms);
