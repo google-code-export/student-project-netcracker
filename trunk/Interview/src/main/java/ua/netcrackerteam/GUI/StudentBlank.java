@@ -117,7 +117,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private ByteArrayOutputStream baos;
     private byte[] photoArray;
     private final MainPage mainPage;
-    private GridLayout glayout1 = new GridLayout(3,5);
+    private GridLayout glayout1 = new GridLayout(4,6);
 
 
     public StudentBlank(String username, MainPage mainPage) {
@@ -297,7 +297,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
   
     private void persInfoPanelFill() {
         newInstitute = new TextField("Новый ВУЗ");
-
+        newCathedra = new TextField("Новая кафедра");
+        newFaculty = new TextField("Новый факультет");
         persInfo.setWidth("100%");
 
         glayout1.setWidth("100%");
@@ -374,7 +375,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayout1.addComponent(cathedras,0,3);
         glayout1.addComponent(universityGradYear,1,3);
         newInstitute.setVisible(true);
-        //glayout1.addComponent(newInstitute, 1, 3);
+        glayout1.addComponent(newInstitute, 0, 5);
+
+        newCathedra.setVisible(true);
+        glayout1.addComponent(newCathedra, 1, 5);
+
+        newFaculty.setVisible(true);
+        glayout1.addComponent(newFaculty, 2, 5);
 
         Iterator<Component> i = glayout1.getComponentIterator();
         while (i.hasNext()) {

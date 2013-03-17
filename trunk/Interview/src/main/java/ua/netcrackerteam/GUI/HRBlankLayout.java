@@ -218,7 +218,15 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         searchGridLO.addComponent(something);
         //add search buttom
         searchButton = new Button("Найти");
-        searchButton.addListener(this);
+        searchButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(something.getValue().equals(""))){
+                    //if (rightPanelTree.getValue())
+                    HRPage.searchStudents(searchSelect.getCaption(), something.getValue().toString());
+                }
+            }
+        });
         searchGridLO.addComponent(searchButton);
     }
 
@@ -311,6 +319,11 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             public void buttonClick(Button.ClickEvent event) {
                 if (!(selectedValueInTable==null)) {
                     HRPage.deleteStudentBlank(selectedValueInTable.getIdForm());
+                    getWindow().showNotification(
+                            "Анкета удалена!",
+                            "",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    RefrashBlankGridLO();
                 }
                 else {
                     getWindow().showNotification(
@@ -329,7 +342,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                 if (!(selectedValueInTable==null)) {
                     final Window window = new Window("Window");
 
-                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(selectedValueInTable.getIdForm()), null);
+                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(selectedValueInTable.getIdForm()), mainPage);
                     window.setCaption("Просмотр анкеты");
                     window.setContent(studentBlank);
                     window.setHeight("80%");
