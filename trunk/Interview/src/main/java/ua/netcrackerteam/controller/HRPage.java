@@ -42,6 +42,17 @@ public class HRPage {
         return studentList;
     }
 
+    public static List<HrTempInfo> getHRTempInfo(){
+        List<HrTempInfo> hrTempInfos = new DAOHRImpl().getHrTempInfo();
+        return hrTempInfos;
+    }
+
+    public static int getCountOfHRTempInfo() {
+        int count = 0;
+        count = new DAOHRImpl().getHrTempInfo().size();
+        return count;
+    }
+
     public static List<StudentDataShort> getAllForms() {
         List<Form> allForms = new DAOHRImpl().getAllRegisteredForms();
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();

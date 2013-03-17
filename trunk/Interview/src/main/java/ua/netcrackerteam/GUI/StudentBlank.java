@@ -79,6 +79,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private TextField email1;
     private TextField email2;
     private TextField telephone;
+    private TextField newInstitute;
+    private TextField newFaculty;
+    private TextField newCathedra;
     private Slider sliderC;
     private Slider sliderJava;
     private Slider sliderNT;
@@ -114,6 +117,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private ByteArrayOutputStream baos;
     private byte[] photoArray;
     private final MainPage mainPage;
+    private GridLayout glayout1 = new GridLayout(3,5);
 
 
     public StudentBlank(String username, MainPage mainPage) {
@@ -292,8 +296,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     }
   
     private void persInfoPanelFill() {
+        newInstitute = new TextField("Новый ВУЗ");
+
         persInfo.setWidth("100%");
-        GridLayout glayout1 = new GridLayout(3,5);
+
         glayout1.setWidth("100%");
         glayout1.setSpacing(true);
         glayout1.setMargin(true);
@@ -319,20 +325,28 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         cathedras.setPropertyDataSource((Property) bean.getItemProperty("studentCathedra"));
         cathedras.setItemCaptionPropertyId("name");
         universities.addListener(new ValueChangeListener() {
-            
+
             @Override
             public void valueChange(ValueChangeEvent event) {
                 try {
-                        faculties.removeAllItems();
-                        cathedras.removeAllItems();
-                        Institute currUniver = (Institute) universities.getValue();
-                        if (currUniver != null) {
-                            List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
-                            BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
-                            faculties.setContainerDataSource(objects);
-                        }
-                    } catch (NullPointerException ex) {
+                    faculties.removeAllItems();
+                    cathedras.removeAllItems();
+                    Institute currUniver = (Institute) universities.getValue();
+                    if ((currUniver != null) && !(currUniver.getName().equals("Другое"))) {
+                        newInstitute.setVisible(false);
+                        newCathedra.setVisible(false);
+                        newFaculty.setVisible(false);
+                        List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
+                        BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
+                        faculties.setContainerDataSource(objects);
+                    } else if (currUniver.getName().equals("Другое")) {
+                        //glayout1.addComponent(newInstitute);
+
+                       // newCathedra.setVisible(true);
+                       // newFaculty.setVisible(true);
                     }
+                } catch (NullPointerException ex) {
+                }
             }
         });
         facultListener = new ValueChangeListener() {
@@ -351,7 +365,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         universityGradYear = new TextField("Год окончания",(Property) bean.getItemProperty("studentInstituteGradYear"));
         universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
         universityGradYear.addValidator(new IntegerValidator("Ошибка! Введите год."));
-        glayout1.addComponent(lastName,0,0);
+        glayout1.addComponent(lastName, 0, 0);
         glayout1.addComponent(firstName,1,0);
         glayout1.addComponent(middleName,0,1);
         glayout1.addComponent(universities,1,1);
@@ -359,6 +373,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayout1.addComponent(faculties,1,2);
         glayout1.addComponent(cathedras,0,3);
         glayout1.addComponent(universityGradYear,1,3);
+        newInstitute.setVisible(true);
+        //glayout1.addComponent(newInstitute, 1, 3);
+
         Iterator<Component> i = glayout1.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
