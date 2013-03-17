@@ -28,6 +28,8 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
+import java.util.List;
+import java.util.ListIterator;
 import ua.netcrackerteam.applicationForm.ClassPath;
 
 
@@ -46,13 +48,13 @@ public class Report {
     private String[][] report;
     JFreeChart chart;
     
-    public Report(String[][] report, JFreeChart chart){
-        this.report = report;
+    public Report(List reportData, String[] headerTitle, JFreeChart chart){
+        this.report =  getReport(reportData, headerTitle);
         this.chart = chart;
     }
     
-    public Report(String[][] report){
-      this.report = report;  
+    public Report(List reportData, String[] headerTitle){
+         this.report =  getReport(reportData, headerTitle);
     }
        
     public ByteArrayOutputStream createTemplate(String title, float[] sizeTable){
@@ -189,4 +191,22 @@ private PdfPTable createTable(float[] sizeTable) throws DocumentException, IOExc
        
            return  table;
     }
+
+   private String[][] getReport(List reportData, String[] headerTitle){
+                     
+        String[][] report = new String[reportData.size() + 1][headerTitle.length];         
+        System.arraycopy(headerTitle, 0, report[0], 0, headerTitle.length);
+                 
+         ListIterator iterator = reportData.listIterator();
+         Object[] rowReportData;
+         for(int i = 1; iterator.hasNext(); i++){ 
+             
+             rowReportData = (Object[])iterator.next();
+             for(int j = 0; j < rowReportData.length; j++){                   
+             report[i][j] = rowReportData[j].toString();}         
+                 
+         }
+                
+         return report;
+} 
 }
