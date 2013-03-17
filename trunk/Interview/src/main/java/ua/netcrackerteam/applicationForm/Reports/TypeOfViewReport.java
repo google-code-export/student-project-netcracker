@@ -4,8 +4,6 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author tanya

@@ -9,13 +9,14 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
-import ua.netcrackerteam.applicationForm.Reports.ReportAmountRegistrationForms;
-import ua.netcrackerteam.applicationForm.Reports.TypeOfViewReport;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import ua.netcrackerteam.applicationForm.Reports.ReportAdvertisingEfficiency;
+import ua.netcrackerteam.applicationForm.Reports.ReportDynamicsOfIncreaseStudents;
+import ua.netcrackerteam.applicationForm.Reports.TypeOfViewReport;
 
 /**
  * Panel for HR view
@@ -129,7 +130,7 @@ public class MainPanelHR extends MainPanel{
             
         @Override
         public InputStream getStream() {
-            TypeOfViewReport report = new ReportAmountRegistrationForms();
+            TypeOfViewReport report =new ReportDynamicsOfIncreaseStudents();
             return new ByteArrayInputStream(report.viewReport());
         } 
     }
