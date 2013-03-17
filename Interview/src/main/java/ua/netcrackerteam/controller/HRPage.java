@@ -202,9 +202,16 @@ public class HRPage {
         interview.setMaxNumber(maxStudents);
         new DAOHRImpl().editInterview(interview);
     }
-    
+
+    public static void addNewInstFaculCath(String instituteName, String facultyName, String cathedraName){
+        DAOHRImpl daohr = new DAOHRImpl();
+        Institute institute = daohr.addInstitute(instituteName);
+        Faculty faculty = daohr.addFaculty(institute, facultyName);
+        Cathedra cathedra = daohr.addCathedra(faculty, cathedraName);
+    }
+
     public static void main(String[] args) {
-        System.out.println(getInterviewsList());
+        addNewInstFaculCath("New Inst","New Fak","New Cath");
     }
 
 }
