@@ -4,36 +4,25 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import org.jfree.chart.JFreeChart;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D; 
-import com.itextpdf.awt.PdfGraphics2D;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfTemplate;
 import java.util.List;
 import java.util.ListIterator;
 import ua.netcrackerteam.applicationForm.ClassPath;
-
-
-
 
 /**
  * Template for generation report
@@ -41,104 +30,35 @@ import ua.netcrackerteam.applicationForm.ClassPath;
  */
 public class Report {
 
-    private final  String pathTimesTTF = "resources/times.ttf";
-    private final  String pathImage =    "resources/Logotip.png";
-    private String path = ClassPath.getInstance().getWebInfPath();
+    private static String pathTimesTTF = "resources/times.ttf";
+    private static String pathImage =    "resources/Logotip.png";
+    private static String path = ClassPath.getInstance().getWebInfPath();
     
-    private String[][] report;
-    JFreeChart chart;
-    
-    public Report(List reportData, String[] headerTitle, JFreeChart chart){
-        this.report =  getReport(reportData, headerTitle);
-        this.chart = chart;
-    }
-    
-    public Report(List reportData, String[] headerTitle){
-         this.report =  getReport(reportData, headerTitle);
-    }
-       
-    public ByteArrayOutputStream createTemplate(String title, float[] sizeTable){
+    public static PdfPCell addLogotip() throws BadElementException, MalformedURLException, IOException{
         
-       ByteArrayOutputStream memory = null;
-       Document document = new Document();
-       PdfWriter writer = null;  
- 
-        try {
-            
-           BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
-           Font fontTitle = new Font(bf, 16, Font.BOLDITALIC);
-           Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
-           
-           memory =  new ByteArrayOutputStream(); 
-           
-           writer = PdfWriter.getInstance(document , memory);   
-           document.addCreationDate();
-           document.addProducer();
-           document.addTitle(title);
-           document.setPageSize(PageSize.A4);
-           document.open();  
-           
-           PdfPTable table = new PdfPTable(2);    
-           //Image
+          //Image
            PdfPCell cellImage = new PdfPCell(Image.getInstance(path + pathImage)); 
            cellImage.setBorder(Rectangle.NO_BORDER);
-           cellImage.setHorizontalAlignment(Element.ALIGN_RIGHT);
+           cellImage.setHorizontalAlignment(Element.ALIGN_RIGHT); 
+           
+           return cellImage;
+    }
+    
+    public static PdfPCell addCreateDate() throws DocumentException, IOException{
+          
+          BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
+          Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
            //Create data
            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
            String currentDate = dateFormat.format(java.util.Calendar.getInstance().getTime());
            PdfPCell cellDateCreate = new PdfPCell(new Phrase(currentDate, fontCurrentDate));
            cellDateCreate.setBorder(Rectangle.NO_BORDER);
            cellDateCreate.setVerticalAlignment(Element.ALIGN_TOP);
-           //title
-           PdfPCell cellTitle = new PdfPCell(new Phrase(title, fontTitle));
-           cellTitle.setHorizontalAlignment(Element.ALIGN_CENTER);
-           cellTitle.setBorder(Rectangle.NO_BORDER);
-           cellTitle.setColspan(2);
-           //table
-           PdfPCell cellTable = new PdfPCell();      
-           cellTable.addElement(createTable(sizeTable));  
-           cellTable.setColspan(2);
-           cellTable.setBorder(Rectangle.NO_BORDER);
-                     
-           table.addCell(cellDateCreate);  
-           table.addCell(cellImage);                                 
-           table.addCell(cellTitle);            
-           table.addCell(cellTable);
            
-           document.add(table);
-           
-           //add chart to report
-           if(chart != null){                     
-                PdfContentByte cb = writer.getDirectContent();
-                float width = PageSize.A4.getWidth()*2/3;
-                float height = PageSize.A4.getHeight()/2; 
-                PdfTemplate bar = cb.createTemplate(width, height);
-                Graphics2D g2d2 = new PdfGraphics2D(bar, width, height); 
-                Rectangle2D r2d2 = new Rectangle2D.Double(0, 0, width, height);        
-                chart.draw(g2d2, r2d2);       
-                g2d2.dispose();                
-      
-                Image chartImage = Image.getInstance(bar);
-                document.add(chartImage);
-           }  
-           
-           
-        }catch (DocumentException dex){
-           dex.printStackTrace();
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }finally{
-            if (document != null){                          
-                document.close();}
-            if (writer != null){                          
-                writer.close();}
-        } 
-        
-        return memory;
-    }   
+           return cellDateCreate;
+    }
     
-          
-private void insertCell(PdfPTable table, String text, int align,
+    public static void insertCell(PdfPTable table, String text, int align,
                         int colspan, Font font, 
                         BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
         
@@ -157,8 +77,11 @@ private void insertCell(PdfPTable table, String text, int align,
         table.addCell(cell);
    
    } 
-
-private PdfPTable createTable(float[] sizeTable) throws DocumentException, IOException{
+    
+     public static  PdfPTable createTable(String[] header,
+                                   List body,
+                                   String[] footer,
+                                   float[] size) throws DocumentException, IOException{
            
            BaseColor fColor = BaseColor.BLACK;
            BaseColor bColor = WebColors.getRGBColor("#99CC99");
@@ -170,43 +93,28 @@ private PdfPTable createTable(float[] sizeTable) throws DocumentException, IOExc
            Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
            Font bf12 = new Font(font, 10, Font.ITALIC);              
             
-           PdfPTable table = new PdfPTable(sizeTable); 
+           PdfPTable table = new PdfPTable(size); 
            table.setWidthPercentage(100f);                         
            //Header table
-           for(int j = 0; j < report[0].length; j++){
-            insertCell(table, report[0][j], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+           for(int i = 0; i < header.length; i++){
+            insertCell(table, header[i], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
            }
            table.setHeaderRows(1); 
-           //Content table     
-           for(int i = 1; i < report.length - 1; i++){         
-                  
+           //Content table  
+           ListIterator iterator = body.listIterator();
+           for(int i = 1; iterator.hasNext(); i++){     
+               
+                    Object[] rowReport = (Object[])iterator.next();
+                    
                     BaseColor bColorLine = (i%2 == 0? bColorTableLine1: bColorTableLine2);                          
-                    for(int j = 0; j < report[i].length; j++){         
-                        insertCell(table, report[i][j], Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
+                    for(int j = 0; j < rowReport.length; j++){         
+                        insertCell(table, rowReport[j].toString(), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
                     }               
            }
            //Footer table
-           for(int j = 0; j < report[report.length - 1].length; j++){
-              insertCell(table,report[report.length - 1][j], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);}
+           for(int j = 0; j < footer.length; j++){
+              insertCell(table, footer[j], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);}
        
            return  table;
     }
-
-   private String[][] getReport(List reportData, String[] headerTitle){
-                     
-        String[][] report = new String[reportData.size() + 1][headerTitle.length];         
-        System.arraycopy(headerTitle, 0, report[0], 0, headerTitle.length);
-                 
-         ListIterator iterator = reportData.listIterator();
-         Object[] rowReportData;
-         for(int i = 1; iterator.hasNext(); i++){ 
-             
-             rowReportData = (Object[])iterator.next();
-             for(int j = 0; j < rowReportData.length; j++){                   
-             report[i][j] = rowReportData[j].toString();}         
-                 
-         }
-                
-         return report;
-} 
 }
