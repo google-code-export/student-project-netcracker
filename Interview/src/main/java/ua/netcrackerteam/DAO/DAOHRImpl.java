@@ -13,10 +13,16 @@ import ua.netcrackerteam.configuration.HibernateUtil;
 public class DAOHRImpl implements DAOHR{
     
     public static void main(String[] args) {
-        DAOHRImpl test = new DAOHRImpl();
+//        DAOHRImpl test = new DAOHRImpl();
         //test.setHRMark(233, "молодец (HR)", "HR");
         //System.out.println(test.search("institute", "ОДЕСЬкий"));
-        test.deleteInterview(1050);
+//        test.deleteInterview(1050);
+        
+        
+//        DAOHRImpl test = new DAOHRImpl();
+//        Institute inst = test.addInstitute("Тестовый институт");
+//        Faculty fac = test.addFaculty(inst, "Факультет тестового института");
+//        Cathedra cat = test.addCathedra(fac, "Кафедра тестового института");
         
     }
 
@@ -311,6 +317,86 @@ public class DAOHRImpl implements DAOHR{
             }
         }
     }
+    
+    
+    //Maksym added here bellow
+    
+    public Institute addInstitute(String instituteName) {
+        Session session = null;
+        Transaction transaction = null;
+        Institute institute = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            institute = new Institute();
+            institute.setName(instituteName);
+            session.save(institute);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return institute;
+    }
+    
+    
+    public Faculty addFaculty(Institute institute, String facultyName) {
+        Session session = null;
+        Transaction transaction = null;
+        Faculty faculty = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            faculty = new Faculty();
+            faculty.setInstitute(institute);
+            faculty.setName(facultyName);            
+            session.save(faculty);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return faculty;
+    }
+    
+    
+    public Cathedra addCathedra(Faculty faculty, String cathedraName) {
+        Session session = null;
+        Transaction transaction = null;
+        Cathedra cathedra = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            cathedra = new Cathedra();
+            cathedra.setFaculty(faculty);
+            cathedra.setName(cathedraName);
+            session.save(cathedra);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return cathedra;
+        
+    }
+    
+    
+    
+    
+    
+    
     
  
 }
