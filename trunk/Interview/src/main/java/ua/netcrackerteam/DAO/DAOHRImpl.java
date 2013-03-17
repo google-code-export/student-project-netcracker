@@ -157,6 +157,84 @@ public class DAOHRImpl implements DAOHR{
         return tempInfos;
     }
 
+    public void setHrTempInfo(HrTempInfo hrTempInfo){
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.save(hrTempInfo);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public void updateHrTempInfo(HrTempInfo hrTempInfo){
+        Session session = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            session.update(hrTempInfo);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public void deleteHrTempInfo(int tempInfoID){
+        Session session = null;
+        Query query = null;
+        Transaction transaction = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            query = session.createQuery("from HrTempInfo where idHrTempInfo = " + tempInfoID);
+            HrTempInfo selectedHrTempInfo = (HrTempInfo) query.uniqueResult();
+            session.delete(selectedHrTempInfo);
+            transaction.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
+    public HrTempInfo getHrTempInfoByID(int tempInfoID){
+        Session session = null;
+        Query query;
+        HrTempInfo hrTempInfo = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from HrTempInfo"
+                    + " where idHrTempInfo = " + tempInfoID);
+            hrTempInfo = (HrTempInfo) query.uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return hrTempInfo;
+    }
+
     @Override
     public List<Form> getNonVerificatedForms() {
         Session session = null;
