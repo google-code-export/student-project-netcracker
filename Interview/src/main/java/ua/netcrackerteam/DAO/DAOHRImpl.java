@@ -1,11 +1,12 @@
 package ua.netcrackerteam.DAO;
 
-import java.util.List;
-import java.util.Locale;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Kushnirenko Anna
@@ -91,6 +92,28 @@ public class DAOHRImpl implements DAOHR{
                 session.close();
             }
         }
+    }
+
+    public String getUserNameByFormId(int formId) {
+        String userName = "";
+        Session session = null;
+        Query query;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from Form where idForm = " + formId);
+            Form currForm = (Form)query.uniqueResult();
+            userName = currForm.getUser().getUserName();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
+        return userName;
     }
  
     @Override
@@ -224,6 +247,28 @@ public class DAOHRImpl implements DAOHR{
             query = session.createQuery("from InterviewRes"
                     + " where form = " + selectedFormID + " and user IN "
                     + "(select idUser from UserList where idUserCategory = 3)");
+            marks = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return marks;
+    }
+
+    public List<InterviewRes> getAllStudentsMarks(int selectedFormID) {
+        Session session = null;
+        Query query;
+        List<InterviewRes> marks = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from InterviewRes"
+                    + " where form = " + selectedFormID + " and user IN "
+                    + "(select idUser from UserList where (idUserCategory = 3) or (idUserCategory = 2))");
             marks = query.list();
         } catch (Exception e) {
             System.out.println(e);
