@@ -80,7 +80,8 @@ public class DAOReport {
             query = session.createSQLQuery("select description , count(id_form) "+
                                            "from advert_category left join advert " +
                                            "on advert_category.id_advert_category = advert.id_advert_category " + 
-                                           "group by description ");          
+                                           "group by description" + 
+                                           " order by count(id_form) desc");          
             report = query.list();
                 
         } catch (Exception e) {
