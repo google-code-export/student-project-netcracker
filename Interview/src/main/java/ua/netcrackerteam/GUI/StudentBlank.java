@@ -166,141 +166,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
     }
     
-    private void addNewContact() {
-        addContact = new Window("Добавить контакт");
-        addContact.setModal(true);
-        addContact.setWidth("20%");
-        addContact.setResizable(false);
-        addContact.center();
-        VerticalLayout layout = new VerticalLayout();
-        addContact.setContent(layout);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        layout.setWidth("100%");
-        final TextField contactType = new TextField("Тип контакта",(Property) bean.getItemProperty("studentOtherContactType"));
-        contactType.setRequired(true);
-        Button okBut = new Button("Добавить");
-        okBut.addListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if(contactType.isValid()) {
-                    addNewContactField((String)contactType.getValue(),(Property) bean.getItemProperty("studentOtherContact"));
-                    getWindow().removeWindow(addContact);
-                }
-            }
-        });
-        layout.addComponent(contactType);
-        layout.addComponent(okBut);
-        layout.setComponentAlignment(contactType, Alignment.TOP_CENTER);
-        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
-        getWindow().addWindow(addContact);
-    }
-    
-    private void addNewContactField(String type, Property value) {
-        anotherContact = new TextField(type,value);
-        textFieldConfig(anotherContact);
-        anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        GridLayout gl = (GridLayout) contacts.getContent();
-        gl.removeComponent(addAnotherContactsBut);
-        gl.addComponent(anotherContact,0,1);
-        anotherContact.setWidth("220");
-        gl.addComponent(addAnotherContactsBut,1,1);
-        gl.setComponentAlignment(addAnotherContactsBut, Alignment.BOTTOM_LEFT);
-    }
-    private void addProgrammingLanguage() {
-        addPrLangWindow = new Window("Добавить язык");
-        addPrLangWindow.setModal(true);
-        addPrLangWindow.setWidth("20%");
-        addPrLangWindow.setResizable(false);
-        addPrLangWindow.center();
-        VerticalLayout layout = new VerticalLayout();
-        addPrLangWindow.setContent(layout);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        final int currLang = programLangList.size()+1;
-        prLangName = new TextField("Язык",(Property) bean.getItemProperty("studentLanguage" + currLang));
-        prLangName.setRequired(true);
-        Button okBut = new Button("Добавить");
-        okBut.addListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if(prLangName.isValid()) {
-                    Slider newSlider = new Slider((String)prLangName.getValue());
-                    newSlider.setPropertyDataSource((Property) bean.getItemProperty("studentLanguage"+ currLang+"Mark"));
-                    sliderConfig(newSlider,1);
-                    programLangList.add(newSlider);
-                    glayoutPrLang.addComponent(programLangList.get(programLangList.size()-1));
-                    getWindow().removeWindow(addPrLangWindow);
-                }
-            }
-        });
-        layout.addComponent(prLangName);
-        layout.addComponent(okBut);
-        layout.setComponentAlignment(prLangName, Alignment.TOP_CENTER);
-        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
-        getWindow().addWindow(addPrLangWindow);
-    }
-    
-    private void sliderConfig(Component slider, int min) {
-        Slider sl = (Slider) slider;
-        sl.setWidth("220");
-        sl.setMin(min);
-        sl.setMax(5);
-    }
-
-    private void addKnowlege() {
-        addKnowlegeWindow = new Window("Добавить раздел");
-        addKnowlegeWindow.setModal(true);
-        addKnowlegeWindow.setWidth("20%");
-        addKnowlegeWindow.setResizable(false);
-        addKnowlegeWindow.center();
-        VerticalLayout layout = new VerticalLayout();
-        addKnowlegeWindow.setContent(layout);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        final int currKnow = knowlegesList.size()+1;
-        knowlName = new TextField("Раздел (в области IT или сетей)",(Property) bean.getItemProperty("studentKnowledgeOther" + currKnow));
-        knowlName.setRequired(true);
-        knowlName.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        Button okBut = new Button("Добавить");
-        okBut.addListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if(knowlName.isValid()) {
-                    Slider newSlider = new Slider((String)knowlName.getValue());
-                    newSlider.setPropertyDataSource((Property) bean.getItemProperty("studentKnowledgeOther"+ currKnow+"Mark"));
-                    sliderConfig(newSlider,0);
-                    knowlegesList.add(newSlider);
-                    glayoutKnow.addComponent(knowlegesList.get(knowlegesList.size()-1));
-                    getWindow().removeWindow(addKnowlegeWindow);
-                }
-            }
-        });
-        layout.addComponent(knowlName);
-        layout.addComponent(okBut);
-        layout.setComponentAlignment(knowlName, Alignment.TOP_CENTER);
-        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
-        getWindow().addWindow(addKnowlegeWindow);
-    }
-    
-    private void textFieldConfig(TextField tf) {
-        tf.addListener(this);
-        tf.setRequired(true);
-    }
-    
-    private void ComboBoxConfig(ComboBox cb) {
-        cb.setRequired(true);
-        cb.setInputPrompt("Выберите из списка");
-        cb.addListener(this);
-        cb.setNewItemsAllowed(false);
-        cb.setImmediate(true);
-        cb.setNullSelectionAllowed(false);
-    }
   
     private void persInfoPanelFill() {
-        newInstitute = new TextField("Новый ВУЗ");
-        newCathedra = new TextField("Новая кафедра");
-        newFaculty = new TextField("Новый факультет");
+        
         persInfo.setWidth("100%");
 
         glayout1.setWidth("100%");
@@ -313,6 +181,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         middleName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
         lastName = new TextField("Фамилия", (Property) bean.getItemProperty("studentLastName"));
         lastName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        
+        newInstitute = new TextField("Ваш ВУЗ",(Property) bean.getItemProperty("studentOtherInstitute"));
+        newCathedra = new TextField("Ваша кафедра",(Property) bean.getItemProperty("studentOtherFaculty"));
+        newFaculty = new TextField("Ваш факультет",(Property) bean.getItemProperty("studentOtherCathedra"));
+        
         List<Institute>insts = StudentPage.getUniversityList();
         BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
         universities = new ComboBox("ВУЗ",objects);
@@ -343,10 +216,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
                         faculties.setContainerDataSource(objects);
                     } else if (currUniver.getName().equals("Другое")) {
-                        //glayout1.addComponent(newInstitute);
-
-                       // newCathedra.setVisible(true);
-                       // newFaculty.setVisible(true);
+                        newInstitute.setVisible(true);
+                        newCathedra.setVisible(true);
+                        newFaculty.setVisible(true);
                     }
                 } catch (NullPointerException ex) {
                 }
@@ -357,12 +229,38 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             public void valueChange(ValueChangeEvent event) {
                 if ( faculties.size() > 0 ) {
                     cathedras.removeAllItems();
-                    List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
-                    BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
-                    cathedras.setContainerDataSource(objects);
+                    Faculty currFaculty = (Faculty)faculties.getValue();
+                    if(currFaculty != null && !currFaculty.getName().equals("Другое")) {
+                        List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty(currFaculty, (Institute)universities.getValue());
+                        BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
+                        cathedras.setContainerDataSource(objects);
+                        newInstitute.setVisible(false);
+                        newCathedra.setVisible(false);
+                        newFaculty.setVisible(false);
+                    } else if(currFaculty != null && currFaculty.getName().equals("Другое")) {
+                        newCathedra.setVisible(true);
+                        newFaculty.setVisible(true);
+                    }
                 }
             }
         };
+        cathedras.addListener(new ValueChangeListener() {
+
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                if ( cathedras.size() > 0 ) {
+                    Cathedra currCathedra = (Cathedra) cathedras.getValue();
+                    if(currCathedra!= null && currCathedra.getName().equals("Другое")) {
+                        newCathedra.setVisible(true);
+                    } else {
+                        newInstitute.setVisible(false);
+                        newCathedra.setVisible(false);
+                        newFaculty.setVisible(false);
+                    }
+                }
+            }
+            
+        });
         faculties.addListener(facultListener);
         universityYear = new TextField("Курс",(Property) bean.getItemProperty("studentInstituteCourse"));
         universityGradYear = new TextField("Год окончания",(Property) bean.getItemProperty("studentInstituteGradYear"));
@@ -376,14 +274,14 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayout1.addComponent(faculties,1,2);
         glayout1.addComponent(cathedras,0,3);
         glayout1.addComponent(universityGradYear,1,3);
-        newInstitute.setVisible(true);
-        glayout1.addComponent(newInstitute, 0, 5);
+        newInstitute.setVisible(false);
+        glayout1.addComponent(newCathedra, 0, 5);
 
-        newCathedra.setVisible(true);
-        glayout1.addComponent(newCathedra, 1, 5);
+        newCathedra.setVisible(false);
+        glayout1.addComponent(newFaculty, 1, 5);
 
-        newFaculty.setVisible(true);
-        glayout1.addComponent(newFaculty, 2, 5);
+        newFaculty.setVisible(false);
+        glayout1.addComponent(newInstitute, 2, 5);
 
         Iterator<Component> i = glayout1.getComponentIterator();
         while (i.hasNext()) {
@@ -606,6 +504,138 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         moreInfo.addListener(this);
         vlayout.addComponent(moreInfo);   
     }
+    
+    
+    private void addNewContact() {
+        addContact = new Window("Добавить контакт");
+        addContact.setModal(true);
+        addContact.setWidth("20%");
+        addContact.setResizable(false);
+        addContact.center();
+        VerticalLayout layout = new VerticalLayout();
+        addContact.setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        layout.setWidth("100%");
+        final TextField contactType = new TextField("Тип контакта",(Property) bean.getItemProperty("studentOtherContactType"));
+        contactType.setRequired(true);
+        Button okBut = new Button("Добавить");
+        okBut.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(contactType.isValid()) {
+                    addNewContactField((String)contactType.getValue(),(Property) bean.getItemProperty("studentOtherContact"));
+                    getWindow().removeWindow(addContact);
+                }
+            }
+        });
+        layout.addComponent(contactType);
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(contactType, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+        getWindow().addWindow(addContact);
+    }
+    
+    private void addNewContactField(String type, Property value) {
+        anotherContact = new TextField(type,value);
+        textFieldConfig(anotherContact);
+        anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        GridLayout gl = (GridLayout) contacts.getContent();
+        gl.removeComponent(addAnotherContactsBut);
+        gl.addComponent(anotherContact,0,1);
+        anotherContact.setWidth("220");
+        gl.addComponent(addAnotherContactsBut,1,1);
+        gl.setComponentAlignment(addAnotherContactsBut, Alignment.BOTTOM_LEFT);
+    }
+    private void addProgrammingLanguage() {
+        addPrLangWindow = new Window("Добавить язык");
+        addPrLangWindow.setModal(true);
+        addPrLangWindow.setWidth("20%");
+        addPrLangWindow.setResizable(false);
+        addPrLangWindow.center();
+        VerticalLayout layout = new VerticalLayout();
+        addPrLangWindow.setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        final int currLang = programLangList.size()+1;
+        prLangName = new TextField("Язык",(Property) bean.getItemProperty("studentLanguage" + currLang));
+        prLangName.setRequired(true);
+        Button okBut = new Button("Добавить");
+        okBut.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(prLangName.isValid()) {
+                    Slider newSlider = new Slider((String)prLangName.getValue());
+                    newSlider.setPropertyDataSource((Property) bean.getItemProperty("studentLanguage"+ currLang+"Mark"));
+                    sliderConfig(newSlider,1);
+                    programLangList.add(newSlider);
+                    glayoutPrLang.addComponent(programLangList.get(programLangList.size()-1));
+                    getWindow().removeWindow(addPrLangWindow);
+                }
+            }
+        });
+        layout.addComponent(prLangName);
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(prLangName, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+        getWindow().addWindow(addPrLangWindow);
+    }
+    
+    private void sliderConfig(Component slider, int min) {
+        Slider sl = (Slider) slider;
+        sl.setWidth("220");
+        sl.setMin(min);
+        sl.setMax(5);
+    }
+
+    private void addKnowlege() {
+        addKnowlegeWindow = new Window("Добавить раздел");
+        addKnowlegeWindow.setModal(true);
+        addKnowlegeWindow.setWidth("20%");
+        addKnowlegeWindow.setResizable(false);
+        addKnowlegeWindow.center();
+        VerticalLayout layout = new VerticalLayout();
+        addKnowlegeWindow.setContent(layout);
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        final int currKnow = knowlegesList.size()+1;
+        knowlName = new TextField("Раздел (в области IT или сетей)",(Property) bean.getItemProperty("studentKnowledgeOther" + currKnow));
+        knowlName.setRequired(true);
+        knowlName.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        Button okBut = new Button("Добавить");
+        okBut.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if(knowlName.isValid()) {
+                    Slider newSlider = new Slider((String)knowlName.getValue());
+                    newSlider.setPropertyDataSource((Property) bean.getItemProperty("studentKnowledgeOther"+ currKnow+"Mark"));
+                    sliderConfig(newSlider,0);
+                    knowlegesList.add(newSlider);
+                    glayoutKnow.addComponent(knowlegesList.get(knowlegesList.size()-1));
+                    getWindow().removeWindow(addKnowlegeWindow);
+                }
+            }
+        });
+        layout.addComponent(knowlName);
+        layout.addComponent(okBut);
+        layout.setComponentAlignment(knowlName, Alignment.TOP_CENTER);
+        layout.setComponentAlignment(okBut, Alignment.TOP_CENTER);
+        getWindow().addWindow(addKnowlegeWindow);
+    }
+    
+    private void textFieldConfig(TextField tf) {
+        tf.addListener(this);
+        tf.setRequired(true);
+    }
+    
+    private void ComboBoxConfig(ComboBox cb) {
+        cb.setRequired(true);
+        cb.setInputPrompt("Выберите из списка");
+        cb.addListener(this);
+        cb.setNewItemsAllowed(false);
+        cb.setImmediate(true);
+        cb.setNullSelectionAllowed(false);
+    }
 
     public void blur(BlurEvent event) {
         Object source = event.getComponent();
@@ -767,7 +797,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if(!agreement.isValid()) {
             return false;
         }
-        if(photo == null) {
+        if(photoArray == null) {
             return false;
         }
         return true;            
@@ -832,7 +862,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if(!stData.getStudentKnowledgeOther3().equals("")) {
             addNewSavedSlider(stData.getStudentKnowledgeOther3(),bean.getItemProperty("studentKnowledgeOther3Mark"),glayoutKnow);
         }
-        
+
     }
 
     private void addNewSavedSlider(String name, Property value, Layout lo) {
