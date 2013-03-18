@@ -532,4 +532,32 @@ public class DAOAdminImpl implements DAOAdmin {
         }
         return count;
     }
+    
+    
+    /**
+     * Maksym added here
+     * @param userName
+     * @return 
+     */
+    public UserCategory getUserCategoryByUserName(String userName){
+        Session session = null;
+        Query re = null;
+        UserList user = null;
+        UserCategory userCategory = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            re = session.createQuery("from UserList where upper(userName) ='" + userName.toUpperCase() + "'");
+            user = (UserList) re.uniqueResult();
+            userCategory = user.getIdUserCategory();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return userCategory;
+    }
 }
