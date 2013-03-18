@@ -157,6 +157,26 @@ public class DAOHRImpl implements DAOHR{
         return tempInfos;
     }
 
+    public HrTempInfo getHrTempInfoByFormID(int formID) {
+        Session session = null;
+        Query query;
+        HrTempInfo tempInfos = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from HrTempInfo where form.idForm = " + formID);
+            tempInfos = (HrTempInfo) query.uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return tempInfos;
+    }
+
     public void setHrTempInfo(HrTempInfo hrTempInfo){
         Session session = null;
         Transaction transaction = null;
