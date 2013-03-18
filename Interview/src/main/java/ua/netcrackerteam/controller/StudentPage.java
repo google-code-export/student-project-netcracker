@@ -363,12 +363,20 @@ public class StudentPage {
         newStudentData.setStudentEnglishWriteMark(2);
         addNewForm(newStudentData, "briarey");*/
 
-        int idForm = 130;
+        int idForm = 233;
         StudentData newStData = getStudentDataByIdForm(idForm);
 
     }
 
     public static void addNewForm(StudentData newStudentData, String userName, int statusParam, String editorName) {
+        
+        DAOAdminImpl daoAdmin = new DAOAdminImpl();
+        UserCategory userCategory = daoAdmin.getUserCategoryByUserName(editorName);
+        if(userCategory.getName().equalsIgnoreCase("hr")) {
+            DAOStudentImpl daoStud = new DAOStudentImpl();
+            Form form = daoStud.getFormByUserName(userName);
+            DAOStudentImpl.deleteAllFormsByUserName(userName);            
+        }
 
         DAOStudentImpl currDAOStImpl = new DAOStudentImpl();
         DAOCommonImpl currDAOComm = new DAOCommonImpl();
@@ -428,7 +436,7 @@ public class StudentPage {
                 //before delete we will save student's interview
                 newForm.setInterview(oldForm.getInterview());
                 //OK, we made all the necessary... rest in peace
-                DAOStudentImpl.DeleteFormByUserAndStatus(oldForm);
+                DAOStudentImpl.deleteFormByUserAndStatus(oldForm);
             }
             newForm.setStatus(currStatus);
         }
