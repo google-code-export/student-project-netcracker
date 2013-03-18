@@ -165,7 +165,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
         deleteButton = new Button("Удалить");
         deleteButton.setWidth("150");
-        //deleteButton.setIcon(new ThemeResource("icons/32/trash.png"));
+        deleteButton.setIcon(new ThemeResource("icons/32/document-delete.png"));
+        deleteButton.setStyleName(Runo.BUTTON_LINK);
         deleteButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -189,14 +190,15 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         blankGridLO.addComponent(deleteButton);
         editButton = new Button("Редактировать");
         editButton.setWidth("150");
-        //editButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
+        editButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
+        editButton.setStyleName(Runo.BUTTON_LINK);
         editButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (!(tableOfBlanks.getValue()==null)) {
                     final Window window = new Window("Window");
                     StudentDataShort selectedValue = (StudentDataShort)tableOfBlanks.getValue();
-                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(selectedValue.getIdForm()), mainPage);
+                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(selectedValue.getIdForm()), mainPage, username);
                     window.setCaption("Просмотр анкеты");
                     window.setContent(studentBlank);
                     window.setHeight("80%");
@@ -223,7 +225,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
         verificateBlankButton = new Button("Подтвердить");
         verificateBlankButton.setWidth("150");
-        //verificateBlankButton.setIcon(new ThemeResource("icons/32/Checkbox-Full-icon.png"));
+        verificateBlankButton.setIcon(new ThemeResource("icons/32/Checkbox-Full-icon.png"));
+        verificateBlankButton.setStyleName(Runo.BUTTON_LINK);
         verificateBlankButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
