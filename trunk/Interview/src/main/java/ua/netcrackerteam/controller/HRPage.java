@@ -125,6 +125,19 @@ public class HRPage {
     }
 
     public static List<StudentDataShort> searchStudents(String searchFilter, String value) {
+        if (searchFilter == "Фамилия") {
+            searchFilter = "lastName";
+        }
+        else if (searchFilter == "Имя") {
+            searchFilter = "firstName";
+        }
+        else if (searchFilter == "Отчество") {
+            searchFilter = "middleName";
+        }
+        else if (searchFilter == "Номер анкеты") {
+            searchFilter = "idForm";
+        }
+
         List<Form> allForms = new DAOHRImpl().search(searchFilter, value);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
         if(allForms != null) {

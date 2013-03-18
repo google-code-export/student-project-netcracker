@@ -393,6 +393,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 ComboBoxConfig((ComboBox)c);
             }
         }
+
+        newInstitute.setRequired(false);
+        newFaculty.setRequired(false);
+        newCathedra.setRequired(false);
         photoUpload = new Upload("Фото",this);
         photoUpload.setButtonCaption("Загрузка");
         photoUpload.addListener((Upload.SucceededListener) this);

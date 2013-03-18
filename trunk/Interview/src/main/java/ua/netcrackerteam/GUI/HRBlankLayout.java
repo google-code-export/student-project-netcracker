@@ -41,7 +41,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private Button searchButton;
     private TextField something;
     private NativeSelect searchSelect;
-    private StudentDataShort selectedValueInTable = null;
+    //private StudentDataShort selectedValueInTable = null;
     private final String username;
     private Link pdfLink;
     private int height;
@@ -163,6 +163,92 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
         blankGridLO.addComponent(rightPanelTree);
 
+        deleteButton = new Button("Удалить");
+        deleteButton.setWidth("150");
+        //deleteButton.setIcon(new ThemeResource("icons/32/trash.png"));
+        deleteButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(tableOfBlanks.getValue()==null)) {
+                    StudentDataShort selectedValue = (StudentDataShort)tableOfBlanks.getValue();
+                    HRPage.deleteStudentBlank(selectedValue.getIdForm());
+                    getWindow().showNotification(
+                            "Анкета удалена!",
+                            "",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    RefrashBlankGridLO();
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед удалением выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        blankGridLO.addComponent(deleteButton);
+        editButton = new Button("Редактировать");
+        editButton.setWidth("150");
+        //editButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
+        editButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(tableOfBlanks.getValue()==null)) {
+                    final Window window = new Window("Window");
+                    StudentDataShort selectedValue = (StudentDataShort)tableOfBlanks.getValue();
+                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(selectedValue.getIdForm()), mainPage);
+                    window.setCaption("Просмотр анкеты");
+                    window.setContent(studentBlank);
+                    window.setHeight("80%");
+                    window.setWidth("80%");
+                    getWindow().addWindow(window);
+
+
+
+                    /*getWindow().showNotification(
+                            "Анкета подтверждена!",
+                            "",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    FillBlankTable(HRPage.getNonVerificatedForms());*/
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед редактированием выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        blankGridLO.addComponent(editButton);
+
+        verificateBlankButton = new Button("Подтвердить");
+        verificateBlankButton.setWidth("150");
+        //verificateBlankButton.setIcon(new ThemeResource("icons/32/Checkbox-Full-icon.png"));
+        verificateBlankButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!(tableOfBlanks.getValue()==null)) {
+                    StudentDataShort selectedValue = (StudentDataShort)tableOfBlanks.getValue();
+                    HRPage.verificateForm(selectedValue.getIdForm());
+                    getWindow().showNotification(
+                            "Анкета подтверждена!",
+                            "",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    FillBlankTable(HRPage.getNonVerificatedForms());
+                    RefrashBlankGridLO();
+                }
+                else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед подтверждением выберите анкету из списка!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        verificateBlankButton.setEnabled(false);
+        blankGridLO.addComponent(verificateBlankButton);
+        //rightPanel.addComponent(buttonPanel);
+
         RefrashBlankGridLO();
 
     }
@@ -223,7 +309,10 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             public void buttonClick(Button.ClickEvent event) {
                 if (!(something.getValue().equals(""))){
                     //if (rightPanelTree.getValue())
-                    HRPage.searchStudents(searchSelect.getCaption(), something.getValue().toString());
+                    String filter   = (String) searchSelect.getValue();
+                    String value    = (String) something.getValue();
+                    List<StudentDataShort> data = HRPage.searchStudents(filter, value);
+                    FillBlankTable(data);
                 }
             }
         });
@@ -254,10 +343,10 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             public void valueChange(Property.ValueChangeEvent event) {
                 Object value = event.getProperty().getValue();
                 if (!(null == value)) {
-                    selectedValueInTable = (StudentDataShort) value;
+                    StudentDataShort selectedValue = (StudentDataShort)value;
                     markTextArea.setEnabled(true);
                     markSaveButton.setEnabled(true);
-                    List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValueInTable.getIdForm());
+                    List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValue.getIdForm());
                     FillResultsTable(currMarks);
                 }
                 else {
@@ -285,8 +374,9 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         markSaveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                if (!markTextArea.getValue().equals("") && (!(selectedValueInTable == null))) {
-                    HRPage.setStudentMark(selectedValueInTable.getIdForm(), username,markTextArea.getValue().toString());
+                if (!markTextArea.getValue().equals("") && (!(tableOfBlanks.getValue() == null))) {
+                    StudentDataShort selectedValue = (StudentDataShort) tableOfBlanks.getValue();
+                    HRPage.setStudentMark(selectedValue.getIdForm(), username,markTextArea.getValue().toString());
                     getWindow().showNotification(
                             "Оценка выставлена!",
                             "",
@@ -294,7 +384,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     markTextArea.setEnabled(false);
                     markSaveButton.setEnabled(false);
                     RefrashBlankGridLO();
-                    List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValueInTable.getIdForm());
+                    List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValue.getIdForm());
                     FillResultsTable(currMarks);
                 } else {
                     getWindow().showNotification(
@@ -311,7 +401,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         markSaveButton.setEnabled(false);
 
         //button panels
-        buttonPanel = new HorizontalLayout();
+        /*buttonPanel = new HorizontalLayout();
         deleteButton = new Button("Удалить");
         deleteButton.setIcon(new ThemeResource("icons/32/trash.png"));
         deleteButton.addListener(new Button.ClickListener() {
@@ -351,11 +441,11 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
 
 
-                    /*getWindow().showNotification(
+                    *//*getWindow().showNotification(
                             "Анкета подтверждена!",
                             "",
                             Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    FillBlankTable(HRPage.getNonVerificatedForms());*/
+                    FillBlankTable(HRPage.getNonVerificatedForms());*//*
                 }
                 else {
                     getWindow().showNotification(
@@ -391,7 +481,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         });
         verificateBlankButton.setEnabled(false);
         buttonPanel.addComponent(verificateBlankButton);
-        rightPanel.addComponent(buttonPanel);
+        rightPanel.addComponent(buttonPanel);*/
     }
 
     private class BlanksTable extends Table {
@@ -406,7 +496,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         private BlanksTable(Container dataSource) {
             super();
             setWidth("100%");
-            setHeight(height-400,UNITS_PIXELS);
+            //setHeight(height-400,UNITS_PIXELS);
+            setHeight("300");
             setSelectable(true);
             setImmediate(true);
             setContainerDataSource(dataSource);
@@ -420,7 +511,9 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                 public void valueChange(Property.ValueChangeEvent event) {
                     Object value = event.getProperty().getValue();
                     if (!(null == value)) {
-                        selectedValueInTable = (StudentDataShort) value;
+                        StudentDataShort selectedValue = (StudentDataShort)value;
+                        selectedValue = (StudentDataShort) value;
+                        markTextArea.setValue("");
                         markTextArea.setEnabled(true);
                         markSaveButton.setEnabled(true);
                         Link oldPDFLink = pdfLink;
@@ -442,7 +535,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         private ResultsTable(Container dataSource) {
             super();
             setWidth("100%");
-            setHeight(height/7, UNITS_PIXELS);
+            //setHeight(height/7, UNITS_PIXELS);
+            setHeight("100");
             setSelectable(false);
             setImmediate(true);
             if (!(dataSource == null)) {
@@ -459,7 +553,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
         @Override
         public InputStream getStream() {
-            ApplicationForm form = new ApplicationForm(selectedValueInTable.getIdForm());
+            StudentDataShort selectedValue = (StudentDataShort)tableOfBlanks.getValue();
+            ApplicationForm form = new ApplicationForm(selectedValue.getIdForm());
             return new ByteArrayInputStream(form.generateFormPDF());
         }
     }
