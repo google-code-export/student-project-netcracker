@@ -47,6 +47,11 @@ public class HRPage {
         return hrTempInfos;
     }
 
+    public static HrTempInfo getHRTempInfoByFormID(int formID){
+        HrTempInfo hrTempInfos = new DAOHRImpl().getHrTempInfoByFormID(formID);
+        return hrTempInfos;
+    }
+
     public static int getCountOfHRTempInfo() {
         int count = 0;
         count = new DAOHRImpl().getHrTempInfo().size();
@@ -223,8 +228,22 @@ public class HRPage {
         Cathedra cathedra = daohr.addCathedra(faculty, cathedraName);
     }
 
+    private static void addNewInstFaculCathByHrTempInfoByFormID(int formID){
+        HrTempInfo hrTempInfo = getHRTempInfoByFormID(formID);
+        addNewInstFaculCath(hrTempInfo.getInstituteName(), hrTempInfo.getFacultyName(), hrTempInfo.getCathedraName());
+    }
+
     public static void main(String[] args) {
-        addNewInstFaculCath("New Inst","New Fak","New Cath");
+        //addNewInstFaculCath("New Inst","New Fak","New Cath");
+
+        /*List<HrTempInfo> hrTempInfos = getHRTempInfo();
+        for(HrTempInfo dvsd : hrTempInfos){
+            System.out.println(dvsd.getCathedraName());
+        }*/
+
+        //HrTempInfo hrTempInfo = getHRTempInfoByFormID(44);
+        //System.out.println(hrTempInfo.getCathedraName());
+        addNewInstFaculCathByHrTempInfoByFormID(46);
     }
 
 }
