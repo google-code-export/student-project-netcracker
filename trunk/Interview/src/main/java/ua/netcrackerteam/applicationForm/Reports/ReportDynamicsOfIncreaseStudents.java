@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.ListIterator;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.Axis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
@@ -83,14 +84,14 @@ public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
            cellTitle.setColspan(2);
            //table
            PdfPCell cellTable = new PdfPCell();      
-           cellTable.addElement(Report.createTable(new String[]{"Дата собеседования", "Зарегестрировано", "Свободно", "Всего"}, dataReport, new String[]{""}, new float[]{2f, 1.5f, 1.5f, 1.5f}));  
+           cellTable.addElement(Report.createTable(new String[]{"Дата собеседования", "Всего", "Зарегестрировано", "Свободно"}, dataReport, new String[]{""}, new float[]{2f, 1.5f, 1.5f, 1.5f}));  
            cellTable.setColspan(2);
            cellTable.setBorder(Rectangle.NO_BORDER);
            
-           JFreeChart chart = createChart(getDataSet(dataReport),"","interviews","registration student, %");
+           JFreeChart chart = createChart(getDataSet(dataReport),"","Interview","Students, %");
                               
            PdfContentByte cb = writer.getDirectContent();
-           float width = PageSize.A4.getWidth();
+           float width = PageSize.A4.getWidth()*2/3;
            float height = PageSize.A4.getHeight()/4; 
            PdfTemplate bar = cb.createTemplate(width, height);
            Graphics2D g2d2 = new PdfGraphics2D(bar, width, height); 
@@ -146,10 +147,12 @@ public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
     }
       
  public JFreeChart createChart(CategoryDataset dataSet,String title, String categoryAsisLabel, String valueAsisLabel) {
-      
-         final JFreeChart chart = ChartFactory.createStackedBarChart3D(title, categoryAsisLabel, valueAsisLabel, 
+       
+ 
+         final JFreeChart chart = ChartFactory.createStackedBarChart3D("График", categoryAsisLabel, valueAsisLabel, 
               dataSet, PlotOrientation.HORIZONTAL, false, false, false);
-            chart.setBackgroundPaint(Color.WHITE);     
+                
+            chart.setBackgroundPaint(Color.WHITE);  
             BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
             r.setSeriesPaint(0, Color.blue); 
              

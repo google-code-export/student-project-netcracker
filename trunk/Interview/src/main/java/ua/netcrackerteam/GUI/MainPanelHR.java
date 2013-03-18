@@ -130,7 +130,7 @@ public class MainPanelHR extends MainPanel{
             
         @Override
         public InputStream getStream() {
-            TypeOfViewReport report =new ReportDynamicsOfIncreaseStudents();
+            TypeOfViewReport report =new ReportAdvertisingEfficiency();
             return new ByteArrayInputStream(report.viewReport());
         } 
     }
