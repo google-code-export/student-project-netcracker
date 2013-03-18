@@ -368,7 +368,7 @@ public class StudentPage {
 
     }
 
-    public static void addNewForm(StudentData newStudentData, String userName, int statusParam) {
+    public static void addNewForm(StudentData newStudentData, String userName, int statusParam, String editorName) {
 
         DAOStudentImpl currDAOStImpl = new DAOStudentImpl();
         DAOCommonImpl currDAOComm = new DAOCommonImpl();

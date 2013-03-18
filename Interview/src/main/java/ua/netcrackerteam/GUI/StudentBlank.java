@@ -118,11 +118,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private byte[] photoArray;
     private final MainPage mainPage;
     private GridLayout glayout1 = new GridLayout(4,6);
+    private String editorName;
 
 
-    public StudentBlank(String username, MainPage mainPage) {
+    public StudentBlank(String username, MainPage mainPage, String editorName) {
         this.username = username;
         this.mainPage = mainPage;
+        this.editorName = editorName;
         stData = StudentPage.getStudentDataByUserName(username);
         bean = new BeanItem<StudentData>(stData);
         setMargin(true);
@@ -891,7 +893,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         if(checkAllValid()) {
                         stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
                         setEditable(false);
-                        ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status);
+                        ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status, editorName);
                         } else {
                             Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
                             n.setDescription("Все поля помеченные * обязательны к заполнению.");
