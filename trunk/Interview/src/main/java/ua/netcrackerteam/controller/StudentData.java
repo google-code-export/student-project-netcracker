@@ -19,6 +19,9 @@ public class StudentData implements Serializable{
     private String studentInstituteCourse = "";
     private Faculty studentFaculty;
     private Cathedra studentCathedra;
+    private String studentOtherInstitute = "";
+    private String studentOtherFaculty = "";
+    private String studentOtherCathedra = "";
     private String studentInstituteGradYear = "";
     private String studentEmailFirst = "";
     private String studentEmailSecond = "";
@@ -65,6 +68,30 @@ public class StudentData implements Serializable{
     private String studentReasonOffer = "";
     private String studentSelfAdditionalInformation = "";
     private byte[] photo = null;
+
+    public void setStudentOtherInstitute(String studentOtherInstitute) {
+        this.studentOtherInstitute = studentOtherInstitute;
+    }
+
+    public void setStudentOtherFaculty(String studentOtherFaculty) {
+        this.studentOtherFaculty = studentOtherFaculty;
+    }
+
+    public void setStudentOtherCathedra(String studentOtherCathedra) {
+        this.studentOtherCathedra = studentOtherCathedra;
+    }
+
+    public String getStudentOtherInstitute() {
+        return studentOtherInstitute;
+    }
+
+    public String getStudentOtherFaculty() {
+        return studentOtherFaculty;
+    }
+
+    public String getStudentOtherCathedra() {
+        return studentOtherCathedra;
+    }
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
