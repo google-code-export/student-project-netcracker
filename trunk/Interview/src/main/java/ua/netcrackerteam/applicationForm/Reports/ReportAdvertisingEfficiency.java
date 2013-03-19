@@ -120,5 +120,9 @@ public class ReportAdvertisingEfficiency implements TypeOfViewReport {
         return memory.toByteArray();
 
     }
+
+    public List dataReport() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
        
 }

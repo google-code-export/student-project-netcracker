@@ -4,6 +4,8 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import java.util.List;
+
 /**
  *
  * @author tanya
@@ -11,6 +13,10 @@ package ua.netcrackerteam.applicationForm.Reports;
 public class ReportStudents implements TypeOfViewReport{
 
     public byte[] viewReport() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public List dataReport() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

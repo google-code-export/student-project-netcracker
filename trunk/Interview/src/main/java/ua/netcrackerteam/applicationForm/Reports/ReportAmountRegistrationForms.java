@@ -93,6 +93,19 @@ public class ReportAmountRegistrationForms implements TypeOfViewReport{
         return memory.toByteArray();
      }  
 
-   
+   public List getDataFoReport(){
+         DAOReport report = new DAOReport();
+         List dataReport = report.getReportAmountRegistrationForms();
+         
+         if(dataReport == null){
+             dataReport = new ArrayList();
+         }
+         
+         return dataReport;
+   }
+
+    public List dataReport() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
    
 }

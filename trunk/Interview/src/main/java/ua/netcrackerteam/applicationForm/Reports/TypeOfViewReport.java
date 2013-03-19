@@ -4,6 +4,8 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import java.util.List;
+
 /**
  *
  * @author tanya
@@ -14,5 +16,5 @@ public interface TypeOfViewReport {
      * @param dataForView 
      */
     public byte[]  viewReport();
- 
+    public List    dataReport();
 }

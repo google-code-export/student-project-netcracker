@@ -19,7 +19,7 @@ import java.util.Locale;
 public class InterviewDAOImpl {
 
 
-   //Получает все интервью 
+   //Get all interviews    
    public List<Interview> getInterview(){
 
        Session session = null;
@@ -41,7 +41,7 @@ public class InterviewDAOImpl {
        return interviewList;
    } 
    
-   //Получает интервью по конкретной дате
+   //Get interview by id
      public Interview getInterview(int idInterview){    
         Session session = null;
         Query query;        
