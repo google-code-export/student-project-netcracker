@@ -15,6 +15,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Image;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +123,14 @@ public class ReportAdvertisingEfficiency implements TypeOfViewReport {
     }
 
     public List dataReport() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Image getChart() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public byte[] getChart(int widht, int height) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
        

@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import java.awt.Image;
 import java.util.List;
 
 /**
@@ -17,4 +18,5 @@ public interface TypeOfViewReport {
      */
     public byte[]  viewReport();
     public List    dataReport();
+    public byte[]   getChart(int widht, int height);
 }

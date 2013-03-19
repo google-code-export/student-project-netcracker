@@ -16,6 +16,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.themes.Runo;
+import java.awt.Image;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -103,20 +104,36 @@ public class MainPanelHR extends MainPanel{
          vertical.addComponent(labelTitle);  
          vertical.addComponent(currentDate);
          vertical.setComponentAlignment(labelTitle, Alignment.MIDDLE_CENTER);
-         vertical.setComponentAlignment(currentDate, Alignment.BOTTOM_RIGHT);
-         
+         vertical.setComponentAlignment(currentDate, Alignment.MIDDLE_RIGHT);
+        
          //Панель с отчетом в виде таблицы
-         Panel panel = new Panel();
-         reportsLo.addComponent(panel);
+         VerticalLayout horizontal = new VerticalLayout();
+         reportsLo.addComponent(horizontal);
          
          TypeOfViewReport report = new ReportDynamicsOfIncreaseStudents();
          List reportData = report.dataReport();
          Table table = createTable(new String[]{"Дата собеседования", "Всего", "Зарегестрировано", "Свободно"}, reportData);
-         panel.addComponent(table);
-         
-         
+         horizontal.addComponent(table);
+         horizontal.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
+        
+         StreamResource img = new StreamResource(new MyImageSource(report), "myimage.png", mainPage);
+         Embedded emb = new Embedded("", img);
+         horizontal.addComponent(emb);
+         horizontal.setComponentAlignment(emb, Alignment.MIDDLE_CENTER);
+     
          
   } 
+    
+    public class MyImageSource   implements StreamResource.StreamSource {
+        TypeOfViewReport report;
+        public MyImageSource(TypeOfViewReport report){
+          this.report = report;  
+        }
+        public InputStream getStream() {      
+            return new ByteArrayInputStream(report.getChart(400, 400));
+        }
+        
+    }
     
     private Table createTable(String[] headerTable, List report){
         
@@ -138,26 +155,6 @@ public class MainPanelHR extends MainPanel{
         
         return table;
     }        
-    private void fillUPPanel(){
-       
-        CssLayout layout = new CssLayout();
-            ComboBox combobox = new ComboBox("Отчеты");
-            combobox.setInvalidAllowed(false);
-            combobox.setNullSelectionAllowed(false);
-
-            combobox.addItem("Статистика увелечения записанных студентов");
-            combobox.addItem("Общие итоги по собеседованиям");
-            combobox.addItem("Промежуточные итоги по собеседованиям");
-            combobox.addItem("Аналитика по зарегестрированным студентам");
-            combobox.addItem("Список абитуриентов на заданное собеседование");
-            combobox.addItem("Эффективность видов рекламы");
-        layout.addComponent(combobox);
-        Button bSave = new Button("Экспорт/Печать");
-        bSave.setIcon(new ThemeResource("icons/32/save.png"));
-      
-       
-        
-    }
 
     
     private class ReportMenuBar extends MenuBar{
@@ -177,31 +174,6 @@ public class MainPanelHR extends MainPanel{
                MenuItem reportAdvertisingEfficiency = reports.addItem("Эффективность видов рекламы", null);
         }
     }
-        /*private class InterviewsTable extends Table{
-        
-        public String[] NATURAL_COL_ORDER = new String[] {
-                "date", "startTime", "endTime", 
-                "positionNum", "restOfPositions", "interviewersNum"};
-        
-        public String[] COL_HEADERS_RUSSIAN = new String[] {
-                "Дата", "Время начала", "Время окончания",
-                "Количество мест", "Остаток мест", "Количество интервьюеров"};
-        
-        private InterviewsTable() {
-            super();
-            List<HRInterview> interviews = HRPage.getInterviewsList();
-            BeanItemContainer<HRInterview> bean = new BeanItemContainer(HRInterview.class, interviews);
-            setContainerDataSource(bean);
-            setWidth("100%");
-            setHeight(300,UNITS_PIXELS);
-            setSelectable(true);
-            setImmediate(true);
-            setColumnReorderingAllowed(true);
-            setColumnCollapsingAllowed(true);
-            setVisibleColumns(NATURAL_COL_ORDER);
-            setColumnHeaders(COL_HEADERS_RUSSIAN);
-        }
-    }*/
     private class PdfStreamSource implements StreamResource.StreamSource {
             
         @Override
