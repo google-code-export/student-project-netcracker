@@ -158,5 +158,18 @@ public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
              
         return chart;
   }
+ 
+ 
+
+    public List dataReport() {
+         DAOReport report = new DAOReport();
+         List dataReport = report.getReportDynamicsOfIncreaseStudents();
+         
+         if(dataReport == null){
+             dataReport = new ArrayList();
+         }
+         
+         return dataReport;
+    }
     
 }
