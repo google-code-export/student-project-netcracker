@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import java.awt.Image;
 import java.util.List;
 
 /**
@@ -17,6 +18,14 @@ public class ReportStatusStudents implements TypeOfViewReport{
     }
 
     public List dataReport() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Image getChart() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public byte[] getChart(int widht, int height) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

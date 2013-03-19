@@ -5,6 +5,7 @@
 package ua.netcrackerteam.applicationForm.Reports;
 
 import com.itextpdf.awt.PdfGraphics2D;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -13,6 +14,7 @@ import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -22,12 +24,15 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import javax.imageio.ImageIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.Axis;
@@ -88,7 +93,7 @@ public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
            cellTable.setColspan(2);
            cellTable.setBorder(Rectangle.NO_BORDER);
            
-           JFreeChart chart = createChart(getDataSet(dataReport),"","Interview","Students, %");
+           JFreeChart chart = createChart(getDataSet(dataReport),"% поданных заявок на собеседования","Interview","Students, %");
                               
            PdfContentByte cb = writer.getDirectContent();
            float width = PageSize.A4.getWidth()*2/3;
@@ -149,16 +154,29 @@ public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
  public JFreeChart createChart(CategoryDataset dataSet,String title, String categoryAsisLabel, String valueAsisLabel) {
        
  
-         final JFreeChart chart = ChartFactory.createStackedBarChart3D("График", categoryAsisLabel, valueAsisLabel, 
+         final JFreeChart chart = ChartFactory.createStackedBarChart3D(title, categoryAsisLabel, valueAsisLabel, 
               dataSet, PlotOrientation.HORIZONTAL, false, false, false);
                 
             chart.setBackgroundPaint(Color.WHITE);  
             BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
-            r.setSeriesPaint(0, Color.blue); 
+             r.setSeriesPaint(0, Color.BLUE); 
              
         return chart;
   }
  
+ public byte[] getChart(int width, int height){
+        JFreeChart chart = createChart(getDataSet(dataReport()),"","собеседования","студенты, %");
+        BufferedImage objBufferedImage=chart.createBufferedImage(width,height);
+ByteArrayOutputStream bas = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(objBufferedImage, "png", bas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+byte[] byteArray=bas.toByteArray();
+return byteArray;
+}
  
 
     public List dataReport() {
@@ -171,5 +189,7 @@ public class ReportDynamicsOfIncreaseStudents implements TypeOfViewReport{
          
          return dataReport;
     }
+
+
     
 }
