@@ -585,14 +585,7 @@ public class StudentPage {
                     hrTempInfo.setCathedraName("");
                     daohr.setHrTempInfo(hrTempInfo);
                 }
-            } else {
-                hrTempInfo.setIdHrTempInfo(formID);
-                hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
-                hrTempInfo.setFacultyName("");
-                hrTempInfo.setCathedraName("");
-                daohr.setHrTempInfo(hrTempInfo);
             }
-
         }
 
         //knowledge//other 1
