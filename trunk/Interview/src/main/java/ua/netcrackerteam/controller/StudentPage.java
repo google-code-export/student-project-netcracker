@@ -371,6 +371,7 @@ public class StudentPage {
     public static void addNewForm(StudentData newStudentData, String userName, int statusParam, String editorName) {
         
         DAOAdminImpl daoAdmin = new DAOAdminImpl();
+        DAOHRImpl daohr = new DAOHRImpl();
         UserCategory userCategory = daoAdmin.getUserCategoryByUserName(editorName);
         if(userCategory.getName().equalsIgnoreCase("hr")) {
             DAOStudentImpl daoStud = new DAOStudentImpl();
@@ -563,6 +564,35 @@ public class StudentPage {
             knowLang3.setForm   (newForm);
             knowLang3.setScore    (newStudentData.getStudentLanguage3Mark());
             currDAOComm.addSomethingNew(knowLang3);
+        }
+
+        //new institute, faculty, cathedra
+        if (!newStudentData.getStudentOtherInstitute().trim().equals("")){
+            Form form = currDAOStImpl.getFormByUserName(userName);
+            int formID = form.getIdForm();
+            HrTempInfo hrTempInfo = new HrTempInfo();
+            if(!newStudentData.getStudentOtherFaculty().trim().equals("")){
+                if (!newStudentData.getStudentOtherCathedra().trim().equals("")){
+                    hrTempInfo.setIdHrTempInfo(formID);
+                    hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
+                    hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
+                    hrTempInfo.setCathedraName(newStudentData.getStudentOtherCathedra());
+                    daohr.setHrTempInfo(hrTempInfo);
+                } else {
+                    hrTempInfo.setIdHrTempInfo(formID);
+                    hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
+                    hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
+                    hrTempInfo.setCathedraName("");
+                    daohr.setHrTempInfo(hrTempInfo);
+                }
+            } else {
+                hrTempInfo.setIdHrTempInfo(formID);
+                hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
+                hrTempInfo.setFacultyName("");
+                hrTempInfo.setCathedraName("");
+                daohr.setHrTempInfo(hrTempInfo);
+            }
+
         }
 
         //knowledge//other 1
