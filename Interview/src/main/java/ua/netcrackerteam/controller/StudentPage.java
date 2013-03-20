@@ -733,7 +733,9 @@ public class StudentPage {
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public static StudentData getStudentDataByUserName(String UserName) {
         StudentData std = new StudentData();
+        DAOHRImpl daohr = new DAOHRImpl();
         Form form = new DAOStudentImpl().getFormByUserName(UserName);
+        int idForm = form.getIdForm();
         if (form != null)
         {
             std.setIdForm(form.getIdForm());
@@ -745,6 +747,23 @@ public class StudentPage {
             std.setStudentFaculty(form.getCathedra().getFaculty());
             std.setStudentCathedra(form.getCathedra());
             std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
+
+            //krygin added code to set new institute info
+            if(!daohr.getHrTempInfoByFormID(idForm).getInstituteName().equals("")){
+                if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
+                    if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
+                        std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                        std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                        std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
+                    } else {
+                        std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                        std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                    }
+                } else {
+                    std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                    std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
+                }
+            }
 
             std.setPhoto(form.getPhoto());
 
