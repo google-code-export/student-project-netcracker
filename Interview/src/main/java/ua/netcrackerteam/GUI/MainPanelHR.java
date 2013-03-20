@@ -7,6 +7,7 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
@@ -92,36 +93,49 @@ public class MainPanelHR extends MainPanel{
     
     
     private void fillReportsLayout() {
-         
+      
+         //Тип отчета              
+         ComboBox cb = new ComboBox("Выберите отчет:");
+         cb.setInvalidAllowed(false);
+         cb.setNullSelectionAllowed(false);
+         IndexedContainer container = new IndexedContainer();        
+         container.addItem("Статистика зарегестрированных студентов");
+         container.addItem("Общие итоги по собеседованиям");
+         container.addItem("Аналитика по зарегестрированным студентам");     
+         container.addItem("Список абитуриентов на заданное собеседование"); 
+         container.addItem("Эффективность видов рекламы"); 
+         cb.setContainerDataSource(container);
+         cb.setNullSelectionAllowed(false);
+         cb.setValue(cb.getItemIds().iterator().next());
+                       
          //Заголовок
-         VerticalLayout vertical = new VerticalLayout();
-         vertical.setHeight("95px");
-         reportsLo.addComponent(vertical);        
          Label labelTitle = new Label(
-                 "<div style=\"text-align:center;color:#99CC99;font-weight:bold;font-size:35px;\">" + "Статистика зарегестрированных студентов" + "</div>", Label.CONTENT_XHTML);
-         reportsLo.addComponent(vertical);
+                 "<div style=\"text-align:center;color:#99CC99;font-weight:bold;font-size:30px;\">" + cb.getValue().toString()  + "</div>", Label.CONTENT_XHTML);
+         labelTitle.setHeight("50px");
+       
          Label currentDate = new Label(new java.util.Date().toString());
-         vertical.addComponent(labelTitle);  
-         vertical.addComponent(currentDate);
-         vertical.setComponentAlignment(labelTitle, Alignment.MIDDLE_CENTER);
-         vertical.setComponentAlignment(currentDate, Alignment.MIDDLE_RIGHT);
-        
-         //Панель с отчетом в виде таблицы
-         VerticalLayout horizontal = new VerticalLayout();
-         reportsLo.addComponent(horizontal);
-         
+                
+         //таблица отчета                  
          TypeOfViewReport report = new ReportDynamicsOfIncreaseStudents();
          List reportData = report.dataReport();
          Table table = createTable(new String[]{"Дата собеседования", "Всего", "Зарегестрировано", "Свободно"}, reportData);
-         horizontal.addComponent(table);
-         horizontal.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
-        
+                  
+         //График
          StreamResource img = new StreamResource(new MyImageSource(report), "myimage.png", mainPage);
-         Embedded emb = new Embedded("", img);
-         horizontal.addComponent(emb);
-         horizontal.setComponentAlignment(emb, Alignment.MIDDLE_CENTER);
-     
+         Embedded emb = new Embedded("", img);         
+                 
+         reportsLo.addComponent(cb);
+         reportsLo.addComponent(labelTitle);  
+         reportsLo.addComponent(currentDate);
+         reportsLo.addComponent(table);
+         reportsLo.addComponent(emb);
+       
+         reportsLo.setComponentAlignment(cb, Alignment.TOP_RIGHT);
+         reportsLo.setComponentAlignment(labelTitle, Alignment.BOTTOM_CENTER);
          
+         reportsLo.setComponentAlignment(currentDate, Alignment.MIDDLE_RIGHT);
+         reportsLo.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
+         reportsLo.setComponentAlignment(emb, Alignment.MIDDLE_CENTER);
   } 
     
     public class MyImageSource   implements StreamResource.StreamSource {
@@ -155,25 +169,6 @@ public class MainPanelHR extends MainPanel{
         
         return table;
     }        
-
-    
-    private class ReportMenuBar extends MenuBar{
-        private ReportMenuBar(){        
-            
-            MenuItem reports = this.addItem("Отчеты", null, null);
-            
-                MenuItem reportDynamicsIncreaseStudents = reports.addItem("Статистика увелечения записанных студентов", null);
-                MenuItem reportAmountRegistrationForm = reports.addItem("Общие итоги по собеседованиям", null);
-                MenuItem reportStudentsInterviews = reports.addItem("Итоги по собеседованиям", null);
-                MenuItem reportAllStudents = reports.addItem("Аналитика по зарегестрированным студентам", null);
-                    MenuItem reportStudentsInstitute = reportAllStudents.addItem("по институтам", null);
-                    MenuItem reportStudentsInstituteFaculty = reportAllStudents.addItem("по институтам/факультетам", null);
-                    MenuItem reportStudentsInstituteFacultyCathedra = reportAllStudents.addItem("по институтам/факультетам/кафедрам", null);
-                    MenuItem reportStudentsInstituteCourse = reportAllStudents.addItem("по курсам", null);
-               MenuItem reportStudentsInterview = reports.addItem("Список абитуриентов на заданное собеседование ", null);
-               MenuItem reportAdvertisingEfficiency = reports.addItem("Эффективность видов рекламы", null);
-        }
-    }
     private class PdfStreamSource implements StreamResource.StreamSource {
             
         @Override
