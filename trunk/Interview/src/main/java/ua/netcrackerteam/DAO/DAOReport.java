@@ -27,7 +27,8 @@ public class DAOReport {
             session.beginTransaction();
             query = session.createSQLQuery("select to_char(start_date, 'DD/MM/YYYY HH24:MI'), max_number, count(form.id_form) as form_number, max_number - count(form.id_form) as free_number " +                                        
                                            "from interview left join form on interview.id_interview = form.id_interview " +
-                                           "group by start_date, max_number ");          
+                                           "group by start_date, max_number " +
+                                           " order by start_date desc");          
             report = query.list();
                 
         } catch (Exception e) {
