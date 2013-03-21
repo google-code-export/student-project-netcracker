@@ -17,26 +17,25 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ListIterator;
+import org.jfree.chart.JFreeChart;
 import ua.netcrackerteam.applicationForm.ClassPath;
 
 /**
- * Template for generation report
- * @author tanya
+ *
+ * @author home
  */
-public class Report {
-
-    private static String pathTimesTTF = "resources/times.ttf";
-    private static String pathImage =    "resources/Logotip.png";
-    private static String path = ClassPath.getInstance().getWebInfPath();
+public class ReportPDFTemplate {
     
-    public static PdfPCell addLogotip() throws BadElementException, MalformedURLException, IOException{
+    private String pathTimesTTF = "resources/times.ttf";
+    private String pathImage =    "resources/Logotip.png";
+    private String path = ClassPath.getInstance().getWebInfPath();
+    
+    public PdfPCell setLogotip() throws IOException, BadElementException{ 
         
-          //Image
            PdfPCell cellImage = new PdfPCell(Image.getInstance(path + pathImage)); 
            cellImage.setBorder(Rectangle.NO_BORDER);
            cellImage.setHorizontalAlignment(Element.ALIGN_RIGHT); 
@@ -44,11 +43,11 @@ public class Report {
            return cellImage;
     }
     
-    public static PdfPCell addCreateDate() throws DocumentException, IOException{
+    public  PdfPCell setCreateDate() throws DocumentException, IOException{
           
-          BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
-          Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
-           //Create data
+           BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
+           Font fontCurrentDate = new Font(bf, 12, Font.BOLDITALIC);
+         
            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
            String currentDate = dateFormat.format(java.util.Calendar.getInstance().getTime());
            PdfPCell cellDateCreate = new PdfPCell(new Phrase(currentDate, fontCurrentDate));
@@ -57,28 +56,42 @@ public class Report {
            
            return cellDateCreate;
     }
+        
+    public PdfPCell setTitle(String title) throws IOException, DocumentException{
+          BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
+          Font fontTitle = new Font(bf, 16, Font.BOLDITALIC);
+          
+           PdfPCell cellTitle = new PdfPCell(new Phrase(title, fontTitle));
+           cellTitle.setHorizontalAlignment(Element.ALIGN_CENTER);
+           cellTitle.setBorder(Rectangle.NO_BORDER);
+           cellTitle.setColspan(2);
+           
+           return cellTitle;
+    }
     
-    public static void insertCell(PdfPTable table, String text, int align,
-                        int colspan, Font font, 
-                        BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
+    public PdfPCell setTable(String[] headerTable,
+                                List dataReport, 
+                                String[] footerTable,
+                                float[] sizeTable) throws DocumentException, IOException{
         
-        font.setColor(foregroudColor);
-        
-        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font)); 
-        
-        cell.setBackgroundColor(backgroundColor);
-        cell.setHorizontalAlignment(align);        
-        cell.setColspan(colspan);   
-        cell.setBorderColor(borderColor);
-        
-        if(text.trim().equalsIgnoreCase("")){
-         cell.setMinimumHeight(10f);
-        }
-        table.addCell(cell);
-   
-   } 
+          PdfPCell cellTable = new PdfPCell();      
+          cellTable.addElement(createTable(headerTable, dataReport, footerTable, sizeTable));  
+          cellTable.setColspan(2);
+          cellTable.setBorder(Rectangle.NO_BORDER);
+          
+          return cellTable ;
+    } 
     
-     public static  PdfPTable createTable(String[] header,
+    public PdfPCell setChart(JFreeChart chart){
+        
+       PdfPCell cellChart = new PdfPCell();
+       cellChart.setColspan(2);
+       cellChart .setBorder(Rectangle.NO_BORDER);
+       
+       return cellChart;
+    }
+    
+    private PdfPTable createTable(String[] header,
                                    List body,
                                    String[] footer,
                                    float[] size) throws DocumentException, IOException{
@@ -117,4 +130,25 @@ public class Report {
        
            return  table;
     }
+   
+       private void insertCell(PdfPTable table, String text, int align,
+                        int colspan, Font font, 
+                        BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
+        
+        font.setColor(foregroudColor);
+        
+        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font)); 
+        
+        cell.setBackgroundColor(backgroundColor);
+        cell.setHorizontalAlignment(align);        
+        cell.setColspan(colspan);   
+        cell.setBorderColor(borderColor);
+        
+        if(text.trim().equalsIgnoreCase("")){
+         cell.setMinimumHeight(10f);
+        }
+        table.addCell(cell);
+   
+   } 
+   
 }
