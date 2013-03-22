@@ -11,19 +11,23 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.AbstractDataset;
+import org.jfree.data.general.Dataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
  * @author home
  */
-public class Chart {
-    public static JFreeChart createChartBar3D(DefaultCategoryDataset dataSet,String title) {
-        
+public class Chart{
+    
+      
+        public  JFreeChart createChartBar3D(DefaultCategoryDataset dataSet, String title) {
+         
            JFreeChart chart = ChartFactory.createBarChart(
             title,
             null,
@@ -44,6 +48,22 @@ public class Chart {
         r.setSeriesPaint(0, Color.BLUE); 
         return chart;
   }
+    
+    public  JFreeChart createChartPie3D(DefaultPieDataset dataSet, String title){
+        
+        JFreeChart chart = ChartFactory.createPieChart3D(
+                title,
+                dataSet, 
+                false, 
+                false, 
+                false
+        );
+        PiePlot3D plot = (PiePlot3D) chart.getPlot();
+        plot.setForegroundAlpha(0.6f);
+        plot.setCircular(true);
+        
+        return chart;
+    }
     
 
 }

@@ -7,6 +7,8 @@ package ua.netcrackerteam.applicationForm.Reports;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -24,16 +27,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import ua.netcrackerteam.DAO.DAOReport;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author home
  */
-public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuilder {
+public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuilder{
     
     private List reportData;
     
@@ -84,7 +83,8 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public PdfPCell buildChart() {
        
-        JFreeChart chart = createChartBar3D(getCategoryDataSet(),"Динамика регистрации на собеседования");
+        Chart chartTemplate = new Chart();
+        JFreeChart chart = chartTemplate.createChartBar3D(getCategoryDataSet(), "Динамика регистрации на собеседования");
         PdfPCell cell = report.setChart(chart);
         
         return cell;
@@ -106,31 +106,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
            } 
            return dataSet;             
         }
-        
-        private  JFreeChart createChartBar3D(DefaultCategoryDataset dataSet,String title) {
-        
-           JFreeChart chart = ChartFactory.createBarChart(
-            title,
-            null,
-            null,
-            dataSet,
-            PlotOrientation.VERTICAL,
-            false,
-            false,
-            false
-        );
- 
-        CategoryPlot plot = (CategoryPlot)chart.getPlot();
-        CategoryAxis xAxis = (CategoryAxis)plot.getDomainAxis();
-        xAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
-        
-        chart.setBackgroundPaint(Color.WHITE);  
-        BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
-        r.setSeriesPaint(0, Color.BLUE); 
-        return chart;
-  }
-
-   
+    
    private String[] getFooter(List dataReport){
        
        int amount = 0;
@@ -156,17 +132,20 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public byte[] getChart(int widht, int height) {
         
-        JFreeChart chart = Chart.createChartBar3D(getCategoryDataSet(), "Динамика регистрации на собеседования");
+        Chart chartTemplate = new Chart();
+        JFreeChart chart = chartTemplate.createChartBar3D(getCategoryDataSet(),"Динамика регистрации на собеседования");
+
         BufferedImage objBufferedImage=chart.createBufferedImage(widht,height);
         ByteArrayOutputStream bas = new ByteArrayOutputStream();
-        try {
+        try {        
             ImageIO.write(objBufferedImage, "png", bas);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ex) {
+            Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-       byte[] byteArray=bas.toByteArray();
-       return byteArray;
+  
+       return bas.toByteArray();
     }
-    
-}
+
+
+
+    }

@@ -22,12 +22,12 @@ public class ReportBuilderAdvertisingEfficiency extends ReportBuilder{
 
     @Override
     public Table buildTable() {
-        throw new UnsupportedOperationException("Not supported yet.");
+         return report.getTable(new String[]{"Категория рекламы", "Выбрано (кол-во анкет)", " Выбрано (%)"});
     }
 
     @Override
     public Embedded buildChart(MainPage mainPage) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return report.getChart(mainPage);
     }
     
 }

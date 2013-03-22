@@ -78,10 +78,10 @@ public class DAOReport {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createSQLQuery("select description , count(id_form) "+
+            query = session.createSQLQuery("select description , other, count(id_form) "+
                                            "from advert_category left join advert " +
                                            "on advert_category.id_advert_category = advert.id_advert_category " + 
-                                           "group by description" + 
+                                           "group by description, other" + 
                                            " order by count(id_form) desc");          
             report = query.list();
                 
@@ -95,33 +95,7 @@ public class DAOReport {
         return report;    
     }
     
-     /**
-     *Расшифровка другое
-     */
-        public List getReportAdvertisingEfficiencyOTher(){
-        Session session = null;
-        Query query;        
-        List report = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createSQLQuery("select nvl(other, 'Не уточнено'), count(id_form) "+
-                                           "from advert " +
-                                           "where advert.id_advert_category = 5 " + 
-                                           "group by other");          
-            report = query.list();
-                
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return report;    
-    }
-        
+   
     public List ReportStudents(){
                Session session = null;
         Query query;        

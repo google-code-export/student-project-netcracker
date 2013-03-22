@@ -17,8 +17,10 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
+import ua.netcrackerteam.GUI.Reports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
+import ua.netcrackerteam.applicationForm.Reports.ReportTemplateAdvertisingEfficiency;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
@@ -85,8 +87,7 @@ public class MainPanelHR extends MainPanel{
     
     
     private void fillReportsLayout() {
-      
-                       
+                                    
          cbTypeReport = new ComboBox("Выберите отчет:");
          cbTypeReport.setInvalidAllowed(false);
          cbTypeReport.setNullSelectionAllowed(false);
@@ -101,24 +102,31 @@ public class MainPanelHR extends MainPanel{
          cbTypeReport.setNullSelectionAllowed(false);
          cbTypeReport.setValue(cbTypeReport.getItemIds().iterator().next());
          
-         ReportTemplateBuilder template = new ReportTemplateDynamicsOfIncreaseStudents(); 
+         reportsLo.addComponent(cbTypeReport); 
+         reportsLo.setComponentAlignment(cbTypeReport, Alignment.MIDDLE_RIGHT);
+                  
+         Button btRefresh = new Button("Обновление");
+         btRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
+         
+         ReportTemplateBuilder template = new ReportTemplateAdvertisingEfficiency(); 
          template.createReportPDFTemplate();
          Link pdfLink = getPDFLink(template);
          
+         reportsLo.addComponent(btRefresh);
+         reportsLo.addComponent(pdfLink);        
+         
          HorizontalLayout horizontal = new HorizontalLayout(); 
          horizontal.setHeight("50px");
-         reportsLo.addComponent(horizontal);
+         horizontal.addComponent(cbTypeReport);  
+         horizontal.addComponent(pdfLink); 
          
-         horizontal.addComponent(pdfLink);
-         horizontal.addComponent(cbTypeReport);         
-         
-         horizontal.setComponentAlignment(cbTypeReport, Alignment.MIDDLE_LEFT);
-         horizontal.setComponentAlignment(pdfLink, Alignment.MIDDLE_RIGHT);
-             
+         reportsLo.addComponent(horizontal); 
+                 
+                  
          //Заполнение отчета
          ReportsCreator creator = new ReportsCreator();
           
-         ReportBuilder builder = new ReportBuilderDynamicsOfIncreaseStudents();         
+         ReportBuilder builder = new ReportBuilderAdvertisingEfficiency();         
          builder.createReport(template);           
          
          creator.setReportBuilder(builder);     

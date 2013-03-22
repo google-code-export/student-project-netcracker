@@ -74,12 +74,16 @@ public class ReportPDFTemplate {
                                 String[] footerTable,
                                 float[] sizeTable) throws DocumentException, IOException{
         
-          PdfPCell cellTable = new PdfPCell();      
-          cellTable.addElement(createTable(headerTable, dataReport, footerTable, sizeTable));  
-          cellTable.setColspan(2);
-          cellTable.setBorder(Rectangle.NO_BORDER);
-          
-          return cellTable ;
+          return createTable(headerTable, dataReport, footerTable, sizeTable);
+    } 
+    
+        public PdfPCell setTableAdditional(String[] headerTable,
+                                List dataReport, 
+                                String[] footerTable,
+                                float[] sizeTable) throws DocumentException, IOException{
+             
+          return createTable(headerTable, dataReport, footerTable, sizeTable);  
+    
     } 
     
     public PdfPCell setChart(JFreeChart chart){
@@ -91,11 +95,24 @@ public class ReportPDFTemplate {
        return cellChart;
     }
     
-    private PdfPTable createTable(String[] header,
+        public PdfPCell setAdditionalInfo(String info, int align) throws IOException, DocumentException{
+          BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
+          Font fontInfo = new Font(bf, 12, Font.NORMAL);
+          
+           PdfPCell cellInfo = new PdfPCell(new Phrase(info, fontInfo));
+           cellInfo.setHorizontalAlignment(align);
+           cellInfo.setBorder(Rectangle.NO_BORDER);
+           cellInfo.setColspan(2);
+           
+           return cellInfo;
+    }
+    
+    private PdfPCell createTable(String[] header,
                                    List body,
                                    String[] footer,
                                    float[] size) throws DocumentException, IOException{
-           
+           PdfPCell cellTable = new PdfPCell();
+            
            BaseColor fColor = BaseColor.BLACK;
            BaseColor bColor = WebColors.getRGBColor("#99CC99");
            BaseColor borderColor = WebColors.getRGBColor("#999966");           
@@ -127,8 +144,13 @@ public class ReportPDFTemplate {
            //Footer table
            for(int j = 0; j < footer.length; j++){
               insertCell(table, footer[j], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);}
-       
-           return  table;
+           
+          cellTable.addElement(table);  
+          cellTable.setColspan(2);
+          cellTable.setBorder(Rectangle.NO_BORDER);
+          
+          return cellTable ;
+          
     }
    
        private void insertCell(PdfPTable table, String text, int align,
@@ -150,5 +172,7 @@ public class ReportPDFTemplate {
         table.addCell(cell);
    
    } 
+   
+   
    
 }
