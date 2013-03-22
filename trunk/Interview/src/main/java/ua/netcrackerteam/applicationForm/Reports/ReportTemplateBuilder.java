@@ -35,5 +35,5 @@ public abstract class ReportTemplateBuilder {
     public abstract PdfPCell buildTable();
     public abstract PdfPCell buildChart();
     public abstract List    dataReport();
-    public abstract byte[]   getChart(int widht, int height);
+    public abstract byte[]  getChart(int widht, int height);
 }
