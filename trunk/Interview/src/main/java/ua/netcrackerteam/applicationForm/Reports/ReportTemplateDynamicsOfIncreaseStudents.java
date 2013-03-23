@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.awt.Color;
@@ -62,7 +63,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public PdfPCell buildTable() {
         
-        String[] header = new String[]{"Дата собеседования", "Всего", "Зарегестрировано", "Свободно"};       
+        String[] header = new String[]{"Дата собеседования", "Всего", "Зарегистрировано", "Свободно"};       
         String[] footer = getFooter(reportData);
         
         float[] size = new float[]{2f, 1.5f, 1.5f, 1.5f};
@@ -85,7 +86,14 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
        
         Chart chartTemplate = new Chart();
         JFreeChart chart = chartTemplate.createChartBar3D(getCategoryDataSet(), "Динамика регистрации на собеседования");
-        PdfPCell cell = report.setChart(chart);
+        PdfPCell cell = new PdfPCell();
+        try {
+            cell = report.setChart(chart);
+        } catch (BadElementException ex) {
+            Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return cell;
     }

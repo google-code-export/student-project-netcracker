@@ -16,11 +16,16 @@ import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import org.jfree.chart.JFreeChart;
 import ua.netcrackerteam.applicationForm.ClassPath;
 
@@ -77,18 +82,16 @@ public class ReportPDFTemplate {
           return createTable(headerTable, dataReport, footerTable, sizeTable);
     } 
     
-        public PdfPCell setTableAdditional(String[] headerTable,
-                                List dataReport, 
-                                String[] footerTable,
-                                float[] sizeTable) throws DocumentException, IOException{
-             
-          return createTable(headerTable, dataReport, footerTable, sizeTable);  
-    
-    } 
-    
-    public PdfPCell setChart(JFreeChart chart){
+    public PdfPCell setChart(JFreeChart chart) throws BadElementException, IOException{
         
        PdfPCell cellChart = new PdfPCell();
+       BufferedImage objBufferedImage=chart.createBufferedImage(400,400);
+       ByteArrayOutputStream bas = new ByteArrayOutputStream();
+            
+       ImageIO.write(objBufferedImage, "png", bas);             
+
+       Image chartImage = Image.getInstance(bas.toByteArray());
+       cellChart.setImage(chartImage);
        cellChart.setColspan(2);
        cellChart .setBorder(Rectangle.NO_BORDER);
        

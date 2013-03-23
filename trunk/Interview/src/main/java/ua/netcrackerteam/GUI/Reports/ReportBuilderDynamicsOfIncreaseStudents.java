@@ -23,7 +23,7 @@ public class ReportBuilderDynamicsOfIncreaseStudents extends ReportBuilder{
 
     @Override
     public Table buildTable() {
-        return report.getTable(new String[]{"Дата собеседования", "Всего", "Зарегестрировано", "Свободно"});
+        return report.getTable(new String[]{"Дата собеседования", "Всего", "Зарегистрировано", "Свободно"});
     }
 
     @Override

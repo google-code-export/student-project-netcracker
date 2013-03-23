@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.awt.image.BufferedImage;
@@ -79,7 +80,14 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
         
         Chart chartTemplate = new Chart();
         JFreeChart chart = chartTemplate.createChartPie3D(getDefaultPieDataset(),"Анализ эффективности рекламы");
-        PdfPCell cell = report.setChart(chart);
+        PdfPCell cell =  new PdfPCell();
+        try {
+            cell = report.setChart(chart);
+        } catch (BadElementException ex) {
+            Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return cell;
     }
