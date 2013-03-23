@@ -5,6 +5,7 @@
 package ua.netcrackerteam.applicationForm.Reports;
 
 import java.awt.Color;
+import java.util.Locale;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -24,8 +25,7 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author home
  */
 public class Chart{
-    
-      
+        
         public  JFreeChart createChartBar3D(DefaultCategoryDataset dataSet, String title) {
          
            JFreeChart chart = ChartFactory.createBarChart(
@@ -54,10 +54,11 @@ public class Chart{
         JFreeChart chart = ChartFactory.createPieChart3D(
                 title,
                 dataSet, 
-                false, 
-                false, 
+                true, 
+                true, 
                 false
         );
+       
         PiePlot3D plot = (PiePlot3D) chart.getPlot();
         plot.setForegroundAlpha(0.6f);
         plot.setCircular(true);

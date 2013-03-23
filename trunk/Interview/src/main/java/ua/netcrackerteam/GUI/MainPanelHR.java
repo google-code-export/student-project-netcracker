@@ -4,6 +4,8 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
@@ -38,9 +40,7 @@ public class MainPanelHR extends MainPanel{
     private int height;
     private SettingsLayout settingsLayout;
     private final MainPage mainPage;
-
-    ComboBox cbTypeReport;
-    
+       
     public MainPanelHR(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
         this.mainPage = mainPage;
@@ -88,7 +88,42 @@ public class MainPanelHR extends MainPanel{
     
     private void fillReportsLayout() {
                                     
-         cbTypeReport = new ComboBox("Выберите отчет:");
+         ComboBox cbTypeReport = getComboBox();
+                        
+         Button btRefresh = new Button("Обновление");
+         btRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
+         
+         ReportTemplateBuilder template = new ReportTemplateDynamicsOfIncreaseStudents(); 
+         template.createReportPDFTemplate();
+         Link pdfLink = getPDFLink(template);
+       
+         HorizontalLayout horizontal = new HorizontalLayout(); 
+         horizontal.setHeight("50px");
+         horizontal.addComponent(cbTypeReport); 
+         horizontal.addComponent(pdfLink);
+          
+          
+         
+         reportsLo.addComponent(horizontal); 
+         reportsLo.addComponent(btRefresh); 
+         reportsLo.setComponentAlignment(btRefresh, Alignment.MIDDLE_RIGHT);
+                  
+         //Заполнение отчета
+         ReportsCreator creator = new ReportsCreator();
+          
+         ReportBuilder builder = new ReportBuilderDynamicsOfIncreaseStudents();         
+         builder.createReport(template);           
+         
+         creator.setReportBuilder(builder);     
+         creator.setVerticalLayout(reportsLo);          
+         creator.createReport(mainPage);
+         
+   
+  } 
+  
+  private ComboBox getComboBox(){
+      
+         ComboBox cbTypeReport = new ComboBox("Выберите отчет:");
          cbTypeReport.setInvalidAllowed(false);
          cbTypeReport.setNullSelectionAllowed(false);
          IndexedContainer container = new IndexedContainer();        
@@ -102,41 +137,8 @@ public class MainPanelHR extends MainPanel{
          cbTypeReport.setNullSelectionAllowed(false);
          cbTypeReport.setValue(cbTypeReport.getItemIds().iterator().next());
          
-         reportsLo.addComponent(cbTypeReport); 
-         reportsLo.setComponentAlignment(cbTypeReport, Alignment.MIDDLE_RIGHT);
-                  
-         Button btRefresh = new Button("Обновление");
-         btRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
-         
-         ReportTemplateBuilder template = new ReportTemplateAdvertisingEfficiency(); 
-         template.createReportPDFTemplate();
-         Link pdfLink = getPDFLink(template);
-         
-         reportsLo.addComponent(btRefresh);
-         reportsLo.addComponent(pdfLink);        
-         
-         HorizontalLayout horizontal = new HorizontalLayout(); 
-         horizontal.setHeight("50px");
-         horizontal.addComponent(cbTypeReport);  
-         horizontal.addComponent(pdfLink); 
-         
-         reportsLo.addComponent(horizontal); 
-                 
-                  
-         //Заполнение отчета
-         ReportsCreator creator = new ReportsCreator();
-          
-         ReportBuilder builder = new ReportBuilderAdvertisingEfficiency();         
-         builder.createReport(template);           
-         
-         creator.setReportBuilder(builder);     
-         creator.setVerticalLayout(reportsLo);          
-         creator.createReport(mainPage);
-         
-   
-  } 
-  
-  
+         return cbTypeReport;
+  }
     private class PdfStreamSource implements StreamResource.StreamSource { 
         
         private ReportTemplateBuilder builder;
