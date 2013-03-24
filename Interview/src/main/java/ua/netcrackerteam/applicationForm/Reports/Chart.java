@@ -29,7 +29,7 @@ import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class Chart{
     

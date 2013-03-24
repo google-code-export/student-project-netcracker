@@ -6,14 +6,13 @@ package ua.netcrackerteam.GUI.Reports;
 
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Table;
 import ua.netcrackerteam.GUI.MainPage;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public abstract class ReportBuilder {
     

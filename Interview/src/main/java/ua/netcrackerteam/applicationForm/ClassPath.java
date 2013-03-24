@@ -9,20 +9,12 @@ package ua.netcrackerteam.applicationForm;
 	public class ClassPath{
             
 	    private static ClassPath instance = null;
-	    private String webInfPath, webXmlPath, configXmlPath;
-	 
-	    /**
-	     * The constructor will get the webInfPath and store it until the app close
-	     */
+	    private String webInfPath, webXmlPath, configXmlPath;	 
+	   
 	    private ClassPath(){
-	        File myClass = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());
-	 
-	        //The package name give the number of parentFile to apply
-	        //We add 3 : the first one is the .class name, the "." counted are one less, and the package is
-	        //inside a classes folder. So 3.
+	        File myClass = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile());	 	       
 	        int packageSubFolder = getClass().getPackage().getName().replaceAll("[^.]", "").length() + 3;
-	 
-	        //Place the file to the good parent file to point into the web inf
+	
 	        for(int i=0; i<packageSubFolder; i++){
 	            myClass = myClass.getParentFile();
 	        }
@@ -32,10 +24,7 @@ package ua.netcrackerteam.applicationForm;
 	        this.configXmlPath = this.getWebInfPath() + "config.xml";
 	    }
 	 
-	    /**
-	     * Singleton structure
-	     * @return himself
-	     */
+	   
 	    public static ClassPath getInstance(){
 	        if(instance == null){
 	            instance = new ClassPath();

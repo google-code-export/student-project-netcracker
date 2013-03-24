@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportsTemplateCreator{
     private ReportTemplateBuilder builder;
