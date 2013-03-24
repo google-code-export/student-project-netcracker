@@ -10,7 +10,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import ua.netcrackerteam.GUI.MainPage;
@@ -36,6 +35,7 @@ public class Report {
          
          return labelTitle;
      }
+      
     public Label getDateCreate(){
         
          Label currentDate = new Label(new java.util.Date().toString());

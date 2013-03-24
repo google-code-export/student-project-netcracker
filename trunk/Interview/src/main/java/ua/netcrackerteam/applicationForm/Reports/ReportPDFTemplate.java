@@ -23,10 +23,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import org.jfree.chart.JFreeChart;
 import ua.netcrackerteam.applicationForm.ClassPath;
 
 /**
@@ -82,34 +78,17 @@ public class ReportPDFTemplate {
           return createTable(headerTable, dataReport, footerTable, sizeTable);
     } 
     
-    public PdfPCell setChart(JFreeChart chart) throws BadElementException, IOException{
+    public PdfPCell setChart(Chart chart) throws BadElementException, IOException{
         
        PdfPCell cellChart = new PdfPCell();
-       BufferedImage objBufferedImage=chart.createBufferedImage(400,400);
-       ByteArrayOutputStream bas = new ByteArrayOutputStream();
-            
-       ImageIO.write(objBufferedImage, "png", bas);             
-
-       Image chartImage = Image.getInstance(bas.toByteArray());
+       Image chartImage = chart.getImageChart(300, 300);
        cellChart.setImage(chartImage);
        cellChart.setColspan(2);
        cellChart .setBorder(Rectangle.NO_BORDER);
        
        return cellChart;
     }
-    
-        public PdfPCell setAdditionalInfo(String info, int align) throws IOException, DocumentException{
-          BaseFont bf = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED); 
-          Font fontInfo = new Font(bf, 12, Font.NORMAL);
-          
-           PdfPCell cellInfo = new PdfPCell(new Phrase(info, fontInfo));
-           cellInfo.setHorizontalAlignment(align);
-           cellInfo.setBorder(Rectangle.NO_BORDER);
-           cellInfo.setColspan(2);
-           
-           return cellInfo;
-    }
-    
+        
     private PdfPCell createTable(String[] header,
                                    List body,
                                    String[] footer,
@@ -154,9 +133,9 @@ public class ReportPDFTemplate {
           
           return cellTable ;
           
-    }
-   
-       private void insertCell(PdfPTable table, String text, int align,
+    } 
+ 
+    private void insertCell(PdfPTable table, String text, int align,
                         int colspan, Font font, 
                         BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
         

@@ -27,6 +27,7 @@ public class DAOReport {
             session.beginTransaction();
             query = session.createSQLQuery("select to_char(start_date, 'DD/MM/YYYY HH24:MI'), max_number, count(form.id_form) as form_number, max_number - count(form.id_form) as free_number " +                                        
                                            "from interview left join form on interview.id_interview = form.id_interview " +
+                                           "where start_date is not null " +
                                            "group by start_date, max_number " +
                                            " order by start_date desc");          
             report = query.list();
@@ -78,10 +79,10 @@ public class DAOReport {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createSQLQuery("select description , other, count(id_form) "+
+            query = session.createSQLQuery("select description , count(id_form) "+
                                            "from advert_category left join advert " +
                                            "on advert_category.id_advert_category = advert.id_advert_category " + 
-                                           "group by description, other" + 
+                                           "group by description" + 
                                            " order by count(id_form) desc");          
             report = query.list();
                 
@@ -95,7 +96,30 @@ public class DAOReport {
         return report;    
     }
     
-   
+   public List getReportAdvertisingEfficiencyOther(){
+        Session session = null;
+        Query query;        
+        List report = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createSQLQuery("select other , count(id_form) "+
+                                           "from advert " +
+                                           "where other is not null " + 
+                                           "group by other");          
+            report = query.list();
+                
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return report;    
+    }
+    
     public List ReportStudents(){
                Session session = null;
         Query query;        
