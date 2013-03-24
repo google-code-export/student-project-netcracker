@@ -161,30 +161,32 @@ public class HRPage {
         List<HRInterview> intervList = new ArrayList<HRInterview>();
         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
         for(Interview interview : interviews) {
-            HRInterview hrInterview = new HRInterview();
-            
-            hrInterview.setId(interview.getIdInterview());
-            
-            Date startDate = interview.getStartDate();
-            Format formatter = new SimpleDateFormat("dd/MM/yyyy");      
-            String strDate = formatter.format(startDate);
-            hrInterview.setDate(strDate);
-            
-            formatter = new SimpleDateFormat("HH:mm");     
-            String strStartTime = formatter.format(startDate);
-            hrInterview.setStartTime(strStartTime);
-            
-            String strEndTime = formatter.format(interview.getEndDate());
-            hrInterview.setEndTime(strEndTime);
-            
-            hrInterview.setInterviewersNum(interview.getInterviwerNumber());
-            hrInterview.setPositionNum(interview.getMaxNumber());
-            
-            List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-            int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
-            hrInterview.setRestOfPositions(hrInterview.getPositionNum() - amountStudentsToInterview);
-            
-            intervList.add(hrInterview);
+            if(interview.getIdInterview()!=0) {
+                HRInterview hrInterview = new HRInterview();
+
+                hrInterview.setId(interview.getIdInterview());
+
+                Date startDate = interview.getStartDate();
+                Format formatter = new SimpleDateFormat("dd/MM/yyyy");      
+                String strDate = formatter.format(startDate);
+                hrInterview.setDate(strDate);
+
+                formatter = new SimpleDateFormat("HH:mm");     
+                String strStartTime = formatter.format(startDate);
+                hrInterview.setStartTime(strStartTime);
+
+                String strEndTime = formatter.format(interview.getEndDate());
+                hrInterview.setEndTime(strEndTime);
+
+                hrInterview.setInterviewersNum(interview.getInterviwerNumber());
+                hrInterview.setPositionNum(interview.getMaxNumber());
+
+                List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+                int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
+                hrInterview.setRestOfPositions(hrInterview.getPositionNum() - amountStudentsToInterview);
+
+                intervList.add(hrInterview);
+            }
         }
         return intervList;
     }
