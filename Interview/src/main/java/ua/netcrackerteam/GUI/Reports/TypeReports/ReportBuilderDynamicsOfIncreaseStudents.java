@@ -2,34 +2,34 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.GUI.Reports;
+package ua.netcrackerteam.GUI.Reports.TypeReports;
 
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.Table;
 import ua.netcrackerteam.GUI.MainPage;
+import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 
 /**
  *
  * @author home
  */
-public class ReportBuilderAdvertisingEfficiency extends ReportBuilder{
+public class ReportBuilderDynamicsOfIncreaseStudents extends ReportBuilder{
 
     @Override
     public Label buildTitle() {
-        return report.getTitle("Эффективность видов рекламы");
+        return report.getTitle("Статистика увеличения записанных студентов на собеседования");
     }
+
 
     @Override
     public Table buildTable() {
-         return report.getTable(new String[]{"Категория рекламы", "Выбрано (кол-во анкет)", " Выбрано (%)"});
+        return report.getTable(new String[]{"Дата собеседования", "Всего", "Зарегистрировано", "Свободно"});
     }
 
     @Override
     public Embedded buildChart(MainPage mainPage) {
         return report.getChart(mainPage);
     }
-
     
 }
