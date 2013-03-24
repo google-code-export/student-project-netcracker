@@ -1,5 +1,7 @@
 package ua.netcrackerteam.DAO;
 
+import ua.netcrackerteam.DAO.Entities.UserCategory;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -52,5 +54,5 @@ public interface DAOAdmin {
 
     Long getCountUsersByActivity(String status);
 
-    //UserCategory getUserCategoryByUserName(String userName);
+    UserCategory getUserCategoryByUserName(String userName);
 }

@@ -4,8 +4,8 @@
  */
 package ua.netcrackerteam.controller;
 
-import ua.netcrackerteam.DAO.Form;
-import ua.netcrackerteam.DAO.Interview;
+import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 

@@ -64,6 +64,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
 
 
+
     public HRBlankLayout(String userName, MainPage mainPage) {
 
         this.username = userName;
@@ -139,7 +140,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         rightPanelTree.addItem(idNonVerBlanks);
         rightPanelTree.setItemCaption(idNonVerBlanks, secondTreeTitle);
         rightPanelTree.setChildrenAllowed(secondTreeTitle, false);
-
 
         rightPanelTree.addListener(new ItemClickEvent.ItemClickListener() {
             @Override
@@ -324,7 +324,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
     private void FillBlankTable(List<StudentDataShort> data) {
 
-
         Table oldTable = tableOfBlanks;
         tableOfBlanks = new BlanksTable(new BeanItemContainer(StudentDataShort.class, data));
         rightPanel.replaceComponent(oldTable, tableOfBlanks);
@@ -339,7 +338,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
 
     private void FillInformationPanel() {
-
         //data source
         tableOfBlanks = new BlanksTable(new BeanItemContainer(StudentDataShort.class, HRPage.getAllForms()));
         tableOfBlanks.addListener(new Table.ValueChangeListener() {

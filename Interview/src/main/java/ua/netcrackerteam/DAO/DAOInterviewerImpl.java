@@ -1,14 +1,17 @@
 package ua.netcrackerteam.DAO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import javax.interceptor.Interceptors;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.DAO.Entities.InterviewRes;
+import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
+
+import javax.interceptor.Interceptors;
+import java.util.List;
+import java.util.Locale;
 
 /**
  *
@@ -56,7 +59,7 @@ public class DAOInterviewerImpl implements DAOInterviewer
     
     
     @Override
-    public List<Form> getAllBasicForms()          
+    public List<Form> getAllBasicForms()
     {
         Session session = null;
         Query query;

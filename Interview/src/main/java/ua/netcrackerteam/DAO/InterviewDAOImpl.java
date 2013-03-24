@@ -6,9 +6,9 @@ package ua.netcrackerteam.DAO;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package ua.netcrackerteam.DAO;
+package ua.netcrackerteam.DAO.Entities;
 
 import java.io.Serializable;
 import javax.persistence.*;

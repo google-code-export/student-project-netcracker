@@ -5,7 +5,7 @@
 package ua.netcrackerteam.applicationForm;
 
 import org.apache.commons.mail.ByteArrayDataSource;
-import ua.netcrackerteam.DAO.Interview;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 
 import javax.activation.DataHandler;

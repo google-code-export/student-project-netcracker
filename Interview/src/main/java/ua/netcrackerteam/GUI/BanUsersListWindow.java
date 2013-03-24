@@ -5,7 +5,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
-import ua.netcrackerteam.DAO.UserList;
+import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.controller.GeneralController;
 import ua.netcrackerteam.controller.UsersData;
 

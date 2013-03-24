@@ -124,11 +124,11 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
             String userPassword = String.valueOf(this.getPassword());
             GeneralController.setNewPassword(userName, userPassword);
             Notification n = new Notification("Изменение пароля юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
-            n.setDescription("На email " + userName + " выслано письмо с новым паролем.\n" +
+            n.setDescription("На email юзера" + userName + " выслано письмо с новым паролем.\n" +
                     "Теперь юзер может зайти под своими новыми аккаунт данными.");
             n.setPosition(Notification.POSITION_CENTERED);
             settingsLayout.getWindow().showNotification(n);
-            ResetUserPasswordWindow.this.close();
+            this.close();
             /*try {
                 SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);
             } catch (EmailException e) {
