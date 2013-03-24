@@ -13,7 +13,7 @@ import ua.netcrackerteam.GUI.MainPage;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportsCreator {
     

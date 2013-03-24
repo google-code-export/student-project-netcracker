@@ -23,7 +23,7 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     

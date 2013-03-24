@@ -27,7 +27,7 @@ import ua.netcrackerteam.applicationForm.ClassPath;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportPDFTemplate {
     

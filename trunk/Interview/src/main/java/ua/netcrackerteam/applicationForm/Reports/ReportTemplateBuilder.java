@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public abstract class ReportTemplateBuilder {
     
