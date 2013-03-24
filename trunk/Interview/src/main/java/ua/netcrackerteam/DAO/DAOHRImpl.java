@@ -24,7 +24,8 @@ public class DAOHRImpl implements DAOHR{
 //        Institute inst = test.addInstitute("Тестовый институт");
 //        Faculty fac = test.addFaculty(inst, "Факультет тестового института");
 //        Cathedra cat = test.addCathedra(fac, "Кафедра тестового института");
-        
+        getDiff(2300);
+
     }
 
     @Override
@@ -94,9 +95,10 @@ public class DAOHRImpl implements DAOHR{
         }
     }
 
-    public String getUserNameByFormId(int formId) {
+    public UserList getUserDataByFormId(int formId) {
         String userName = "";
         Session session = null;
+        UserList selectedUser = null;
         Query query;
         try {
             Locale.setDefault(Locale.ENGLISH);
@@ -104,7 +106,7 @@ public class DAOHRImpl implements DAOHR{
             session.beginTransaction();
             query = session.createQuery("from Form where idForm = " + formId);
             Form currForm = (Form)query.uniqueResult();
-            userName = currForm.getUser().getUserName();
+            selectedUser = (UserList)currForm.getUser();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -113,7 +115,7 @@ public class DAOHRImpl implements DAOHR{
             }
         }
 
-        return userName;
+        return selectedUser;
     }
  
     @Override
@@ -401,7 +403,7 @@ public class DAOHRImpl implements DAOHR{
     @Override
     public String getInterviewerNameByID(int userID) {
         Session session = null;
-        Query query;                
+        Query query;
         String name = "";        
         try {
             Locale.setDefault(Locale.ENGLISH);
@@ -553,6 +555,50 @@ public class DAOHRImpl implements DAOHR{
         }
         return cathedra;
         
+    }
+
+    public static void getDiff(int currUserId) {
+        Query query;
+        Session session = null;
+        Transaction transaction = null;
+        List columnData = null;
+        String queryText = "";
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            transaction = session.beginTransaction();
+            query = session.createSQLQuery("select column_name from ALL_TAB_COLUMNS where table_name = 'FORM'");
+            columnData = query.list();
+            Boolean first = true;
+            for (Object colunmName:columnData) {
+                String currColumnName = (String)colunmName;
+                if (!((String) colunmName).toLowerCase().equals("photo")) {
+                String currcolumnQuery = "select * from (select '" + currColumnName + "', to_char(f1." + currColumnName + "), to_char(f2." + currColumnName + ")" +
+                        "from form f1, form f2 where" +
+                        "(f1.id_user = f2.id_user) and (f1.id_user = "  + currUserId + " ) " +
+                        "and (f1." + currColumnName + "<> f2." + currColumnName +")) where rownum = 1";
+                if (first) {
+                    queryText = currcolumnQuery;
+                    first = false;
+                }
+                else {
+                    queryText = queryText + " union " + currcolumnQuery;
+                }
+                }
+
+            }
+
+            query = session.createSQLQuery(queryText);
+            columnData = query.list();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+
     }
     
     

@@ -51,4 +51,6 @@ public interface DAOAdmin {
     Long getCountUsersLoginTriedNonRegUsers();
 
     Long getCountUsersByActivity(String status);
+
+    //UserCategory getUserCategoryByUserName(String userName);
 }

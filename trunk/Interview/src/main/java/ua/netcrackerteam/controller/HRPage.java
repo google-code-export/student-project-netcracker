@@ -4,12 +4,10 @@ import ua.netcrackerteam.DAO.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
 
+import java.lang.reflect.Field;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -80,8 +78,13 @@ public class HRPage {
     }
 
     public static String getUserNameByFormId(int formId) {
-        String userName = new DAOHRImpl().getUserNameByFormId(formId);
-        return userName;
+        UserList user = new DAOHRImpl().getUserDataByFormId(formId);
+        return user.getUserName();
+    }
+
+    public static int getUserIDByFormId(int formId) {
+        UserList user = new DAOHRImpl().getUserDataByFormId(formId);
+        return user.getIdUser();
     }
 
     public static List<StudentDataShort> getNonVerificatedForms() {
@@ -233,6 +236,262 @@ public class HRPage {
         addNewInstFaculCath(hrTempInfo.getInstituteName(), hrTempInfo.getFacultyName(), hrTempInfo.getCathedraName());
     }
 
+    public static StudentData getStDataByFormID(int formID) {
+
+        StudentData std = new StudentData();
+        DAOHRImpl daohr = new DAOHRImpl();
+        Form form = (Form)StudentPage.searchSomething("Form", "idForm", String.valueOf(formID)).get(0);
+        //int idForm = form.getIdForm();
+        if (form != null)
+        {
+            std.setIdForm(form.getIdForm());
+            std.setStudentLastName(form.getLastName());
+            std.setStudentFirstName(form.getFirstName());
+            std.setStudentMiddleName(form.getMiddleName());
+            std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
+            std.setStudentInstituteCourse(form.getInstituteYear().toString());
+            std.setStudentFaculty(form.getCathedra().getFaculty());
+            std.setStudentCathedra(form.getCathedra());
+            std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
+
+            //krygin added code to set new institute info
+            /*if(!daohr.getHrTempInfoByFormID(idForm).getInstituteName().equals("")){
+                if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
+                    if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
+                        std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                        std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                        std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
+                    } else {
+                        std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                        std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                    }
+                } else {
+                    std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                    std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
+                }
+            }*/
+
+            std.setPhoto(form.getPhoto());
+
+            Set contacts = form.getContacts();
+            Iterator iterCont = contacts.iterator();
+            while(iterCont.hasNext()) {
+                Contact contact = (Contact) iterCont.next();
+                String contactCategory = contact.getContactCategory().getCategory();
+                if (contactCategory.equals("email1")) {
+                    std.setStudentEmailFirst(contact.getInfo());
+                }
+                else if (contactCategory.equals("email2")) {
+                    std.setStudentEmailSecond(contact.getInfo());
+                }
+                else if (contactCategory.equals("cellphone1")) {
+                    std.setStudentTelephone(contact.getInfo());
+                }
+                else {
+                    std.setStudentOtherContactType(contactCategory);
+                    std.setStudentOtherContact(contact.getInfo());
+                }
+            }
+
+            std.setStudentInterestStudy(form.getInterestStudy());
+            std.setStudentInterestWork(form.getInterestWork());
+            std.setStudentInterestDevelopment(form.getInterestBranchSoft());
+            std.setStudentInterestOther(form.getInterestBranchOther());
+            std.setStudentWorkTypeDeepSpec(form.getInterestDeepSpec());
+            std.setStudentWorkTypeVarious(form.getInterestVarious());
+            std.setStudentWorkTypeManagement(form.getInterestManagment());
+            std.setStudentWorkTypeSale(form.getInterestSale());
+            std.setStudentWorkTypeOther(form.getInterestOther());
+
+            Set knowledges = form.getKnowledges();
+            Iterator iterKnow = knowledges.iterator();
+            Set<Knowledge> otherKnowledges = new HashSet();
+            while(iterKnow.hasNext()) {
+                Knowledge knowledge = (Knowledge) iterKnow.next();
+                String branch = knowledge.getBranch().getName();
+                if (branch.equals("C++")) {
+                    std.setStudentCPlusPlusMark(knowledge.getScore());
+                }
+                else if (branch.equals("Java")) {
+                    std.setStudentJavaMark(knowledge.getScore());
+                }
+                else if (branch.equals("Сетевые технологии")) {
+                    std.setStudentKnowledgeNetwork(knowledge.getScore());
+                }
+                else if (branch.equals("Эффективные алгоритмы")) {
+                    std.setStudentKnowledgeEfficientAlgorithms(knowledge.getScore());
+                }
+                else if (branch.equals("ООП")) {
+                    std.setStudentKnowledgeOOP(knowledge.getScore());
+                }
+                else if (branch.equals("БД")) {
+                    std.setStudentKnowledgeDB(knowledge.getScore());
+                }
+                else if (branch.equals("Web")) {
+                    std.setStudentKnowledgeWeb(knowledge.getScore());
+                }
+                else if (branch.equals("GUI")) {
+                    std.setStudentKnowledgeGUI(knowledge.getScore());
+                }
+                else if (branch.equals("Сетевое программирование")) {
+                    std.setStudentKnowledgeNetworkProgramming(knowledge.getScore());
+                }
+                else if (branch.equals("Проектирование программ")) {
+                    std.setStudentKnowledgeProgramDesign(knowledge.getScore());
+                }
+                else if (branch.trim().equalsIgnoreCase("Английский(чтение)")) {
+                    std.setStudentEnglishReadMark(knowledge.getScore());
+                }
+                else if (branch.trim().equalsIgnoreCase("Английский(письмо)")) {
+                    std.setStudentEnglishWriteMark(knowledge.getScore());
+                }
+                else if (branch.trim().equalsIgnoreCase("Английский(речь)")) {
+                    std.setStudentEnglishSpeakMark(knowledge.getScore());
+                }
+                else {
+                    otherKnowledges.add(knowledge);
+                }
+            }
+            Iterator iterOtherKnow = otherKnowledges.iterator();
+            Knowledge know;
+            ArrayList<Knowledge> progLangs = new ArrayList<Knowledge>();
+            //Filipenko//+
+            ArrayList<Knowledge> itKnow = new ArrayList<Knowledge>();
+            //Filipenko//=
+            while(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                if(know.getBranch().getBranchCategory().getName()
+                        .trim().equalsIgnoreCase("Языки программирования"))
+                {
+                    progLangs.add(know);
+                    iterOtherKnow.remove();
+                }
+                //Filipenko//+
+                else if (know.getBranch().getBranchCategory().getName().trim().equalsIgnoreCase("Знания в области IT технологий")) {
+                    itKnow.add(know);
+                }
+                //Filipenko//=
+            }
+
+            Iterator iterProgLangs = progLangs.iterator();
+            if(iterProgLangs.hasNext()) {
+                know = (Knowledge) iterProgLangs.next();
+                std.setStudentLanguage1(know.getBranch().getName());
+                std.setStudentLanguage1Mark(know.getScore());
+            }
+            if(iterProgLangs.hasNext()) {
+                know = (Knowledge) iterProgLangs.next();
+                std.setStudentLanguage2(know.getBranch().getName());
+                std.setStudentLanguage2Mark(know.getScore());
+            }
+            if(iterProgLangs.hasNext()) {
+                know = (Knowledge) iterProgLangs.next();
+                std.setStudentLanguage3(know.getBranch().getName());
+                std.setStudentLanguage3Mark(know.getScore());
+            }
+
+            //Filipenko//+
+            /*if(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                std.setStudentKnowledgeOther1(know.getBranch().getName());
+                std.setStudentKnowledgeOther1Mark(know.getScore());
+            }
+            if(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                std.setStudentKnowledgeOther2(know.getBranch().getName());
+                std.setStudentKnowledgeOther2Mark(know.getScore());
+            }
+            if(iterOtherKnow.hasNext()) {
+                know = (Knowledge) iterOtherKnow.next();
+                std.setStudentKnowledgeOther3(know.getBranch().getName());
+                std.setStudentKnowledgeOther3Mark(know.getScore());
+            }*/
+            Iterator iterITLangs = itKnow.iterator();
+            if(iterITLangs.hasNext()) {
+                know = (Knowledge) iterITLangs.next();
+                std.setStudentKnowledgeOther1(know.getBranch().getName());
+                std.setStudentKnowledgeOther1Mark(know.getScore());
+            }
+            if(iterITLangs.hasNext()) {
+                know = (Knowledge) iterITLangs.next();
+                std.setStudentKnowledgeOther2(know.getBranch().getName());
+                std.setStudentKnowledgeOther2Mark(know.getScore());
+            }
+            if(iterITLangs.hasNext()) {
+                know = (Knowledge) iterITLangs.next();
+                std.setStudentKnowledgeOther3(know.getBranch().getName());
+                std.setStudentKnowledgeOther3Mark(know.getScore());
+            }
+            //Filipenko//=
+
+            std.setStudentExperienceProjects(form.getExecProject());
+
+
+            Set adverts = form.getAdverts();
+            LinkedHashSet linkedAdverts = new LinkedHashSet();
+            Iterator iterAdv = adverts.iterator();
+            while(iterAdv.hasNext()) {
+                Advert advert = (Advert) iterAdv.next();
+                String advertDecription = advert.getAdvertCategory().getDescription();
+                if(advertDecription.trim().equalsIgnoreCase("Другое (уточните)")) {
+                    linkedAdverts.add(advertDecription);
+                    std.setStudentHowHearAboutCentreOther(advert.getOther());
+                    iterAdv.remove();
+                } else {
+                    linkedAdverts.add(advertDecription);
+                }
+            }
+            if (std.getStudentHowHearAboutCentreOther() == null) { std.setStudentHowHearAboutCentreOther("");}
+            std.setStudentHowHearAboutCentre(linkedAdverts);
+
+
+            std.setStudentReasonOffer(form.getReason());
+            std.setStudentSelfAdditionalInformation(form.getExtraInfo());
+        }
+
+        return std;
+
+    }
+
+    public static void getDiff() throws IllegalAccessException {
+
+        int idVerForm = 255;
+        int idNonVerFrom = 257;
+        StudentData stDataVer = getStDataByFormID(idVerForm);
+        StudentData stDataNonVer = getStDataByFormID(idNonVerFrom);
+        try {
+            Class stDataClass = Class.forName("ua.netcrackerteam.controller.StudentData");
+            Field[] stDataField = stDataClass.getDeclaredFields();
+            for (Field currField:stDataField) {
+                Boolean access = currField.isAccessible();
+                currField.setAccessible(true);
+                if (!(currField.get(stDataVer)==null) && (currField.get(stDataNonVer)==null)) {
+                    System.out.println(currField.toString() + "; old value " + currField.get(stDataVer) + "; new value is empty");
+                }
+                else if ((currField.get(stDataVer)==null) && !(currField.get(stDataNonVer)==null)) {
+                    System.out.println(currField.toString() + "; old value empty; new value " + currField.get(stDataNonVer));
+                }
+                else if ((currField.get(stDataVer)==null) && (currField.get(stDataNonVer)==null)) {
+                    System.out.println(currField.toString() + "; old value is empty; new value is empty");
+                }
+                else {
+                    if (!currField.get(stDataVer).equals(currField.get(stDataNonVer))) {
+                        System.out.println(currField.toString() + "; old value " + currField.get(stDataVer) + "; new value " + currField.get(stDataNonVer));
+                    }
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+
+    }
+
+    /*public static Object[] getFormDiff() {
+
+        Object[] formDiff = DAOHRImpl.getDiff();
+    }*/
+
     public static void main(String[] args) {
         //addNewInstFaculCath("New Inst","New Fak","New Cath");
 
@@ -243,7 +502,12 @@ public class HRPage {
 
         //HrTempInfo hrTempInfo = getHRTempInfoByFormID(44);
         //System.out.println(hrTempInfo.getCathedraName());
-        addNewInstFaculCathByHrTempInfoByFormID(46);
+        //addNewInstFaculCathByHrTempInfoByFormID(46);
+        try {
+            getDiff();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
 }

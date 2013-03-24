@@ -749,7 +749,7 @@ public class StudentPage {
             std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
 
             //krygin added code to set new institute info
-            if(!daohr.getHrTempInfoByFormID(idForm).getInstituteName().equals("")){
+            /*if(!daohr.getHrTempInfoByFormID(idForm).getInstituteName().equals("")){
                 if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
                     if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
                         std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
@@ -763,7 +763,7 @@ public class StudentPage {
                     std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
                     std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
                 }
-            }
+            }*/
 
             std.setPhoto(form.getPhoto());
 
