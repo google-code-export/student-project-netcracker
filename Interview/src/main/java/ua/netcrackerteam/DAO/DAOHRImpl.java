@@ -20,7 +20,8 @@ public class DAOHRImpl implements DAOHR{
 //        test.deleteInterview(1050);
         
         
-//        DAOHRImpl test = new DAOHRImpl();
+        DAOHRImpl test = new DAOHRImpl();
+        test.deleteInterview(1);
 //        Institute inst = test.addInstitute("Тестовый институт");
 //        Faculty fac = test.addFaculty(inst, "Факультет тестового института");
 //        Cathedra cat = test.addCathedra(fac, "Кафедра тестового института");
@@ -451,6 +452,13 @@ public class DAOHRImpl implements DAOHR{
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();   
+            query = session.createQuery("from Form where interview = " + interviewId);
+            List<Form> forms = query.list();
+            query = session.createQuery("from Interview where idInterview = " + 0);
+            Interview nullInterview = (Interview) query.uniqueResult();
+            for(Form form: forms) {
+                form.setInterview(nullInterview);
+            }
             query = session.createQuery("from Interview where idInterview = " + interviewId);
             Interview selectedInterview = (Interview) query.uniqueResult();
             session.delete(selectedInterview);
