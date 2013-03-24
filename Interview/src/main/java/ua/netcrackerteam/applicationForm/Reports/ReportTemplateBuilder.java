@@ -9,13 +9,12 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
 import java.util.List;
-import org.jfree.chart.JFreeChart;
-
 /**
  *
  * @author home
  */
 public abstract class ReportTemplateBuilder {
+    
     protected ReportPDFTemplate report;
     
     public ReportPDFTemplate getReportPDFTemplate(){
@@ -33,7 +32,7 @@ public abstract class ReportTemplateBuilder {
     }
     public abstract PdfPCell buildTitle();
     public abstract PdfPCell buildTable();
-    public abstract PdfPCell buildChart();
-    public abstract List    dataReport();
-    public abstract byte[]  getChart(int widht, int height);
+    public abstract PdfPCell buildChart();   
+    public abstract List     dataReport();  
+    public abstract byte[]   getChart(int widht, int height);
 }

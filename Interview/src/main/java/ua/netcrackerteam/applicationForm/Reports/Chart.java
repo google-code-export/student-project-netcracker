@@ -4,14 +4,24 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Image;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer;
@@ -25,14 +35,24 @@ import org.jfree.data.general.DefaultPieDataset;
  * @author home
  */
 public class Chart{
-        
-        public  JFreeChart createChartBar3D(DefaultCategoryDataset dataSet, String title) {
+    
+       private AbstractDataset dataSet;
+       private String title;
+       
+       JFreeChart chart;
+       
+       public Chart(AbstractDataset dataset, String title) {
+           this.dataSet = dataset;
+           this.title   = title;                
+       } 
+      
+        public  void createChartBar3D() {
          
-           JFreeChart chart = ChartFactory.createBarChart(
+           chart = ChartFactory.createBarChart(
             title,
             null,
             null,
-            dataSet,
+            (DefaultCategoryDataset)dataSet,
             PlotOrientation.VERTICAL,
             false,
             false,
@@ -46,25 +66,48 @@ public class Chart{
         chart.setBackgroundPaint(Color.WHITE);  
         BarRenderer r = (BarRenderer) chart.getCategoryPlot().getRenderer();  
         r.setSeriesPaint(0, Color.BLUE); 
-        return chart;
-  }
+   }
     
-    public  JFreeChart createChartPie3D(DefaultPieDataset dataSet, String title){
+    public  void createChartPie(){
         
-        JFreeChart chart = ChartFactory.createPieChart3D(
-                title,
-                dataSet, 
-                true, 
-                true, 
-                false
+            chart = ChartFactory.createPieChart(
+            title,  
+            (DefaultPieDataset)dataSet,           
+            true,             
+            true,
+            false
         );
-       
-        PiePlot3D plot = (PiePlot3D) chart.getPlot();
-        plot.setForegroundAlpha(0.6f);
-        plot.setCircular(true);
+
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+        plot.setNoDataMessage("No data available");
+        plot.setCircular(false);
+        plot.setLabelGap(0.02);
         
-        return chart;
     }
     
+    public byte[] getByteChart(int widht, int height){
+        
+        BufferedImage objBufferedImage=chart.createBufferedImage(widht,height);
+        ByteArrayOutputStream bas = new ByteArrayOutputStream();
+        try {        
+            ImageIO.write(objBufferedImage, "png", bas);
+        } catch (IOException ex) {
+            Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+       return bas.toByteArray();
+    }
+    
+    public Image getImageChart(int widht, int height) throws IOException, BadElementException{
+        
+       BufferedImage objBufferedImage=chart.createBufferedImage(widht,height);
+       ByteArrayOutputStream bas = new ByteArrayOutputStream();
+            
+       ImageIO.write(objBufferedImage, "png", bas);         
+       Image chartImage = Image.getInstance(bas.toByteArray());
+       
+       return chartImage;
+    }
 
 }

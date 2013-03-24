@@ -7,18 +7,15 @@ package ua.netcrackerteam.applicationForm.Reports;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 import ua.netcrackerteam.DAO.DAOReport;
 
@@ -65,7 +62,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
         
          PdfPCell cell = new PdfPCell();
             try {        
-                cell = report.setTable(header, reportData, footer, size);
+                cell = report.setTable(header, dataReport(), footer, size);
             } catch (DocumentException ex) {
                 Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -78,11 +75,12 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     @Override
     public PdfPCell buildChart() {
         
-        Chart chartTemplate = new Chart();
-        JFreeChart chart = chartTemplate.createChartPie3D(getDefaultPieDataset(),"Анализ эффективности рекламы");
-        PdfPCell cell =  new PdfPCell();
+        Chart chartTemplate = new Chart(getDefaultPieDataset(),"Анализ эффективности рекламы");
+        chartTemplate.createChartPie();
+            
+        PdfPCell cell = new PdfPCell(); 
         try {
-            cell = report.setChart(chart);
+            cell = report.setChart(chartTemplate);
         } catch (BadElementException ex) {
             Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -94,77 +92,67 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
 
     @Override
     public List dataReport() {
-        return (new ArrayList());
+        
+        Object[] row;
+        int allforms = getAllForms();
+        
+        List temp = new LinkedList();
+        
+        ListIterator iterator = reportData.listIterator();
+        while(iterator.hasNext()){
+            row = (Object[])iterator.next();
+            double percent = getPercent(Integer.parseInt(row[1].toString()), allforms);
+           
+            temp.add(new Object[]{row[0], row[1], percent});
+        }
+        return temp;
     }
 
     @Override
     public byte[] getChart(int widht, int height) {
         
-        Chart chartTemplate = new Chart();
-        JFreeChart chart = chartTemplate.createChartPie3D(getDefaultPieDataset(), "Анализ эффективности рекламы");
-        BufferedImage objBufferedImage=chart.createBufferedImage(widht,height);
-        ByteArrayOutputStream bas = new ByteArrayOutputStream();
-        try {        
-            ImageIO.write(objBufferedImage, "png", bas);
-        } catch (IOException ex) {
-            Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-
-       byte[] byteArray=bas.toByteArray();
-       
-       return byteArray;
+        Chart chartTemplate = new Chart(getDefaultPieDataset(), "Анализ эффективности рекламы");
+        chartTemplate.createChartPie();
+        
+        return chartTemplate.getByteChart(500, 400);
     }
 
     private DefaultPieDataset getDefaultPieDataset(){
         
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        String other = "Другое (уточните)";
+        DefaultPieDataset dataset = new DefaultPieDataset();      
         int allforms = getAllForms();
-        int formsOther = 0;
-        
+                
         ListIterator iterator = reportData.listIterator();
         
-        while(iterator.hasNext()){
-            
+        while(iterator.hasNext()){            
             Object[] row = (Object[])iterator.next();
-            int forms = Integer.parseInt(row[2].toString());
-            
-            if(row[0].equals(other)){
-                formsOther+= forms;
-                continue;
-            }
+            int forms = Integer.parseInt(row[1].toString());
+           
             double percent = getPercent(forms, allforms);
-            dataset.setValue(row[0].toString(), percent);
-       
-        }
-        dataset.setValue(other, getPercent(formsOther, allforms));
+            dataset.setValue(row[0].toString(), percent);       
+        }    
         return dataset;
     }
     
     private int getAllForms(){
-   
-         String other = "Другое (уточните)";
+          
          int allforms = 0;
          ListIterator iterator = reportData.listIterator();
         
          while(iterator.hasNext()){
              
-             Object[] row = (Object[])iterator.next();
-             
-              if(row[0].equals(other)){                
-                continue;}
-              
-              allforms += Integer.parseInt(row[2].toString());
-            
+             Object[] row = (Object[])iterator.next();                           
+             allforms += Integer.parseInt(row[1].toString());            
          }
          
          return allforms;
     }
     
     private double getPercent(int forms, int allforms){
-        double percent = new BigDecimal((allforms == 0? 0: 100*forms/allforms)).setScale(2, RoundingMode.UP).doubleValue();
+        double percent = new BigDecimal((allforms == 0? 0: 100*(double)forms/allforms)).setScale(2, RoundingMode.UP).doubleValue();
         return percent;
     }
-    
+
+  
+       
 }

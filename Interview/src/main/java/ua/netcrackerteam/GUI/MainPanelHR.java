@@ -14,10 +14,9 @@ import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 import ua.netcrackerteam.GUI.Reports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.ReportBuilderDynamicsOfIncreaseStudents;
@@ -40,6 +39,11 @@ public class MainPanelHR extends MainPanel{
     private int height;
     private SettingsLayout settingsLayout;
     private final MainPage mainPage;
+     
+    ComboBox cbTypeReport;
+    String selectReport = "Статистика увеличения записанных студентов на собеседования";
+    ReportTemplateBuilder template = new ReportTemplateDynamicsOfIncreaseStudents();
+    ReportBuilder builder = new ReportBuilderDynamicsOfIncreaseStudents();
        
     public MainPanelHR(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
@@ -74,9 +78,12 @@ public class MainPanelHR extends MainPanel{
                     interviewsLo = new HRInterviewsLayout(height);
                     source.replaceComponent(c1, interviewsLo);
                 }  else if (source.getSelectedTab() == c2) {
+                   
                      reportsLo = new VerticalLayout();
                      fillReportsLayout();
-                     source.replaceComponent(c2, reportsLo);
+                     source.replaceComponent(c2, reportsLo);                    
+                } else if(source.getSelectedTab() == reportsLo){
+                    fillReportsLayout();
                 }  else if (source.getSelectedTab() == settingsLo) {
                     settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
                     source.replaceComponent(settingsLo, settingsLayout);
@@ -87,13 +94,13 @@ public class MainPanelHR extends MainPanel{
     
     
     private void fillReportsLayout() {
+         reportsLo.removeAllComponents();
                                     
-         ComboBox cbTypeReport = getComboBox();
-                        
-         Button btRefresh = new Button("Обновление");
-         btRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
-         
-         ReportTemplateBuilder template = new ReportTemplateDynamicsOfIncreaseStudents(); 
+         cbTypeReport = getComboBox();
+                                     
+         //Button btRefresh = new Button("Обновление");
+         //btRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
+        
          template.createReportPDFTemplate();
          Link pdfLink = getPDFLink(template);
        
@@ -101,18 +108,14 @@ public class MainPanelHR extends MainPanel{
          horizontal.setHeight("50px");
          horizontal.addComponent(cbTypeReport); 
          horizontal.addComponent(pdfLink);
-          
-          
-         
+                
          reportsLo.addComponent(horizontal); 
-         reportsLo.addComponent(btRefresh); 
-         reportsLo.setComponentAlignment(btRefresh, Alignment.MIDDLE_RIGHT);
+         //reportsLo.addComponent(btRefresh); 
+         // reportsLo.setComponentAlignment(btRefresh, Alignment.MIDDLE_RIGHT);
                   
          //Заполнение отчета
-         ReportsCreator creator = new ReportsCreator();
-          
-         ReportBuilder builder = new ReportBuilderDynamicsOfIncreaseStudents();         
-         builder.createReport(template);           
+         ReportsCreator creator = new ReportsCreator();    
+         builder.createReport(template);        
          
          creator.setReportBuilder(builder);     
          creator.setVerticalLayout(reportsLo);          
@@ -120,10 +123,11 @@ public class MainPanelHR extends MainPanel{
          
    
   } 
-  
+    
   private ComboBox getComboBox(){
       
-         ComboBox cbTypeReport = new ComboBox("Выберите отчет:");
+         cbTypeReport = new ComboBox("Выберите отчет:");
+         cbTypeReport.setImmediate(true);
          cbTypeReport.setInvalidAllowed(false);
          cbTypeReport.setNullSelectionAllowed(false);
          IndexedContainer container = new IndexedContainer();        
@@ -134,8 +138,28 @@ public class MainPanelHR extends MainPanel{
          container.addItem("Эффективность видов рекламы");         
         
          cbTypeReport.setContainerDataSource(container);
-         cbTypeReport.setNullSelectionAllowed(false);
-         cbTypeReport.setValue(cbTypeReport.getItemIds().iterator().next());
+         cbTypeReport.setNullSelectionAllowed(false);        
+        
+         cbTypeReport.setValue(selectReport);
+         
+          Property.ValueChangeListener listener = new Property.ValueChangeListener() {
+
+            public void valueChange(ValueChangeEvent event) {                
+                selectReport = event.getProperty().getValue().toString(); 
+                if(selectReport.equals("Статистика увеличения записанных студентов на собеседования")){                     
+                     template = new ReportTemplateDynamicsOfIncreaseStudents();
+                     builder = new ReportBuilderDynamicsOfIncreaseStudents();       
+                     fillReportsLayout();
+                }
+                else if(selectReport.equals("Эффективность видов рекламы")){                    
+                     template = new ReportTemplateAdvertisingEfficiency();
+                     builder = new ReportBuilderAdvertisingEfficiency();
+                     fillReportsLayout();
+                }
+            }
+        
+         };
+         cbTypeReport.addListener(listener);
          
          return cbTypeReport;
   }

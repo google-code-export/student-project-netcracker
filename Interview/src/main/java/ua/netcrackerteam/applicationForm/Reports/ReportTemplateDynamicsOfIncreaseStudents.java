@@ -7,9 +7,6 @@ package ua.netcrackerteam.applicationForm.Reports;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,14 +15,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.CategoryLabelPositions;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import ua.netcrackerteam.DAO.DAOReport;
 
@@ -84,17 +73,17 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public PdfPCell buildChart() {
        
-        Chart chartTemplate = new Chart();
-        JFreeChart chart = chartTemplate.createChartBar3D(getCategoryDataSet(), "Динамика регистрации на собеседования");
+        Chart chartTemplate = new Chart(getCategoryDataSet(), "Динамика регистрации на собеседования");
+        chartTemplate.createChartBar3D();
+    
         PdfPCell cell = new PdfPCell();
         try {
-            cell = report.setChart(chart);
+            cell = report.setChart(chartTemplate);
         } catch (BadElementException ex) {
             Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
         return cell;
     }
         
@@ -111,9 +100,11 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
              
              double percent = new BigDecimal((maxForms == 0? 0: 100*summaForms/maxForms)).setScale(2, RoundingMode.UP).doubleValue();
              dataSet.addValue(percent, "percent", rowReportData[0].toString());
+             
            } 
            return dataSet;             
         }
+  
     
    private String[] getFooter(List dataReport){
        
@@ -140,20 +131,11 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public byte[] getChart(int widht, int height) {
         
-        Chart chartTemplate = new Chart();
-        JFreeChart chart = chartTemplate.createChartBar3D(getCategoryDataSet(),"Динамика регистрации на собеседования");
-
-        BufferedImage objBufferedImage=chart.createBufferedImage(widht,height);
-        ByteArrayOutputStream bas = new ByteArrayOutputStream();
-        try {        
-            ImageIO.write(objBufferedImage, "png", bas);
-        } catch (IOException ex) {
-            Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
-        }
-  
-       return bas.toByteArray();
+        Chart chartTemplate = new Chart(getCategoryDataSet(),"Динамика регистрации на собеседования");
+        chartTemplate.createChartBar3D();
+        
+        return chartTemplate.getByteChart(500, 400);
     }
 
-
-
+   
     }

@@ -37,10 +37,9 @@ public class ReportsCreator {
        
          reportsLo.addComponent(labelTitle);  
          reportsLo.addComponent(currentDate);
-         reportsLo.addComponent(table);
+         reportsLo.addComponent(table);         
          reportsLo.addComponent(emb);
-       
-   
+            
          reportsLo.setComponentAlignment(labelTitle, Alignment.BOTTOM_CENTER);         
          reportsLo.setComponentAlignment(currentDate, Alignment.MIDDLE_RIGHT);
          reportsLo.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
