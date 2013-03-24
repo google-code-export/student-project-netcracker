@@ -1,7 +1,7 @@
 package ua.netcrackerteam.controller;
 
-import ua.netcrackerteam.DAO.AuditInterview;
-import ua.netcrackerteam.DAO.UserList;
+import ua.netcrackerteam.DAO.Entities.AuditInterview;
+import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 
@@ -77,7 +77,7 @@ public class UsersData implements Serializable, Logable {
         try {
             List<UserList> usersNonBannedList = HibernateFactory.getInstance().getAdminDAO().getUsersNonBanned();
             this.setUsersNonBannedList(usersNonBannedList);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -86,7 +86,7 @@ public class UsersData implements Serializable, Logable {
         try {
             List<UserList> usersNonBannedList = HibernateFactory.getInstance().getAdminDAO().getUsersBanned();
             this.setUsersBannedList(usersNonBannedList);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

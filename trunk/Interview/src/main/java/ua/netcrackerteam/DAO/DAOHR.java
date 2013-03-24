@@ -4,6 +4,10 @@
  */
 package ua.netcrackerteam.DAO;
 
+import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.DAO.Entities.Interview;
+import ua.netcrackerteam.DAO.Entities.InterviewRes;
+
 import java.util.List;
 
 /**
@@ -14,7 +18,7 @@ public interface DAOHR {
     /*
      * Search of student forms by selected category and value
      */
-    public List<Form> search(String category, String value); 
+    public List<Form> search(String category, String value);
     /*
      * Sets general mark to student form
      */

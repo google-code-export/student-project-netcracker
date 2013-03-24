@@ -1,10 +1,10 @@
 package ua.netcrackerteam.controller;
 
 
-import ua.netcrackerteam.DAO.ActionCategories;
-import ua.netcrackerteam.DAO.AuditInterview;
-import ua.netcrackerteam.DAO.UserCategory;
-import ua.netcrackerteam.DAO.UserList;
+import ua.netcrackerteam.DAO.Entities.ActionCategories;
+import ua.netcrackerteam.DAO.Entities.AuditInterview;
+import ua.netcrackerteam.DAO.Entities.UserCategory;
+import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;

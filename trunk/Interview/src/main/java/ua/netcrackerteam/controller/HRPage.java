@@ -1,6 +1,7 @@
 package ua.netcrackerteam.controller;
 
 import ua.netcrackerteam.DAO.*;
+import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
 

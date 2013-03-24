@@ -1,5 +1,7 @@
 package ua.netcrackerteam.DAO;
 
+import ua.netcrackerteam.DAO.Entities.Form;
+
 import java.util.List;
 
 /**

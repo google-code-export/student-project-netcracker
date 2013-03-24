@@ -20,9 +20,9 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.themes.Reindeer;
-import ua.netcrackerteam.DAO.Cathedra;
-import ua.netcrackerteam.DAO.Faculty;
-import ua.netcrackerteam.DAO.Institute;
+import ua.netcrackerteam.DAO.Entities.Cathedra;
+import ua.netcrackerteam.DAO.Entities.Faculty;
+import ua.netcrackerteam.DAO.Entities.Institute;
 import ua.netcrackerteam.controller.StudentData;
 import ua.netcrackerteam.controller.StudentPage;
 
@@ -183,8 +183,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         lastName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
         
         newInstitute = new TextField("Ваш ВУЗ",(Property) bean.getItemProperty("studentOtherInstitute"));
-        newCathedra = new TextField("Ваша кафедра",(Property) bean.getItemProperty("studentOtherFaculty"));
-        newFaculty = new TextField("Ваш факультет",(Property) bean.getItemProperty("studentOtherCathedra"));
+        newCathedra = new TextField("Ваша кафедра",(Property) bean.getItemProperty("studentOtherCathedra"));
+        newFaculty = new TextField("Ваш факультет",(Property) bean.getItemProperty("studentOtherFaculty"));
+        newInstitute.setRequired(true);
+        newCathedra.setRequired(true);
+        newFaculty.setRequired(true);
         
         List<Institute>insts = StudentPage.getUniversityList();
         BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
@@ -215,7 +218,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
                         BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
                         faculties.setContainerDataSource(objects);
-                    } else if (currUniver.getName().equals("Другое")) {
+                    } else {
                         newInstitute.setVisible(true);
                         newCathedra.setVisible(true);
                         newFaculty.setVisible(true);
@@ -294,9 +297,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             }
         }
 
-        newInstitute.setRequired(false);
-        newFaculty.setRequired(false);
-        newCathedra.setRequired(false);
         photoUpload = new Upload("Фото",this);
         photoUpload.setButtonCaption("Загрузка");
         photoUpload.addListener((Upload.SucceededListener) this);

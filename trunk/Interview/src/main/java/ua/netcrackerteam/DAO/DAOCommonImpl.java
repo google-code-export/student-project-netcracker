@@ -3,6 +3,8 @@ package ua.netcrackerteam.DAO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ua.netcrackerteam.DAO.Entities.UserCategory;
+import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
@@ -61,12 +63,6 @@ public class DAOCommonImpl implements DAOCommon{
             String hql = "delete from UserList where userName = '" + userName + "'";
             Query query = session.createQuery(hql);
             int row = query.executeUpdate();
-            if (row == 0){
-                System.out.println("Doesn't deleted any row!");
-            }
-            else{
-                System.out.println("Deleted Row: " + row);
-            }
             session.close();
             transaction.commit();
         } catch (Exception e) {

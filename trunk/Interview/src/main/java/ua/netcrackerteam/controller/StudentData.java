@@ -2,9 +2,9 @@ package ua.netcrackerteam.controller;
 
 import java.io.Serializable;
 import java.util.Collection;
-import ua.netcrackerteam.DAO.Cathedra;
-import ua.netcrackerteam.DAO.Faculty;
-import ua.netcrackerteam.DAO.Institute;
+import ua.netcrackerteam.DAO.Entities.Cathedra;
+import ua.netcrackerteam.DAO.Entities.Faculty;
+import ua.netcrackerteam.DAO.Entities.Institute;
 
 /**
  * Class-controller for Student Entity with necessary information for use in GUI

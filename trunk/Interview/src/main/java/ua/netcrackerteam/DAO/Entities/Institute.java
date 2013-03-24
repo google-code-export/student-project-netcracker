@@ -1,7 +1,6 @@
-package ua.netcrackerteam.DAO;
+package ua.netcrackerteam.DAO.Entities;
 
 import java.io.Serializable;
-import java.util.Set;
 import javax.persistence.*;
 
 /**

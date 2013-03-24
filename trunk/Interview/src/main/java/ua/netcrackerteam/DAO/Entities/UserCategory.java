@@ -1,4 +1,4 @@
-package ua.netcrackerteam.DAO;
+package ua.netcrackerteam.DAO.Entities;
 
 import org.hibernate.*;
 import ua.netcrackerteam.configuration.HibernateUtil;

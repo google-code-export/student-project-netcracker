@@ -1,4 +1,4 @@
-package ua.netcrackerteam.DAO;
+package ua.netcrackerteam.DAO.Entities;
 
 /**
  * Created with IntelliJ IDEA.

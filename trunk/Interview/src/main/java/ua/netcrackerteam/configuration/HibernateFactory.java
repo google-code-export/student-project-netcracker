@@ -11,7 +11,6 @@ public class HibernateFactory {
     private static DAOStudentImpl studentDAO = null;    
     private static InterviewDAOImpl interviewDAO = null;
     private static DAOAdminImpl adminDAO = null;
-    private static DAOPattern daoPattern = null;
         
     private static HibernateFactory instance = null;
 
@@ -20,13 +19,6 @@ public class HibernateFactory {
             instance = new HibernateFactory();
         }
         return instance;
-    }
-
-    public DAOPattern getDaoPattern(){
-        if(daoPattern == null){
-            daoPattern = new DAOPattern();
-        }
-        return daoPattern;
     }
 
     public DAOCommonImpl getCommonDao(){

@@ -3,6 +3,7 @@ package ua.netcrackerteam.controller;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.*;
+import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
@@ -60,6 +61,8 @@ public class StudentPage {
 
         Session session = null;
         org.hibernate.Query re = null;
+        org.hibernate.Query other = null;
+        Faculty faculty = null;
         List facultyList = null;
         List selectedFaculty = null;
         List selectedInstitute = null;
@@ -78,14 +81,18 @@ public class StudentPage {
             }
         }
 
-        if ((!selectedInstitute.isEmpty()) && (selectedInstitute.size() == 1)) {
-            Institute newInst = (Institute) selectedInstitute.get(0);
+        Institute newInst = (Institute) selectedInstitute.get(0);;
+        if ((!selectedInstitute.isEmpty()) && !newInst.getName().equals("Другое")) {
+            //newInst = (Institute) selectedInstitute.get(0);
             try {
                 Locale.setDefault(Locale.ENGLISH);
                 session = HibernateUtil.getSessionFactory().getCurrentSession();
                 session.beginTransaction();
+                other = session.createQuery("from Faculty where name = 'Другое'");
                 re = session.createQuery("from Faculty where institute ='" + newInst.getInstituteId() + "'");
                 selectedFaculty = re.list();
+                faculty = (Faculty) other.uniqueResult();
+                selectedFaculty.add(faculty);
             } catch (Exception e) {
                 System.out.println(e);
             } finally {
@@ -99,6 +106,13 @@ public class StudentPage {
                 result.add(currFaculty.getName());
             }
 */
+        } else /*if ((!selectedInstitute.isEmpty()) && newInst.getName().equals("Другое"))*/ {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            other = session.createQuery("from Faculty where name = 'Другое'");
+            faculty = (Faculty) other.uniqueResult();
+            selectedFaculty.add(faculty);
         }
         return selectedFaculty;
     }
@@ -118,6 +132,7 @@ public class StudentPage {
             session.beginTransaction();
             re = session.createQuery("from Faculty as facul where upper(facul.name) = '" + currFaculty.getName().toUpperCase() + "'" + " and  upper(facul.institute.name) = '" + currInstitute.getName().toUpperCase() + "'" );
             selectedFaculty = re.list();
+            selectedFaculty.add("Другое");
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -134,6 +149,7 @@ public class StudentPage {
                 session.beginTransaction();
                 re = session.createQuery("from Cathedra where faculty ='" + newFaculty.getIdFaculty() + "'");
                 selectedCathedra = re.list();
+                selectedCathedra.add("Другое");
             } catch (Exception e) {
                 System.out.println(e);
             } finally {
