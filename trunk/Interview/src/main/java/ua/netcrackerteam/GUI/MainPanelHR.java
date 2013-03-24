@@ -18,12 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
-import ua.netcrackerteam.GUI.Reports.ReportBuilderAdvertisingEfficiency;
-import ua.netcrackerteam.GUI.Reports.ReportBuilderDynamicsOfIncreaseStudents;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
-import ua.netcrackerteam.applicationForm.Reports.ReportTemplateAdvertisingEfficiency;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdvertisingEfficiency;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
-import ua.netcrackerteam.applicationForm.Reports.ReportTemplateDynamicsOfIncreaseStudents;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
 
 /**
@@ -133,7 +133,11 @@ public class MainPanelHR extends MainPanel{
          IndexedContainer container = new IndexedContainer();        
          container.addItem("Статистика увеличения записанных студентов на собеседования");
          container.addItem("Общие итоги по собеседованиям");
-         container.addItem("Аналитика по зарегестрированным студентам");     
+         container.addItem("Итоги по собеседованиям");   
+         container.addItem("Кол-во абитуриентов по институтам"); 
+         container.addItem("Кол-во абитуриентов по институтам-факультетам"); 
+         container.addItem("Кол-во абитуриентов по институтам-факультетам-кафедрам"); 
+         container.addItem("Кол-во абитуриентов по курсам"); 
          container.addItem("Список абитуриентов на заданное собеседование"); 
          container.addItem("Эффективность видов рекламы");         
         

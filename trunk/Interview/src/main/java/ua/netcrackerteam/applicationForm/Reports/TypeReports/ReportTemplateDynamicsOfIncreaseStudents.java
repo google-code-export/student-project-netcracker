@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.applicationForm.Reports;
+package ua.netcrackerteam.applicationForm.Reports.TypeReports;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.DocumentException;
@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.data.category.DefaultCategoryDataset;
 import ua.netcrackerteam.DAO.DAOReport;
+import ua.netcrackerteam.applicationForm.Reports.Chart;
+import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
  *
