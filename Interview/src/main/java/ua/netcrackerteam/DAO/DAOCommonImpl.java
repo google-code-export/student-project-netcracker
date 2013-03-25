@@ -6,9 +6,7 @@ import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.Entities.UserCategory;
 import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateUtil;
-import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
-import javax.interceptor.Interceptors;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +16,6 @@ import java.util.Locale;
  */
 public class DAOCommonImpl implements DAOCommon{
     @Override
-    @Interceptors(ShowHibernateSQLInterceptor.class)
     public void setUser(String userName,
                         String userPassword,
                         String userEmail,
@@ -50,31 +47,7 @@ public class DAOCommonImpl implements DAOCommon{
             }
         }
     }
-
-    @Override
-    @Interceptors(ShowHibernateSQLInterceptor.class)
-    public void deleteUserByName(String userName) {
-        Session session = null;
-        Query re = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            String hql = "delete from UserList where userName = '" + userName + "'";
-            Query query = session.createQuery(hql);
-            int row = query.executeUpdate();
-            session.close();
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-    }
-
-    @Interceptors(ShowHibernateSQLInterceptor.class)
+    
     public static List getUser() throws SQLException {
         Session session = null;
         Query re = null;
@@ -95,7 +68,6 @@ public class DAOCommonImpl implements DAOCommon{
         return listOfForms;
     }
 
-    @Interceptors(ShowHibernateSQLInterceptor.class)
     public static UserCategory getUserCategoryByID(int currUserCategoryID, Session session) throws SQLException {
         //Session session = null;
         Query re = null;
@@ -119,7 +91,6 @@ public class DAOCommonImpl implements DAOCommon{
     }
 
     @Override
-    @Interceptors(ShowHibernateSQLInterceptor.class)
     public void addSomethingNew(Object newData) {
         Session session = null;
         Transaction transaction = null;
@@ -139,7 +110,6 @@ public class DAOCommonImpl implements DAOCommon{
     }
 
     @Override
-    @Interceptors(ShowHibernateSQLInterceptor.class)
     public List getUserByName(String userName) throws SQLException {
         Session session = null;
         Query re = null;

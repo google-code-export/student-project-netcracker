@@ -164,15 +164,15 @@ public class GeneralController implements Logable {
     }
 
     public static void deleteUserByName(String userName){
-        HibernateFactory.getInstance().getCommonDao().deleteUserByName(userName);
+        HibernateFactory.getInstance().getAdminDAO().deleteUserByName(userName);
     }
 
     public static void bunUserByName(String userName){
-        HibernateFactory.getInstance().getAdminDAO().banUserByName(userName);
+        HibernateFactory.getInstance().getAdminDAO().activeChangeUserByName(userName, "banned");
     }
 
     public static void activateUserByName(String userName){
-        HibernateFactory.getInstance().getAdminDAO().activateUserByName(userName);
+        HibernateFactory.getInstance().getAdminDAO().activeChangeUserByName(userName, "active");
     }
 
     public static boolean checkUsersAvailability(String userName){
