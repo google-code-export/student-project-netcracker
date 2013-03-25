@@ -10,15 +10,13 @@ import java.util.List;
  */
 public interface DAOAdmin {
 
-    void banUserByName(String userName);
+    void activeChangeUserByName(String userName, String active);
 
     void changeUserType(String userName, int newType);
 
     void resetOnNewLogin(String oldUserName, String newUserName);
 
     void resetOnNewPassword(String userName, String password);
-
-    void activateUserByName(String userName);
 
     List getUsersBanned() throws SQLException;
 
@@ -55,4 +53,6 @@ public interface DAOAdmin {
     Long getCountUsersByActivity(String status);
 
     UserCategory getUserCategoryByUserName(String userName);
+
+    void deleteUserByName(String userName);
 }

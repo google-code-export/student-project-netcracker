@@ -122,6 +122,8 @@ public class StudentPage {
 
         Session session = null;
         org.hibernate.Query re = null;
+        org.hibernate.Query other = null;
+        Cathedra cathedra = null;
         List cathedraList = null;
         List selectedFaculty = null;
         List selectedCathedra = null;
@@ -132,7 +134,6 @@ public class StudentPage {
             session.beginTransaction();
             re = session.createQuery("from Faculty as facul where upper(facul.name) = '" + currFaculty.getName().toUpperCase() + "'" + " and  upper(facul.institute.name) = '" + currInstitute.getName().toUpperCase() + "'" );
             selectedFaculty = re.list();
-            selectedFaculty.add("Другое");
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -147,9 +148,11 @@ public class StudentPage {
                 Locale.setDefault(Locale.ENGLISH);
                 session = HibernateUtil.getSessionFactory().getCurrentSession();
                 session.beginTransaction();
+                other = session.createQuery("from Cathedra where name = 'Другое'");
                 re = session.createQuery("from Cathedra where faculty ='" + newFaculty.getIdFaculty() + "'");
                 selectedCathedra = re.list();
-                selectedCathedra.add("Другое");
+                cathedra = (Cathedra) other.uniqueResult();
+                selectedCathedra.add(cathedra);
             } catch (Exception e) {
                 System.out.println(e);
             } finally {

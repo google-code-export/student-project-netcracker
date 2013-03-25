@@ -13,11 +13,11 @@ import java.util.List;
 public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
 
     @Override
-    public void banUserByName(String userName) {
+    public void activeChangeUserByName(String userName, String active) {
         beginTransaction();
-        String banUserByNameQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = executeSingleGetQuery(banUserByNameQuery);
-        userList.setActive("banned");
+        String activateUserByNameQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
+        UserList userList = super.<UserList>executeSingleGetQuery(activateUserByNameQuery);
+        userList.setActive(active);
         saveUpdatedObject(userList);
         commitTransaction();
     }
@@ -65,17 +65,6 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersBannedQuery);
         commitTransaction();
         return listOfUsers;
-    }
-
-    @Override
-    public void activateUserByName(String userName) {
-        beginTransaction();
-        String activity = "active";
-        String activateUserByNameQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(activateUserByNameQuery);
-        userList.setActive(activity);
-        saveUpdatedObject(userList);
-        commitTransaction();
     }
 
     @Override
@@ -250,12 +239,11 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         return userCategory;
     }
 
-    public static void main(String[] args){
-        DAOAdminImpl daoAdmin = new DAOAdminImpl();
-        /*UserCategory userCategory = daoAdmin.getUserCategoryByUserName("alexk");
-        System.out.println(userCategory.getName());*/
-        //List inter = daoAdmin.getAuditInterview();
-        //daoAdmin.activateUserByName("test3");
-        daoAdmin.changeUserType("test3", 4);
+    @Override
+    public void deleteUserByName(String userName) {
+        beginTransaction();
+        String deleteUserByNameQuery = "delete from UserList where userName = '" + userName + "'";
+        executeDeleteQuery(deleteUserByNameQuery);
+        commitTransaction();
     }
 }
