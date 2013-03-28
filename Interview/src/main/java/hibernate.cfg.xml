@@ -12,24 +12,24 @@
       <property name="hibernate.current_session_context_class">thread</property>
       <property name="show_sql">false</property>
 
-      <mapping class="ua.netcrackerteam.DAO.Form" />
-      <mapping class="ua.netcrackerteam.DAO.Contact" />
-      <mapping class="ua.netcrackerteam.DAO.ContactCategory" />
-      <mapping class="ua.netcrackerteam.DAO.Institute" />      
-      <mapping class="ua.netcrackerteam.DAO.Advert" />
-      <mapping class="ua.netcrackerteam.DAO.AdvertCategory" />
-      <mapping class="ua.netcrackerteam.DAO.Cathedra" />
-      <mapping class="ua.netcrackerteam.DAO.Faculty" />
-      <mapping class="ua.netcrackerteam.DAO.UserList" />
-      <mapping class="ua.netcrackerteam.DAO.UserCategory" />
-      <mapping class="ua.netcrackerteam.DAO.Branch" />
-      <mapping class="ua.netcrackerteam.DAO.Knowledge" />
-      <mapping class="ua.netcrackerteam.DAO.Interview" />
-      <mapping class="ua.netcrackerteam.DAO.InterviewRes" />
-      <mapping class="ua.netcrackerteam.DAO.Status" />
-      <mapping class="ua.netcrackerteam.DAO.BranchCategory" />
-      <mapping class="ua.netcrackerteam.DAO.AuditInterview" />
-      <mapping class="ua.netcrackerteam.DAO.ActionCategories" />
-      <mapping class="ua.netcrackerteam.DAO.HrTempInfo" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Form" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Contact" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.ContactCategory" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Institute" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Advert" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.AdvertCategory" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Cathedra" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Faculty" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.UserList" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.UserCategory" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Branch" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Knowledge" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Interview" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.InterviewRes" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.Status" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.BranchCategory" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.AuditInterview" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.ActionCategories" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.HrTempInfo" />
   </session-factory>
 </hibernate-configuration>

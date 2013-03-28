@@ -87,9 +87,9 @@ public class Interview implements Serializable {
         Interview interview = (Interview) o;
 
         if (idInterview != interview.idInterview) return false;
-        if (!endDate.equals(interview.endDate)) return false;
+        //if (!endDate.equals(interview.endDate)) return false;
         if (!maxNumber.equals(interview.maxNumber)) return false;
-        if (!startDate.equals(interview.startDate)) return false;
+        //if (!startDate.equals(interview.startDate)) return false;
         if (!interviwerNumber.equals(interview.interviwerNumber)) return false;
         return true;
     }
@@ -97,8 +97,8 @@ public class Interview implements Serializable {
     @Override
     public int hashCode() {
         int result = idInterview;
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
+        //result = 31 * result + startDate.hashCode();
+        //result = 31 * result + endDate.hashCode();
         result = 31 * result + maxNumber.hashCode();
         result = 31 * result + interviwerNumber.hashCode();
         return result;
