@@ -126,7 +126,7 @@ public class DAOHRImpl implements DAOHR{
         Query query;                
         List<Form> formList = null;        
         try {
-            Locale.setDefault(Locale.ENGLISH);
+            //Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();            
             query = session.createQuery("from Form where status = 1 and interview is not null");

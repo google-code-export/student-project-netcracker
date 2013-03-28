@@ -754,9 +754,11 @@ public class StudentPage {
         StudentData std = new StudentData();
         DAOHRImpl daohr = new DAOHRImpl();
         Form form = new DAOStudentImpl().getFormByUserName(UserName);
-        int idForm = form.getIdForm();
+        //СНАЧАЛА ДОСТАВАТЬ ИД ФОРМЫ , А ПОТОМ ДЕЛАТЬ ПРОВЕРКУ НА НУЛЛ ?!?!?!??!!
+        //
         if (form != null)
         {
+            int idForm = form.getIdForm();
             std.setIdForm(form.getIdForm());
             std.setStudentLastName(form.getLastName());
             std.setStudentFirstName(form.getFirstName());
@@ -768,21 +770,27 @@ public class StudentPage {
             std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
 
             //krygin added code to set new institute info
-            /*if(!daohr.getHrTempInfoByFormID(idForm).getInstituteName().equals("")){
-                if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
-                    if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
-                        std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
-                        std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
-                        std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
+            HrTempInfo currHrTemp = daohr.getHrTempInfoByFormID(idForm);
+            if (currHrTemp != null)  {
+                std.setStudentOtherInstitute(currHrTemp.getInstituteName().equals("") ? "" : currHrTemp.getInstituteName());
+                std.setStudentOtherFaculty(currHrTemp.getFacultyName().equals("") ? "" : currHrTemp.getFacultyName());
+                std.setStudentOtherFaculty(currHrTemp.getCathedraName().equals("") ? "" : currHrTemp.getCathedraName());
+               /* if(!currHrTemp.getInstituteName().equals("")){
+                    if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
+                        if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
+                            std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                            std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                            std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
+                        } else {
+                            std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
+                            std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                        }
                     } else {
                         std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
-                        std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
+                        std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
                     }
-                } else {
-                    std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
-                    std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
-                }
-            }*/
+                }*/
+            }
 
             std.setPhoto(form.getPhoto());
 

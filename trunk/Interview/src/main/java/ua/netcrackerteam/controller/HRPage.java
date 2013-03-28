@@ -467,7 +467,9 @@ public class HRPage {
             Field[] stDataField = stDataClass.getDeclaredFields();
             for (Field currField:stDataField) {
                 Boolean access = currField.isAccessible();
-                currField.setAccessible(true);
+                if (!(access == true)) {
+                    currField.setAccessible(true);
+                }
                 if (!(currField.get(stDataVer)==null) && (currField.get(stDataNonVer)==null)) {
                     System.out.println(currField.toString() + "; old value " + currField.get(stDataVer) + "; new value is empty");
                 }
@@ -482,6 +484,7 @@ public class HRPage {
                         System.out.println(currField.toString() + "; old value " + currField.get(stDataVer) + "; new value " + currField.get(stDataNonVer));
                     }
                 }
+                currField.setAccessible(false);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

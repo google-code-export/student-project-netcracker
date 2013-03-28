@@ -4,6 +4,7 @@ import ua.netcrackerteam.DAO.Entities.AuditInterview;
 import ua.netcrackerteam.DAO.Entities.UserCategory;
 import ua.netcrackerteam.DAO.Entities.UserList;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -12,11 +13,13 @@ import java.util.List;
  */
 public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
 
+    PreparedStatement pstmt;
+
     @Override
     public void activeChangeUserByName(String userName, String active) {
         beginTransaction();
-        String activateUserByNameQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(activateUserByNameQuery);
+        String activateUserByNameQuery = "from UserList where upper(userName) = :userNameParam";
+        UserList userList = super.<UserList>executeSingleGetQuery1(activateUserByNameQuery, userName);
         userList.setActive(active);
         saveUpdatedObject(userList);
         commitTransaction();
