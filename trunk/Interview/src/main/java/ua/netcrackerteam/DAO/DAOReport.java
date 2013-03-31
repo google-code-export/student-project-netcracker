@@ -96,7 +96,8 @@ public class DAOReport {
         return report;    
     }
     
-   public List getReportAdvertisingEfficiencyOther(){
+ /*общие итоги (сколько анкет зарегистрировано, сколько человек записалось на собеседования, сколько человек прошло собеседование)*/
+    public List getResultOfInterview(){
         Session session = null;
         Query query;        
         List report = null;
@@ -104,31 +105,17 @@ public class DAOReport {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createSQLQuery("select other , count(id_form) "+
-                                           "from advert " +
-                                           "where other is not null " + 
-                                           "group by other");          
-            report = query.list();
-                
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return report;    
-    }
-    
-    public List ReportStudents(){
-               Session session = null;
-        Query query;        
-        List report = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createSQLQuery("");          
+            query = session.createSQLQuery("select sum(users_on_interview), sum(users_with_form), sum(users_with_set_interview) "+
+                                            "from( "+
+                                            "select count(distinct id_form) as users_on_interview, 0 as users_with_form, 0 as users_with_set_interview " +
+                                            "from interview_res " +
+                                            "union all " +
+                                            "select 0,  count(id_form) as users_with_form, 0 " +
+                                            "from form " +
+                                            "union all "+
+                                            "select 0, 0, count(id_form) "+
+                                            "from form "+
+                                            "where id_interview is not null " );          
             report = query.list();
                 
         } catch (Exception e) {

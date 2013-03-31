@@ -21,7 +21,7 @@ import ua.netcrackerteam.GUI.MainPage;
 public class ReportCreatorWithDiagram extends ReportsCreator{
 
     @Override
-    public void createReport(MainPage mainPage) {
+    public void createReport() {
             
         setLogotip();
                      
@@ -29,19 +29,13 @@ public class ReportCreatorWithDiagram extends ReportsCreator{
         table.setWidth("100%");          
         reportsLo.addComponent(table);
         reportsLo.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
-        
-        
-        AbstractSplitPanel panelChart =new HorizontalSplitPanel();
-        panelChart.setFirstComponent(new Label("Тип"));
-        Embedded emb = builder.buildChart(mainPage); 
+       
+      
+        Embedded emb = builder.buildChart(); 
         emb.setWidth("100%");
-        panelChart.setSecondComponent(emb);
-
-        panelChart.setLocked(true);
-        panelChart.setSplitPosition(30, Sizeable.UNITS_PERCENTAGE);
-        panelChart.setHeight("500px");
-
-        reportsLo.addComponent(panelChart);  
+        reportsLo.addComponent(emb);
+        reportsLo.setComponentAlignment(emb, Alignment.MIDDLE_CENTER);
+ 
     }
     
 }

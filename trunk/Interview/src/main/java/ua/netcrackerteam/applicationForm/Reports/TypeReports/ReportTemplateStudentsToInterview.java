@@ -15,11 +15,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
-
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
+
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.StudentData;
-import ua.netcrackerteam.controller.StudentInterview;
 import ua.netcrackerteam.controller.StudentPage;
 
 /**
@@ -72,8 +71,8 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
     @Override
     public PdfPCell buildTable() {
         
-        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон", "Email"};     
-        float[] size = new float[]{0.5f, 1f, 1f, 2f, 1f, 1f};       
+        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"};     
+        float[] size = new float[]{0.5f, 1f, 1f, 2f, 1f};       
         
         PdfPCell cell = report.setTable(header, reportForPrint, null, size, true);
     
@@ -110,7 +109,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
               StudentData studentData = StudentPage.getStudentDataByIdForm(iteratorForm.next().getIdForm());
               String[] data = {"" + studentData.getIdForm(), studentData.getStudentFirstName(),
                                     studentData.getStudentLastName(), studentData.getStudentInstitute().getName(),
-                                    studentData.getStudentTelephone(), studentData.getStudentEmailFirst()};
+                                    studentData.getStudentTelephone()};
               
               reportForView.add(data);
               reportForPrint.add(new Object[]{interview, data});

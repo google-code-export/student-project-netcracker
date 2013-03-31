@@ -45,10 +45,10 @@ public class MainPanelHR extends MainPanel{
     private final MainPage mainPage;
      
     ComboBox cbTypeReport;
-    String selectReport = "Статистика увеличения записанных студентов на собеседования";
-    ReportTemplateBuilder template = new ReportTemplateDynamicsOfIncreaseStudents();
-    ReportBuilder builder = new ReportBuilderDynamicsOfIncreaseStudents();
-    ReportsCreator creator = new ReportCreatorWithDiagram();
+    String selectReport;
+    ReportTemplateBuilder template;
+    ReportBuilder builder;
+    ReportsCreator creator;
        
     public MainPanelHR(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
@@ -69,6 +69,12 @@ public class MainPanelHR extends MainPanel{
         tabSheet.addTab(c2,"Статистика");
         settingsLo = new VerticalLayout();
         tabSheet.addTab(settingsLo,"Настройки");
+        
+        selectReport = "Статистика увеличения записанных студентов на собеседования";
+        template = new ReportTemplateDynamicsOfIncreaseStudents();
+        builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);
+        creator = new ReportCreatorWithDiagram();
+        
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
             @Override
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
@@ -121,7 +127,7 @@ public class MainPanelHR extends MainPanel{
          
          creator.setReportBuilder(builder);     
          creator.setVerticalLayout(reportsLo);          
-         creator.createReport(mainPage);         
+         creator.createReport();         
    
   } 
     
@@ -154,19 +160,20 @@ public class MainPanelHR extends MainPanel{
                 selectReport = event.getProperty().getValue().toString(); 
                 
                 if(selectReport.equals("Статистика увеличения записанных студентов на собеседования")){                     
-                     template = new ReportTemplateDynamicsOfIncreaseStudents();
-                     builder = new ReportBuilderDynamicsOfIncreaseStudents();  
-                     creator = new ReportCreatorWithDiagram();
+                     template = new ReportTemplateDynamicsOfIncreaseStudents();                     
+                     builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);  
+                     creator = new ReportCreatorWithDiagram();             
                 }
                 else if(selectReport.equals("Эффективность видов рекламы")){                    
                      template = new ReportTemplateAdvertisingEfficiency();
-                     builder = new ReportBuilderAdvertisingEfficiency();  
-                     creator = new ReportCreatorWithDiagram();
+                     builder = new ReportBuilderAdvertisingEfficiency(mainPage);  
+                     creator = new ReportCreatorWithDiagram();                  
                 }
                 else if(selectReport.equals("Список абитуриентов на заданное собеседование")){
                     template = new ReportTemplateStudentsToInterview();
                     builder = new ReportBuilderStudentsToInterview();
                     creator = new ReportCreatorWithFilter();
+               
                 }
                 fillReportsLayout();
             }

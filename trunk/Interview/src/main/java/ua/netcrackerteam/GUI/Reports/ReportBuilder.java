@@ -30,5 +30,5 @@ public abstract class ReportBuilder {
       return report.getDateCreate();  
     }
     public abstract Table buildTable();    
-    public abstract Embedded buildChart(MainPage mainPage);
+    public abstract Embedded buildChart();
 }
