@@ -4,14 +4,18 @@
  */
 package ua.netcrackerteam.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+/**
+ * 
+ * @author Klitna Tetiana
+ */
 
 public class RegistrationToInterview implements  Logable{
      
@@ -20,7 +24,7 @@ public class RegistrationToInterview implements  Logable{
      * @param userName - login student
      * @param interviewId - selected interview by student
      */
-    public static void updateRegistrationToInterview(String userName, int interviewId) {        
+    public void updateRegistrationToInterview(String userName, int interviewId) {        
             
                 Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName); 
                 Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
@@ -32,7 +36,7 @@ public class RegistrationToInterview implements  Logable{
      * Get all interviews for view to the GUI
      * @return List<StudentInterview>
      */
-    public static List<StudentInterview> getInterviews(){ 
+    public List<StudentInterview> getInterviews(){ 
        
        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
        ListIterator iterator = interviews.listIterator();
@@ -60,7 +64,7 @@ public class RegistrationToInterview implements  Logable{
      * @param userName
      * @return 
      */
-    public static int getInterview(String userName){
+    public int getInterview(String userName){
           Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
           Interview interview = null;
           if (form != null) {
@@ -71,13 +75,6 @@ public class RegistrationToInterview implements  Logable{
               currentInterviewID = interview.getIdInterview();
           }
           return currentInterviewID;
-    }
-    
-    public static void main(String[] args) {
-        List<StudentInterview> list = getInterviews();
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(list.get(i).getStudentInterviewId()).size());
-        }
     }
     
     

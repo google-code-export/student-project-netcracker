@@ -58,6 +58,8 @@ public class MainPanelInterviewer extends MainPanel{
     private TextField searchField;
     private SettingsLayout settingsLayout;
     
+    private ua.netcrackerteam.controller.RegistrationToInterview registration = new ua.netcrackerteam.controller.RegistrationToInterview();
+    
     public MainPanelInterviewer(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
         this.mainPage = mainPage;
@@ -148,7 +150,7 @@ public class MainPanelInterviewer extends MainPanel{
     }
 
     private Component getTreeMenu() {
-        List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
+        List<StudentInterview> interviews = registration.getInterviews();
         tree = new Tree();
         String all = "Все студенты";
         tree.addItem(all);

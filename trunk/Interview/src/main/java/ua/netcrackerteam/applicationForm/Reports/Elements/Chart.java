@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ua.netcrackerteam.applicationForm.Reports;
+package ua.netcrackerteam.applicationForm.Reports.Elements;
 
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdvertisingEfficiency;
 import com.itextpdf.text.BadElementException;
@@ -98,7 +98,7 @@ public class Chart{
     
     public Image getImageChart(int widht, int height) throws IOException, BadElementException{
         
-       BufferedImage objBufferedImage=chart.createBufferedImage(widht,height);
+       BufferedImage objBufferedImage=chart.createBufferedImage(widht, height);
        ByteArrayOutputStream bas = new ByteArrayOutputStream();
             
        ImageIO.write(objBufferedImage, "png", bas);         

@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.data.general.DefaultPieDataset;
 import ua.netcrackerteam.DAO.DAOReport;
-import ua.netcrackerteam.applicationForm.Reports.Chart;
+import ua.netcrackerteam.applicationForm.Reports.Elements.Chart;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
@@ -60,16 +60,9 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
          String[] footer = new String[]{"Итого", "" + getAllForms(), ""};
         
          float[] size = new float[]{2.5f, 1.5f, 1.5f};
-       
+                  
+         PdfPCell cell = report.setTable(header, dataReport(), footer, size, false);
         
-         PdfPCell cell = new PdfPCell();
-            try {        
-                cell = report.setTable(header, dataReport(), footer, size);
-            } catch (DocumentException ex) {
-                Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(ReportTemplateAdvertisingEfficiency.class.getName()).log(Level.SEVERE, null, ex);
-            }
   
         return cell;
     }
@@ -116,7 +109,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
         Chart chartTemplate = new Chart(getDefaultPieDataset(), "Анализ эффективности рекламы");
         chartTemplate.createChartPie();
         
-        return chartTemplate.getByteChart(500, 400);
+        return chartTemplate.getByteChart(350, 300);
     }
 
     private DefaultPieDataset getDefaultPieDataset(){

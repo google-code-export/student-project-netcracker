@@ -1,7 +1,7 @@
 /*
  * MainPage.java
  *
- * Created on 27 Январь 2013 г., 12:53
+ * Created on 27 Январь 2013 Вг., 12:53
  */
  
 package ua.netcrackerteam.GUI;

@@ -6,6 +6,7 @@ package ua.netcrackerteam.GUI.Reports;
 
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import java.io.ByteArrayInputStream;
@@ -28,11 +29,10 @@ public class Report {
         this.report = report;
     }
     
-    public Label getTitle(String title){            
-         
-         Label labelTitle = new Label("<div style=\"text-align:center;color:#99CC99;font-weight:bold;font-size:30px;\">" + title  + "</div>", Label.CONTENT_XHTML);
-         labelTitle.setHeight("40px");       
-         
+    public Label getTitle(String title){           
+              
+         Label labelTitle = new Label("<div style=\"text-align:center;color:#99CC99;font-weight:bold;font-size:20px;\">" + title  + "</div>", Label.CONTENT_XHTML);
+                   
          return labelTitle;
      }
       
@@ -47,12 +47,12 @@ public class Report {
         
          List reportData = report.dataReport();
              
-         final Table table = new Table();
+         Table table = new Table();
          
          for(int i = 0; i < headerTable.length; i++){
             table.addContainerProperty(headerTable[i], String.class, null);
          }
-  
+        
         ListIterator iterator = reportData.listIterator();
         for(int i = 0; iterator.hasNext(); i++){
             table.addItem((Object[])iterator.next(), i);
@@ -68,8 +68,14 @@ public class Report {
     
     }
     
+    public GridLayout getGridView(){
+        
+        return new GridLayout();     
+        
+    }
+    
     public Embedded  getChart(MainPage mainPage){ 
-         StreamResource img = new StreamResource(new Report.ChartStreamSource(400, 400), "chart.png", mainPage);
+         StreamResource img = new StreamResource(new Report.ChartStreamSource(350, 300), "chart.png", mainPage);
          Embedded emb = new Embedded("", img); 
          
          return emb;

@@ -18,13 +18,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
+import ua.netcrackerteam.GUI.Reports.ReportCreatorWithDiagram;
+import ua.netcrackerteam.GUI.Reports.ReportCreatorWithFilter;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderStudentsToInterview;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdvertisingEfficiency;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
 
 /**
  * Panel for HR view
@@ -44,6 +48,7 @@ public class MainPanelHR extends MainPanel{
     String selectReport = "Статистика увеличения записанных студентов на собеседования";
     ReportTemplateBuilder template = new ReportTemplateDynamicsOfIncreaseStudents();
     ReportBuilder builder = new ReportBuilderDynamicsOfIncreaseStudents();
+    ReportsCreator creator = new ReportCreatorWithDiagram();
        
     public MainPanelHR(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
@@ -94,33 +99,29 @@ public class MainPanelHR extends MainPanel{
     
     
     private void fillReportsLayout() {
-         reportsLo.removeAllComponents();
-                                    
-         cbTypeReport = getComboBox();
-                                     
-         //Button btRefresh = new Button("Обновление");
-         //btRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
         
+          
+         reportsLo.removeAllComponents();
+                         
+         cbTypeReport = getComboBox();
+      
          template.createReportPDFTemplate();
          Link pdfLink = getPDFLink(template);
        
          HorizontalLayout horizontal = new HorizontalLayout(); 
-         horizontal.setHeight("50px");
+         horizontal.setHeight("60px");
          horizontal.addComponent(cbTypeReport); 
          horizontal.addComponent(pdfLink);
-                
+         horizontal.setComponentAlignment(pdfLink, Alignment.MIDDLE_CENTER);
+         
          reportsLo.addComponent(horizontal); 
-         //reportsLo.addComponent(btRefresh); 
-         // reportsLo.setComponentAlignment(btRefresh, Alignment.MIDDLE_RIGHT);
-                  
-         //Заполнение отчета
-         ReportsCreator creator = new ReportsCreator();    
+              
+         //Заполнение отчета            
          builder.createReport(template);        
          
          creator.setReportBuilder(builder);     
          creator.setVerticalLayout(reportsLo);          
-         creator.createReport(mainPage);
-         
+         creator.createReport(mainPage);         
    
   } 
     
@@ -130,6 +131,7 @@ public class MainPanelHR extends MainPanel{
          cbTypeReport.setImmediate(true);
          cbTypeReport.setInvalidAllowed(false);
          cbTypeReport.setNullSelectionAllowed(false);
+         
          IndexedContainer container = new IndexedContainer();        
          container.addItem("Статистика увеличения записанных студентов на собеседования");
          container.addItem("Общие итоги по собеседованиям");
@@ -145,21 +147,28 @@ public class MainPanelHR extends MainPanel{
          cbTypeReport.setNullSelectionAllowed(false);        
         
          cbTypeReport.setValue(selectReport);
-         
+      
           Property.ValueChangeListener listener = new Property.ValueChangeListener() {
 
             public void valueChange(ValueChangeEvent event) {                
                 selectReport = event.getProperty().getValue().toString(); 
+                
                 if(selectReport.equals("Статистика увеличения записанных студентов на собеседования")){                     
                      template = new ReportTemplateDynamicsOfIncreaseStudents();
-                     builder = new ReportBuilderDynamicsOfIncreaseStudents();       
-                     fillReportsLayout();
+                     builder = new ReportBuilderDynamicsOfIncreaseStudents();  
+                     creator = new ReportCreatorWithDiagram();
                 }
                 else if(selectReport.equals("Эффективность видов рекламы")){                    
                      template = new ReportTemplateAdvertisingEfficiency();
-                     builder = new ReportBuilderAdvertisingEfficiency();
-                     fillReportsLayout();
+                     builder = new ReportBuilderAdvertisingEfficiency();  
+                     creator = new ReportCreatorWithDiagram();
                 }
+                else if(selectReport.equals("Список абитуриентов на заданное собеседование")){
+                    template = new ReportTemplateStudentsToInterview();
+                    builder = new ReportBuilderStudentsToInterview();
+                    creator = new ReportCreatorWithFilter();
+                }
+                fillReportsLayout();
             }
         
          };

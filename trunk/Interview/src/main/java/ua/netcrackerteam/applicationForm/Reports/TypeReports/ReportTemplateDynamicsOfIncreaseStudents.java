@@ -17,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jfree.data.category.DefaultCategoryDataset;
 import ua.netcrackerteam.DAO.DAOReport;
-import ua.netcrackerteam.applicationForm.Reports.Chart;
+import ua.netcrackerteam.applicationForm.Reports.Elements.Chart;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
@@ -55,19 +55,11 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     public PdfPCell buildTable() {
         
         String[] header = new String[]{"Дата собеседования", "Всего", "Зарегистрировано", "Свободно"};       
-        String[] footer = getFooter(reportData);
-        
-        float[] size = new float[]{2f, 1.5f, 1.5f, 1.5f};
-       
-        
-        PdfPCell cell = new PdfPCell();
-        try {
-            cell = report.setTable(header, reportData, footer, size);
-        } catch (DocumentException ex) {
-            Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ReportTemplateDynamicsOfIncreaseStudents.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String[] footer = getFooter(reportData);        
+        float[] size = new float[]{2f, 1.5f, 1.5f, 1.5f};       
+              
+        PdfPCell cell = report.setTable(header, reportData, footer, size, false);
+     
         return cell;
         
     }
@@ -136,7 +128,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
         Chart chartTemplate = new Chart(getCategoryDataSet(),"Динамика регистрации на собеседования");
         chartTemplate.createChartBar3D();
         
-        return chartTemplate.getByteChart(500, 400);
+        return chartTemplate.getByteChart(350, 300);
     }
 
    

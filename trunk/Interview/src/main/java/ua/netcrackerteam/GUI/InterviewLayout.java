@@ -21,6 +21,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
 import ua.netcrackerteam.controller.StudentInterview;
 
 /**
@@ -42,6 +43,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
     private final Button print;
     private String userName;
     private int selectedInterviewID;
+    
+   private ua.netcrackerteam.controller.RegistrationToInterview registration = new ua.netcrackerteam.controller.RegistrationToInterview();
 
     public InterviewLayout(String username, MainPage mainPage) {
         this.userName = username;
@@ -63,9 +66,9 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         calendar.setValue(new Date());
         calendar.setResolution(InlineDateField.RESOLUTION_DAY);
         layout.addComponent(calendar,0,0);
-        layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
-        List<StudentInterview> interviews = ua.netcrackerteam.controller.RegistrationToInterview.getInterviews();
-        int selectedInterview = ua.netcrackerteam.controller.RegistrationToInterview.getInterview(userName);
+        layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);       
+        List<StudentInterview> interviews = registration.getInterviews();
+        int selectedInterview = registration.getInterview(userName);
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
         layout.addComponent(dates,1,0);
@@ -128,7 +131,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             Button source = event.getButton();
             if(source == saveEdit) {
                 if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
-                ua.netcrackerteam.controller.RegistrationToInterview.updateRegistrationToInterview(userName, selectedInterviewID);
+                registration.updateRegistrationToInterview(userName, selectedInterviewID);
                 dates.setReadOnly(true);
                 print.setVisible(true);
                 saveEdit.setCaption("Редактировать");
@@ -138,7 +141,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                     saveEdit.setCaption("Сохранить");
                 }
             } else {
-                (new ua.netcrackerteam.applicationForm.CreateLetterWithPDF(userName)).sendPDFToStudent();
+                CreateLetterWithPDF letter =new CreateLetterWithPDF(userName);
+                letter.sendPDFToStudent();
             }
         }
     }
