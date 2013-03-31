@@ -32,42 +32,15 @@ public class ReportCreatorWithFilter extends ReportsCreator{
     ComboBox checkInterview;
     
     @Override
-    public void createReport(MainPage mainPage) {
+    public void createReport() {
         
         setLogotip();        
-      
-        reportsLo.addComponent(checkInterview);
-        
+              
         Table table = builder.buildTable();
         table.setWidth("100%");          
         reportsLo.addComponent(table);
         reportsLo.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
     }
 
-    
-     private class SelectInterviewItem implements ItemClickEvent.ItemClickListener {
-
-        public void itemClick(ItemClickEvent event) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-         
-     }
-    
-       private class SelectInterview implements ItemClickEvent.ItemClickListener {
-
-        @Override
-        public void itemClick(ItemClickEvent event) {
-            Object selectedObject = event.getItemId();
-            if (selectedObject instanceof StudentInterview) {
-                StudentInterview stInterview = (StudentInterview) selectedObject;
-                List<StudentDataShort> stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
-                //refreshTable(stData);
-            } else if(selectedObject.equals("Все студенты")) {
-                List<StudentDataShort> stData = InterviewerPage.getAllStudents();
-                //refreshTable(stData);
-            }
-        }
-             
-    }
     
 }

@@ -15,7 +15,13 @@ import ua.netcrackerteam.GUI.Reports.ReportBuilder;
  * @author Klitna Tetiana
  */
 public class ReportBuilderDynamicsOfIncreaseStudents extends ReportBuilder{
-
+    
+    private MainPage mainPage;
+    
+    public ReportBuilderDynamicsOfIncreaseStudents(MainPage mainPage){
+       this.mainPage = mainPage; 
+    }
+  
     @Override
     public Label buildTitle() {
         return report.getTitle("Статистика увеличения записанных студентов на собеседования");
@@ -28,7 +34,7 @@ public class ReportBuilderDynamicsOfIncreaseStudents extends ReportBuilder{
     }
 
     @Override
-    public Embedded buildChart(MainPage mainPage) {
+    public Embedded buildChart() {
         return report.getChart(mainPage);
     }
     

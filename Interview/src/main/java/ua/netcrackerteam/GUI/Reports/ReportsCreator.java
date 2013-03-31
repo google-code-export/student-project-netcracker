@@ -69,7 +69,7 @@ public abstract class ReportsCreator {
                
     }
     
-    public abstract void createReport(MainPage mainPage);  
+    public abstract void createReport();  
     
     
    

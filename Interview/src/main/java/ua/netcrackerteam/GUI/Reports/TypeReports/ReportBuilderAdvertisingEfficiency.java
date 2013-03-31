@@ -15,6 +15,12 @@ import ua.netcrackerteam.GUI.Reports.ReportBuilder;
  * @author Klitna Tetiana
  */
 public class ReportBuilderAdvertisingEfficiency extends ReportBuilder{
+    
+    private MainPage mainPage;
+     
+    public ReportBuilderAdvertisingEfficiency(MainPage mainPage){
+        this.mainPage = mainPage;
+    }
 
     @Override
     public Label buildTitle() {
@@ -27,7 +33,7 @@ public class ReportBuilderAdvertisingEfficiency extends ReportBuilder{
     }
 
     @Override
-    public Embedded buildChart(MainPage mainPage) {
+    public Embedded buildChart() {
         return report.getChart(mainPage);
     }
 
