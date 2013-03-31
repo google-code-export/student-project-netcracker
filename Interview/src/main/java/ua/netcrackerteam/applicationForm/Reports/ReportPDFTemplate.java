@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.applicationForm.Reports;
 
+import ua.netcrackerteam.applicationForm.Reports.Elements.Chart;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
@@ -24,6 +25,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ListIterator;
 import ua.netcrackerteam.applicationForm.ClassPath;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 
 /**
  *
@@ -70,12 +74,30 @@ public class ReportPDFTemplate {
            return cellTitle;
     }
     
-    public PdfPCell setTable(String[] headerTable,
-                                List dataReport, 
-                                String[] footerTable,
-                                float[] sizeTable) throws DocumentException, IOException{
+    public PdfPCell setTable(String[] header,
+                                   List body,
+                                   String[] footer,
+                                   float[] size,
+                                   boolean groups){
         
-          return createTable(headerTable, dataReport, footerTable, sizeTable);
+           PdfPCell cellTable = new PdfPCell();
+           
+           DesignTable table;
+           if(groups){
+               table = new DesignTableWithGroups(size);
+           }else{
+            table = new DesignTableFlat(size);}
+           
+           table.getHeader(header);
+           table.getBody(body);
+           table.getFooter(footer);
+           
+           cellTable.addElement(table.getFillTable());  
+           cellTable.setColspan(2);
+           cellTable.setBorder(Rectangle.NO_BORDER);
+          
+          return cellTable ;
+          
     } 
     
     public PdfPCell setChart(Chart chart) throws BadElementException, IOException{
@@ -89,71 +111,7 @@ public class ReportPDFTemplate {
        return cellChart;
     }
         
-    private PdfPCell createTable(String[] header,
-                                   List body,
-                                   String[] footer,
-                                   float[] size) throws DocumentException, IOException{
-           PdfPCell cellTable = new PdfPCell();
-            
-           BaseColor fColor = BaseColor.BLACK;
-           BaseColor bColor = WebColors.getRGBColor("#99CC99");
-           BaseColor borderColor = WebColors.getRGBColor("#999966");           
-           BaseColor bColorTableLine1 = WebColors.getRGBColor("#99CCCC");            
-           BaseColor bColorTableLine2 = WebColors.getRGBColor("#CCFFCC");
-           
-           BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
-           Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
-           Font bf12 = new Font(font, 10, Font.ITALIC);              
-            
-           PdfPTable table = new PdfPTable(size); 
-           table.setWidthPercentage(100f);                         
-           //Header table
-           for(int i = 0; i < header.length; i++){
-            insertCell(table, header[i], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
-           }
-           table.setHeaderRows(1); 
-           //Content table  
-           ListIterator iterator = body.listIterator();
-           for(int i = 1; iterator.hasNext(); i++){     
-               
-                    Object[] rowReport = (Object[])iterator.next();
-                    
-                    BaseColor bColorLine = (i%2 == 0? bColorTableLine1: bColorTableLine2);                          
-                    for(int j = 0; j < rowReport.length; j++){         
-                        insertCell(table, rowReport[j].toString(), Element.ALIGN_CENTER, 1, bf12, fColor, bColorLine, borderColor);
-                    }               
-           }
-           //Footer table
-           for(int j = 0; j < footer.length; j++){
-              insertCell(table, footer[j], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);}
-           
-          cellTable.addElement(table);  
-          cellTable.setColspan(2);
-          cellTable.setBorder(Rectangle.NO_BORDER);
-          
-          return cellTable ;
-          
-    } 
- 
-    private void insertCell(PdfPTable table, String text, int align,
-                        int colspan, Font font, 
-                        BaseColor foregroudColor, BaseColor backgroundColor, BaseColor borderColor){   
-        
-        font.setColor(foregroudColor);
-        
-        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font)); 
-        
-        cell.setBackgroundColor(backgroundColor);
-        cell.setHorizontalAlignment(align);        
-        cell.setColspan(colspan);   
-        cell.setBorderColor(borderColor);
-        
-        if(text.trim().equalsIgnoreCase("")){
-         cell.setMinimumHeight(10f);
-        }
-        table.addCell(cell);
-   
-   } 
+
    
    
    

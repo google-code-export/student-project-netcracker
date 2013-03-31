@@ -40,7 +40,7 @@ public class ApplicationForm{
      * @param OutputStream memory
      */
     public byte[] generateFormPDF() {
-           byte[] pdfForView = null;
+        byte[] pdfForView = null;
         try { 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             BaseFont font = BaseFont.createFont(path+pathTimesTTF, "cp1251", BaseFont.EMBEDDED);            
