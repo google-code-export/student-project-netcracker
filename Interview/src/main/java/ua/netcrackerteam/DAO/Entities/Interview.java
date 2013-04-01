@@ -39,6 +39,9 @@ public class Interview implements Serializable {
     @Column(name= "INTERVIEWERS_NUMBER")
     private Integer interviwerNumber;
 
+    @Column(name= "RESERVE")
+    private Integer reserve;
+
     public Integer getInterviwerNumber() {
         return interviwerNumber;
     }
@@ -71,8 +74,17 @@ public class Interview implements Serializable {
         this.endDate = endDate;
     }
 
+    public Integer getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(Integer reserve) {
+        this.reserve = reserve;
+    }
+
     public Integer getMaxNumber() {
         return maxNumber;
+
     }
 
     public void setMaxNumber(Integer maxNumber) {
@@ -89,6 +101,7 @@ public class Interview implements Serializable {
         if (idInterview != interview.idInterview) return false;
         //if (!endDate.equals(interview.endDate)) return false;
         if (!maxNumber.equals(interview.maxNumber)) return false;
+        //if (!reserve.equals(interview.reserve)) return false;
         //if (!startDate.equals(interview.startDate)) return false;
         if (!interviwerNumber.equals(interview.interviwerNumber)) return false;
         return true;
@@ -101,6 +114,7 @@ public class Interview implements Serializable {
         //result = 31 * result + endDate.hashCode();
         result = 31 * result + maxNumber.hashCode();
         result = 31 * result + interviwerNumber.hashCode();
+        //result = 31 * result + reserve.hashCode();
         return result;
     }
 }
