@@ -6,6 +6,7 @@ import ua.netcrackerteam.DAO.Entities.UserList;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,8 +19,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public void activeChangeUserByName(String userName, String active) {
         beginTransaction();
-        String activateUserByNameQuery = "from UserList where upper(userName) = :userNameParam";
-        UserList userList = super.<UserList>executeSingleGetQuery1(activateUserByNameQuery, userName);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String activateUserByNameQuery = "from UserList where userName = :param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(activateUserByNameQuery, listOfParam);
         userList.setActive(active);
         saveUpdatedObject(userList);
         commitTransaction();
@@ -28,8 +31,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public boolean checkUserAvailability(String userName){
         beginTransaction();
-        String checkUserAvailabilityQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        List<UserList> userList = super.<UserList>executeListGetQuery(checkUserAvailabilityQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String checkUserAvailabilityQuery = "from UserList where userName = :param0";
+        List<UserList> userList = super.<UserList>executeListGetQuery(checkUserAvailabilityQuery, listOfParam);
         commitTransaction();
         if (userList.isEmpty()){
             return false;
@@ -41,9 +46,11 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public boolean checkUserBanStatus(String userName){
         beginTransaction();
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
         String activity = "banned";
-        String checkUserBanStatusQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = executeSingleGetQuery(checkUserBanStatusQuery);
+        String checkUserBanStatusQuery = "from UserList where userName = :param0";
+        UserList userList = executeSingleGetQuery(checkUserBanStatusQuery, listOfParam);
         commitTransaction();
         if (userList.getActive().equals(activity)){
             return true;
@@ -73,8 +80,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public void resetOnNewPassword(String userName, String password){
         beginTransaction();
-        String resetOnNewPasswordQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(resetOnNewPasswordQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String resetOnNewPasswordQuery = "from UserList where userName = :param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(resetOnNewPasswordQuery, listOfParam);
         userList.setPassword(password);
         saveUpdatedObject(userList);
         commitTransaction();
@@ -83,8 +92,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public void resetOnNewLogin(String oldUserName, String newUserName){
         beginTransaction();
-        String resetOnNewLoginQuery = "from UserList where upper(userName) ='" + oldUserName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(resetOnNewLoginQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(oldUserName);
+        String resetOnNewLoginQuery = "from UserList where userName = :param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(resetOnNewLoginQuery, listOfParam);
         userList.setUserName(newUserName);
         saveUpdatedObject(userList);
         commitTransaction();
@@ -93,10 +104,14 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public void changeUserType(String userName, int newType){
         beginTransaction();
-        String userCategoryQuery = "from UserCategory where idUSerCategory = " + newType;
-        UserCategory userTypes = super.<UserCategory>executeSingleGetQuery(userCategoryQuery);
-        String changeUserTypeQyery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(changeUserTypeQyery);
+        List listOfParam1 = new ArrayList();
+        listOfParam1.add(newType);
+        String userCategoryQuery = "from UserCategory where idUSerCategory  = :param0";
+        UserCategory userTypes = super.<UserCategory>executeSingleGetQuery(userCategoryQuery, listOfParam1);
+        List listOfParam2 = new ArrayList();
+        listOfParam2.add(userName);
+        String changeUserTypeQyery = "from UserList where userName = :param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(changeUserTypeQyery, listOfParam2);
         userList.setIdUserCategory(userTypes);
         saveUpdatedObject(userList);
         commitTransaction();
@@ -105,8 +120,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public String checkUserEmail(String userName){
         beginTransaction();
-        String checkUserEmailQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(checkUserEmailQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String checkUserEmailQuery = "from UserList where userName = :param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(checkUserEmailQuery, listOfParam);
         String userEmail = userList.getEmail();
         commitTransaction();
         return userEmail;
@@ -115,8 +132,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public String checkUserCategory(String userName){
         beginTransaction();
-        String checkUserCategoryQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(checkUserCategoryQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String checkUserCategoryQuery = "from UserList where userName = :param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(checkUserCategoryQuery, listOfParam);
         String userCategory = userList.getIdUserCategory().getName();
         commitTransaction();
         return userCategory;
@@ -125,8 +144,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public List getUsersFiltered(int userCategory) throws SQLException {
         beginTransaction();
-        String getUsersFilteredQuery = "from UserList where idUserCategory = " + userCategory;
-        List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersFilteredQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userCategory);
+        String getUsersFilteredQuery = "from UserList where idUserCategory = :param0";
+        List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersFilteredQuery, listOfParam);
         commitTransaction();
         return listOfUsers;
     }
@@ -171,8 +192,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public int getUserCategoryIDByUserName(String userName){
         beginTransaction();
-        String getUserCategoryIDByUserNameQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(getUserCategoryIDByUserNameQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String getUserCategoryIDByUserNameQuery = "from UserList where upper(userName) =:param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(getUserCategoryIDByUserNameQuery, listOfParam);
         int userCategory = userList.getIdUserCategory().getIdUSerCategory();
         commitTransaction();
         return userCategory;
@@ -199,8 +222,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public Long getCountRegisteredUsersByUserCategory(int id){
         beginTransaction();
-        String getCountRegisteredUsersByUserCategoryQuery = "select count(idUser) from UserList where idUserCategory = " + id;
-        Long count = super.<Long>executeSingleGetQuery(getCountRegisteredUsersByUserCategoryQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(id);
+        String getCountRegisteredUsersByUserCategoryQuery = "select count(idUser) from UserList where idUserCategory = :param0";
+        Long count = super.<Long>executeSingleGetQuery(getCountRegisteredUsersByUserCategoryQuery, listOfParam);
         commitTransaction();
         return count;
     }
@@ -226,8 +251,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public Long getCountUsersByActivity(String status){
         beginTransaction();
-        String getCountUsersByActivityQuery = "select count(idUser) from UserList where active = '" + status + "'";
-        Long count = super.<Long>executeSingleGetQuery(getCountUsersByActivityQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(status);
+        String getCountUsersByActivityQuery = "select count(idUser) from UserList where active = :param0";
+        Long count = super.<Long>executeSingleGetQuery(getCountUsersByActivityQuery, listOfParam);
         commitTransaction();
         return count;
     }
@@ -235,8 +262,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public UserCategory getUserCategoryByUserName(String userName) {
         beginTransaction();
-        String getUserCategoryByUserNameQuery = "from UserList where upper(userName) ='" + userName.toUpperCase() + "'";
-        UserList userList = super.<UserList>executeSingleGetQuery(getUserCategoryByUserNameQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String getUserCategoryByUserNameQuery = "from UserList where userName =:param0";
+        UserList userList = super.<UserList>executeSingleGetQuery(getUserCategoryByUserNameQuery, listOfParam);
         UserCategory userCategory = userList.getIdUserCategory();
         commitTransaction();
         return userCategory;
@@ -245,8 +274,10 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public void deleteUserByName(String userName) {
         beginTransaction();
-        String deleteUserByNameQuery = "delete from UserList where userName = '" + userName + "'";
-        executeDeleteQuery(deleteUserByNameQuery);
+        List listOfParam = new ArrayList();
+        listOfParam.add(userName);
+        String deleteUserByNameQuery = "delete from UserList where userName =:param0";
+        executeDeleteQuery(deleteUserByNameQuery, listOfParam);
         commitTransaction();
     }
 }

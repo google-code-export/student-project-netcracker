@@ -36,6 +36,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private Panel rightPanel;
     private GridLayout blankGridLO;
     private GridLayout searchGridLO;
+    private GridLayout interviewGridLO;
+    private GridLayout universityLO;
     private BlanksTable tableOfBlanks;
     private ResultsTable tableOfResults;
     private Button searchButton;
@@ -91,10 +93,17 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         searchGridLO = new GridLayout(1,1);
         searchGridLO.setSpacing(true);
         FillSearchGridLO();
+        universityLO = new GridLayout(1,1);
+        universityLO.setSpacing(true);
+        interviewGridLO = new GridLayout(1,1);
+        interviewGridLO.setSpacing(true);
         Accordion leftSideAcc = new Accordion();
         leftSideAcc.setSizeFull();
         leftSideAcc.addTab(blankGridLO, "Анкеты");
+        leftSideAcc.addTab(interviewGridLO, "Собеседования");
+        leftSideAcc.addTab(universityLO, "Учебные заведения");
         leftSideAcc.addTab(searchGridLO, "Поиск");
+
         leftPanel.addComponent(leftSideAcc);
         horiz.addComponent(leftPanel);
         //blank view - right panel
