@@ -262,14 +262,17 @@ public class DAOHRImpl implements DAOHR{
     @Override
     public List<Form> getNonVerificatedForms() {
         Session session = null;
-        Query query;                
+        Query query;
+        Query queryForm;
         List<Form> formList = null;        
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();            
-            query = session.createQuery("from Form where status = 5");
-            formList =  query.list();
+            session.beginTransaction();
+            query = session.createQuery("from Status where idStatus =5");
+            Status currStatus = (Status) query.uniqueResult();
+            queryForm = session.createQuery("from Form where status = " + currStatus.getIdStatus());
+            formList =  queryForm.list();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
