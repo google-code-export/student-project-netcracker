@@ -21,6 +21,7 @@ public class DAOCoreObject {
         transaction = session.beginTransaction();
     }
 
+
     protected void commitTransaction() {
         if (null == this.session)
             return;
@@ -42,11 +43,13 @@ public class DAOCoreObject {
         return object;
     }
 
-    public <T> T executeSingleGetQuery1(String inputQuery, String param){
+    public <T> T executeSingleGetQuery(String inputQuery, List param){
         T object = null;
         try {
             query = session.createQuery(inputQuery);
-            query.setParameter("userNameParam", param.toUpperCase());
+            for (int i = 0; i < param.size(); i++) {
+                query.setParameter("param" + String.valueOf(i), param.get(i));
+            }
             object = (T) query.uniqueResult();
         } catch (Exception e) {
             System.out.println(e);
@@ -65,6 +68,20 @@ public class DAOCoreObject {
         return object;
     }
 
+    public <T> List<T> executeListGetQuery(String inputQuery, List listOfParameters){
+        List<T> object = null;
+        try {
+            query = session.createQuery(inputQuery);
+            for (int i = 0; i < listOfParameters.size(); i++) {
+                query.setParameter("param" + String.valueOf(i), listOfParameters.get(i));
+            }
+            object = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return object;
+    }
+
     public <T> void saveUpdatedObject(T updatedObjects) {
         try {
             session.save(updatedObjects);
@@ -76,6 +93,18 @@ public class DAOCoreObject {
     public void executeDeleteQuery(String inputQuery)  {
         try {
             query = session.createQuery(inputQuery);
+            query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void executeDeleteQuery(String inputQuery, List listOfParameters)  {
+        try {
+            query = session.createQuery(inputQuery);
+            for (int i = 0; i < listOfParameters.size(); i++) {
+                query.setParameter("param" + String.valueOf(i), listOfParameters.get(i));
+            }
             query.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
