@@ -28,13 +28,11 @@ import java.util.logging.Logger;
 public class StudentPage {
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    //public static List<String> getUniversityList() {
     public static List<Institute> getUniversityList() {
 
         Session session = null;
         org.hibernate.Query re = null;
         List instituteList = null;
-        List<String> result = new ArrayList<String>();
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -48,11 +46,6 @@ public class StudentPage {
                 session.close();
             }
         }
-
-       /* for (Object currObj : instituteList) {
-            Institute currInst = (Institute) currObj;
-            result.add(currInst.getName());
-        }*/
         return instituteList;
     }
 
@@ -62,110 +55,52 @@ public class StudentPage {
         Session session = null;
         org.hibernate.Query re = null;
         org.hibernate.Query other = null;
-        Faculty faculty = null;
-        List facultyList = null;
-        List selectedFaculty = null;
-        List selectedInstitute = null;
-        List<String> result = new ArrayList<String>();
+        Faculty otherFaculty = null;
+        List<Faculty> selectedFaculty = new ArrayList<Faculty>();
+        
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            re = session.createQuery("from Institute where upper(name) ='" + currInstitute.getName().toUpperCase() + "'");
-            selectedInstitute = re.list();
+            other = session.createQuery("from Faculty where name = 'Другое'");
+            re = session.createQuery("from Faculty where institute ='" + currInstitute.getInstituteId() + "'");
+            selectedFaculty = re.list();
+            otherFaculty = (Faculty) other.uniqueResult();
+            selectedFaculty.add(otherFaculty);
         } catch (Exception e) {
             System.out.println(e);
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
-
-        Institute newInst = (Institute) selectedInstitute.get(0);;
-        if ((!selectedInstitute.isEmpty()) && !newInst.getName().equals("Другое")) {
-            //newInst = (Institute) selectedInstitute.get(0);
-            try {
-                Locale.setDefault(Locale.ENGLISH);
-                session = HibernateUtil.getSessionFactory().getCurrentSession();
-                session.beginTransaction();
-                other = session.createQuery("from Faculty where name = 'Другое'");
-                re = session.createQuery("from Faculty where institute ='" + newInst.getInstituteId() + "'");
-                selectedFaculty = re.list();
-                faculty = (Faculty) other.uniqueResult();
-                selectedFaculty.add(faculty);
-            } catch (Exception e) {
-                System.out.println(e);
-            } finally {
-                if (session != null && session.isOpen()) {
-                    session.close();
-                }
-            }
-
- /*           for (Object currObj : selectedFaculty) {
-                Faculty currFaculty = (Faculty) currObj;
-                result.add(currFaculty.getName());
-            }
-*/
-        } else /*if ((!selectedInstitute.isEmpty()) && newInst.getName().equals("Другое"))*/ {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            other = session.createQuery("from Faculty where name = 'Другое'");
-            faculty = (Faculty) other.uniqueResult();
-            selectedFaculty.add(faculty);
         }
         return selectedFaculty;
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public static List<Cathedra> getCathedraListByFaculty(Faculty currFaculty, Institute currInstitute) {
+    public static List<Cathedra> getCathedraListByFaculty(Faculty currFaculty) {
 
         Session session = null;
         org.hibernate.Query re = null;
         org.hibernate.Query other = null;
-        Cathedra cathedra = null;
-        List cathedraList = null;
-        List selectedFaculty = null;
-        List selectedCathedra = null;
-        List<String> result = new ArrayList<String>();
+        Cathedra otherCathedra = null;
+        List<Cathedra> selectedCathedra = new ArrayList<Cathedra>();
+
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            re = session.createQuery("from Faculty as facul where upper(facul.name) = '" + currFaculty.getName().toUpperCase() + "'" + " and  upper(facul.institute.name) = '" + currInstitute.getName().toUpperCase() + "'" );
-            selectedFaculty = re.list();
+            other = session.createQuery("from Cathedra where name = 'Другое'");
+            re = session.createQuery("from Cathedra where faculty ='" + currFaculty.getIdFaculty() + "'");
+            selectedCathedra = re.list();
+            otherCathedra = (Cathedra) other.uniqueResult();
+            selectedCathedra.add(otherCathedra);
         } catch (Exception e) {
             System.out.println(e);
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
-
-        if ((!selectedFaculty.isEmpty()) && (selectedFaculty.size() == 1)) {
-            Faculty newFaculty = (Faculty) selectedFaculty.get(0);
-            try {
-                Locale.setDefault(Locale.ENGLISH);
-                session = HibernateUtil.getSessionFactory().getCurrentSession();
-                session.beginTransaction();
-                other = session.createQuery("from Cathedra where name = 'Другое'");
-                re = session.createQuery("from Cathedra where faculty ='" + newFaculty.getIdFaculty() + "'");
-                selectedCathedra = re.list();
-                cathedra = (Cathedra) other.uniqueResult();
-                selectedCathedra.add(cathedra);
-            } catch (Exception e) {
-                System.out.println(e);
-            } finally {
-                if (session != null && session.isOpen()) {
-                    session.close();
-                }
-            }
-/*
-            for (Object currObj : selectedCathedra) {
-                Cathedra currCathedra = (Cathedra) currObj;
-                result.add(currCathedra.getName());
-            }*/
-
         }
         return selectedCathedra;
     }
