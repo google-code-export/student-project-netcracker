@@ -117,7 +117,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private ByteArrayOutputStream baos;
     private byte[] photoArray;
     private final MainPage mainPage;
-    private GridLayout glayout1 = new GridLayout(4,6);
+    private GridLayout glayout1 = new GridLayout(3,6);
     private String editorName;
 
 
@@ -185,9 +185,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         newInstitute = new TextField("Ваш ВУЗ",(Property) bean.getItemProperty("studentOtherInstitute"));
         newCathedra = new TextField("Ваша кафедра",(Property) bean.getItemProperty("studentOtherCathedra"));
         newFaculty = new TextField("Ваш факультет",(Property) bean.getItemProperty("studentOtherFaculty"));
-        newInstitute.setRequired(true);
-        newCathedra.setRequired(true);
-        newFaculty.setRequired(true);
         
         List<Institute>insts = StudentPage.getUniversityList();
         BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
@@ -211,17 +208,18 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     faculties.removeAllItems();
                     cathedras.removeAllItems();
                     Institute currUniver = (Institute) universities.getValue();
-                    if ((currUniver != null) && !(currUniver.getName().equals("Другое"))) {
-                        newInstitute.setVisible(false);
-                        newCathedra.setVisible(false);
-                        newFaculty.setVisible(false);
+                    if (currUniver != null) {
                         List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
                         BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
                         faculties.setContainerDataSource(objects);
-                    } else {
+                    } 
+                    if(currUniver != null && currUniver.getName().equals("Другое")) {
                         newInstitute.setVisible(true);
-                        newCathedra.setVisible(true);
-                        newFaculty.setVisible(true);
+                    }
+                    else {
+                        newInstitute.setVisible(false);
+                        newCathedra.setVisible(false);
+                        newFaculty.setVisible(false);
                     }
                 } catch (NullPointerException ex) {
                 }
@@ -233,16 +231,17 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 if ( faculties.size() > 0 ) {
                     cathedras.removeAllItems();
                     Faculty currFaculty = (Faculty)faculties.getValue();
-                    if(currFaculty != null && !currFaculty.getName().equals("Другое")) {
-                        List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty(currFaculty, (Institute)universities.getValue());
+                    if(currFaculty != null) {
+                        List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty(currFaculty);
                         BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
                         cathedras.setContainerDataSource(objects);
-                        newInstitute.setVisible(false);
-                        newCathedra.setVisible(false);
-                        newFaculty.setVisible(false);
-                    } else if(currFaculty != null && currFaculty.getName().equals("Другое")) {
-                        newCathedra.setVisible(true);
+                    }
+                    if(currFaculty != null && currFaculty.getName().equals("Другое")) {
                         newFaculty.setVisible(true);
+                    } else {
+                        newFaculty.setVisible(false);
+                        newCathedra.setVisible(false);
+                        newInstitute.setVisible(false);
                     }
                 }
             }
@@ -256,9 +255,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     if(currCathedra!= null && currCathedra.getName().equals("Другое")) {
                         newCathedra.setVisible(true);
                     } else {
-                        newInstitute.setVisible(false);
-                        newCathedra.setVisible(false);
                         newFaculty.setVisible(false);
+                        newCathedra.setVisible(false);
+                        newInstitute.setVisible(false);
                     }
                 }
             }
@@ -277,14 +276,6 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayout1.addComponent(faculties,1,2);
         glayout1.addComponent(cathedras,0,3);
         glayout1.addComponent(universityGradYear,1,3);
-        newInstitute.setVisible(false);
-        glayout1.addComponent(newCathedra, 0, 5);
-
-        newCathedra.setVisible(false);
-        glayout1.addComponent(newFaculty, 1, 5);
-
-        newFaculty.setVisible(false);
-        glayout1.addComponent(newInstitute, 2, 5);
 
         Iterator<Component> i = glayout1.getComponentIterator();
         while (i.hasNext()) {
@@ -296,6 +287,20 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                 ComboBoxConfig((ComboBox)c);
             }
         }
+        
+        HorizontalLayout anotherLayout = new HorizontalLayout();
+        anotherLayout.setSpacing(true);
+        anotherLayout.addComponent(newCathedra);
+        anotherLayout.addComponent(newFaculty);
+        anotherLayout.addComponent(newInstitute);
+        i = anotherLayout.getComponentIterator();
+        while (i.hasNext()) {
+            TextField c = (TextField) i.next();
+            c.setWidth("220");
+            c.setVisible(false);
+            anotherLayout.setComponentAlignment(c, Alignment.TOP_LEFT);
+        }
+        glayout1.addComponent(anotherLayout,0,5,2,5);
 
         photoUpload = new Upload("Фото",this);
         photoUpload.setButtonCaption("Загрузка");
@@ -310,6 +315,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if(photoArray != null) {
             showPhoto();
         }
+       
     }
 
     private void contactsPanelFill() {
@@ -683,17 +689,20 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                             faculties.addListener(facultListener);
                         } else if (i == 0 && j == 3) {
                             l.replaceComponent(c, cathedras);
-                            List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue(), (Institute)universities.getValue());
+                            List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty((Faculty)faculties.getValue());
                             BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
                             cathedras.setContainerDataSource(objects);
                             cathedras.setPropertyDataSource((Property) bean.getItemProperty("studentCathedra"));
-                        }
+                        } 
                     } else {
                         c.setReadOnly(!editable);
                     }
                 }
             }
         }
+        newFaculty.setReadOnly(!editable);
+        newCathedra.setReadOnly(!editable);
+        newInstitute.setReadOnly(!editable);
         Iterator<Component> i = contacts.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
@@ -862,7 +871,15 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         if(!stData.getStudentKnowledgeOther3().equals("")) {
             addNewSavedSlider(stData.getStudentKnowledgeOther3(),bean.getItemProperty("studentKnowledgeOther3Mark"),glayoutKnow);
         }
-
+        if(!stData.getStudentOtherInstitute().equals("")) {
+            newInstitute.setVisible(true);
+        }
+        if(!stData.getStudentOtherCathedra().equals("")) {
+            newCathedra.setVisible(true);
+        }
+        if(!stData.getStudentOtherFaculty().equals("")) {
+            newFaculty.setVisible(true);
+        }
     }
 
     private void addNewSavedSlider(String name, Property value, Layout lo) {
