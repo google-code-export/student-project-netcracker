@@ -115,4 +115,19 @@ public class DAOReport {
        return report;
        
     }
+      
+      
+      public List getResult(){
+          List reportData = new LinkedList();
+          
+          reportData.add(new Object[] {"Дата", "34", "30", "30", "0"});
+          reportData.add(new Object[] {"Дата", "34", "30", "25", "5"});
+          reportData.add(new Object[] {"Дата", "6", "30", "20", "10"});
+          reportData.add(new Object[] {"Дата", "34", "30", "20", "10"});
+          reportData.add(new Object[] {"Дата", "43", "30", "1", "29"});
+          
+          return reportData;
+      }
+      
+
 }

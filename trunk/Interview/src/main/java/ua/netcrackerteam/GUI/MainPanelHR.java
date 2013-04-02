@@ -24,12 +24,14 @@ import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficie
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviews;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviewsDetail;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderStudentsToInterview;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdvertisingEfficiency;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviewsDetail;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
 
 /**
@@ -170,8 +172,8 @@ public class MainPanelHR extends MainPanel{
                      builder = new ReportBuilderAdvertisingEfficiency(mainPage);  
                      creator = new ReportCreatorWithDiagram(true);                  
                 } else if(selectReport.equals("Список абитуриентов на заданное собеседование")){
-                    template = new ReportTemplateStudentsToInterview();
-                    builder = new ReportBuilderStudentsToInterview();
+                    template = new ReportTemplateStudentsToInterview();                    
+                    builder = new ReportBuilderStudentsToInterview();                    
                     creator = new ReportCreatorWithFilter();
                     
                 } else if(selectReport.equals("Общие итоги по собеседованиям")){
@@ -186,7 +188,11 @@ public class MainPanelHR extends MainPanel{
                     
                 }else if(selectReport.equals("Кол-во абитуриентов по курсам")){
                     
-                }*/
+                }*/else if(selectReport.equals("Итоги по собеседованиям")){
+                   template = new ReportTemplateResultOfInterviewsDetail();
+                   builder = new ReportBuilderResultOfInterviewsDetail();
+                   creator = new ReportCreatorWithDiagram(false);
+                }
                 fillReportsLayout();
             }
         

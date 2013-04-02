@@ -16,7 +16,7 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
@@ -50,7 +50,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildChart() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -62,5 +62,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+
     
 }

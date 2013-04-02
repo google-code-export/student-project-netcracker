@@ -74,12 +74,9 @@ public abstract class DesignTable {
             BaseColor fColor = BaseColor.BLACK;
             BaseColor bColor = WebColors.getRGBColor("#99CC99");
             BaseColor borderColor = WebColors.getRGBColor("#999966");
-           //Footer table
-            StringBuilder builder = new StringBuilder();
+           //Footer table          
             for(int j = 0; j < footer.length; j++){
-                builder.append(footer[j]);
-            }
-               insertCell(builder.toString(), Element.ALIGN_CENTER, footer.length, bfBold12, fColor, bColor, borderColor);
+               insertCell(footer[j].toString(), Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);}
         } catch (DocumentException ex) {
             Logger.getLogger(DesignTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
