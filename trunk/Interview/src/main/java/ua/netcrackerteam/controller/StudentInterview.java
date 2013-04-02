@@ -24,6 +24,11 @@ public class StudentInterview {
         this.restOfPositions = restOfPositions;
     }
 
+    StudentInterview(int studentInterviewId, int restOfPositions) {
+        this.studentInterviewId = studentInterviewId;
+        this.restOfPositions = restOfPositions;
+    }
+
     public int getStudentInterviewId() {
         return studentInterviewId;
     }

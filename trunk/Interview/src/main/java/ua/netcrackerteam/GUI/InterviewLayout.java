@@ -43,8 +43,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
     private final Button print;
     private String userName;
     private int selectedInterviewID;
-    
-   private ua.netcrackerteam.controller.RegistrationToInterview registration = new ua.netcrackerteam.controller.RegistrationToInterview();
+    private boolean noPositionsFlag = true;
+    private ua.netcrackerteam.controller.RegistrationToInterview registration = new ua.netcrackerteam.controller.RegistrationToInterview();
 
     public InterviewLayout(String username, MainPage mainPage) {
         this.userName = username;
@@ -79,12 +79,23 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             dates.setItemCaption(stInterview, strDate);
             if (stInterview.getRestOfPositions() == 0) {
                 dates.setItemEnabled(stInterview, false);
+            } else {
+                noPositionsFlag = false;
             }
-            if(selectedInterview != 0) {
+            if(selectedInterview > 0) {
                 if(selectedInterview == stInterview.getStudentInterviewId()) {
                     dates.setValue(stInterview);
                     calendar.setValue(stInterview.getInterviewStartDate());
                 }
+            }
+        }
+        if(noPositionsFlag) {
+            StudentInterview nullInterview = registration.getNullInterview();
+            int restPos = nullInterview.getRestOfPositions();
+            dates.addItem(nullInterview);
+            dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
+            if(selectedInterview == 0) {
+                dates.setValue(nullInterview);
             }
         }
         dates.addListener(this);

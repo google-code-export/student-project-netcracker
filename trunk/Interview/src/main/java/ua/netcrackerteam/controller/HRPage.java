@@ -1,6 +1,5 @@
 package ua.netcrackerteam.controller;
 
-import ua.netcrackerteam.DAO.*;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
@@ -9,6 +8,8 @@ import java.lang.reflect.Field;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import ua.netcrackerteam.DAO.DAOHRImpl;
+import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 
 /**
  * Created with IntelliJ IDEA.
@@ -134,16 +135,16 @@ public class HRPage {
     }
 
     public static List<StudentDataShort> searchStudents(String searchFilter, String value) {
-        if (searchFilter == "Фамилия") {
+        if ("Фамилия".equals(searchFilter)) {
             searchFilter = "lastName";
         }
-        else if (searchFilter == "Имя") {
+        else if ("Имя".equals(searchFilter)) {
             searchFilter = "firstName";
         }
-        else if (searchFilter == "Отчество") {
+        else if ("Отчество".equals(searchFilter)) {
             searchFilter = "middleName";
         }
-        else if (searchFilter == "Номер анкеты") {
+        else if ("Номер анкеты".equals(searchFilter)) {
             searchFilter = "idForm";
         }
 

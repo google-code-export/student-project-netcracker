@@ -1,18 +1,17 @@
 package ua.netcrackerteam.DAO;
 
+import java.util.List;
+import java.util.Locale;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
-import java.util.List;
-import java.util.Locale;
-
 /**
  * @author Kushnirenko Anna
  */
-public class DAOHRImpl implements DAOHR{
+public class DAOHRImpl implements DAOHR {
     
     public static void main(String[] args) {
 //        DAOHRImpl test = new DAOHRImpl();
@@ -22,11 +21,7 @@ public class DAOHRImpl implements DAOHR{
         
         
         DAOHRImpl test = new DAOHRImpl();
-        test.deleteInterview(1);
-//        Institute inst = test.addInstitute("Тестовый институт");
-//        Faculty fac = test.addFaculty(inst, "Факультет тестового института");
-//        Cathedra cat = test.addCathedra(fac, "Кафедра тестового института");
-        getDiff(2300);
+        test.getAllRegisteredForms();
 
     }
 
@@ -98,7 +93,6 @@ public class DAOHRImpl implements DAOHR{
     }
 
     public UserList getUserDataByFormId(int formId) {
-        String userName = "";
         Session session = null;
         UserList selectedUser = null;
         Query query;
@@ -428,7 +422,6 @@ public class DAOHRImpl implements DAOHR{
         return name;
     }
 
-    @Override
     public void addNewInterview(Interview newInterview) {
         Session session = null;
         Transaction transaction = null;
@@ -476,7 +469,6 @@ public class DAOHRImpl implements DAOHR{
         }
     }
 
-    @Override
     public void editInterview(Interview interview) {
         Session session = null;
         Transaction transaction = null;
@@ -612,6 +604,8 @@ public class DAOHRImpl implements DAOHR{
         }
 
     }
+
+    }
     
     
     
@@ -620,4 +614,4 @@ public class DAOHRImpl implements DAOHR{
     
     
  
-}
+
