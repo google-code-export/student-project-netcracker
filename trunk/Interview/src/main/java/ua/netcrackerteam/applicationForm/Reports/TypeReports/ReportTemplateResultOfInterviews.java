@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ua.netcrackerteam.DAO.DAOReport;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
@@ -47,10 +49,14 @@ public class ReportTemplateResultOfInterviews extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-        String[] header = new String[]{"Всего зарегестрировано анкет", "Всего на собеседования", "Прошло собеседование"};     
-        float[] size = new float[]{1.5f, 1.5f, 1.5f};       
         
-        PdfPCell cell = report.setTable(header, reportData, null, size, false);
+        String[] header = new String[]{"Всего зарегестрировано анкет", "Всего на собеседования", "Прошло собеседование"};     
+        
+        float[] size = new float[]{1.5f, 1.5f, 1.5f}; 
+        DesignTable table = new DesignTableFlat(size);
+        
+        report.setDesignTable(table);
+        PdfPCell cell = report.setTable(header, reportData, null);
     
         return cell;
     }

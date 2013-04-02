@@ -14,6 +14,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -56,14 +57,18 @@ public class DesignTableWithGroups extends DesignTable{
                        Interview interview = (Interview)rowReport[0];
                        
                        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
-                       String date = dateFormat.format(interview.getStartDate());
+                       String date ="";
+                       if(interview.getStartDate() != null){
+                         date = dateFormat.format(interview.getStartDate());}
+                       
+                       Object[] row = (Object[])rowReport[1];
                        
                        if(!interviewPrevious.equals(interview )) {
-                        insertCell(date, Element.ALIGN_CENTER, 6, bf12, fColor, bColorTableLine2, borderColor);
+                        insertCell(date, Element.ALIGN_CENTER, row.length, bf12, fColor, bColorTableLine2, borderColor);
                         interviewPrevious = interview;
                        }
                        
-                       String[] row = (String[])rowReport[1];
+                       
                        for(int j = 0; j < row.length; j++){         
                            insertCell(row[j].toString(), Element.ALIGN_CENTER, 1, bf12, fColor, bColorTableLine1, borderColor);
                        }               

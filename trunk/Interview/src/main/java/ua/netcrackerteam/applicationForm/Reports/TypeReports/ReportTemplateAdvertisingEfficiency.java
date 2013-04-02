@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 import org.jfree.data.general.DefaultPieDataset;
 import ua.netcrackerteam.DAO.DAOReport;
 import ua.netcrackerteam.applicationForm.Reports.Elements.Chart;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
@@ -31,7 +33,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     
     public ReportTemplateAdvertisingEfficiency(){
         DAOReport reportDAO = new DAOReport();
-         reportData = reportDAO.getReportAdvertisingEfficiency();
+        reportData = reportDAO.getReportAdvertisingEfficiency();
          
          if(reportData == null){
              reportData = new ArrayList();
@@ -57,11 +59,13 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     public PdfPCell buildTable() {
         
          String[] header = new String[]{"Категория рекламы", "Выбрано (кол-во анкет)", " Выбрано (%)"};       
-         String[] footer = new String[]{"Итого", "" + getAllForms(), ""};
+         String[] footer = new String[]{"Итого ", "" + getAllForms(), ""};
         
          float[] size = new float[]{2.5f, 1.5f, 1.5f};
-                  
-         PdfPCell cell = report.setTable(header, dataReport(), footer, size, false);
+         DesignTable table = new DesignTableFlat(size);
+         
+         report.setDesignTable(table);
+         PdfPCell cell = report.setTable(header, dataReport(), footer);
         
   
         return cell;
@@ -109,7 +113,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
         Chart chartTemplate = new Chart(getDefaultPieDataset(), "Анализ эффективности рекламы");
         chartTemplate.createChartPie();
         
-        return chartTemplate.getByteChart(350, 300);
+        return chartTemplate.getByteChart(widht, height);
     }
 
     private DefaultPieDataset getDefaultPieDataset(){

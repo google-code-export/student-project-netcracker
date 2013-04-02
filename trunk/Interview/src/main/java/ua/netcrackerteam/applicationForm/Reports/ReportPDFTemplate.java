@@ -39,6 +39,12 @@ public class ReportPDFTemplate {
     private String pathImage =    "resources/Logotip.png";
     private String path = ClassPath.getInstance().getWebInfPath();
     
+    private DesignTable table;
+    
+    public  void setDesignTable(DesignTable table){
+        this.table = table;
+    }
+    
     public PdfPCell setLogotip() throws IOException, BadElementException{ 
         
            PdfPCell cellImage = new PdfPCell(Image.getInstance(path + pathImage)); 
@@ -76,17 +82,9 @@ public class ReportPDFTemplate {
     
     public PdfPCell setTable(String[] header,
                                    List body,
-                                   String[] footer,
-                                   float[] size,
-                                   boolean groups){
+                                   String[] footer){
         
-           PdfPCell cellTable = new PdfPCell();
-           
-           DesignTable table;
-           if(groups){
-               table = new DesignTableWithGroups(size);
-           }else{
-            table = new DesignTableFlat(size);}
+           PdfPCell cellTable = new PdfPCell();           
            
            table.getHeader(header);
            table.getBody(body);
@@ -103,8 +101,8 @@ public class ReportPDFTemplate {
     public PdfPCell setChart(Chart chart) throws BadElementException, IOException{
         
        PdfPCell cellChart = new PdfPCell();
-       Image chartImage = chart.getImageChart(300, 300);
-       cellChart.setImage(chartImage);
+       Image chartImage = chart.getImageChart(600, 700);
+       cellChart.setImage(chartImage);      
        cellChart.setColspan(2);
        cellChart .setBorder(Rectangle.NO_BORDER);
        

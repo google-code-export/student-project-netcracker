@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.DAO;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import org.hibernate.Query;
@@ -12,7 +13,7 @@ import ua.netcrackerteam.configuration.HibernateUtil;
 
 /**
  *
- * @author home
+ * @author Test class
  */
 public class DAOReport {
     
@@ -101,5 +102,17 @@ public class DAOReport {
             }
         }
         return report; 
+    }
+    
+      public List getFormByIdInterview(int idInterview){
+          
+       List report = new LinkedList();
+       
+       report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1", "Телефон1"});
+       report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1", "Телефон1"});
+       
+       
+       return report;
+       
     }
 }
