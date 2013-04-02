@@ -18,6 +18,8 @@ import java.util.logging.Logger;
 import org.jfree.data.category.DefaultCategoryDataset;
 import ua.netcrackerteam.DAO.DAOReport;
 import ua.netcrackerteam.applicationForm.Reports.Elements.Chart;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 /**
@@ -55,10 +57,13 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     public PdfPCell buildTable() {
         
         String[] header = new String[]{"Дата собеседования", "Всего", "Зарегистрировано", "Свободно"};       
-        String[] footer = getFooter(reportData);        
-        float[] size = new float[]{2f, 1.5f, 1.5f, 1.5f};       
-              
-        PdfPCell cell = report.setTable(header, reportData, footer, size, false);
+        String[] footer = getFooter(reportData);    
+        
+        float[] size = new float[]{2f, 1.5f, 1.5f, 1.5f}; 
+        DesignTable table = new DesignTableFlat(size);
+        
+        report.setDesignTable(table);
+        PdfPCell cell = report.setTable(header, reportData, footer);
      
         return cell;
         
@@ -68,7 +73,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     public PdfPCell buildChart() {
        
         Chart chartTemplate = new Chart(getCategoryDataSet(), "Динамика регистрации на собеседования");
-        chartTemplate.createChartBar3D();
+        chartTemplate.createChartBar();
     
         PdfPCell cell = new PdfPCell();
         try {
@@ -93,7 +98,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
              int summaForms = Integer.parseInt(rowReportData[2].toString());
              
              double percent = new BigDecimal((maxForms == 0? 0: 100*summaForms/maxForms)).setScale(2, RoundingMode.UP).doubleValue();
-             dataSet.addValue(percent, "percent", rowReportData[0].toString());
+             dataSet.addValue(percent, "%", rowReportData[0].toString());
              
            } 
            return dataSet;             
@@ -112,7 +117,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
            amount += Integer.parseInt(row[1].toString());
            free += Integer.parseInt(row[3].toString());
        }
-      return new String[]{"Итого", "" + amount, "" + (amount - free), "" + free};
+      return new String[]{"Итого: ", "" + amount, " Записано: " + (amount - free), " Свободно: " + free};
       
  
    }
@@ -126,9 +131,9 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     public byte[] getChart(int widht, int height) {
         
         Chart chartTemplate = new Chart(getCategoryDataSet(),"Динамика регистрации на собеседования");
-        chartTemplate.createChartBar3D();
+        chartTemplate.createChartBar();
         
-        return chartTemplate.getByteChart(350, 300);
+        return chartTemplate.getByteChart(widht, height);
     }
 
    

@@ -178,7 +178,15 @@ public class MainPanelHR extends MainPanel{
                     template = new ReportTemplateResultOfInterviews();
                     builder = new ReportBuilderResultOfInterviews();
                     creator = new ReportCreatorWithDiagram(false);
-                }
+                }/*else if(selectReport.equals("Кол-во абитуриентов по институтам")){
+                    
+                }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
+                    
+                }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам-кафедрам")){
+                    
+                }else if(selectReport.equals("Кол-во абитуриентов по курсам")){
+                    
+                }*/
                 fillReportsLayout();
             }
         

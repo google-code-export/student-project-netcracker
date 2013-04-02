@@ -13,8 +13,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ua.netcrackerteam.DAO.DAOReport;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 import ua.netcrackerteam.configuration.HibernateFactory;
@@ -71,10 +74,13 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
     @Override
     public PdfPCell buildTable() {
         
-        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"};     
-        float[] size = new float[]{0.5f, 1f, 1f, 2f, 1f};       
+        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"};  
         
-        PdfPCell cell = report.setTable(header, reportForPrint, null, size, true);
+        float[] size = new float[]{0.5f, 1f, 1f, 2f, 1f}; 
+        DesignTable table = new DesignTableWithGroups(size);
+        
+        report.setDesignTable(table);
+        PdfPCell cell = report.setTable(header, reportForPrint, null);
     
         return cell;
     }
@@ -100,19 +106,15 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
         while(iterator.hasNext()){
           Interview interview = iterator.next();
           
-          if(interview.getIdInterview() == 0){ continue;} //reserve time for hr
-          
-          List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-          
-          Iterator<Form> iteratorForm = forms.iterator();
-          while(iteratorForm.hasNext()){
-              StudentData studentData = StudentPage.getStudentDataByIdForm(iteratorForm.next().getIdForm());
-              String[] data = {"" + studentData.getIdForm(), studentData.getStudentFirstName(),
-                                    studentData.getStudentLastName(),(studentData.getStudentInstitute() == null ? "" :studentData.getStudentInstitute().getName()),
-                                    studentData.getStudentTelephone()};
-              
-              reportForView.add(data);
-              reportForPrint.add(new Object[]{interview, data});
+          if(interview.getStartDate() == null){ continue;} //reserve time for hr
+                  
+          List forms = (new DAOReport()).getFormByIdInterview(interview.getIdInterview());
+                   
+          Iterator iteratorReport = forms.iterator();
+          while(iteratorReport.hasNext()){
+              Object[] rowReport = (Object[])iteratorReport.next();                 
+              reportForView.add(rowReport);
+              reportForPrint.add(new Object[]{interview, rowReport});
           }
         }
         

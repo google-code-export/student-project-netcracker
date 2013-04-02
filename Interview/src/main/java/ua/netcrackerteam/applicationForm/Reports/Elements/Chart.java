@@ -43,7 +43,7 @@ public class Chart{
            this.title   = title;                
        } 
       
-        public  void createChartBar3D() {
+        public  void createChartBar() {
          
            chart = ChartFactory.createBarChart(
             title,
@@ -65,6 +65,19 @@ public class Chart{
         r.setSeriesPaint(0, Color.BLUE); 
    }
     
+    private void createStackedChart() {
+                chart = ChartFactory.createStackedBarChart(
+                                "Stacked Bar Chart",
+                                "Games", 
+                                "No. of students",
+                                (DefaultCategoryDataset)dataSet,                                
+                                PlotOrientation.VERTICAL, 
+                                true, 
+                                true,
+                                false);
+                
+        }
+                
     public  void createChartPie(){
         
             chart = ChartFactory.createPieChart(
@@ -98,13 +111,10 @@ public class Chart{
     
     public Image getImageChart(int widht, int height) throws IOException, BadElementException{
         
-       BufferedImage objBufferedImage=chart.createBufferedImage(widht, height);
-       ByteArrayOutputStream bas = new ByteArrayOutputStream();
-            
-       ImageIO.write(objBufferedImage, "png", bas);         
-       Image chartImage = Image.getInstance(bas.toByteArray());
-       
-       return chartImage;
+       java.awt.Image image=chart.createBufferedImage(widht, height);       
+       com.itextpdf.text.Image imagePDF = com.itextpdf.text.Image.getInstance(image,Color.white);
+             
+       return imagePDF;
     }
 
 }

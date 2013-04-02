@@ -41,7 +41,7 @@ public abstract class DesignTable {
             return;
         }
         
-        try {
+        try {            
             BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);   
             Font bfBold12 = new Font(font, 11, Font.BOLDITALIC, new BaseColor(0, 0, 0)); 
             BaseColor fColor = BaseColor.BLACK;
@@ -75,8 +75,11 @@ public abstract class DesignTable {
             BaseColor bColor = WebColors.getRGBColor("#99CC99");
             BaseColor borderColor = WebColors.getRGBColor("#999966");
            //Footer table
+            StringBuilder builder = new StringBuilder();
             for(int j = 0; j < footer.length; j++){
-               insertCell(footer[j], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);}
+                builder.append(footer[j]);
+            }
+               insertCell(builder.toString(), Element.ALIGN_CENTER, footer.length, bfBold12, fColor, bColor, borderColor);
         } catch (DocumentException ex) {
             Logger.getLogger(DesignTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

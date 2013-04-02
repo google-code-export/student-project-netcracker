@@ -14,6 +14,7 @@ import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Tree;
@@ -24,9 +25,11 @@ import org.jfree.chart.block.EmptyBlock;
 import ua.netcrackerteam.GUI.MainPage;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviews;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderStudentsToInterview;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdvertisingEfficiency;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
 
 /**
@@ -69,6 +72,7 @@ public abstract class ReportsCreator {
                
     }
     
+     
     public abstract void createReport();  
     
     
