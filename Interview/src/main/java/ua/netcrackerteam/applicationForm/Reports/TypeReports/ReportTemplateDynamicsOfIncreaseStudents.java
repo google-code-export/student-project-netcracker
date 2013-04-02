@@ -117,9 +117,8 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
            amount += Integer.parseInt(row[1].toString());
            free += Integer.parseInt(row[3].toString());
        }
-      return new String[]{"Итого: ", "" + amount, " Записано: " + (amount - free), " Свободно: " + free};
-      
- 
+      return new String[]{"Итого:", "" + amount, "" + (amount - free), "" + free};
+    
    }
 
     @Override

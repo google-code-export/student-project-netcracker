@@ -14,15 +14,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ua.netcrackerteam.DAO.DAOReport;
-import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
-
 import ua.netcrackerteam.configuration.HibernateFactory;
-import ua.netcrackerteam.controller.StudentData;
-import ua.netcrackerteam.controller.StudentPage;
 
 /**
  *
@@ -32,10 +28,11 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
   
     private List<Interview> interviews;
     
-    private List reportForView = new LinkedList();;
+    private List reportForView = new LinkedList();
     private List reportForPrint = new LinkedList();
 
-    public ReportTemplateStudentsToInterview(int idInterview){   
+    public ReportTemplateStudentsToInterview(int idInterview){ 
+        
       Interview interviewById = HibernateFactory.getInstance().getDAOInterview().getInterview(idInterview);
       
       interviews = new ArrayList<Interview>();
@@ -47,6 +44,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
      }
     
     public ReportTemplateStudentsToInterview(){
+        
         interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
         
         if(interviews == null){
@@ -54,7 +52,6 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
         }
         getReport();
     }
-
    
     @Override
     public PdfPCell buildTitle() {
@@ -74,8 +71,8 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
     @Override
     public PdfPCell buildTable() {
         
-        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"};  
-        
+        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"};
+              
         float[] size = new float[]{0.5f, 1f, 1f, 2f, 1f}; 
         DesignTable table = new DesignTableWithGroups(size);
         
