@@ -13,16 +13,16 @@ import ua.netcrackerteam.GUI.Reports.ReportBuilder;
  *
  * @author Klitna Tetiana
  */
-public class ReportBuilderStudentsToInterview extends ReportBuilder{
+public class ReportBuilderResultOfInterviews extends ReportBuilder{
 
     @Override
     public Label buildTitle() {
-        return report.getTitle("Список абитуриентов на заданное собеседование");
+        return report.getTitle("Общие итоги по собеседованиям");
     }
 
     @Override
     public Table buildTable() {
-        return report.getTable(new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"});
+        return report.getTable(new String[]{"Всего анкет", "Всего на собеседования", "Прошло собеседование"});
     }
 
     @Override

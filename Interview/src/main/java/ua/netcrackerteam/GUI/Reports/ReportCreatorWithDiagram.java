@@ -19,6 +19,12 @@ import ua.netcrackerteam.GUI.MainPage;
  * @author home
  */
 public class ReportCreatorWithDiagram extends ReportsCreator{
+    
+    private boolean withChart;
+    
+    public ReportCreatorWithDiagram(boolean withChart){
+       this.withChart = withChart; 
+    }
 
     @Override
     public void createReport() {
@@ -30,11 +36,12 @@ public class ReportCreatorWithDiagram extends ReportsCreator{
         reportsLo.addComponent(table);
         reportsLo.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
        
-      
-        Embedded emb = builder.buildChart(); 
-        emb.setWidth("100%");
-        reportsLo.addComponent(emb);
-        reportsLo.setComponentAlignment(emb, Alignment.MIDDLE_CENTER);
+        if(withChart){
+            Embedded emb = builder.buildChart(); 
+            emb.setWidth("100%");
+            reportsLo.addComponent(emb);
+            reportsLo.setComponentAlignment(emb, Alignment.MIDDLE_CENTER);
+        }
  
     }
     
