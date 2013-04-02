@@ -25,11 +25,10 @@ public class RegistrationToInterview implements  Logable{
      * @param interviewId - selected interview by student
      */
     public void updateRegistrationToInterview(String userName, int interviewId) {        
-            
-                Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName); 
-                Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
-                form.setInterview(interview);
-                HibernateFactory.getInstance().getStudentDAO().updateForm(form);             
+            Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName); 
+            Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
+            form.setInterview(interview);
+            HibernateFactory.getInstance().getStudentDAO().updateForm(form);             
     }
     
     /**
@@ -52,9 +51,7 @@ public class RegistrationToInterview implements  Logable{
                 StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
                         interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
                 listInterviews.add(stInterview);
-            } else {
-                
-            }
+            } 
        }
        return listInterviews;
     }
@@ -70,11 +67,23 @@ public class RegistrationToInterview implements  Logable{
           if (form != null) {
             interview = form.getInterview();
           }
-          int currentInterviewID = 0;
+          int currentInterviewID = -1;
           if (interview != null) {
               currentInterviewID = interview.getIdInterview();
           }
           return currentInterviewID;
+    }
+    
+    public StudentInterview getNullInterview() {
+        Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getInterview(0);
+        List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
+        int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
+        StudentInterview stInterview = new StudentInterview(nullInterview.getIdInterview(),nullInterview.getMaxNumber() - amountStudentsToInterview);
+        return stInterview;
+    }
+    
+    public static void main(String[] args) {
+        
     }
     
     
