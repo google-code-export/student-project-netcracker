@@ -108,7 +108,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
           while(iteratorForm.hasNext()){
               StudentData studentData = StudentPage.getStudentDataByIdForm(iteratorForm.next().getIdForm());
               String[] data = {"" + studentData.getIdForm(), studentData.getStudentFirstName(),
-                                    studentData.getStudentLastName(), studentData.getStudentInstitute().getName(),
+                                    studentData.getStudentLastName(),(studentData.getStudentInstitute() == null ? "" :studentData.getStudentInstitute().getName()),
                                     studentData.getStudentTelephone()};
               
               reportForView.add(data);

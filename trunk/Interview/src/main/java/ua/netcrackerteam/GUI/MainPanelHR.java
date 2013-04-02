@@ -23,11 +23,13 @@ import ua.netcrackerteam.GUI.Reports.ReportCreatorWithFilter;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviews;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderStudentsToInterview;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdvertisingEfficiency;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
 
 /**
@@ -73,7 +75,7 @@ public class MainPanelHR extends MainPanel{
         selectReport = "Статистика увеличения записанных студентов на собеседования";
         template = new ReportTemplateDynamicsOfIncreaseStudents();
         builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);
-        creator = new ReportCreatorWithDiagram();
+        creator = new ReportCreatorWithDiagram(true);
         
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
             @Override
@@ -162,18 +164,20 @@ public class MainPanelHR extends MainPanel{
                 if(selectReport.equals("Статистика увеличения записанных студентов на собеседования")){                     
                      template = new ReportTemplateDynamicsOfIncreaseStudents();                     
                      builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);  
-                     creator = new ReportCreatorWithDiagram();             
-                }
-                else if(selectReport.equals("Эффективность видов рекламы")){                    
+                     creator = new ReportCreatorWithDiagram(true);             
+                } else if(selectReport.equals("Эффективность видов рекламы")){                    
                      template = new ReportTemplateAdvertisingEfficiency();
                      builder = new ReportBuilderAdvertisingEfficiency(mainPage);  
-                     creator = new ReportCreatorWithDiagram();                  
-                }
-                else if(selectReport.equals("Список абитуриентов на заданное собеседование")){
+                     creator = new ReportCreatorWithDiagram(true);                  
+                } else if(selectReport.equals("Список абитуриентов на заданное собеседование")){
                     template = new ReportTemplateStudentsToInterview();
                     builder = new ReportBuilderStudentsToInterview();
                     creator = new ReportCreatorWithFilter();
-               
+                    
+                } else if(selectReport.equals("Общие итоги по собеседованиям")){
+                    template = new ReportTemplateResultOfInterviews();
+                    builder = new ReportBuilderResultOfInterviews();
+                    creator = new ReportCreatorWithDiagram(false);
                 }
                 fillReportsLayout();
             }

@@ -42,32 +42,7 @@ public class DAOReport {
         return report;   
     } 
     
-    /**
-     * общие итоги 
-     * (сколько анкет зарегистрировано, сколько человек записалось на собеседования, сколько человек прошло собеседование)
-     * @return 
-     */
-    public List getReportAmountRegistrationForms(){
-        Session session = null;
-        Query query;        
-        List report = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createSQLQuery("");          
-            report = query.list();
-                
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return report;    
-    }
-    
+       
     /**
      *эффективность рекламы
      */
@@ -115,7 +90,7 @@ public class DAOReport {
                                             "union all "+
                                             "select 0, 0, count(id_form) "+
                                             "from form "+
-                                            "where id_interview is not null " );          
+                                            "where id_interview is not null) " );          
             report = query.list();
                 
         } catch (Exception e) {
