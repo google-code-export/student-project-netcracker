@@ -27,8 +27,8 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
  */
 public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
     
-    List<Institute> institutes;
-    List reportData = new LinkedList();
+    private List<Institute> institutes;
+    private List reportData = new LinkedList();
             
     public ReportTemplateAmountStudentInstitute(){
         DAOReport reportDAO = new DAOReport();
@@ -56,9 +56,9 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-         String[] header = new String[]{"№", "Фамилия", "Имя", "Телефон"};       
+         String[] header = new String[]{"№", "Фамилия", "Имя", "Email", "Телефон"};       
         
-         float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f};
+         float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f, 1.5f};
          DesignTable table = new DesignTableWithGroups(size);
      
          report.setDesignTable(table);

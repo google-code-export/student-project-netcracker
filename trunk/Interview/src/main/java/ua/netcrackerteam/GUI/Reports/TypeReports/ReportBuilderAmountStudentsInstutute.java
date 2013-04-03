@@ -33,7 +33,7 @@ public class ReportBuilderAmountStudentsInstutute extends ReportBuilder{
 
     @Override
     public GridLayout buildGrid() {
-       return report.getGridView(new String[]{"№", "Фамилия", "Имя", "Телефон"});
+       return report.getGridView(new String[]{"№", "Фамилия", "Имя", "Email", "Телефон"});
     }
     
 }

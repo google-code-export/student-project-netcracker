@@ -160,9 +160,30 @@ public class DAOReport {
       
       public List getFormByIdInstitute(int idInstitute){
            List reportData = new ArrayList(2);
+                     
+           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 1", "Имя 1",  "Фамилия@mail.ru", "1111-11"});
+           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 2", "Имя 2",  "Фамилия@mail.ru", "2222-22"});
            
-           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 1", "Имя 1", "1111-11"});
-           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 2", "Имя 2", "2222-22"});
+           return reportData;
+      }
+      
+      public List<Integer> getCourses(){
+          List<Integer> reportData = new ArrayList(5);
+          
+          reportData.add(new Integer(1));
+          reportData.add(new Integer(2));
+          reportData.add(new Integer(3));
+          reportData.add(new Integer(4));
+          reportData.add(new Integer(5));
+           
+          return reportData;
+      }
+      
+      public List getFormByCourse(int course){
+           List reportData = new ArrayList(2);
+                     
+           reportData.add(new Object[] {"12" + course, "Фамилия 1", "Имя 1", "Фамилия@mail.ru", "1111-11"});
+           reportData.add(new Object[] {"12" + course, "Фамилия 2", "Имя 2", "Фамилия@mail.ru", "2222-22"});
            
            return reportData;
       }
