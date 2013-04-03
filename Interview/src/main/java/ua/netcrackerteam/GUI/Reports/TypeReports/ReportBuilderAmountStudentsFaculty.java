@@ -33,7 +33,7 @@ public class ReportBuilderAmountStudentsFaculty extends ReportBuilder {
 
     @Override
     public GridLayout buildGrid() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return report.getGridView(new String[]{"№", "Фамилия", "Имя", "Отчество", "Email", "Телефон"});
     }
     
 }

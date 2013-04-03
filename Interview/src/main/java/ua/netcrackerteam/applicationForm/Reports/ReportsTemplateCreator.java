@@ -46,10 +46,10 @@ public class ReportsTemplateCreator {
            table.addCell(builder.buildLogotip());                                 
            table.addCell(builder.buildTitle());            
            table.addCell(builder.buildTable());        
-           table.addCell(builder.buildChart());
+           //table.addCell(builder.buildChart());
            
            document.add(table); 
-           document.add(builder.buildChart());
+           //document.add(builder.buildChart());
         } catch (DocumentException ex) {
             Logger.getLogger(ReportsTemplateCreator.class.getName()).log(Level.SEVERE, null, ex);
         }catch (IOException ex) {

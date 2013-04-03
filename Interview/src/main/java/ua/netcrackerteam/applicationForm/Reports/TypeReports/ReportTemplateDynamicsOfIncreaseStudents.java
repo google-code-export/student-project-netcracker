@@ -29,6 +29,7 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuilder{
     
     private List reportData;
+    private Chart chartTemplate;
     
     public ReportTemplateDynamicsOfIncreaseStudents() {
         
@@ -71,10 +72,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
 
     @Override
     public PdfPCell buildChart() {
-       
-        Chart chartTemplate = new Chart(getCategoryDataSet());
-        chartTemplate.createChartBar();
-    
+          
         PdfPCell cell = new PdfPCell();
         try {
             cell = report.setChart(chartTemplate);
@@ -129,7 +127,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public byte[] getChart(int widht, int height) {
         
-        Chart chartTemplate = new Chart(getCategoryDataSet());
+        chartTemplate = new Chart(getCategoryDataSet());
         chartTemplate.createChartBar();
         
         return chartTemplate.getByteChart(widht, height);
