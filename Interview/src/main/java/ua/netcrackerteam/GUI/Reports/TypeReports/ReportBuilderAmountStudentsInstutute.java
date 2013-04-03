@@ -28,12 +28,12 @@ public class ReportBuilderAmountStudentsInstutute extends ReportBuilder{
 
     @Override
     public Embedded buildChart() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new Embedded();
     }
 
     @Override
     public GridLayout buildGrid() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       return report.getGridView(new String[]{"№", "Фамилия", "Имя", "Телефон"});
     }
     
 }

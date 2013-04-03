@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.DAO;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -119,7 +120,7 @@ public class DAOReport {
       
       
       public List getResult(){
-          List reportData = new LinkedList();
+          List reportData = new ArrayList(5);
           
           reportData.add(new Object[] {"Дата", "34", "30", "30", "0"});
           reportData.add(new Object[] {"Дата", "34", "30", "25", "5"});
@@ -131,26 +132,39 @@ public class DAOReport {
       }
       
       public List getInstitute(){
-          List reportData = new LinkedList();
+          List reportData = new ArrayList(5);
           
-          Institute institute = new Institute();
-          institute.setInstituteId(1);
-          institute.setName("Институт 1");
-          reportData.add(institute);
-          institute.setInstituteId(2);
-          institute.setName("Институт 2");
-          reportData.add(institute);
-          institute.setInstituteId(3);
-          institute.setName("Институт 3");
-          reportData.add(institute);
-          institute.setInstituteId(4);
-          institute.setName("Институт 4");
-          reportData.add(institute);
-          institute.setInstituteId(5);
-          institute.setName("Институт 5");
-          reportData.add(institute);
+          Institute institute1 = new Institute();
+          institute1.setInstituteId(1);
+          institute1.setName("Институт 1");
+          reportData.add(institute1);
+          Institute institute2 = new Institute();
+          institute2.setInstituteId(2);
+          institute2.setName("Институт 2");
+          reportData.add(institute2);
+          Institute institute3 = new Institute();
+          institute3.setInstituteId(3);
+          institute3.setName("Институт 3");
+          reportData.add(institute3);
+          Institute institute4 = new Institute();
+          institute4.setInstituteId(4);
+          institute4.setName("Институт 4");         
+          reportData.add(institute4); 
+          Institute institute5 = new Institute();
+          institute5.setInstituteId(5);
+          institute5.setName("Институт 5");
+          reportData.add(institute5);
           
           return reportData;
+      }
+      
+      public List getFormByIdInstitute(int idInstitute){
+           List reportData = new ArrayList(2);
+           
+           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 1", "Имя 1", "1111-11"});
+           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 2", "Имя 2", "2222-22"});
+           
+           return reportData;
       }
       
 
