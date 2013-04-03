@@ -68,16 +68,7 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
         return null;
     }
     
-     private void getReport(){
-                   
-        Iterator<Institute> iterator = institutes.iterator();
-        while(iterator.hasNext()){
-            
-          Institute institute = iterator.next();                           
-          List forms = (new DAOReport()).getFormByIdInstitute(institute.getInstituteId());           
-                   
-          reportData.add(new Object[]{institute.getName(), forms});
-                  
-        }
+     private void getReport(){          
+     }
     
 }
