@@ -55,7 +55,7 @@ public class ReportTemplateAmountStudentCourse extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-        String[] header = new String[]{"№", "Фамилия", "Имя", "Email", "Телефон"};  
+         String[] header = new String[]{"№", "Фамилия", "Имя", "Email", "Телефон"};  
                 
          float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f, 1.5f};
          DesignTable table = new DesignTableWithGroups(size);
@@ -91,9 +91,10 @@ public class ReportTemplateAmountStudentCourse extends ReportTemplateBuilder{
           Integer course = iterator.next();                           
           List forms = (new DAOReport()).getFormByCourse(course);           
                    
-          reportData.add(new Object[]{"" + course, forms});
+          reportData.add(new Object[]{"" + course + " курс", forms});
                   
         }
       }
+
     
 }

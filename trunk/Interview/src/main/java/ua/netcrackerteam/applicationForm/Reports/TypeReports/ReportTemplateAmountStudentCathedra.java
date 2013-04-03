@@ -62,5 +62,6 @@ public class ReportTemplateAmountStudentCathedra extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
     
 }
