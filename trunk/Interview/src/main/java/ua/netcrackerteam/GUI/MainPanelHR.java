@@ -21,6 +21,7 @@ import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAmountStudentsInstutute;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviews;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviewsDetail;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderStudentsToInterview;
@@ -28,13 +29,14 @@ import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdver
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmountStudentInstitute;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviewsDetail;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
 
 /**
  * Panel for HR view
- * @author Anna Kushnirenko, Filipenko
+ * @author Anna Kushnirenko, Filipenko, Klitna Tetiana
  */
 public class MainPanelHR extends MainPanel{
     
@@ -174,9 +176,10 @@ public class MainPanelHR extends MainPanel{
                 } else if(selectReport.equals("Общие итоги по собеседованиям")){
                     template = new ReportTemplateResultOfInterviews();
                     builder = new ReportBuilderResultOfInterviews();
-                }/*else if(selectReport.equals("Кол-во абитуриентов по институтам")){
-                    
-                }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
+                }else if(selectReport.equals("Кол-во абитуриентов по институтам")){
+                    template = new ReportTemplateAmountStudentInstitute();
+                    builder = new ReportBuilderAmountStudentsInstutute();
+                }/*else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
                     
                 }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам-кафедрам")){
                     

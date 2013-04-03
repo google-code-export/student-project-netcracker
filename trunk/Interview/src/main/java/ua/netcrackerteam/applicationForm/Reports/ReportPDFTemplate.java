@@ -9,6 +9,7 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.ListIterator;
 import ua.netcrackerteam.applicationForm.ClassPath;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;

@@ -12,7 +12,7 @@ import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportBuilderResultOfInterviewsDetail extends ReportBuilder {
 
