@@ -99,7 +99,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
     
     private void getReport(){
         
-        SimpleDateFormat formatter  = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
+        SimpleDateFormat formatter  = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                 
         Iterator<Interview> iterator = interviews.iterator();
         while(iterator.hasNext()){

@@ -7,9 +7,12 @@ package ua.netcrackerteam.applicationForm.Reports.TypeReports;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ua.netcrackerteam.DAO.DAOReport;
+import ua.netcrackerteam.DAO.Entities.Institute;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
@@ -19,7 +22,9 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
  * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
-
+    
+    private  List reportData;
+    
     @Override
     public PdfPCell buildTitle() {
         PdfPCell cell= new PdfPCell();
@@ -50,17 +55,29 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildChart() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new PdfPCell();
     }
 
     @Override
     public List dataReport() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return reportData;
     }
 
     @Override
     public byte[] getChart(int widht, int height) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
+    
+     private void getReport(){
+                   
+        Iterator<Institute> iterator = institutes.iterator();
+        while(iterator.hasNext()){
+            
+          Institute institute = iterator.next();                           
+          List forms = (new DAOReport()).getFormByIdInstitute(institute.getInstituteId());           
+                   
+          reportData.add(new Object[]{institute.getName(), forms});
+                  
+        }
     
 }

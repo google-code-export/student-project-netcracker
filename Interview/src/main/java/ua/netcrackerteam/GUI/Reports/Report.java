@@ -49,25 +49,25 @@ public class Report {
     public Table getTable(String[] headerTable){  
         
          List reportData = report.dataReport();
-         Table table = fillTable(headerTable,reportData);
+         Table table = fillTable(headerTable,reportData);        
          return table;
     
     }
     
     private Table fillTable(String[] headerTable, List reportData){
-        Table table = new Table();
-         
+         Table table = new Table();
+         //header
          for(int i = 0; i < headerTable.length; i++){
             table.addContainerProperty(headerTable[i], String.class, null);
          }
-        
+        //body
         ListIterator iterator = reportData.listIterator();
         for(int i = 0; iterator.hasNext(); i++){
             table.addItem((Object[])iterator.next(), i);
         }
+        
 
         table.setPageLength(table.size());
-
         table.setSelectable(false);
         table.setNullSelectionAllowed(false);
         table.setImmediate(true);
@@ -99,7 +99,7 @@ public class Report {
     }
     
     public Embedded  getChart(MainPage mainPage){ 
-         StreamResource img = new StreamResource(new Report.ChartStreamSource(350, 300), "chart.png", mainPage);
+         StreamResource img = new StreamResource(new Report.ChartStreamSource(300, 350), "chart.png", mainPage);
          Embedded emb = new Embedded("", img); 
          
          return emb;

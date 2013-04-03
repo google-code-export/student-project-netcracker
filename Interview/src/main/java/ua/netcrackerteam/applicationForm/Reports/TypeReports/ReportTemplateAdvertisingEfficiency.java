@@ -30,6 +30,7 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     
     private List reportData;
+    private String[] footer;
     
     public ReportTemplateAdvertisingEfficiency(){
         DAOReport reportDAO = new DAOReport();
@@ -59,7 +60,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     public PdfPCell buildTable() {
         
          String[] header = new String[]{"Категория рекламы", "Выбрано (кол-во анкет)", " Выбрано (%)"};       
-         String[] footer = new String[]{"Итого ", "" + getAllForms(), ""};
+         footer = new String[]{"Итого ", "" + getAllForms(), ""};
         
          float[] size = new float[]{2.5f, 1.5f, 1.5f};
          DesignTable table = new DesignTableFlat(size);
@@ -154,6 +155,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
         return percent;
         
     }
+
 
   
        
