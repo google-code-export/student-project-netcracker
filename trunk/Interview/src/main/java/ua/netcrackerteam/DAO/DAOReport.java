@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import ua.netcrackerteam.DAO.Entities.Institute;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
 /**
@@ -28,7 +29,7 @@ public class DAOReport {
             session.beginTransaction();
             query = session.createSQLQuery("select to_char(start_date, 'DD/MM/YYYY HH24:MI'), max_number, count(form.id_form) as form_number, max_number - count(form.id_form) as free_number " +                                        
                                            "from interview left join form on interview.id_interview = form.id_interview " +
-                                           "where start_date is not null " +
+                                           "where interview.id_interview <> -1 " +
                                            "group by start_date, max_number " +
                                            " order by start_date desc");          
             report = query.list();
@@ -108,8 +109,8 @@ public class DAOReport {
           
        List report = new LinkedList();
        
-       report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1", "Телефон1"});
-       report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1", "Телефон1"});
+       report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
+       report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
        
        
        return report;
@@ -125,6 +126,29 @@ public class DAOReport {
           reportData.add(new Object[] {"Дата", "6", "30", "20", "10"});
           reportData.add(new Object[] {"Дата", "34", "30", "20", "10"});
           reportData.add(new Object[] {"Дата", "43", "30", "1", "29"});
+          
+          return reportData;
+      }
+      
+      public List getInstitute(){
+          List reportData = new LinkedList();
+          
+          Institute institute = new Institute();
+          institute.setInstituteId(1);
+          institute.setName("Институт 1");
+          reportData.add(institute);
+          institute.setInstituteId(2);
+          institute.setName("Институт 2");
+          reportData.add(institute);
+          institute.setInstituteId(3);
+          institute.setName("Институт 3");
+          reportData.add(institute);
+          institute.setInstituteId(4);
+          institute.setName("Институт 4");
+          reportData.add(institute);
+          institute.setInstituteId(5);
+          institute.setName("Институт 5");
+          reportData.add(institute);
           
           return reportData;
       }

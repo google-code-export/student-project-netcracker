@@ -7,9 +7,13 @@ package ua.netcrackerteam.applicationForm.Reports.TypeReports;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ua.netcrackerteam.DAO.DAOReport;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
@@ -19,7 +23,10 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
  * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
-
+            
+    public ReportTemplateAmountStudentInstitute(){
+         }
+    
     @Override
     public PdfPCell buildTitle() {
         PdfPCell cell= new PdfPCell();
@@ -36,7 +43,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-        String[] header = new String[]{"№", "Фамилия", "Имя", "Телефон"};       
+         String[] header = new String[]{"№", "Фамилия", "Имя", "Телефон"};       
         
          float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f};
          DesignTable table = new DesignTableWithGroups(size);
@@ -55,7 +62,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
     @Override
     public List dataReport() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new ArrayList();
     }
 
     @Override

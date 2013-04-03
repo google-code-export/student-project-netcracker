@@ -74,7 +74,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     @Override
     public PdfPCell buildChart() {
         
-        Chart chartTemplate = new Chart(getDefaultPieDataset(),"Анализ эффективности рекламы");
+        Chart chartTemplate = new Chart(getDefaultPieDataset());
         chartTemplate.createChartPie();
             
         PdfPCell cell = new PdfPCell(); 
@@ -110,7 +110,7 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     @Override
     public byte[] getChart(int widht, int height) {
         
-        Chart chartTemplate = new Chart(getDefaultPieDataset(), "Анализ эффективности рекламы");
+        Chart chartTemplate = new Chart(getDefaultPieDataset());
         chartTemplate.createChartPie();
         
         return chartTemplate.getByteChart(widht, height);
@@ -148,8 +148,11 @@ public class ReportTemplateAdvertisingEfficiency extends ReportTemplateBuilder{
     }
     
     private double getPercent(int forms, int allforms){
+        
         double percent = new BigDecimal((allforms == 0? 0: 100*(double)forms/allforms)).setScale(2, RoundingMode.UP).doubleValue();
+        
         return percent;
+        
     }
 
   

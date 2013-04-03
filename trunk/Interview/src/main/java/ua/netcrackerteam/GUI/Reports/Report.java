@@ -5,12 +5,15 @@
 package ua.netcrackerteam.GUI.Reports;
 
 import com.vaadin.terminal.StreamResource;
+import com.vaadin.terminal.gwt.client.ui.AlignmentInfo.Bits;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import ua.netcrackerteam.GUI.MainPage;
@@ -46,8 +49,13 @@ public class Report {
     public Table getTable(String[] headerTable){  
         
          List reportData = report.dataReport();
-             
-         Table table = new Table();
+         Table table = fillTable(headerTable,reportData);
+         return table;
+    
+    }
+    
+    private Table fillTable(String[] headerTable, List reportData){
+        Table table = new Table();
          
          for(int i = 0; i < headerTable.length; i++){
             table.addContainerProperty(headerTable[i], String.class, null);
@@ -65,12 +73,28 @@ public class Report {
         table.setImmediate(true);
         
         return table;
-    
     }
     
-    public GridLayout getGridView(){
+    public GridLayout getGridView(String[] headerTable){
         
-        return new GridLayout();     
+        List reportData = report.dataReport();
+        
+        GridLayout grid = new GridLayout(1, 2*reportData.size());
+        
+        Iterator iterator = reportData.iterator();
+        while(iterator.hasNext()){
+           Object[] row = (Object[])iterator.next(); 
+           
+           for(int i = 0; i < row.length - 1; i++){
+            grid.addComponent(new Label(row[i].toString()));} 
+           
+           Table table = fillTable(headerTable,(List)row[row.length - 1]);
+           grid.addComponent(table);
+           grid.setComponentAlignment(table, new Alignment(Bits.ALIGNMENT_VERTICAL_CENTER | 
+                        Bits.ALIGNMENT_HORIZONTAL_CENTER));
+        }
+        
+        return grid;     
         
     }
     

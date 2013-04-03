@@ -34,19 +34,17 @@ import org.jfree.data.general.DefaultPieDataset;
 public class Chart{
     
        private AbstractDataset dataSet;
-       private String title;
-       
+            
        JFreeChart chart;
        
-       public Chart(AbstractDataset dataset, String title) {
-           this.dataSet = dataset;
-           this.title   = title;                
+       public Chart(AbstractDataset dataset) {
+           this.dataSet = dataset;                         
        } 
       
         public  void createChartBar() {
          
            chart = ChartFactory.createBarChart(
-            title,
+            "",
             null,
             null,
             (DefaultCategoryDataset)dataSet,
@@ -65,23 +63,11 @@ public class Chart{
         r.setSeriesPaint(0, Color.BLUE); 
    }
     
-    private void createStackedChart() {
-                chart = ChartFactory.createStackedBarChart(
-                                "Stacked Bar Chart",
-                                "Games", 
-                                "No. of students",
-                                (DefaultCategoryDataset)dataSet,                                
-                                PlotOrientation.VERTICAL, 
-                                true, 
-                                true,
-                                false);
-                
-        }
-                
+                 
     public  void createChartPie(){
         
             chart = ChartFactory.createPieChart(
-            title,  
+            "",  
             (DefaultPieDataset)dataSet,           
             true,             
             true,

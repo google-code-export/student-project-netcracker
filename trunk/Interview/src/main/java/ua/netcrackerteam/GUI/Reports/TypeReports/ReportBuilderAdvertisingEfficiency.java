@@ -5,6 +5,7 @@
 package ua.netcrackerteam.GUI.Reports.TypeReports;
 
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import ua.netcrackerteam.GUI.MainPage;
@@ -35,6 +36,11 @@ public class ReportBuilderAdvertisingEfficiency extends ReportBuilder{
     @Override
     public Embedded buildChart() {
         return report.getChart(mainPage);
+    }
+
+    @Override
+    public GridLayout buildGrid() {
+        return null;
     }
 
     
