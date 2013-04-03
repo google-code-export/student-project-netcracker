@@ -5,6 +5,7 @@
 package ua.netcrackerteam.GUI.Reports;
 
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import ua.netcrackerteam.GUI.MainPage;
@@ -29,6 +30,7 @@ public abstract class ReportBuilder {
     public  Label buildDateCreate(){
       return report.getDateCreate();  
     }
-    public abstract Table buildTable();    
+    public abstract Table buildTable(); 
+    public abstract GridLayout buildGrid();
     public abstract Embedded buildChart();
 }

@@ -18,8 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
-import ua.netcrackerteam.GUI.Reports.ReportCreatorWithDiagram;
-import ua.netcrackerteam.GUI.Reports.ReportCreatorWithFilter;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
@@ -77,7 +75,7 @@ public class MainPanelHR extends MainPanel{
         selectReport = "Статистика увеличения записанных студентов на собеседования";
         template = new ReportTemplateDynamicsOfIncreaseStudents();
         builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);
-        creator = new ReportCreatorWithDiagram(true);
+        creator = new ReportsCreator();
         
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
             @Override
@@ -165,21 +163,17 @@ public class MainPanelHR extends MainPanel{
                 
                 if(selectReport.equals("Статистика увеличения записанных студентов на собеседования")){                     
                      template = new ReportTemplateDynamicsOfIncreaseStudents();                     
-                     builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);  
-                     creator = new ReportCreatorWithDiagram(true);             
+                     builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);                                 
                 } else if(selectReport.equals("Эффективность видов рекламы")){                    
                      template = new ReportTemplateAdvertisingEfficiency();
-                     builder = new ReportBuilderAdvertisingEfficiency(mainPage);  
-                     creator = new ReportCreatorWithDiagram(true);                  
+                     builder = new ReportBuilderAdvertisingEfficiency(mainPage);                                
                 } else if(selectReport.equals("Список абитуриентов на заданное собеседование")){
                     template = new ReportTemplateStudentsToInterview();                    
-                    builder = new ReportBuilderStudentsToInterview();                    
-                    creator = new ReportCreatorWithFilter();
-                    
+                    builder = new ReportBuilderStudentsToInterview();                   
+                                      
                 } else if(selectReport.equals("Общие итоги по собеседованиям")){
                     template = new ReportTemplateResultOfInterviews();
                     builder = new ReportBuilderResultOfInterviews();
-                    creator = new ReportCreatorWithDiagram(false);
                 }/*else if(selectReport.equals("Кол-во абитуриентов по институтам")){
                     
                 }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
@@ -191,7 +185,7 @@ public class MainPanelHR extends MainPanel{
                 }*/else if(selectReport.equals("Итоги по собеседованиям")){
                    template = new ReportTemplateResultOfInterviewsDetail();
                    builder = new ReportBuilderResultOfInterviewsDetail();
-                   creator = new ReportCreatorWithDiagram(false);
+                   creator = new ReportsCreator();
                 }
                 fillReportsLayout();
             }

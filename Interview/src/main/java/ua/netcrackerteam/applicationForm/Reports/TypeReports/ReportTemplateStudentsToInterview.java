@@ -7,6 +7,7 @@ package ua.netcrackerteam.applicationForm.Reports.TypeReports;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ua.netcrackerteam.DAO.DAOReport;
+import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
@@ -26,11 +28,9 @@ import ua.netcrackerteam.configuration.HibernateFactory;
  */
 public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{  
   
-    private List<Interview> interviews;
+    private List<Interview> interviews;    
+    private List reportData = new LinkedList();
     
-    private List reportForView = new LinkedList();
-    private List reportForPrint = new LinkedList();
-
     public ReportTemplateStudentsToInterview(int idInterview){ 
         
       Interview interviewById = HibernateFactory.getInstance().getDAOInterview().getInterview(idInterview);
@@ -77,7 +77,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
         DesignTable table = new DesignTableWithGroups(size);
         
         report.setDesignTable(table);
-        PdfPCell cell = report.setTable(header, reportForPrint, null);
+        PdfPCell cell = report.setTable(header, reportData, null);
     
         return cell;
     }
@@ -89,7 +89,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
 
     @Override
     public List dataReport() {      
-        return reportForView;
+        return reportData;
     }
 
     @Override
@@ -98,21 +98,18 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
     }
     
     private void getReport(){
-            
+        
+        SimpleDateFormat formatter  = new SimpleDateFormat("dd/MMM/yyyy HH:mm");
+                
         Iterator<Interview> iterator = interviews.iterator();
         while(iterator.hasNext()){
-          Interview interview = iterator.next();
-          
-          if(interview.getStartDate() == null){ continue;} //reserve time for hr
-                  
+            
+          Interview interview = iterator.next();                           
           List forms = (new DAOReport()).getFormByIdInterview(interview.getIdInterview());
+          String startInterview = formatter.format(interview.getStartDate());          
                    
-          Iterator iteratorReport = forms.iterator();
-          while(iteratorReport.hasNext()){
-              Object[] rowReport = (Object[])iteratorReport.next();                 
-              reportForView.add(rowReport);
-              reportForPrint.add(new Object[]{interview, rowReport});
-          }
+          reportData.add(new Object[]{startInterview, forms});
+                  
         }
         
     }

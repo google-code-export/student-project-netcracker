@@ -101,7 +101,7 @@ public class ReportPDFTemplate {
     public PdfPCell setChart(Chart chart) throws BadElementException, IOException{
         
        PdfPCell cellChart = new PdfPCell();
-       Image chartImage = chart.getImageChart(600, 700);
+       Image chartImage = chart.getImageChart(300, 320);
        cellChart.setImage(chartImage);      
        cellChart.setColspan(2);
        cellChart .setBorder(Rectangle.NO_BORDER);

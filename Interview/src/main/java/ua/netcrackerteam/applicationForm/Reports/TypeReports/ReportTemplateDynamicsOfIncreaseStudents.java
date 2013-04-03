@@ -72,7 +72,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public PdfPCell buildChart() {
        
-        Chart chartTemplate = new Chart(getCategoryDataSet(), "Динамика регистрации на собеседования");
+        Chart chartTemplate = new Chart(getCategoryDataSet());
         chartTemplate.createChartBar();
     
         PdfPCell cell = new PdfPCell();
@@ -129,7 +129,7 @@ public class ReportTemplateDynamicsOfIncreaseStudents extends ReportTemplateBuil
     @Override
     public byte[] getChart(int widht, int height) {
         
-        Chart chartTemplate = new Chart(getCategoryDataSet(),"Динамика регистрации на собеседования");
+        Chart chartTemplate = new Chart(getCategoryDataSet());
         chartTemplate.createChartBar();
         
         return chartTemplate.getByteChart(widht, height);

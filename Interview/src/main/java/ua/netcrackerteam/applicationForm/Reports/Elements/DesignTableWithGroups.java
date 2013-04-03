@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -39,7 +40,7 @@ public class DesignTableWithGroups extends DesignTable{
             return;
          }
          
-         try {
+         try {                  
             BaseColor fColor = BaseColor.BLACK;   
             BaseColor borderColor = WebColors.getRGBColor("#999966");           
             BaseColor bColorTableLine1 = WebColors.getRGBColor("#99CCCC");            
@@ -48,29 +49,25 @@ public class DesignTableWithGroups extends DesignTable{
             Font bf12 = new Font(font, 10, Font.ITALIC);              
               
               //Content table  
-              Interview interviewPrevious = new Interview();
-              ListIterator iterator = body.listIterator();
+              String dateStartInterview = "";
+              Iterator iterator = body.iterator();
               while(iterator.hasNext()){     
                   
                        Object[] rowReport = (Object[])iterator.next();
                        
-                       Interview interview = (Interview)rowReport[0];
+                       String date = (String)rowReport[0];                       
+                       List row = (List)rowReport[1];
                        
-                       DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy  HH:mm");
-                       String date ="";
-                       if(interview.getStartDate() != null){
-                         date = dateFormat.format(interview.getStartDate());}
-                       
-                       Object[] row = (Object[])rowReport[1];
-                       
-                       if(!interviewPrevious.equals(interview )) {
-                        insertCell(date, Element.ALIGN_CENTER, row.length, bf12, fColor, bColorTableLine2, borderColor);
-                        interviewPrevious = interview;
+                       if(!dateStartInterview.equals(date)) {
+                        insertCell(date, Element.ALIGN_CENTER, 5, bf12, fColor, bColorTableLine2, borderColor);
+                        dateStartInterview = date;
                        }
                        
-                       
-                       for(int j = 0; j < row.length; j++){         
-                           insertCell(row[j].toString(), Element.ALIGN_CENTER, 1, bf12, fColor, bColorTableLine1, borderColor);
+                       Iterator rowIterator = row.iterator();
+                       while(rowIterator.hasNext()){
+                           Object[] rowData = (Object[])rowIterator.next();
+                           for(int j=0; j< rowData.length; j++){
+                            insertCell(rowData[j].toString(), Element.ALIGN_CENTER, 1, bf12, fColor, bColorTableLine1, borderColor);}
                        }               
               }
         } catch (DocumentException ex) {

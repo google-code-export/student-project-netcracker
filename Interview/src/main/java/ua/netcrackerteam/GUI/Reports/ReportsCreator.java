@@ -10,7 +10,9 @@ import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbstractSplitPanel;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
@@ -36,10 +38,10 @@ import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStude
  *
  * @author Klitna Tetiana
  */
-public abstract class ReportsCreator {
+public class ReportsCreator {
             
-    protected ReportBuilder builder;  
-    protected VerticalLayout reportsLo;
+    private ReportBuilder builder;  
+    private VerticalLayout reportsLo;
      
     public void setReportBuilder(ReportBuilder builder){
         this.builder = builder;
@@ -50,7 +52,7 @@ public abstract class ReportsCreator {
         this.reportsLo = reportsLo;
     }
     
-    protected void setLogotip(){
+    private void setLogotip(){
         
         reportsLo.setSizeFull();
         
@@ -73,8 +75,30 @@ public abstract class ReportsCreator {
     }
     
      
-    public abstract void createReport();  
+    public void createReport(){
+         setLogotip();
+                     
+        Table table = builder.buildTable();
+        if(table != null){
+          setForComponent(table);
+        }
+        GridLayout grid = builder.buildGrid();
+        if(grid != null){
+           setForComponent(grid);
+        }
+        
+            Embedded emb = builder.buildChart();
+            if(emb != null){
+                setForComponent(emb);
+            }
+     
+    } 
     
-    
+    private void setForComponent(Component component){
+            component.setWidth("100%");          
+            reportsLo.addComponent(component);
+            reportsLo.setComponentAlignment(component, Alignment.MIDDLE_CENTER);
+    }
+      
    
 }

@@ -5,28 +5,34 @@
 package ua.netcrackerteam.GUI.Reports.TypeReports;
 
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class ReportBuilderAmountStudentsFaculty extends ReportBuilder {
 
     @Override
     public Label buildTitle() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return report.getTitle("Количество абитуриентов по институтам-факультетам");
     }
 
     @Override
     public Table buildTable() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     @Override
     public Embedded buildChart() {
+        return new Embedded();
+    }
+
+    @Override
+    public GridLayout buildGrid() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

@@ -5,6 +5,7 @@
 package ua.netcrackerteam.GUI.Reports.TypeReports;
 
 import com.vaadin.ui.Embedded;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
@@ -28,6 +29,11 @@ public class ReportBuilderResultOfInterviewsDetail extends ReportBuilder {
     @Override
     public Embedded buildChart() {
         return new Embedded();
+    }
+
+    @Override
+    public GridLayout buildGrid() {
+        return null;
     }
     
 }
