@@ -766,7 +766,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         Iterator<Component> i = l.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
-            if (c instanceof TextField) {
+            if ((c instanceof TextField) && !(c.getCaption().equals("Ваша кафедра"))&& !(c.getCaption().equals("Ваш факультет"))&& !(c.getCaption().equals("Ваш ВУЗ"))) {
                 TextField c1 = (TextField) c;
                 if (!c1.isValid()) {
                     return false;

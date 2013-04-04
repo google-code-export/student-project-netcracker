@@ -146,7 +146,7 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         beginTransaction();
         List listOfParam = new ArrayList();
         listOfParam.add(userCategory);
-        String getUsersFilteredQuery = "from UserList where idUserCategory = :param0";
+        String getUsersFilteredQuery = "from UserList where to_char(idUserCategory) = to_char(:param0)";
         List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersFilteredQuery, listOfParam);
         commitTransaction();
         return listOfUsers;
@@ -155,10 +155,14 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public List getUsersSearchResultNonBanned(String searchString){
         beginTransaction();
+        List listOfParams = new ArrayList();
+        searchString = '%'+searchString+'%';
+        listOfParams.add(searchString);
         String getUsersSearchResultNonBannedQuery = "from UserList where active = 'active' and " +
-                                    "(upper(userName) like upper('%" + searchString + "%') or " +
-                                    "idUser like '%" + searchString + "%' or upper(email) like upper('%" + searchString + "%'))";
-        List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersSearchResultNonBannedQuery);
+                                    "(upper(userName) like upper(:param0) or " +
+                                    "to_char(idUser) like to_char(:param0) or upper(email) like upper(:param0))";
+
+        List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersSearchResultNonBannedQuery, listOfParams);
         commitTransaction();
         return listOfUsers;
     }
@@ -166,9 +170,13 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     @Override
     public List getUsersSearchResultByCategoryNonBanned(String searchString, int userCategory){
         beginTransaction();
-        String getUsersSearchResultByCategoryNonBannedQuery = "from UserList where idUserCategory = " + userCategory + " and active = 'active' and " +
-                                                "(upper(userName) like upper('%" + searchString + "%') or " +
-                                                "idUser like '%" + searchString + "%' or upper(email) like upper('%" + searchString + "%'))";
+        List listOfParams = new ArrayList();
+        listOfParams.add(userCategory);
+        searchString = '%'+searchString+'%';
+        listOfParams.add(searchString);
+        String getUsersSearchResultByCategoryNonBannedQuery = "from UserList where idUserCategory = :param0 and active = 'active' and " +
+                                                "(upper(userName) like upper(:param1) or " +
+                                                "to_char(idUser) like to_char(:param1) or upper(email) like upper(:param1))";
         List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersSearchResultByCategoryNonBannedQuery);
         commitTransaction();
         return listOfUsers;
@@ -196,7 +204,7 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         listOfParam.add(userName);
         String getUserCategoryIDByUserNameQuery = "from UserList where upper(userName) =:param0";
         UserList userList = super.<UserList>executeSingleGetQuery(getUserCategoryIDByUserNameQuery, listOfParam);
-        int userCategory = userList.getIdUserCategory().getIdUSerCategory();
+        int userCategory = userList.getIdUserCategory().getIdUserCategory();
         commitTransaction();
         return userCategory;
     }
@@ -224,7 +232,7 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         beginTransaction();
         List listOfParam = new ArrayList();
         listOfParam.add(id);
-        String getCountRegisteredUsersByUserCategoryQuery = "select count(idUser) from UserList where idUserCategory = :param0";
+        String getCountRegisteredUsersByUserCategoryQuery = "select count(idUser) from UserList where to_char(idUserCategory) = to_char(:param0)";
         Long count = super.<Long>executeSingleGetQuery(getCountRegisteredUsersByUserCategoryQuery, listOfParam);
         commitTransaction();
         return count;

@@ -60,7 +60,7 @@ public class GeneralController implements Logable {
                 userName = userList.getUserName();
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
-                    idUserCategory = userList.getIdUserCategory().getIdUSerCategory();
+                    idUserCategory = userList.getIdUserCategory().getIdUserCategory();
                 }
             }
         } catch (SQLException e) {
@@ -104,7 +104,7 @@ public class GeneralController implements Logable {
                 userPass = userList.getPassword();
                 if (user.equals(userName) && hashedPass.equals(userPass)){
                     checkedUserIds.add(userList.getIdUser());
-                    checkedUserIds.add(userList.getIdUserCategory().getIdUSerCategory());
+                    checkedUserIds.add(userList.getIdUserCategory().getIdUserCategory());
                 }
             }
         } catch (SQLException e) {
@@ -255,7 +255,7 @@ public class GeneralController implements Logable {
         try{
             if(GeneralController.checkUsersAvailability(userName)){
                 int userCategory = HibernateFactory.getInstance().getAdminDAO().getUserCategoryIDByUserName(userName);
-                List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", userCategory);
+                List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUserCategory", userCategory);
                 UserCategory currUserCat = (UserCategory)userTypes.get(0);
                 AuditInterview auditInterview = new AuditInterview();
                 auditInterview.setAction(currActCat);
@@ -265,9 +265,9 @@ public class GeneralController implements Logable {
                 auditInterview.setActionDate(actionTime);
                 HibernateFactory.getInstance().getAdminDAO().addAudit(auditInterview);
             } else {
-                List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUSerCategory", 5);
+                List userTypes = StudentPage.searchSomethingByID("UserCategory", "idUserCategory", 5);
                 UserCategory currUserCat = (UserCategory)userTypes.get(0);
-                currUserCat.getIdUSerCategory();
+                currUserCat.getIdUserCategory();
                 AuditInterview auditInterview = new AuditInterview();
                 auditInterview.setAction(currActCat);
                 auditInterview.setActionDescription(actionDescription);
