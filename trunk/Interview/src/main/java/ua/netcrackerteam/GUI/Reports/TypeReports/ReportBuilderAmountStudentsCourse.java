@@ -30,7 +30,7 @@ public class ReportBuilderAmountStudentsCourse extends ReportBuilder {
 
     @Override
     public Table buildTable() {
-        return report.getTable(new String[]{"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+        return report.getTable(new String[]{"Курс","Пришедшие", "Не пришедшие", "Всего"});
     }
 
     @Override

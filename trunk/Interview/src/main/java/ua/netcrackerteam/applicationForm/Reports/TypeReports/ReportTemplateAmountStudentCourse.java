@@ -55,7 +55,7 @@ public class ReportTemplateAmountStudentCourse extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-         String[] header = new String[]{"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"};  
+         String[] header = new String[]{"Курс", "Пришедшие", "Не пришедшие", "Всего"};  
                 
          float[] size = new float[]{1f, 1f, 1f, 1f};
          DesignTable table = new DesignTableFlat(size);

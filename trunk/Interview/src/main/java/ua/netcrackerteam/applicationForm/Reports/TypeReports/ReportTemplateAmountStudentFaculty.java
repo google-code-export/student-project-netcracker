@@ -7,6 +7,7 @@ package ua.netcrackerteam.applicationForm.Reports.TypeReports;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ua.netcrackerteam.DAO.DAOReport;
 import ua.netcrackerteam.DAO.Entities.Institute;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
@@ -28,7 +31,13 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
     
     public ReportTemplateAmountStudentFaculty(){
         
-
+        DAOReport reportDAO = new DAOReport();
+        reportData = reportDAO.getAmountByFaculty();
+        
+        if(reportData == null){
+            reportData = new ArrayList();
+        }
+        
     }
     
     @Override
@@ -47,10 +56,10 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-       String[] header = new String[]{"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"};       
+       String[] header = new String[]{"Институт", "Факультет", "Пришедшие", "Не пришедшие", "Всего"};       
         
-         float[] size = new float[]{1f, 1f, 1f, 1f};
-         DesignTable table = new DesignTableWithGroups(size);
+         float[] size = new float[]{2f, 2f, 1f, 1f, 1f};
+         DesignTable table = new DesignTableFlat(size);
      
          report.setDesignTable(table);
          PdfPCell cell = report.setTable(header, reportData, null);
@@ -73,7 +82,6 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
         return null;
     }
-    
- 
+
     
 }
