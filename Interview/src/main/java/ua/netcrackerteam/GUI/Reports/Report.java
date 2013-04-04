@@ -99,7 +99,7 @@ public class Report {
     }
     
     public Embedded  getChart(MainPage mainPage){ 
-         StreamResource img = new StreamResource(new Report.ChartStreamSource(300, 350), "chart.png", mainPage);
+         StreamResource img = new StreamResource(new Report.ChartStreamSource(300, 250), "chart.png", mainPage);
          Embedded emb = new Embedded("", img); 
          
          return emb;
