@@ -21,7 +21,9 @@ import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.GUI.Reports.ReportsCreator;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAmountStudentsCathedra;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAmountStudentsCourse;
+import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAmountStudentsFaculty;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAmountStudentsInstutute;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviews;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderResultOfInterviewsDetail;
@@ -30,7 +32,9 @@ import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAdver
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateDynamicsOfIncreaseStudents;
 import ua.netcrackerteam.applicationForm.Reports.ReportsTemplateCreator;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmountStudentCathedra;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmountStudentCourse;
+import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmountStudentFaculty;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmountStudentInstitute;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviewsDetail;
@@ -181,11 +185,13 @@ public class MainPanelHR extends MainPanel{
                 }else if(selectReport.equals("Кол-во абитуриентов по институтам")){
                     template = new ReportTemplateAmountStudentInstitute();
                     builder = new ReportBuilderAmountStudentsInstutute();
-                }/*else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
-                    
+                }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
+                    template = new ReportTemplateAmountStudentFaculty();
+                    builder = new ReportBuilderAmountStudentsFaculty();
                 }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам-кафедрам")){
-                    
-                }*/else if(selectReport.equals("Кол-во абитуриентов по курсам")){
+                   template = new ReportTemplateAmountStudentCathedra();
+                   builder = new  ReportBuilderAmountStudentsCathedra();
+                }else if(selectReport.equals("Кол-во абитуриентов по курсам")){
                    template = new ReportTemplateAmountStudentCourse();
                    builder = new ReportBuilderAmountStudentsCourse(mainPage);
                 }else if(selectReport.equals("Итоги по собеседованиям")){

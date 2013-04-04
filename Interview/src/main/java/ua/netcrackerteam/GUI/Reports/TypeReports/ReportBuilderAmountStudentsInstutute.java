@@ -23,7 +23,7 @@ public class ReportBuilderAmountStudentsInstutute extends ReportBuilder{
 
     @Override
     public Table buildTable() {
-        return report.getTable(new String[]{"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+        return report.getTable(new String[]{"Институт", "Пришедшие", "Не пришедшие", "Всего"});
     }
 
     @Override

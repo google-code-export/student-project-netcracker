@@ -23,7 +23,7 @@ public class ReportBuilderAmountStudentsFaculty extends ReportBuilder {
 
     @Override
     public Table buildTable() {
-        return null;
+        return report.getTable(new String[]{"Институт", "Факультет", "Пришедшие", "Не пришедшие", "Всего"});
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ReportBuilderAmountStudentsFaculty extends ReportBuilder {
 
     @Override
     public GridLayout buildGrid() {
-        return report.getGridView(new String[]{"№", "Фамилия", "Имя", "Отчество", "Email", "Телефон"});
+        return new GridLayout();
     }
     
 }

@@ -257,33 +257,39 @@ public class DAOReport extends DAOCoreObject {
 
           return reportData;
       }
-      
-      public List getReportAmountFaculty(int idInstitute){
-          
-        List reportData = new ArrayList(2);        
-        reportData.add(new Object[] {"факультет 1", "Пришли на собеседование", "Не пришли насобеседование", "Всего"});
-        reportData.add(new Object[] {"факультет 2", "Прошли собеседование", "Не пришли на собеседование", "Всего"});
-               
-        return reportData;
-        
-        
-      }
+
       
        public List getAmountByCourse(){
         List reportData = new ArrayList(2);        
-        reportData.add(new Object[] {"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
-        reportData.add(new Object[] {"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+        reportData.add(new Object[] {"Курс", "Пришедшие", "Не пришедшие", "Всего"});
+        reportData.add(new Object[] {"Курс", "Пришедшие", "Не пришедшие", "Всего"});
                
         return reportData; 
        }
        
       public List getAmountByInstitute(){
         List reportData = new ArrayList(2);        
-        reportData.add(new Object[] {"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
-        reportData.add(new Object[] {"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+        reportData.add(new Object[] {"Институт", "Пришедшие", "Не пришедшие", "Всего"});
+        reportData.add(new Object[] {"Институт", "Пришедшие", "Не пришедшие", "Всего"});
                
         return reportData; 
        }
+      
+      public List getAmountByFaculty(){
+        List reportData = new ArrayList(3);        
+        reportData.add(new Object[] { "Институт ", "Факультет","Пришедшие", "Не пришедшие", "Всего"});
+        reportData.add(new Object[] { "Институт ", "Факультет","Пришедшие", "Не пришедшие", "Всего"});
+        reportData.add(new Object[] { "Институт ", "Факультет","Пришедшие", "Не пришедшие", "Всего"});       
+        return reportData; 
+      }
+      
+     public List getAmountByCathedra(){
+        List reportData = new ArrayList(3);        
+        reportData.add(new Object[] { "Институт ", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"});
+        reportData.add(new Object[] { "Институт ", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"});
+        reportData.add(new Object[] { "Институт ", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"});       
+        return reportData; 
+      }
        
 
     public static void main(String[] args) {

@@ -23,7 +23,7 @@ public class ReportBuilderAmountStudentsCathedra extends ReportBuilder {
 
     @Override
     public Table buildTable() {
-        return null;
+        return report.getTable(new String[]{"Институт", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"});
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ReportBuilderAmountStudentsCathedra extends ReportBuilder {
 
     @Override
     public GridLayout buildGrid() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new GridLayout();
     }
     
 }

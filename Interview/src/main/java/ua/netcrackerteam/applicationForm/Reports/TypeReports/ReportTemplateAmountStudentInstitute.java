@@ -34,7 +34,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
         reportData = reportDAO.getAmountByInstitute();
         
         if(reportData == null){
-            reportData = new ArrayList<Institute>();
+            reportData = new ArrayList();
         }
       }
     
@@ -54,7 +54,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-         String[] header = new String[]{"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"};       
+         String[] header = new String[]{"Институт", "Пришедшие", "Не пришедшие", "Всего"};       
         
          float[] size = new float[]{1f, 1f, 1f, 1f};
          DesignTable table = new DesignTableFlat(size);
