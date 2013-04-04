@@ -19,25 +19,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 
 /**
  *
  * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
-    
-    private List<Institute> institutes;
-    private List reportData = new LinkedList();
+     
+    private List reportData;
             
     public ReportTemplateAmountStudentInstitute(){
         DAOReport reportDAO = new DAOReport();
-        institutes = reportDAO.getUnit(0,0,0);
+        reportData = reportDAO.getAmountByInstitute();
         
-        if(institutes == null){
-            institutes = new ArrayList<Institute>();
+        if(reportData == null){
+            reportData = new ArrayList<Institute>();
         }
-        getReport();
-    }
+      }
     
     @Override
     public PdfPCell buildTitle() {
@@ -55,10 +54,10 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-         String[] header = new String[]{"№", "Фамилия", "Имя", "Email", "Телефон"};       
+         String[] header = new String[]{"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"};       
         
-         float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f, 1.5f};
-         DesignTable table = new DesignTableWithGroups(size);
+         float[] size = new float[]{1f, 1f, 1f, 1f};
+         DesignTable table = new DesignTableFlat(size);
      
          report.setDesignTable(table);
          PdfPCell cell = report.setTable(header, reportData, null);
@@ -81,21 +80,5 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
        return null;
     }
-    
-      private void getReport(){
-                   
-        Iterator<Institute> iterator = institutes.iterator();
-        while(iterator.hasNext()){
-            
-          Institute institute = iterator.next();                           
-          List forms = (new DAOReport()).getFormByIdInstitute(institute.getInstituteId());           
-          
-          if(!forms.isEmpty()){
-            reportData.add(new Object[]{institute.getName(), forms});}
-                  
-        }
-      }
-    
-
-    
+     
 }

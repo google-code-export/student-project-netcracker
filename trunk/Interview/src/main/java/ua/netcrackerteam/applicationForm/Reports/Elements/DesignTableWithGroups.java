@@ -48,20 +48,16 @@ public class DesignTableWithGroups extends DesignTable{
             BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);
             Font bf12 = new Font(font, 10, Font.ITALIC);              
               
-              //Content table  
-              String dateStartInterview = "";
+              //Content table      
               Iterator iterator = body.iterator();
               while(iterator.hasNext()){     
                   
                        Object[] rowReport = (Object[])iterator.next();
                        
-                       String date = (String)rowReport[0];                       
+                       String dateStartInterview = (String)rowReport[0];                       
                        List row = (List)rowReport[1];
-                       
-                       if(!dateStartInterview.equals(date)) {
-                        insertCell(date, Element.ALIGN_CENTER, 5, bf12, fColor, bColorTableLine2, borderColor);
-                        dateStartInterview = date;
-                       }
+                                             
+                       insertCell(dateStartInterview, Element.ALIGN_CENTER, 5, bf12, fColor, bColorTableLine2, borderColor);                                           
                        
                        Iterator rowIterator = row.iterator();
                        while(rowIterator.hasNext()){
