@@ -17,6 +17,7 @@ import ua.netcrackerteam.DAO.DAOReport;
 import ua.netcrackerteam.DAO.Entities.Institute;
 import ua.netcrackerteam.applicationForm.Reports.Elements.Chart;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
+import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
 import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
@@ -25,18 +26,17 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
  * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentCourse extends ReportTemplateBuilder{
-    
-    private List<Integer> courses;    
+         
     List reportData = new LinkedList();
     
     public ReportTemplateAmountStudentCourse(){
-        DAOReport reportDAO = new DAOReport();
-        courses = reportDAO.getCourses();
         
-        if(courses == null){
-            courses = new ArrayList<Integer>();
-        }
-        getReport();
+        DAOReport reportDAO = new DAOReport();
+        reportData= reportDAO.getAmountByCourse();
+        
+        if(reportData== null){
+            reportData = new ArrayList();
+        }      
     }
     
     @Override
@@ -55,10 +55,10 @@ public class ReportTemplateAmountStudentCourse extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-         String[] header = new String[]{"№", "Фамилия", "Имя", "Email", "Телефон"};  
+         String[] header = new String[]{"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"};  
                 
-         float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f, 1.5f};
-         DesignTable table = new DesignTableWithGroups(size);
+         float[] size = new float[]{1f, 1f, 1f, 1f};
+         DesignTable table = new DesignTableFlat(size);
      
          report.setDesignTable(table);
          PdfPCell cell = report.setTable(header, reportData, null);
@@ -82,19 +82,6 @@ public class ReportTemplateAmountStudentCourse extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
         return null;
     }
-    
-     private void getReport(){
-                   
-        Iterator<Integer> iterator = courses.iterator();
-        while(iterator.hasNext()){
-            
-          Integer course = iterator.next();                           
-          List forms = (new DAOReport()).getFormByCourse(course);           
-                   
-          reportData.add(new Object[]{"" + course + " курс", forms});
-                  
-        }
-      }
 
     
 }

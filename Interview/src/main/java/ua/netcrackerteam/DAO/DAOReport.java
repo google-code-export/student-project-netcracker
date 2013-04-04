@@ -108,17 +108,20 @@ public class DAOReport extends DAOCoreObject {
     }
     
       public List getFormByIdInterview(int idInterview){
+          
+          //null возвращает
 
           List report = new LinkedList();
 
-          beginTransaction();
+          /*beginTransaction();
           List listOfParam = new ArrayList();
           listOfParam.add(idInterview);
           String getFormQuery = "from Form where to_char(idInterview) = to_char(:param0)";
           report = super.<Long>executeListGetQuery(getFormQuery, listOfParam);
-          commitTransaction();
-          /*report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
-            report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});*/
+          commitTransaction();*/
+          
+           report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
+           report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
        
        
        return report;
@@ -254,6 +257,34 @@ public class DAOReport extends DAOCoreObject {
 
           return reportData;
       }
+      
+      public List getReportAmountFaculty(int idInstitute){
+          
+        List reportData = new ArrayList(2);        
+        reportData.add(new Object[] {"факультет 1", "Пришли на собеседование", "Не пришли насобеседование", "Всего"});
+        reportData.add(new Object[] {"факультет 2", "Прошли собеседование", "Не пришли на собеседование", "Всего"});
+               
+        return reportData;
+        
+        
+      }
+      
+       public List getAmountByCourse(){
+        List reportData = new ArrayList(2);        
+        reportData.add(new Object[] {"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+        reportData.add(new Object[] {"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+               
+        return reportData; 
+       }
+       
+      public List getAmountByInstitute(){
+        List reportData = new ArrayList(2);        
+        reportData.add(new Object[] {"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+        reportData.add(new Object[] {"Институт", "Зарегестрировано", "Оценено", "Не пришли на собеседование"});
+               
+        return reportData; 
+       }
+       
 
     public static void main(String[] args) {
 

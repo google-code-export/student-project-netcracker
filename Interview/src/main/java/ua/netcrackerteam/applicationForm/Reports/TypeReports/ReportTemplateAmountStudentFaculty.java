@@ -7,6 +7,7 @@ package ua.netcrackerteam.applicationForm.Reports.TypeReports;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,6 +26,11 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
     
     private  List reportData;
     
+    public ReportTemplateAmountStudentFaculty(){
+        
+
+    }
+    
     @Override
     public PdfPCell buildTitle() {
         PdfPCell cell= new PdfPCell();
@@ -41,13 +47,13 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-       String[] header = new String[]{"№", "Фамилия", "Имя", "Телефон"};       
+       String[] header = new String[]{"Курс", "Зарегестрировано", "Оценено", "Не пришли на собеседование"};       
         
-         float[] size = new float[]{0.5f, 1.5f, 1.5f, 1.5f};
+         float[] size = new float[]{1f, 1f, 1f, 1f};
          DesignTable table = new DesignTableWithGroups(size);
      
          report.setDesignTable(table);
-         PdfPCell cell = report.setTable(header, dataReport(), null);
+         PdfPCell cell = report.setTable(header, reportData, null);
         
   
         return cell;
@@ -68,7 +74,6 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
         return null;
     }
     
-     private void getReport(){          
-     }
+ 
     
 }
