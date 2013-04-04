@@ -1,13 +1,7 @@
 package ua.netcrackerteam.DAO.Entities;
 
-import org.hibernate.*;
-import ua.netcrackerteam.configuration.HibernateUtil;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,17 +22,17 @@ public class UserCategory implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_category_seq_gen")
     @SequenceGenerator(name = "user_category_seq_gen", sequenceName = "user_category_seq")
     @Column(name= "ID_USER_CATEGORY")
-    private int idUSerCategory;
+    private Integer idUserCategory;
 
     @Column(name= "CATEGORY")
     private String name;
 
-    public int getIdUSerCategory() {
-        return idUSerCategory;
+    public Integer getIdUserCategory() {
+        return idUserCategory;
     }
 
-    public void setIdUSerCategory(int idUSerCategory) {
-        this.idUSerCategory = idUSerCategory;
+    public void setIdUserCategory(Integer idUserCategory) {
+        this.idUserCategory = idUserCategory;
     }
 
     public String getName() {
@@ -49,7 +43,7 @@ public class UserCategory implements Serializable {
         this.name = name;
     }
 
-    public static UserCategory getUserCategoeyByID(int currUserCategoryID) throws SQLException {
+    /*public static UserCategory getUserCategoeyByID(int currUserCategoryID) throws SQLException {
         Session session = null;
         org.hibernate.Query re = null;
         List listOfCategories = null;
@@ -69,7 +63,7 @@ public class UserCategory implements Serializable {
         }
         currUserCategory = (UserCategory) listOfCategories.get(0);
         return currUserCategory;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -78,7 +72,7 @@ public class UserCategory implements Serializable {
 
         UserCategory that = (UserCategory) o;
 
-        if (idUSerCategory != that.idUSerCategory) return false;
+        if (idUserCategory != that.idUserCategory) return false;
         if (!name.equals(that.name)) return false;
 
         return true;
@@ -86,7 +80,7 @@ public class UserCategory implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = idUSerCategory;
+        int result = idUserCategory;
         result = 31 * result + name.hashCode();
         return result;
     }

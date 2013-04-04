@@ -4,13 +4,14 @@
  */
 package ua.netcrackerteam.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * 
@@ -25,10 +26,12 @@ public class RegistrationToInterview implements  Logable{
      * @param interviewId - selected interview by student
      */
     public void updateRegistrationToInterview(String userName, int interviewId) {        
-            Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName); 
-            Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
-            form.setInterview(interview);
-            HibernateFactory.getInstance().getStudentDAO().updateForm(form);             
+            Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
+            if (form!=null) {
+                Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
+                form.setInterview(interview);
+                HibernateFactory.getInstance().getStudentDAO().updateForm(form);
+            }
     }
     
     /**

@@ -4,20 +4,21 @@
  */
 package ua.netcrackerteam.DAO;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.configuration.HibernateUtil;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import ua.netcrackerteam.DAO.Entities.Institute;
-import ua.netcrackerteam.configuration.HibernateUtil;
 
 /**
  *
  * @author Test class
  */
-public class DAOReport {
+public class DAOReport extends DAOCoreObject {
     
     public List getReportDynamicsOfIncreaseStudents() {
         
@@ -107,11 +108,17 @@ public class DAOReport {
     }
     
       public List getFormByIdInterview(int idInterview){
-          
-       List report = new LinkedList();
-       
-       report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
-       report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
+
+          List report = new LinkedList();
+
+          beginTransaction();
+          List listOfParam = new ArrayList();
+          listOfParam.add(idInterview);
+          String getFormQuery = "from Form where to_char(idInterview) = to_char(:param0)";
+          report = super.<Long>executeListGetQuery(getFormQuery, listOfParam);
+          commitTransaction();
+          /*report.add(new Object[]{"1 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});
+            report.add(new Object[]{"2 " + idInterview, "Фамилия1", "Имя1", "ВУЗ1111111111111111111111111111111111111111111111111111", "Телефон1"});*/
        
        
        return report;
@@ -131,8 +138,10 @@ public class DAOReport {
           return reportData;
       }
       
-      public List getInstitute(){
-          List reportData = new ArrayList(5);
+      public <T> List<T> getUnit(int idInstitute, int idFaculty, int queryType){
+          List<T> report = new ArrayList<T>();
+          /*List reportData = new ArrayList(5);
+
           
           Institute institute1 = new Institute();
           institute1.setInstituteId(1);
@@ -153,40 +162,108 @@ public class DAOReport {
           Institute institute5 = new Institute();
           institute5.setInstituteId(5);
           institute5.setName("Институт 5");
-          reportData.add(institute5);
+          reportData.add(institute5);*/
+          beginTransaction();
+          String getUnit = "";
+          if (queryType == 0) { //все институты
+              getUnit = "from Institute";
+              report = super.<T>executeListGetQuery(getUnit);
+          }
+          else if (queryType == 1) { //факультеты по институту
+              getUnit = "from Faculty where to_char(institute) = to_char(:param0)";
+              List listOfParams = new ArrayList();
+              listOfParams.add(idInstitute);
+              report = super.<T>executeListGetQuery(getUnit, listOfParams);
+          }
+          else if (queryType == 2) { //кафедры по Факультету
+              getUnit = "from Cathedra where to_char(faculty) = to_char(:param0)";
+              List listOfParams = new ArrayList();
+              listOfParams.add(idFaculty);
+              report = super.<T>executeListGetQuery(getUnit, listOfParams);
+          }
+          commitTransaction();
+
           
-          return reportData;
+          return report;
       }
+
+
       
       public List getFormByIdInstitute(int idInstitute){
-           List reportData = new ArrayList(2);
+          List reportData = new ArrayList();
+          List<Form> listOfForms = new ArrayList<Form>();
+
+          beginTransaction();
+          List listOfParam = new ArrayList();
+          listOfParam.add(idInstitute);
+          String getFormQuery = "from Form where to_char(cathedra.faculty.institute) = to_char(:param0)";
+          listOfForms = super.<Form>executeListGetQuery(getFormQuery, listOfParam);
+          commitTransaction();
+
+          for(Form currForm:listOfForms) {
+              reportData.add(new Object[] {currForm.getIdForm(), currForm.getFirstName(), currForm.getLastName(), currForm.getUser().getEmail(), "1111-22"});
+          }
                      
-           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 1", "Имя 1",  "Фамилия@mail.ru", "1111-11"});
-           reportData.add(new Object[] {"12" + idInstitute, "Фамилия 2", "Имя 2",  "Фамилия@mail.ru", "2222-22"});
+           //reportData.add(new Object[] {"12" + idInstitute, "Фамилия 1", "Имя 1",  "Фамилия@mail.ru", "1111-11"});
+           //reportData.add(new Object[] {"12" + idInstitute, "Фамилия 2", "Имя 2",  "Фамилия@mail.ru", "2222-22"});
            
            return reportData;
       }
       
       public List<Integer> getCourses(){
-          List<Integer> reportData = new ArrayList(5);
+          List<Integer> reportData = new ArrayList();
           
-          reportData.add(new Integer(1));
+          /*reportData.add(new Integer(1));
           reportData.add(new Integer(2));
           reportData.add(new Integer(3));
           reportData.add(new Integer(4));
-          reportData.add(new Integer(5));
+          reportData.add(new Integer(5));*/
+          beginTransaction();
+          String getCoursesQuery = "select distinct f.instituteYear from Form f";
+          reportData = super.<Integer>executeListGetQuery(getCoursesQuery);
+          commitTransaction();
            
           return reportData;
       }
       
       public List getFormByCourse(int course){
-           List reportData = new ArrayList(2);
+           /*List reportData = new ArrayList(2);
                      
            reportData.add(new Object[] {"12" + course, "Фамилия 1", "Имя 1", "Фамилия@mail.ru", "1111-11"});
            reportData.add(new Object[] {"12" + course, "Фамилия 2", "Имя 2", "Фамилия@mail.ru", "2222-22"});
+
+
            
-           return reportData;
+           return reportData;*/
+          List reportData = new ArrayList();
+          List<Form> listOfForms = new ArrayList<Form>();
+
+          beginTransaction();
+          List listOfParam = new ArrayList();
+          listOfParam.add(course);
+          String getFormQuery = "from Form where to_char(instituteYear) = to_char(:param0)";
+          listOfForms = super.<Form>executeListGetQuery(getFormQuery, listOfParam);
+          commitTransaction();
+
+          for(Form currForm:listOfForms) {
+              reportData.add(new Object[] {currForm.getIdForm(), currForm.getFirstName(), currForm.getLastName(), currForm.getUser().getEmail(), "1111-22"});
+          }
+
+          //reportData.add(new Object[] {"12" + idInstitute, "Фамилия 1", "Имя 1",  "Фамилия@mail.ru", "1111-11"});
+          //reportData.add(new Object[] {"12" + idInstitute, "Фамилия 2", "Имя 2",  "Фамилия@mail.ru", "2222-22"});
+
+          return reportData;
       }
+
+    public static void main(String[] args) {
+
+        List allInst = new DAOReport().getUnit(0,0,0);
+        List allFacultyOfInst = new DAOReport().getUnit(1, 0, 1);
+        List adllCathedrasOfFaculty = new DAOReport().getUnit(1, 1, 2);
+        List courses = new DAOReport().getCourses();
+        List form1 = new DAOReport().getFormByCourse(6);
+
+    }
       
 
 }
