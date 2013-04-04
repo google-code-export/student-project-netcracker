@@ -89,8 +89,9 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
             
           Institute institute = iterator.next();                           
           List forms = (new DAOReport()).getFormByIdInstitute(institute.getInstituteId());           
-                   
-          reportData.add(new Object[]{institute.getName(), forms});
+          
+          if(!forms.isEmpty()){
+            reportData.add(new Object[]{institute.getName(), forms});}
                   
         }
       }
