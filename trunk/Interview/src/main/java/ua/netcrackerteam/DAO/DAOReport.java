@@ -6,10 +6,7 @@ package ua.netcrackerteam.DAO;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import ua.netcrackerteam.DAO.Entities.Contact;
-import ua.netcrackerteam.DAO.Entities.ContactCategory;
-import ua.netcrackerteam.DAO.Entities.Form;
-import ua.netcrackerteam.DAO.Entities.InterviewRes;
+import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
 import java.util.ArrayList;
@@ -238,8 +235,6 @@ public class DAOReport extends DAOCoreObject {
         List reportData = new ArrayList();
         DAOReport currDAOReport = new DAOReport();
         DAOHRImpl currDAOHr = new DAOHRImpl();
-        //reportData.add(new Object[]{"Курс", "Пришедшие", "Не пришедшие", "Всего"});
-        //reportData.add(new Object[]{"Курс", "Пришедшие", "Не пришедшие", "Всего"});
         List<Integer> listOfCourses = currDAOReport.getCourses();
         for (Integer currCourse : listOfCourses) {
             int allForms = 0;
@@ -259,9 +254,24 @@ public class DAOReport extends DAOCoreObject {
     }
 
     public List getAmountByInstitute() {
-        List reportData = new ArrayList(2);
-        reportData.add(new Object[]{"Институт", "Пришедшие", "Не пришедшие", "Всего"});
-        reportData.add(new Object[]{"Институт", "Пришедшие", "Не пришедшие", "Всего"});
+
+        List reportData = new ArrayList();
+        DAOReport currDAOReport = new DAOReport();
+        DAOHRImpl currDAOHr = new DAOHRImpl();
+        List<Institute> listOfInstitutes = currDAOReport.getUnit(0,0,0);
+        for (Institute currInstitute : listOfInstitutes) {
+            int allForms = 0;
+            int epsent = 0;
+            List<Form> listOfFormByInstitute = currDAOReport.getFormByIdInstitute(currInstitute.getInstituteId());
+            for (Form currForm : listOfFormByInstitute) {
+                List<InterviewRes> resultOfCurrForm = currDAOHr.getAllStudentsMarks(currForm.getIdForm());
+                if (resultOfCurrForm.isEmpty()) {
+                    epsent++;
+                }
+                allForms++;
+            }
+            reportData.add(new Object[] {currInstitute.getName(), "Всего пришло " + String.valueOf(allForms-epsent), "Отсутствовало " + String.valueOf(epsent), "Всего было записано "+ String.valueOf(allForms)});
+        }
 
         return reportData;
     }
@@ -281,6 +291,50 @@ public class DAOReport extends DAOCoreObject {
         reportData.add(new Object[]{"Институт ", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"});
         return reportData;
     }
+
+
+    /*public List getAmountByCourseOrUnit(int param) {
+        List reportData = new ArrayList();
+        DAOReport currDAOReport = new DAOReport();
+        DAOHRImpl currDAOHr = new DAOHRImpl();
+        if (param == 0) {           //get data by course
+            List<Integer> listOfCourses = currDAOReport.getCourses();
+            for (Integer currCourse : listOfCourses) {
+                int allForms = 0;
+                int epsent = 0;
+                List<Form> listOfFormByCourse = currDAOReport.getFormByCourse(currCourse);
+                for (Form currForm : listOfFormByCourse) {
+                    List<InterviewRes> resultOfCurrForm = currDAOHr.getAllStudentsMarks(currForm.getIdForm());
+                    if (resultOfCurrForm.isEmpty()) {
+                        epsent++;
+                    }
+                    allForms++;
+                }
+                reportData.add(new Object[]{"Курс " + String.valueOf(currCourse), "Всего пришло " + String.valueOf(allForms - epsent), "Отсутствовало " + String.valueOf(epsent), "Всего было записано " + String.valueOf(allForms)});
+            }
+
+        }
+        else if (param == 1)  {     //get data by Institute
+            List<Integer> listOfInstitutes = currDAOReport.getUnit(0,0,0);
+            for (Integer currInstitute : listOfInstitutes) {
+                int allForms = 0;
+                int epsent = 0;
+                List<Form> listOfFormByCourse = currDAOReport.getFormByCourse(currCourse);
+                for (Form currForm : listOfFormByCourse) {
+                    List<InterviewRes> resultOfCurrForm = currDAOHr.getAllStudentsMarks(currForm.getIdForm());
+                    if (resultOfCurrForm.isEmpty()) {
+                        epsent++;
+                    }
+                    allForms++;
+                }
+                reportData.add(new Object[]{"Курс " + String.valueOf(currCourse), "Всего пришло " + String.valueOf(allForms - epsent), "Отсутствовало " + String.valueOf(epsent), "Всего было записано " + String.valueOf(allForms)});
+            }
+
+        }
+
+
+    }*/
+
 
 
     public static void main(String[] args) {
