@@ -92,6 +92,7 @@ public class Report {
             grid.addComponent(new Label(row[i].toString()));} 
            
            Table table = fillTable(headerTable,(List)row[row.length - 1]);
+           table.setWidth("100%");
            grid.addComponent(table);
            grid.setComponentAlignment(table, new Alignment(Bits.ALIGNMENT_VERTICAL_CENTER | 
                         Bits.ALIGNMENT_HORIZONTAL_CENTER));

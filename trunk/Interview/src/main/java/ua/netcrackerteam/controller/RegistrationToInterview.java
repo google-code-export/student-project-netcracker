@@ -94,9 +94,6 @@ public class RegistrationToInterview implements  Logable{
         return stInterview;
     }
     
-    public static void main(String[] args) {
-        
-    }
     
     
 }
