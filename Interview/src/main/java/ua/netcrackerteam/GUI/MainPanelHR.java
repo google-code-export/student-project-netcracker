@@ -6,6 +6,7 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
@@ -17,6 +18,9 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import ua.netcrackerteam.DAO.Entities.Interview;
 
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
@@ -40,6 +44,10 @@ import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmoun
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviewsDetail;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
+import ua.netcrackerteam.controller.InterviewerPage;
+import ua.netcrackerteam.controller.RegistrationToInterview;
+import ua.netcrackerteam.controller.StudentInterview;
+import ua.netcrackerteam.controller.StudentPage;
 
 /**
  * Panel for HR view
@@ -56,6 +64,7 @@ public class MainPanelHR extends MainPanel{
     private final MainPage mainPage;
      
     ComboBox cbTypeReport;
+    ComboBox cbInterview;
     Button   btnRefresh;
     
     String selectReport;
@@ -122,9 +131,9 @@ public class MainPanelHR extends MainPanel{
           
          reportsLo.removeAllComponents();
                          
-         cbTypeReport = getComboBox();
-         btnRefresh   = getBtnRefresh();
-      
+         getCombCheckReport();
+         getBtnRefresh();
+               
          template.createReportPDFTemplate();
          Link pdfLink = getPDFLink(template);
        
@@ -133,14 +142,18 @@ public class MainPanelHR extends MainPanel{
          horizontal.addComponent(cbTypeReport); 
          horizontal.addComponent(pdfLink);         
          horizontal.setComponentAlignment(pdfLink, Alignment.MIDDLE_CENTER);
-         
+         reportsLo.addComponent(horizontal); 
          
          VerticalLayout vertical = new VerticalLayout();
          vertical.addComponent(btnRefresh);
-         vertical.setComponentAlignment(btnRefresh, Alignment.MIDDLE_RIGHT);
-         
-         reportsLo.addComponent(horizontal); 
+         vertical.setComponentAlignment(btnRefresh, Alignment.MIDDLE_RIGHT);        
          reportsLo.addComponent(vertical); 
+         
+         if(selectReport.equals("Список абитуриентов на заданное собеседование")){
+            getCombCheckInterview();
+            vertical.addComponent(cbInterview);
+            vertical.setComponentAlignment(cbInterview, Alignment.MIDDLE_LEFT);        
+            reportsLo.addComponent(vertical); }
               
          //Заполнение отчета            
          builder.createReport(template);        
@@ -166,7 +179,7 @@ public class MainPanelHR extends MainPanel{
         return btnRefresh;
   }
     
-  private ComboBox getComboBox(){
+  private void getCombCheckReport(){
       
          cbTypeReport = new ComboBox("Выберите отчет:");
          cbTypeReport.setImmediate(true);
@@ -229,7 +242,45 @@ public class MainPanelHR extends MainPanel{
          };
          cbTypeReport.addListener(listener);
          
-         return cbTypeReport;
+  }
+  
+   private void getCombCheckInterview(){
+       
+        cbInterview = new ComboBox("Собеседование:");
+        cbTypeReport.setImmediate(true);
+        cbTypeReport.setInvalidAllowed(false);
+        cbTypeReport.setNullSelectionAllowed(true);
+         
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+         
+         RegistrationToInterview registration = new RegistrationToInterview();
+         List<StudentInterview>interviews = registration.getInterviews();         
+       
+         for(StudentInterview stInterview : interviews) {
+            String strDate = formatter.format(stInterview.getInterviewStartDate()); 
+            cbInterview.addItem(stInterview);
+            cbInterview.setItemCaption(stInterview, strDate);
+         }
+             
+          Property.ValueChangeListener listener = new Property.ValueChangeListener() {
+
+           public void valueChange(ValueChangeEvent event) {
+                StudentInterview itemID = (StudentInterview) event.getProperty().getValue();
+                if(itemID == null){
+                    template = new ReportTemplateStudentsToInterview(itemID.getStudentInterviewId()); 
+                }else{
+                    template = new ReportTemplateStudentsToInterview();
+                }
+                
+                builder = new ReportBuilderStudentsToInterview(); 
+                fillReportsLayout();
+           }
+
+         
+        
+         };
+         cbTypeReport.addListener(listener);
+      
   }
     private class PdfStreamSource implements StreamResource.StreamSource { 
         
