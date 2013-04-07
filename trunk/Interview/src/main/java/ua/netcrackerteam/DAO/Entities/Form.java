@@ -87,7 +87,15 @@ public class Form implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_CATHEDRA")
-    private Cathedra cathedra;    
+    private Cathedra cathedra;
+
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_FACULTY")
+    private Faculty faculty;
+
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_INSTITUTE")
+    private Institute institute;
 
     @ManyToOne(fetch = FetchType.EAGER,optional=true)
     @JoinColumn(name = "ID_USER")
@@ -331,6 +339,22 @@ public class Form implements Serializable {
 
     public void setStatusAttend(Status statusAttend) {
         this.statusAttend = statusAttend;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public Institute getInstitute() {
+        return institute;
+    }
+
+    public void setInstitute(Institute institute) {
+        this.institute = institute;
     }
     
     @Override
