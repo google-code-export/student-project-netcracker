@@ -706,6 +706,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         newFaculty.setReadOnly(!editable);
         newCathedra.setReadOnly(!editable);
         newInstitute.setReadOnly(!editable);
+        getSavedData();
         Iterator<Component> i = contacts.getComponentIterator();
         while (i.hasNext()) {
             Component c = (Component) i.next();
