@@ -521,26 +521,26 @@ public class StudentPage {
         }
 
         //new institute, faculty, cathedra
-        if (!newStudentData.getStudentOtherInstitute().trim().equals("")){
-            Form form = currDAOStImpl.getFormByUserName(userName);
-            int formID = form.getIdForm();
+        //if (!newStudentData.getStudentOtherInstitute().trim().equals("")){
+            //Form form = currDAOStImpl.getFormByUserName(userName);
+            //int formID = form.getIdForm();
             HrTempInfo hrTempInfo = new HrTempInfo();
-            if(!newStudentData.getStudentOtherFaculty().trim().equals("")){
-                if (!newStudentData.getStudentOtherCathedra().trim().equals("")){
-                    hrTempInfo.setIdHrTempInfo(formID);
+            //if(!newStudentData.getStudentOtherFaculty().trim().equals("")){
+               // if (!newStudentData.getStudentOtherCathedra().trim().equals("")){
+                    hrTempInfo.setForm(newForm);
                     hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
                     hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
                     hrTempInfo.setCathedraName(newStudentData.getStudentOtherCathedra());
                     daohr.setHrTempInfo(hrTempInfo);
-                } else {
-                    hrTempInfo.setIdHrTempInfo(formID);
+                /*} else {
+                    hrTempInfo.setForm(newForm);
                     hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
                     hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
                     hrTempInfo.setCathedraName("");
                     daohr.setHrTempInfo(hrTempInfo);
                 }
-            }
-        }
+            }*/
+        //}
 
         //knowledge//other 1
         if (!newStudentData.getStudentKnowledgeOther1().trim().equals("")) {
@@ -707,9 +707,9 @@ public class StudentPage {
             //krygin added code to set new institute info
             HrTempInfo currHrTemp = daohr.getHrTempInfoByFormID(idForm);
             if (currHrTemp != null)  {
-                std.setStudentOtherInstitute(currHrTemp.getInstituteName().equals("") ? "" : currHrTemp.getInstituteName());
-                std.setStudentOtherFaculty(currHrTemp.getFacultyName().equals("") ? "" : currHrTemp.getFacultyName());
-                std.setStudentOtherFaculty(currHrTemp.getCathedraName().equals("") ? "" : currHrTemp.getCathedraName());
+                std.setStudentOtherInstitute(currHrTemp.getInstituteName() == null ? "" : currHrTemp.getInstituteName());
+                std.setStudentOtherFaculty(currHrTemp.getFacultyName() == null ? "" : currHrTemp.getFacultyName());
+                std.setStudentOtherCathedra(currHrTemp.getCathedraName() == null ? "" : currHrTemp.getCathedraName());
                /* if(!currHrTemp.getInstituteName().equals("")){
                     if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
                         if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
