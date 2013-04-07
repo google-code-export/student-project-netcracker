@@ -48,13 +48,13 @@ public class RegistrationToInterview implements  Logable{
              
        while(iterator.hasNext()){
             interview = (Interview)iterator.next();
-            if(interview.getIdInterview()!=0) {
+            if(interview.getReserve()!=1) {
                 List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
                 int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
                 StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
                         interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
                 listInterviews.add(stInterview);
-            } 
+            }
        }
        return listInterviews;
     }
@@ -64,7 +64,7 @@ public class RegistrationToInterview implements  Logable{
      * @param userName
      * @return 
      */
-    public int getInterview(String userName){
+    public int getInterviewID(String userName){
           Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
           Interview interview = null;
           if (form != null) {
@@ -76,9 +76,18 @@ public class RegistrationToInterview implements  Logable{
           }
           return currentInterviewID;
     }
+
+    public Interview getInterview(String userName){
+        Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
+        Interview interview = null;
+        if (form != null) {
+            interview = form.getInterview();
+        }
+        return interview;
+    }
     
     public StudentInterview getNullInterview() {
-        Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getInterview(0);
+        Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
         List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
         int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
         StudentInterview stInterview = new StudentInterview(nullInterview.getIdInterview(),nullInterview.getMaxNumber() - amountStudentsToInterview);
