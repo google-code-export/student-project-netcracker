@@ -81,6 +81,9 @@ public class Report {
     public GridLayout getGridView(String[] headerTable){
         
         List reportData = report.dataReport();
+        if(reportData.isEmpty()){
+            return new GridLayout();
+        }
         
         GridLayout grid = new GridLayout(1, 2*reportData.size());
         
