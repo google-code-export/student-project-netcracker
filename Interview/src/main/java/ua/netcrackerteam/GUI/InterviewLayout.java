@@ -65,7 +65,10 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);       
         List<StudentInterview> interviews = registration.getInterviews();
         Interview selectedInterview = registration.getInterview(userName);
-        int selectedInterviewID = selectedInterview.getIdInterview();
+        int selectedInterviewID = 0;
+        if (!(selectedInterview == null)) {
+            selectedInterviewID = selectedInterview.getIdInterview();
+        }
         StudentInterview nullInterview = registration.getNullInterview();
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
