@@ -48,7 +48,7 @@ public class DesignTableWithGroups extends DesignTable{
             BaseFont font = BaseFont.createFont(path + pathTimesTTF, "cp1251", BaseFont.EMBEDDED);
             Font bf12 = new Font(font, 10, Font.ITALIC);              
               
-              //Content table      
+             //Content table      
               Iterator iterator = body.iterator();
               while(iterator.hasNext()){     
                   

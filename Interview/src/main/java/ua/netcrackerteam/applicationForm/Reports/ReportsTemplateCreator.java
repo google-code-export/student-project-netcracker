@@ -44,7 +44,8 @@ public class ReportsTemplateCreator {
            table.addCell(builder.buildCreateDate());  
          
            table.addCell(builder.buildLogotip());                                 
-           table.addCell(builder.buildTitle());            
+           table.addCell(builder.buildTitle()); 
+           
            table.addCell(builder.buildTable());        
            //table.addCell(builder.buildChart());
            

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,16 +27,27 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
  * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
-    
-    private  List reportData;
+
+    private  List reportData = new LinkedList();
     
     public ReportTemplateAmountStudentFaculty(){
         
         DAOReport reportDAO = new DAOReport();
-        reportData = reportDAO.getAmountByFaculty();
+        List<Institute> institutes = reportDAO.getUnit(0, 0, 0);
         
-        if(reportData == null){
-            reportData = new ArrayList();
+        if(institutes == null){
+            institutes = new ArrayList();
+        }
+        
+        Iterator<Institute> iterator = institutes.iterator();
+        while(iterator.hasNext()){
+            
+          Institute institute = iterator.next();                           
+          List faculties = (new DAOReport()).getAmountByFaculty(institute.getInstituteId());                
+          
+          if(!faculties.isEmpty()){
+            reportData.add(new Object[]{institute.getName(), faculties});}
+                  
         }
         
     }
@@ -56,10 +68,10 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-       String[] header = new String[]{"Институт", "Факультет", "Пришедшие", "Не пришедшие", "Всего"};       
+       String[] header = new String[]{"Факультет", "Пришедшие", "Не пришедшие", "Всего"};       
         
-         float[] size = new float[]{2f, 2f, 1f, 1f, 1f};
-         DesignTable table = new DesignTableFlat(size);
+         float[] size = new float[]{2f, 1f, 1f, 1f};
+         DesignTable table = new DesignTableWithGroups(size);
      
          report.setDesignTable(table);
          PdfPCell cell = report.setTable(header, reportData, null);
@@ -82,6 +94,7 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
         return null;
     }
+    
 
     
 }

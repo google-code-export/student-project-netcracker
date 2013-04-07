@@ -8,6 +8,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbstractSplitPanel;
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -87,10 +88,11 @@ public class ReportsCreator {
            setForComponent(grid);
         }
         
-            Embedded emb = builder.buildChart();
+       Embedded emb = builder.buildChart();
             if(emb != null){
                 setForComponent(emb);
             }
+         
      
     } 
     

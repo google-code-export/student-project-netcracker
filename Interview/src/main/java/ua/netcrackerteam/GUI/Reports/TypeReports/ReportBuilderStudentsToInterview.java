@@ -33,7 +33,7 @@ public class ReportBuilderStudentsToInterview extends ReportBuilder{
 
     @Override
     public GridLayout buildGrid() {
-        return report.getGridView(new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"});
+        return report.getGridView(new String[]{"№", "Фамилия", "Имя", "Отчество", "ВУЗ"});
     }
     
 }

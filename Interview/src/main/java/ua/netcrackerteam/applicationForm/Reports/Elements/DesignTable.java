@@ -49,8 +49,8 @@ public abstract class DesignTable {
             BaseColor borderColor = WebColors.getRGBColor("#999966");
             
              //Header table
-            for(int i = 0; i < header.length; i++){
-             insertCell(header[i], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
+            for(int i = 0; i < header.length; i++){             
+              insertCell(header[i], Element.ALIGN_CENTER, 1, bfBold12, fColor, bColor, borderColor);
             }
             table.setHeaderRows(1);
         } catch (DocumentException ex) {

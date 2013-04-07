@@ -23,7 +23,7 @@ public class ReportBuilderResultOfInterviews extends ReportBuilder{
 
     @Override
     public Table buildTable() {
-        return report.getTable(new String[]{"Всего анкет", "Всего на собеседования", "Прошло собеседование"});
+        return report.getTable(new String[]{"Всего зарегистрировано анкет", "Всего на собеседования", "Прошло собеседование"});
     }
 
     @Override
