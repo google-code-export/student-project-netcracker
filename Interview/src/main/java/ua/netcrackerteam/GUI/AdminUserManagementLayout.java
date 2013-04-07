@@ -349,7 +349,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
                 getWindow().addWindow(deleteUserWindow);
             }
         } else if (source == addNewUserButton) {
-            addNewUserWindow = new AddNewUserWindow(this);
+            addNewUserWindow = new AddNewUserWindow(this, username);
             getWindow().addWindow(addNewUserWindow);
         } else if (source == refreshDataButton) {
             refreshTableData();
@@ -360,7 +360,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
                 n.setPosition(Window.Notification.POSITION_CENTERED);
                 getWindow().showNotification(n);
             } else {
-                resetUserPasswordWindow = new ResetUserPasswordWindow(this, currentUser);
+                resetUserPasswordWindow = new ResetUserPasswordWindow(this, currentUser, username);
                 getWindow().addWindow(resetUserPasswordWindow);
             }
         } else if (source == resetUserLoginButton) {
@@ -370,7 +370,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
                 n.setPosition(Window.Notification.POSITION_CENTERED);
                 getWindow().showNotification(n);
             } else {
-                resetUserLoginWindow = new ResetUserLoginWindow(this, currentUser);
+                resetUserLoginWindow = new ResetUserLoginWindow(this, currentUser, username);
                 getWindow().addWindow(resetUserLoginWindow);
             }
         }else if (source == banUserButton) {
@@ -393,7 +393,7 @@ public class AdminUserManagementLayout extends VerticalLayout implements Button.
                 n.setPosition(Window.Notification.POSITION_CENTERED);
                 getWindow().showNotification(n);
             } else {
-                changeUserTypeWindow = new ChangeUserTypeWindow(this, currentUser);
+                changeUserTypeWindow = new ChangeUserTypeWindow(this, currentUser, username);
                 getWindow().addWindow(changeUserTypeWindow);
             }
         } else if (source == clearSearchButton) {

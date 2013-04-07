@@ -106,7 +106,7 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         beginTransaction();
         List listOfParam1 = new ArrayList();
         listOfParam1.add(newType);
-        String userCategoryQuery = "from UserCategory where idUSerCategory  = :param0";
+        String userCategoryQuery = "from UserCategory where to_char(idUserCategory)  = to_char(:param0)";
         UserCategory userTypes = super.<UserCategory>executeSingleGetQuery(userCategoryQuery, listOfParam1);
         List listOfParam2 = new ArrayList();
         listOfParam2.add(userName);

@@ -7,6 +7,8 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.controller.GeneralController;
 
+import java.util.Date;
+
 /**
  * @author krygin
  */
@@ -15,10 +17,10 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
     PasswordField password;
     PasswordField password2;
     Label message;
-    String currentUser = null;
+    String currentUser;
     SettingsLayout settingsLayout;
 
-    public ResetUserPasswordWindow(AdminUserManagementLayout adminUserManagement, String currentUser) {
+    public ResetUserPasswordWindow(AdminUserManagementLayout adminUserManagement, String currentUser, final String userLogin) {
         this.adminUserManagementLayout = adminUserManagement;
         this.currentUser = currentUser;
         this.setIcon(new ThemeResource("icons/32/group_key.png"));
@@ -61,7 +63,7 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
         Button okBut = new Button("reset user password");
         okBut.addListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
-                buttonClickRegistr();
+                buttonClickRegistrFromAdmin(userLogin);
             }
         });
         layout.addComponent(okBut);
@@ -123,12 +125,33 @@ public class ResetUserPasswordWindow extends Window implements FieldEvents.BlurL
             String userName = currentUser;
             String userPassword = String.valueOf(this.getPassword());
             GeneralController.setNewPassword(userName, userPassword);
+            GeneralController.setAuditInterviews(6, "Password changed for user - " + currentUser, currentUser, new Date());
             Notification n = new Notification("Изменение пароля юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
             n.setDescription("На email юзера" + userName + " выслано письмо с новым паролем.\n" +
                     "Теперь юзер может зайти под своими новыми аккаунт данными.");
             n.setPosition(Notification.POSITION_CENTERED);
-            settingsLayout.getWindow().showNotification(n);
-            this.close();
+            adminUserManagementLayout.getWindow().showNotification(n);
+            ResetUserPasswordWindow.this.close();
+            /*try {
+                SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);
+            } catch (EmailException e) {
+                e.printStackTrace();
+            }*/
+        }
+    }
+
+    public void buttonClickRegistrFromAdmin(String userLogin) {
+        if (isValid()) {
+            String userName = currentUser;
+            String userPassword = String.valueOf(this.getPassword());
+            GeneralController.setNewPassword(userName, userPassword);
+            GeneralController.setAuditInterviews(6, "Password changed for user - " + currentUser, userLogin, new Date());
+            Notification n = new Notification("Изменение пароля юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
+            n.setDescription("На email юзера" + userName + " выслано письмо с новым паролем.\n" +
+                    "Теперь юзер может зайти под своими новыми аккаунт данными.");
+            n.setPosition(Notification.POSITION_CENTERED);
+            adminUserManagementLayout.getWindow().showNotification(n);
+            ResetUserPasswordWindow.this.close();
             /*try {
                 SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);
             } catch (EmailException e) {
