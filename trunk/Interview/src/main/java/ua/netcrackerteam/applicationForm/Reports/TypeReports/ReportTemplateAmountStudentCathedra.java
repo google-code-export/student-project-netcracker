@@ -8,10 +8,14 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfPCell;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ua.netcrackerteam.DAO.DAOReport;
+import ua.netcrackerteam.DAO.Entities.Faculty;
+import ua.netcrackerteam.DAO.Entities.Institute;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTable;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableFlat;
 import ua.netcrackerteam.applicationForm.Reports.Elements.DesignTableWithGroups;
@@ -22,17 +26,29 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
  * @author Klitna Tetiana
  */
 public class ReportTemplateAmountStudentCathedra extends ReportTemplateBuilder{
-    
-    private List reportData;
+       
+    List reportData = new LinkedList();
     
     public ReportTemplateAmountStudentCathedra(){
-        
+         
         DAOReport reportDAO = new DAOReport();
-        reportData = reportDAO.getAmountByCathedra();
+        List<Institute> institutes = reportDAO.getUnit(0, 0, 0);
         
-        if(reportData == null){
-            reportData = new ArrayList();
-        } 
+        if(institutes == null){
+            institutes = new ArrayList();
+        }
+        
+       Iterator<Institute> iterator = institutes.iterator();
+        while(iterator.hasNext()){
+            
+          Institute institute = iterator.next(); 
+          
+          List forms = reportDAO.getAmountByCathedra(institute.getInstituteId());
+      
+            if(!forms.isEmpty()){
+              reportData.add(new Object[]{institute.getName(), forms});}
+          
+          }
     }
     
     @Override
@@ -51,10 +67,10 @@ public class ReportTemplateAmountStudentCathedra extends ReportTemplateBuilder{
 
     @Override
     public PdfPCell buildTable() {
-         String[] header = new String[]{"Институт", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"};       
-        
-         float[] size = new float[]{2f, 2f, 2f,1f, 1f, 1f};
-         DesignTable table = new DesignTableFlat(size);
+         String[]header = new String[]{"Кафедра", "Пришедшие", "Не пришедшие", "Всего"};
+   
+         float[] size = new float[]{2f,  1f, 1f, 1f};
+         DesignTable table = new DesignTableWithGroups(size);
      
          report.setDesignTable(table);
          PdfPCell cell = report.setTable(header, reportData, null);
@@ -77,6 +93,6 @@ public class ReportTemplateAmountStudentCathedra extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
         return null;
     }
-
+ 
     
 }

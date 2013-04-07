@@ -71,9 +71,9 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
     @Override
     public PdfPCell buildTable() {
         
-        String[] header = new String[]{"№", "Фамилия", "Имя", "ВУЗ", "Телефон"};
+        String[] header = new String[]{"№", "Фамилия", "Имя", "Отчество", "ВУЗ"};
               
-        float[] size = new float[]{0.5f, 1f, 1f, 2f, 1f}; 
+        float[] size = new float[]{0.5f, 1f, 1f, 1f, 2f}; 
         DesignTable table = new DesignTableWithGroups(size);
         
         report.setDesignTable(table);
@@ -108,7 +108,7 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
           List forms = (new DAOReport()).getFormByIdInterview(interview.getIdInterview());
           String startInterview = formatter.format(interview.getStartDate());          
           
-          if(forms != null){
+          if(!forms.isEmpty()){
             reportData.add(new Object[]{startInterview, forms});}
                   
         }

@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.GUI.Reports;
 
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;

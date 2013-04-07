@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.GUI.Reports.TypeReports;
 
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
@@ -23,17 +24,17 @@ public class ReportBuilderAmountStudentsCathedra extends ReportBuilder {
 
     @Override
     public Table buildTable() {
-        return report.getTable(new String[]{"Институт", "Факультет", "Кафедра", "Пришедшие", "Не пришедшие", "Всего"});
+        return null;
     }
 
     @Override
     public Embedded buildChart() {
-        return new Embedded();
+        return null;
     }
 
     @Override
     public GridLayout buildGrid() {
-        return new GridLayout();
+        return report.getGridView(new String[]{"Кафедра", "Пришедшие", "Не пришедшие", "Всего"});
     }
     
 }

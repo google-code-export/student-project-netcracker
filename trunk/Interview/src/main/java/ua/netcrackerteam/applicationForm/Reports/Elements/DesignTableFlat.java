@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author home
+ * @author Klitna Tetiana
  */
 public class DesignTableFlat extends DesignTable{
     

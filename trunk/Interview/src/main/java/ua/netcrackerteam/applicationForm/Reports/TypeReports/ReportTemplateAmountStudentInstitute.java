@@ -14,8 +14,6 @@ import ua.netcrackerteam.applicationForm.Reports.ReportTemplateBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +34,8 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
         if(reportData == null){
             reportData = new ArrayList();
         }
+        
+        
       }
     
     @Override
@@ -56,7 +56,7 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
     public PdfPCell buildTable() {
          String[] header = new String[]{"Институт", "Пришедшие", "Не пришедшие", "Всего"};       
         
-         float[] size = new float[]{1f, 1f, 1f, 1f};
+         float[] size = new float[]{2f, 1f, 1f, 1f};
          DesignTable table = new DesignTableFlat(size);
      
          report.setDesignTable(table);
@@ -80,5 +80,6 @@ public class ReportTemplateAmountStudentInstitute extends ReportTemplateBuilder{
     public byte[] getChart(int widht, int height) {
        return null;
     }
+
      
 }

@@ -6,11 +6,14 @@ package ua.netcrackerteam.GUI.Reports;
 
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.gwt.client.ui.AlignmentInfo.Bits;
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
