@@ -263,7 +263,6 @@ public class MainPanelHR extends MainPanel{
          }
              
           Property.ValueChangeListener listener = new Property.ValueChangeListener() {
-
            public void valueChange(ValueChangeEvent event) {
                 StudentInterview itemID = (StudentInterview) event.getProperty().getValue();
                 if(itemID == null){
@@ -276,10 +275,9 @@ public class MainPanelHR extends MainPanel{
                 fillReportsLayout();
            }
 
-         
         
          };
-         cbTypeReport.addListener(listener);
+         cbInterview.addListener(listener);
       
   }
     private class PdfStreamSource implements StreamResource.StreamSource { 
