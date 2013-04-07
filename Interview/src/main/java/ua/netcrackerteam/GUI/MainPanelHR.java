@@ -67,7 +67,6 @@ public class MainPanelHR extends MainPanel{
     ComboBox cbInterview;
     Button   btnRefresh;
     
-    StudentInterview selectedInterview;
     String selectReport;
     ReportTemplateBuilder template;
     ReportBuilder builder;
@@ -97,6 +96,10 @@ public class MainPanelHR extends MainPanel{
         template = new ReportTemplateDynamicsOfIncreaseStudents();
         builder = new ReportBuilderDynamicsOfIncreaseStudents(mainPage);
         creator = new ReportsCreator();
+        
+        getCombCheckReport();
+        getBtnRefresh();
+        getCombCheckInterview();
         
         tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
             @Override
@@ -131,10 +134,7 @@ public class MainPanelHR extends MainPanel{
         
           
          reportsLo.removeAllComponents();
-                         
-         getCombCheckReport();
-         getBtnRefresh();
-               
+            
          template.createReportPDFTemplate();
          Link pdfLink = getPDFLink(template);
        
@@ -150,8 +150,7 @@ public class MainPanelHR extends MainPanel{
          vertical.setComponentAlignment(btnRefresh, Alignment.MIDDLE_RIGHT);        
          reportsLo.addComponent(vertical); 
          
-         if(selectReport.equals("Список абитуриентов на заданное собеседование")){
-            getCombCheckInterview();
+         if(selectReport.equals("Список абитуриентов на заданное собеседование")){            
             vertical.addComponent(cbInterview);
             vertical.setComponentAlignment(cbInterview, Alignment.MIDDLE_LEFT);        
             reportsLo.addComponent(vertical); }
@@ -200,6 +199,7 @@ public class MainPanelHR extends MainPanel{
         
          cbTypeReport.setContainerDataSource(container);        
          cbTypeReport.setValue(selectReport);
+         
       
           Property.ValueChangeListener listener = new Property.ValueChangeListener() {
 
@@ -260,12 +260,11 @@ public class MainPanelHR extends MainPanel{
             cbInterview.addItem(stInterview);
             cbInterview.setItemCaption(stInterview, strDate);
          }
-         
-         cbInterview.setValue(selectedInterview);
+     
              
           Property.ValueChangeListener listener = new Property.ValueChangeListener() {
            public void valueChange(ValueChangeEvent event) {
-                selectedInterview = (StudentInterview) event.getProperty().getValue();
+                StudentInterview selectedInterview = (StudentInterview) event.getProperty().getValue();
                 if(selectedInterview != null){
                     template = new ReportTemplateStudentsToInterview(selectedInterview.getStudentInterviewId()); 
                 }else{
