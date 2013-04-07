@@ -174,7 +174,7 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         listOfParams.add(userCategory);
         searchString = '%'+searchString+'%';
         listOfParams.add(searchString);
-        String getUsersSearchResultByCategoryNonBannedQuery = "from UserList where idUserCategory = :param0 and active = 'active' and " +
+        String getUsersSearchResultByCategoryNonBannedQuery = "from UserList where to_char(idUserCategory) = to_char(:param0) and active = 'active' and " +
                                                 "(upper(userName) like upper(:param1) or " +
                                                 "to_char(idUser) like to_char(:param1) or upper(email) like upper(:param1))";
         List<UserList> listOfUsers = super.<UserList>executeListGetQuery(getUsersSearchResultByCategoryNonBannedQuery);
