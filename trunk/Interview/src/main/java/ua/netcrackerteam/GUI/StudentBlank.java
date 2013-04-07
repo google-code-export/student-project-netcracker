@@ -212,6 +212,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         List<Faculty> currentFaculties = StudentPage.getFacultyListByInstitute(currUniver);
                         BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
                         faculties.setContainerDataSource(objects);
+                        newInstitute.setValue("");
                     } 
                     if(currUniver != null && currUniver.getName().equals("Другое")) {
                         newInstitute.setVisible(true);
@@ -235,6 +236,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty(currFaculty);
                         BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
                         cathedras.setContainerDataSource(objects);
+                        newCathedra.setValue("");
                     }
                     if(currFaculty != null && currFaculty.getName().equals("Другое")) {
                         newFaculty.setVisible(true);
@@ -252,6 +254,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             public void valueChange(ValueChangeEvent event) {
                 if ( cathedras.size() > 0 ) {
                     Cathedra currCathedra = (Cathedra) cathedras.getValue();
+                    //newCathedra.setValue("");
                     if(currCathedra!= null && currCathedra.getName().equals("Другое")) {
                         newCathedra.setVisible(true);
                     } else {
