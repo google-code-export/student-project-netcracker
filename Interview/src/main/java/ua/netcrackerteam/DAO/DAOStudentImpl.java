@@ -21,7 +21,7 @@ import java.util.Locale;
  * such as add, update, get information by username,
  * @author Zhokha Maksym
  */
-public class DAOStudentImpl implements DAOStudent
+public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
 {
     public static void main(String[] args) throws SQLException {
         
@@ -208,21 +208,25 @@ public class DAOStudentImpl implements DAOStudent
     @Override
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public void updateForm(Form form) {
-        Session session = null;
+        /*Session session = null;
         Transaction transaction = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             transaction = session.beginTransaction();
-            session.update(form);
+            session.saveOrUpdate(form);
             transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
             if (session != null && session.isOpen()) {
+                session.flush();
                 session.close();
             }
-        }
+        }*/
+        beginTransaction();
+        super.<Form>updatedObject(form);
+        commitTransaction();
     }
     
     
@@ -251,6 +255,7 @@ public class DAOStudentImpl implements DAOStudent
             System.out.println(e);
         } finally {
             if (session != null && session.isOpen()) {
+                session.flush();
                 session.close();
             }
         }

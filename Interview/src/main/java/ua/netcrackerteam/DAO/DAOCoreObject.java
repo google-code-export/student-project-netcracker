@@ -99,7 +99,15 @@ public class DAOCoreObject {
 
     public <T> void saveUpdatedObject(T updatedObjects) {
         try {
-            session.save(updatedObjects);
+            session.saveOrUpdate(updatedObjects);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public <T> void updatedObject(T updatedObjects) {
+        try {
+            session.update(updatedObjects);
         } catch (Exception e) {
             System.out.println(e);
         }

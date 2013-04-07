@@ -8,21 +8,17 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.InlineDateField;
-import com.vaadin.ui.OptionGroup;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
+import ua.netcrackerteam.DAO.Entities.Interview;
+import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
+import ua.netcrackerteam.controller.StudentInterview;
+
 import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
-import ua.netcrackerteam.controller.StudentInterview;
 
 /**
  *
@@ -68,7 +64,9 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.addComponent(calendar,0,0);
         layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);       
         List<StudentInterview> interviews = registration.getInterviews();
-        int selectedInterview = registration.getInterview(userName);
+        Interview selectedInterview = registration.getInterview(userName);
+        int selectedInterviewID = selectedInterview.getIdInterview();
+        StudentInterview nullInterview = registration.getNullInterview();
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
         layout.addComponent(dates,1,0);
@@ -82,19 +80,19 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             } else {
                 noPositionsFlag = false;
             }
-            if(selectedInterview > 0) {
-                if(selectedInterview == stInterview.getStudentInterviewId()) {
-                    dates.setValue(stInterview);
-                    calendar.setValue(stInterview.getInterviewStartDate());
-                }
+            //if (selectedInterview > 0) {
+            if (selectedInterviewID == stInterview.getStudentInterviewId()) {
+                dates.setValue(stInterview);
+                calendar.setValue(stInterview.getInterviewStartDate());
             }
+            //}
         }
-        if(noPositionsFlag) {
-            StudentInterview nullInterview = registration.getNullInterview();
+        if (noPositionsFlag) {
+            //StudentInterview nullInterview = registration.getNullInterview();
             int restPos = nullInterview.getRestOfPositions();
             dates.addItem(nullInterview);
             dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
-            if(selectedInterview == 0) {
+            if(selectedInterview.getReserve() == 1) {
                 dates.setValue(nullInterview);
             }
         }
@@ -105,7 +103,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.addComponent(print,1,1);
         layout.setComponentAlignment(print, Alignment.TOP_CENTER);
         print.addListener(new ButtonsListener());
-        if(selectedInterview != 0) {
+        if(selectedInterviewID != 0) {
             saveEdit = new Button("Редактировать");
             dates.setReadOnly(true);
         } else {
