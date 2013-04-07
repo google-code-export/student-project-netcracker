@@ -105,10 +105,11 @@ public class DAOCoreObject {
         }
     }
 
-    public void executeDeleteQuery(String inputQuery)  {
+    public <T> void executeDeleteQuery(T objectsToDelete)  {
         try {
-            query = session.createQuery(inputQuery);
-            query.executeUpdate();
+            //query = session.createQuery(inputQuery);
+            //query.executeUpdate();
+            session.delete(objectsToDelete);
         } catch (Exception e) {
             System.out.println(e);
         }
