@@ -1,5 +1,8 @@
 package ua.netcrackerteam.controller;
 
+import oracle.net.jdbc.nl.mesg.NLSR_it;
+import ua.netcrackerteam.DAO.DAOHRImpl;
+import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
@@ -8,8 +11,6 @@ import java.lang.reflect.Field;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import ua.netcrackerteam.DAO.DAOHRImpl;
-import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 
 /**
  * Created with IntelliJ IDEA.
@@ -77,6 +78,21 @@ public class HRPage {
         int count = 0;
         count = new DAOHRImpl().getNonVerificatedForms().size();
         return count;
+    }
+
+    public static int getCountOfBlankWithoutInterview() {
+        int count = 0;
+        count = new DAOHRImpl().getBlanksWithoutInterview().size();
+        return count;
+    }
+
+    public static List<StudentDataShort> getBlankWithoutInterview() {
+        List<Form> blanksWithoutInterview = new DAOHRImpl().getBlanksWithoutInterview();
+        List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
+        if(blanksWithoutInterview != null) {
+            studentList = getStudentDataList(blanksWithoutInterview);
+        }
+        return studentList;
     }
 
     public static String getUserNameByFormId(int formId) {

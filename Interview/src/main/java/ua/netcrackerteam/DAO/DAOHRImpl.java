@@ -382,17 +382,23 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             }
         }
         return formList;*/
-        String query            = "";
         String queryForm        = "";
-        Status currStatus       = null;
         List listOfParams       = new ArrayList();
         List<Form> listOfForms  = null;
         beginTransaction();
-        query = "from Status where idStatus =5";
-        currStatus = super.<Status>executeSingleGetQuery(query);
-        listOfParams.add(currStatus);
-        queryForm = "from Form where status = :param0";
-        listOfForms = super.<Form>executeListGetSQLQuery(queryForm, listOfForms);
+        listOfParams.add(5);
+        queryForm = "from Form where to_char(status) = to_char(:param0)";
+        listOfForms = super.<Form>executeListGetQuery(queryForm, listOfParams);
+        commitTransaction();
+        return listOfForms;
+    }
+
+    public List<Form> getBlanksWithoutInterview() {
+        String queryForm        = "";
+        List<Form> listOfForms  = null;
+        beginTransaction();
+        queryForm = "from Form where interview is null";
+        listOfForms = super.<Form>executeListGetQuery(queryForm);
         commitTransaction();
         return listOfForms;
     }
@@ -442,6 +448,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfParams.add(currStatus);
         Form oldForm = super.<Form>executeSingleGetQuery(query, listOfParams);
         super.<Form>executeDeleteQuery(oldForm);
+        currForm.setStatus(currStatus);
+        super.<Form>updatedObject(currForm);
         commitTransaction();
     }
 

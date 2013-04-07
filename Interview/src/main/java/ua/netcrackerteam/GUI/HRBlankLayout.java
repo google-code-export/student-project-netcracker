@@ -137,7 +137,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         rightPanelTree = new Tree();
         int countOfAllForms = HRPage.getCountOfAllForms();
         String idAllBlanks = "1";
-        String firstTreeTitle = "Все(" + String.valueOf(countOfAllForms) + ")";
+        String firstTreeTitle = "Все записанные(" + String.valueOf(countOfAllForms) + ")";
         rightPanelTree.addItem(idAllBlanks);
         rightPanelTree.setItemCaption(idAllBlanks, firstTreeTitle);
         rightPanelTree.setValue(firstTreeTitle);
@@ -149,6 +149,13 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         rightPanelTree.addItem(idNonVerBlanks);
         rightPanelTree.setItemCaption(idNonVerBlanks, secondTreeTitle);
         rightPanelTree.setChildrenAllowed(secondTreeTitle, false);
+
+        String idBlanksWithoutInterview = "3";
+        int countBlanksWithoutInterview = HRPage.getCountOfBlankWithoutInterview();
+        String thirdTreeTitle = "Не записанные(" + String.valueOf(countBlanksWithoutInterview)+")";
+        rightPanelTree.addItem(idBlanksWithoutInterview);
+        rightPanelTree.setItemCaption(idBlanksWithoutInterview, thirdTreeTitle);
+        rightPanelTree.setChildrenAllowed(thirdTreeTitle, false);
 
         rightPanelTree.addListener(new ItemClickEvent.ItemClickListener() {
             @Override
@@ -163,6 +170,13 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                 else if(event.getItemId().equals("2"))  {
                     FillBlankTable(HRPage.getNonVerificatedForms());
                     verificateBlankButton.setEnabled(true);
+                    markTextArea.setEnabled(false);
+                    markSaveButton.setEnabled(false);
+                    editButton.setEnabled(false);
+                }
+                else if(event.getItemId().equals("3")) {
+                    FillBlankTable(HRPage.getBlankWithoutInterview());
+                    verificateBlankButton.setEnabled(false);
                     markTextArea.setEnabled(false);
                     markSaveButton.setEnabled(false);
                     editButton.setEnabled(false);
@@ -270,12 +284,16 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         int countOfAllForms = HRPage.getCountOfAllForms();
         String idAllBlanks = "1";
         String idNonVerBlanks = "2";
-        String firstTreeTitle = "Все(" + String.valueOf(countOfAllForms) + ")";
+        String idBlanksWithoutInterview = "3";
+        String firstTreeTitle = "Все записанные(" + String.valueOf(countOfAllForms) + ")";
         int countOfNonVerificated = HRPage.getCountOfNonVerificatedForms();
         String secondTreeTitle = "Не проверенные(" + String.valueOf(countOfNonVerificated)+")";
         rightPanelTree.setItemCaption(idAllBlanks, firstTreeTitle);
         rightPanelTree.setItemCaption(idNonVerBlanks, secondTreeTitle);
-
+        int countOfBlanksWithoutInterview = HRPage.getCountOfBlankWithoutInterview();
+        String thirdTreeTitle = "Не записанные(" + String.valueOf(countOfBlanksWithoutInterview)+")";
+        rightPanelTree.setItemCaption(idAllBlanks, firstTreeTitle);
+        rightPanelTree.setItemCaption(idBlanksWithoutInterview, thirdTreeTitle);
     }
 
     private Link getPDFLink() {
