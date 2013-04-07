@@ -1,12 +1,11 @@
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.Application;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.terminal.StreamResource;
-import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.*;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
@@ -16,8 +15,7 @@ import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.StudentDataShort;
 import ua.netcrackerteam.controller.StudentsMarks;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -56,6 +54,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private Label               markLabel;
     private TextArea            markTextArea;
     private Button              markSaveButton;
+    private Button              photoSaveButton;
     //private Button              viewAndPrintButton;
     private Button              deleteButton;
     private Button              editButton;
@@ -374,6 +373,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     StudentDataShort selectedValue = (StudentDataShort)value;
                     markTextArea.setEnabled(true);
                     markSaveButton.setEnabled(true);
+                    photoSaveButton.setEnabled(true);
                     List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValue.getIdForm());
                     FillResultsTable(currMarks);
                 }
@@ -423,6 +423,24 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             }
         });
         rightPanel.addComponent(markSaveButton);
+
+
+        photoSaveButton = new Button("Сохранить");
+        photoSaveButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (!photoSaveButton.getValue().equals("") && (!(photoSaveButton.getValue() == null))) {
+                    FileDownloadResource f = new FileDownloadResource(new File("C:/test"), getApplication());
+                    getWindow().open(f);
+                } else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед сохранением выберите анкету из списка и введите оценку!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        rightPanel.addComponent(photoSaveButton);
 
         pdfLink = new Link();
         rightPanel.addComponent(pdfLink);
@@ -584,6 +602,26 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             StudentDataShort selectedValue = (StudentDataShort)tableOfBlanks.getValue();
             ApplicationForm form = new ApplicationForm(selectedValue.getIdForm());
             return new ByteArrayInputStream(form.generateFormPDF());
+        }
+    }
+
+    public class FileDownloadResource  extends FileResource {
+
+        public FileDownloadResource(File sourceFile, Application application) {
+            super(sourceFile, application);
+        }
+
+        public DownloadStream getStream() {
+            try {
+                final DownloadStream ds = new DownloadStream(new FileInputStream(
+                        getSourceFile()), getMIMEType(), getFilename());
+                ds.setParameter("Content-Disposition", "attachment; filename="
+                        + getFilename());
+                ds.setCacheTime(getCacheTime());
+                return ds;
+            } catch (final FileNotFoundException e) {
+                return null;
+            }
         }
     }
 
