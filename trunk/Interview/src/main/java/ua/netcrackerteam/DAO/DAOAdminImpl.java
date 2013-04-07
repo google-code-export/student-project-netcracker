@@ -202,7 +202,7 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
         beginTransaction();
         List listOfParam = new ArrayList();
         listOfParam.add(userName);
-        String getUserCategoryIDByUserNameQuery = "from UserList where upper(userName) =:param0";
+        String getUserCategoryIDByUserNameQuery = "from UserList where userName =:param0";
         UserList userList = super.<UserList>executeSingleGetQuery(getUserCategoryIDByUserNameQuery, listOfParam);
         int userCategory = userList.getIdUserCategory().getIdUserCategory();
         commitTransaction();
