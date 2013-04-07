@@ -67,6 +67,7 @@ public class MainPanelHR extends MainPanel{
     ComboBox cbInterview;
     Button   btnRefresh;
     
+    StudentInterview selectedInterview;
     String selectReport;
     ReportTemplateBuilder template;
     ReportBuilder builder;
@@ -197,9 +198,7 @@ public class MainPanelHR extends MainPanel{
          container.addItem("Список абитуриентов на заданное собеседование"); 
          container.addItem("Эффективность видов рекламы");         
         
-         cbTypeReport.setContainerDataSource(container);
-         cbTypeReport.setNullSelectionAllowed(false);        
-        
+         cbTypeReport.setContainerDataSource(container);        
          cbTypeReport.setValue(selectReport);
       
           Property.ValueChangeListener listener = new Property.ValueChangeListener() {
@@ -247,9 +246,9 @@ public class MainPanelHR extends MainPanel{
    private void getCombCheckInterview(){
        
         cbInterview = new ComboBox("Собеседование:");
-        cbTypeReport.setImmediate(true);
-        cbTypeReport.setInvalidAllowed(false);
-        cbTypeReport.setNullSelectionAllowed(true);
+        cbInterview.setImmediate(true);
+        cbInterview.setInvalidAllowed(false);
+        cbInterview.setNullSelectionAllowed(true);
          
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
          
@@ -261,18 +260,19 @@ public class MainPanelHR extends MainPanel{
             cbInterview.addItem(stInterview);
             cbInterview.setItemCaption(stInterview, strDate);
          }
+         
+         cbInterview.setValue(selectedInterview);
              
           Property.ValueChangeListener listener = new Property.ValueChangeListener() {
            public void valueChange(ValueChangeEvent event) {
-                StudentInterview itemID = (StudentInterview) event.getProperty().getValue();
-                if(itemID == null){
-                    template = new ReportTemplateStudentsToInterview(itemID.getStudentInterviewId()); 
+                selectedInterview = (StudentInterview) event.getProperty().getValue();
+                if(selectedInterview != null){
+                    template = new ReportTemplateStudentsToInterview(selectedInterview.getStudentInterviewId()); 
                 }else{
                     template = new ReportTemplateStudentsToInterview();
-                }
-                
+                }                
                 builder = new ReportBuilderStudentsToInterview(); 
-                fillReportsLayout();
+                fillReportsLayout();                
            }
 
         
