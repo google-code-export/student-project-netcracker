@@ -1,21 +1,21 @@
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.Application;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.terminal.*;
+import com.vaadin.terminal.Sizeable;
+import com.vaadin.terminal.StreamResource;
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
-import ua.netcrackerteam.controller.HRPage;
-import ua.netcrackerteam.controller.StudentDataShort;
-import ua.netcrackerteam.controller.StudentsMarks;
+import ua.netcrackerteam.controller.*;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -304,7 +304,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         Link pdf = new Link("Просмотреть/Распечатать анкету",resource);
         pdf.setTargetName("_blank");
         pdf.setTargetWidth(600);
-        pdf.setTargetHeight(height-10);
+        pdf.setTargetHeight(height - 10);
         pdf.setTargetBorder(Link.TARGET_BORDER_NONE);
         pdf.setDescription("Анкета студента (откроется в новом окне)");
         ThemeResource icon = new ThemeResource("icons/32/document-pdf.png");
@@ -425,13 +425,24 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         rightPanel.addComponent(markSaveButton);
 
 
-        photoSaveButton = new Button("Сохранить");
+        photoSaveButton = new Button("Фото");
+        photoSaveButton.setIcon(new ThemeResource("icons/32/photo.png"));
         photoSaveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (!photoSaveButton.getValue().equals("") && (!(photoSaveButton.getValue() == null))) {
-                    FileDownloadResource f = new FileDownloadResource(new File("C:/test"), getApplication());
-                    getWindow().open(f);
+                    StreamResource.StreamSource ss = new StreamResource.StreamSource() {
+                        StudentDataShort selectedValue = (StudentDataShort) tableOfBlanks.getValue();
+                        StudentData studentData = StudentPage.getStudentDataByIdForm(selectedValue.getIdForm());
+                        byte[] bytes = studentData.getPhoto();
+                        InputStream is = new ByteArrayInputStream(bytes);
+                        @Override
+                        public InputStream getStream() {
+                            return is;
+                        }
+                    };
+                    StreamResource sr = new StreamResource(ss, "userPhoto.jpg", mainPage);
+                    getWindow().open(sr, "_blank");
                 } else {
                     getWindow().showNotification(
                             "Ошибка!",
@@ -445,89 +456,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         pdfLink = new Link();
         rightPanel.addComponent(pdfLink);
         markSaveButton.setEnabled(false);
-
-        //button panels
-        /*buttonPanel = new HorizontalLayout();
-        deleteButton = new Button("Удалить");
-        deleteButton.setIcon(new ThemeResource("icons/32/trash.png"));
-        deleteButton.addListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                if (!(selectedValueInTable==null)) {
-                    HRPage.deleteStudentBlank(selectedValueInTable.getIdForm());
-                    getWindow().showNotification(
-                            "Анкета удалена!",
-                            "",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    RefrashBlankGridLO();
-                }
-                else {
-                    getWindow().showNotification(
-                            "Ошибка!",
-                            "Перед удалением выберите анкету из списка!",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                }
-            }
-        });
-        buttonPanel.addComponent(deleteButton);
-        editButton = new Button("Редактировать");
-        editButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
-        editButton.addListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                if (!(selectedValueInTable==null)) {
-                    final Window window = new Window("Window");
-
-                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(selectedValueInTable.getIdForm()), mainPage);
-                    window.setCaption("Просмотр анкеты");
-                    window.setContent(studentBlank);
-                    window.setHeight("80%");
-                    window.setWidth("80%");
-                    getWindow().addWindow(window);
-
-
-
-                    *//*getWindow().showNotification(
-                            "Анкета подтверждена!",
-                            "",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    FillBlankTable(HRPage.getNonVerificatedForms());*//*
-                }
-                else {
-                    getWindow().showNotification(
-                            "Ошибка!",
-                            "Перед редактированием выберите анкету из списка!",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                }
-            }
-        });
-        buttonPanel.addComponent(editButton);
-
-        verificateBlankButton = new Button("Подтвердить");
-        verificateBlankButton.setIcon(new ThemeResource("icons/32/Checkbox-Full-icon.png"));
-        verificateBlankButton.addListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                if (!(selectedValueInTable==null)) {
-                    HRPage.verificateForm(selectedValueInTable.getIdForm());
-                    getWindow().showNotification(
-                            "Анкета подтверждена!",
-                            "",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    FillBlankTable(HRPage.getNonVerificatedForms());
-                    RefrashBlankGridLO();
-                }
-                else {
-                    getWindow().showNotification(
-                            "Ошибка!",
-                            "Перед подтверждением выберите анкету из списка!",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                }
-            }
-        });
-        verificateBlankButton.setEnabled(false);
-        buttonPanel.addComponent(verificateBlankButton);
-        rightPanel.addComponent(buttonPanel);*/
     }
 
     private class BlanksTable extends Table {
@@ -557,7 +485,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                 public void valueChange(Property.ValueChangeEvent event) {
                     Object value = event.getProperty().getValue();
                     if (!(null == value)) {
-                        StudentDataShort selectedValue = (StudentDataShort)value;
+                        StudentDataShort selectedValue = (StudentDataShort) value;
                         selectedValue = (StudentDataShort) value;
                         markTextArea.setValue("");
                         markTextArea.setEnabled(true);
@@ -604,25 +532,4 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
             return new ByteArrayInputStream(form.generateFormPDF());
         }
     }
-
-    public class FileDownloadResource  extends FileResource {
-
-        public FileDownloadResource(File sourceFile, Application application) {
-            super(sourceFile, application);
-        }
-
-        public DownloadStream getStream() {
-            try {
-                final DownloadStream ds = new DownloadStream(new FileInputStream(
-                        getSourceFile()), getMIMEType(), getFilename());
-                ds.setParameter("Content-Disposition", "attachment; filename="
-                        + getFilename());
-                ds.setCacheTime(getCacheTime());
-                return ds;
-            } catch (final FileNotFoundException e) {
-                return null;
-            }
-        }
-    }
-
 }
