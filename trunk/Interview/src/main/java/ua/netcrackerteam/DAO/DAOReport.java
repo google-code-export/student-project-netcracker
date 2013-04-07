@@ -19,7 +19,7 @@ public class DAOReport extends DAOCoreObject {
            
             builder.append("select to_char(start_date, 'DD/MM/YYYY HH24:MI'), max_number, count(form.id_form) as form_number, max_number - count(form.id_form) as free_number ");                                        
             builder.append("from interview left join form on interview.id_interview = form.id_interview ");
-            builder.append("where interview.id_interview <> 0 ");
+            builder.append("where interview.id_interview <> 1 ");
             builder.append("group by start_date, max_number ");
             builder.append("order by start_date desc");  
             
@@ -58,7 +58,7 @@ public class DAOReport extends DAOCoreObject {
            builder.append("union all ");
            builder.append("select 0, count(id_form),0 ");
            builder.append("from form ");
-           builder.append("where id_interview is not null ");
+           builder.append("where id_interview is not null and id_interview <> 1 ");
            builder.append("union all ");
            builder.append("select 0, 0, count(distinct id_form) ");
            builder.append("from interview_res) ");
@@ -100,7 +100,7 @@ public class DAOReport extends DAOCoreObject {
              builder.append("count(form.id_form) - count(distinct interview_res.id_form) forms_without_mark  ");                                  
              builder.append("from interview left join form on interview.id_interview = form.id_interview ");
              builder.append("left join interview_res on  form.id_form = interview_res.id_form ");
-             builder.append("where interview.id_interview <> 0 "); 
+             builder.append("where interview.id_interview <> 1 "); 
              builder.append("group by start_date, max_number "); 
              builder.append("order by start_date desc ");
             
@@ -204,7 +204,7 @@ public class DAOReport extends DAOCoreObject {
        StringBuilder builder = new StringBuilder();
        beginTransaction();
        
-       builder.append("select faculty.name faculty, cathedra.name cathedra, count(distinct interview_res.id_form) forms_with_mark, "); 
+       builder.append("select  cathedra.name cathedra, count(distinct interview_res.id_form) forms_with_mark, "); 
        builder.append("count(form.id_form)- count(distinct interview_res.id_form)forms_without_mark, ");
        builder.append("count(form.id_form) forms "); 
        builder.append("from form inner join cathedra on form.id_cathedra = cathedra.id_cathedra ");
@@ -212,7 +212,7 @@ public class DAOReport extends DAOCoreObject {
        builder.append("inner join institute on faculty.id_institute = institute.id_institute "); 
        builder.append("left join interview_res on form.id_form = interview_res.id_form  ");
        builder.append("where institute.id_institute = :param0 ");     
-       builder.append("group by faculty.name, cathedra.name ");
+       builder.append("group by cathedra.name ");
        
        List listOfParams = new ArrayList(1);
        listOfParams.add(idInstitute);      

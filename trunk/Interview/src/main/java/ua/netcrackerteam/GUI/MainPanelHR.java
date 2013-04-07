@@ -12,6 +12,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.Runo;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,8 @@ public class MainPanelHR extends MainPanel{
     private final MainPage mainPage;
      
     ComboBox cbTypeReport;
+    Button   btnRefresh;
+    
     String selectReport;
     ReportTemplateBuilder template;
     ReportBuilder builder;
@@ -120,17 +123,24 @@ public class MainPanelHR extends MainPanel{
          reportsLo.removeAllComponents();
                          
          cbTypeReport = getComboBox();
+         btnRefresh   = getBtnRefresh();
       
          template.createReportPDFTemplate();
          Link pdfLink = getPDFLink(template);
        
          HorizontalLayout horizontal = new HorizontalLayout(); 
-         horizontal.setHeight("60px");
+         horizontal.setHeight("60px");        
          horizontal.addComponent(cbTypeReport); 
-         horizontal.addComponent(pdfLink);
+         horizontal.addComponent(pdfLink);         
          horizontal.setComponentAlignment(pdfLink, Alignment.MIDDLE_CENTER);
          
+         
+         VerticalLayout vertical = new VerticalLayout();
+         vertical.addComponent(btnRefresh);
+         vertical.setComponentAlignment(btnRefresh, Alignment.MIDDLE_RIGHT);
+         
          reportsLo.addComponent(horizontal); 
+         reportsLo.addComponent(vertical); 
               
          //Заполнение отчета            
          builder.createReport(template);        
@@ -140,6 +150,21 @@ public class MainPanelHR extends MainPanel{
          creator.createReport();         
    
   } 
+    
+  private Button getBtnRefresh(){
+        btnRefresh = new Button("Обновить");
+        btnRefresh.setStyleName(Runo.BUTTON_LINK);
+        btnRefresh.setIcon(new ThemeResource("icons/32/reload.png"));
+        btnRefresh.addListener(new Button.ClickListener() {
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                fillReportsLayout();
+            }
+        });
+        
+        return btnRefresh;
+  }
     
   private ComboBox getComboBox(){
       
@@ -153,8 +178,8 @@ public class MainPanelHR extends MainPanel{
          container.addItem("Общие итоги по собеседованиям");
          container.addItem("Итоги по собеседованиям");   
          container.addItem("Кол-во абитуриентов по институтам"); 
-         container.addItem("Кол-во абитуриентов по институтам-факультетам"); 
-         container.addItem("Кол-во абитуриентов по институтам-факультетам-кафедрам"); 
+         container.addItem("Кол-во абитуриентов по факультетам"); 
+         container.addItem("Кол-во абитуриентов по кафедрам"); 
          container.addItem("Кол-во абитуриентов по курсам"); 
          container.addItem("Список абитуриентов на заданное собеседование"); 
          container.addItem("Эффективность видов рекламы");         
@@ -185,10 +210,10 @@ public class MainPanelHR extends MainPanel{
                 }else if(selectReport.equals("Кол-во абитуриентов по институтам")){
                     template = new ReportTemplateAmountStudentInstitute();
                     builder = new ReportBuilderAmountStudentsInstutute();
-                }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам")){
+                }else if(selectReport.equals("Кол-во абитуриентов по факультетам")){
                     template = new ReportTemplateAmountStudentFaculty();
                     builder = new ReportBuilderAmountStudentsFaculty();
-                }else if(selectReport.equals("Кол-во абитуриентов по институтам-факультетам-кафедрам")){
+                }else if(selectReport.equals("Кол-во абитуриентов по кафедрам")){
                    template = new ReportTemplateAmountStudentCathedra();
                    builder = new  ReportBuilderAmountStudentsCathedra();
                 }else if(selectReport.equals("Кол-во абитуриентов по курсам")){
