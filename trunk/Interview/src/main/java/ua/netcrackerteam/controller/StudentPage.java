@@ -340,9 +340,9 @@ public class StudentPage {
         newForm.setFirstName        (newStudentData.getStudentFirstName());
         newForm.setMiddleName       (newStudentData.getStudentMiddleName());
         newForm.setLastName         (newStudentData.getStudentLastName());
-        //newForm.setInstitute        (newStudentData.getStudentInstitute());
+        newForm.setInstitute        (newStudentData.getStudentInstitute());
         newForm.setCathedra         (newStudentData.getStudentCathedra());
-        //newForm.setFaculty          (newStudentData.getStudentFaculty());
+        newForm.setFaculty          (newStudentData.getStudentFaculty());
         newForm.setInstituteYear    (Integer.parseInt(newStudentData.getStudentInstituteCourse()));
         newForm.setInstituteGradYear(Integer.parseInt(newStudentData.getStudentInstituteGradYear()));
 
@@ -699,8 +699,10 @@ public class StudentPage {
             std.setStudentFirstName(form.getFirstName());
             std.setStudentMiddleName(form.getMiddleName());
             std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
-            std.setStudentInstituteCourse(form.getInstituteYear().toString());
-            std.setStudentFaculty(form.getCathedra().getFaculty());
+            //std.setStudentInstituteCourse(form.getInstituteYear().toString());
+            //std.setStudentFaculty(form.getCathedra().getFaculty());
+            std.setStudentInstitute(form.getInstitute());
+            std.setStudentFaculty(form.getFaculty());
             std.setStudentCathedra(form.getCathedra());
             std.setStudentInstituteGradYear(form.getInstituteGradYear().toString());
 
