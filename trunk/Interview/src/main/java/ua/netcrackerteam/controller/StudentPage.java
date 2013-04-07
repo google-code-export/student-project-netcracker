@@ -520,27 +520,15 @@ public class StudentPage {
             currDAOComm.addSomethingNew(knowLang3);
         }
 
-        //new institute, faculty, cathedra
-        //if (!newStudentData.getStudentOtherInstitute().trim().equals("")){
-            //Form form = currDAOStImpl.getFormByUserName(userName);
-            //int formID = form.getIdForm();
+        if (!(newStudentData.getStudentOtherInstitute().equals("")) || (!(newStudentData.getStudentOtherFaculty().equals("")) || (!(newStudentData.getStudentOtherCathedra().equals(""))))) {
             HrTempInfo hrTempInfo = new HrTempInfo();
-            //if(!newStudentData.getStudentOtherFaculty().trim().equals("")){
-               // if (!newStudentData.getStudentOtherCathedra().trim().equals("")){
-                    hrTempInfo.setForm(newForm);
-                    hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
-                    hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
-                    hrTempInfo.setCathedraName(newStudentData.getStudentOtherCathedra());
-                    daohr.setHrTempInfo(hrTempInfo);
-                /*} else {
-                    hrTempInfo.setForm(newForm);
-                    hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
-                    hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
-                    hrTempInfo.setCathedraName("");
-                    daohr.setHrTempInfo(hrTempInfo);
-                }
-            }*/
-        //}
+            hrTempInfo.setForm(newForm);
+            hrTempInfo.setInstituteName(newStudentData.getStudentOtherInstitute());
+            hrTempInfo.setFacultyName(newStudentData.getStudentOtherFaculty());
+            hrTempInfo.setCathedraName(newStudentData.getStudentOtherCathedra());
+            daohr.setHrTempInfo(hrTempInfo);
+        }
+
 
         //knowledge//other 1
         if (!newStudentData.getStudentKnowledgeOther1().trim().equals("")) {
