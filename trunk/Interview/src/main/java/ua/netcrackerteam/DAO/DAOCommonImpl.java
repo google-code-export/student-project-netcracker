@@ -77,7 +77,7 @@ public class DAOCommonImpl implements DAOCommon{
             Locale.setDefault(Locale.ENGLISH);
             //session = HibernateUtil.getSessionFactory().getCurrentSession();
             //session.beginTransaction();
-            re = session.createQuery("from UserCategory where idUSerCategory = '" + currUserCategoryID + "'");
+            re = session.createQuery("from UserCategory where idUserCategory = '" + currUserCategoryID + "'");
             listOfCategories = re.list();
         } catch (Exception e) {
             System.out.println(e);
