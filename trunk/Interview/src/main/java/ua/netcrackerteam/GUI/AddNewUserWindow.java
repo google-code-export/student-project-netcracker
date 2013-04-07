@@ -9,6 +9,8 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.controller.GeneralController;
 
+import java.util.Date;
+
 /**
  * @author krygin
  */
@@ -16,6 +18,7 @@ public class AddNewUserWindow extends Window implements FieldEvents.BlurListener
         Property.ValueChangeListener{
     AdminUserManagementLayout adminUserManagementLayout;
     TextField userName;
+    String userLogin;
     PasswordField password;
     PasswordField password2;
     TextField userEmail;
@@ -24,9 +27,10 @@ public class AddNewUserWindow extends Window implements FieldEvents.BlurListener
     private Boolean lastAdded = false;
     private static final String[] userTypes = new String[] { "Admin", "HR", "Interviewer" };
 
-    public AddNewUserWindow(AdminUserManagementLayout adminUserManagementLayout) {
+    public AddNewUserWindow(AdminUserManagementLayout adminUserManagementLayout, String userLogin) {
         this.adminUserManagementLayout = adminUserManagementLayout;
         this.setIcon(new ThemeResource("icons/32/add-user.png"));
+        this.userLogin = userLogin;
         setModal(true);
         setWidth("30%");
         setResizable(false);
@@ -103,10 +107,11 @@ public class AddNewUserWindow extends Window implements FieldEvents.BlurListener
             String userPassword = String.valueOf(this.getPassword());
             String userEmail = String.valueOf(this.getUserEmail());
             if (selectedUserType.equals("")) {
-                getWindow().showNotification("Братиша, выбери-ка Тип юзера А??!!!", Notification.TYPE_TRAY_NOTIFICATION);
+                getWindow().showNotification("Выбирете тип юзера, пожалуйста", Notification.TYPE_TRAY_NOTIFICATION);
             } else if (selectedUserType.equals("Admin")){
                 if (!(GeneralController.checkUserName(userName))){
                     GeneralController.setAdminUser(userName, userPassword, userEmail);
+                    GeneralController.setAuditInterviews(5, "Admin added new Admin - " + userName, userLogin, new Date());
                     Notification n = new Notification("Регистрация нового Админа завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
                     n.setDescription("На email нового юзера(Админа) выслано письмо с регистрационными данными.\n" +
                             "Теперы юзер(Админ) может зайти под своими аккаунт данными.");
@@ -121,6 +126,7 @@ public class AddNewUserWindow extends Window implements FieldEvents.BlurListener
             }  else if (selectedUserType.equals("HR")){
                 if (!(GeneralController.checkUserName(userName))){
                     GeneralController.setHRUser(userName, userPassword, userEmail);
+                    GeneralController.setAuditInterviews(5, "Admin added new HR - " + userName, userLogin, new Date());
                     Notification n = new Notification("Регистрация нового HR завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
                     n.setDescription("На email нового юзера(HR) выслано письмо с регистрационными данными.\n" +
                             "Теперы юзер(HR) может зайти под своими аккаунт данными.");
@@ -140,6 +146,7 @@ public class AddNewUserWindow extends Window implements FieldEvents.BlurListener
             }  else if (selectedUserType.equals("Interviewer")){
                 if (!(GeneralController.checkUserName(userName))){
                     GeneralController.setInterviewerUser(userName, userPassword, userEmail);
+                    GeneralController.setAuditInterviews(5, "Admin added new Inrerviewer - " + userName, userLogin, new Date());
                     Window.Notification n = new Window.Notification("Регистрация нового Интервьювера завершена успешно!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     n.setDescription("На email нового юзера(Интервьювера) выслано письмо с регистрационными данными.\n" +
                             "Теперь юзер(Интервьювер) может зайти под своими аккаунт данными.");

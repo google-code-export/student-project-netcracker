@@ -6,6 +6,8 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.controller.GeneralController;
 
+import java.util.Date;
+
 /**
  * @author krygin
  */
@@ -14,11 +16,13 @@ public class ResetUserLoginWindow extends Window implements FieldEvents.BlurList
     TextField userName;
     Label message;
     String currentUser = null;
+    private final String userLogin;
 
-    public ResetUserLoginWindow(AdminUserManagementLayout adminUserManagementLayout, String currentUser) {
+    public ResetUserLoginWindow(AdminUserManagementLayout adminUserManagementLayout, String currentUser, String userLogin) {
         this.adminUserManagementLayout = adminUserManagementLayout;
         this.currentUser = currentUser;
         this.setIcon(new ThemeResource("icons/32/change-login.png"));
+        this.userLogin = userLogin;
         setModal(true);
         setWidth("30%");
         setResizable(false);
@@ -59,6 +63,7 @@ public class ResetUserLoginWindow extends Window implements FieldEvents.BlurList
             String newUserName = String.valueOf(userName);
             if (!(GeneralController.checkUserName(newUserName))){
                 GeneralController.setNewLogin(oldUserName, newUserName);
+                GeneralController.setAuditInterviews(6, "Login changed for user - " + currentUser + " to - " + newUserName, userLogin, new Date());
                 Notification n = new Notification("Изменение логина юзера завершено успешно!", Notification.TYPE_TRAY_NOTIFICATION);
                 n.setDescription("На email " + newUserName + " выслано письмо с новым паролем.\n" +
                         "Теперь юзер может зайти под своими новыми аккаунт данными.");

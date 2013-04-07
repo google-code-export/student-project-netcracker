@@ -5,6 +5,8 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.controller.GeneralController;
 
+import java.util.Date;
+
 /**
  * @author krygin
  */
@@ -12,15 +14,17 @@ public class ChangeUserTypeWindow extends Window implements AbstractSelect.NewIt
         Property.ValueChangeListener, Button.ClickListener{
     AdminUserManagementLayout adminUserManagementLayout;
     private final String currentUser;
+    private final String userLogin;
     private ComboBox comboBox;
     private String selectedUserType = "";
     private Boolean lastAdded = false;
     private static final String[] userTypes = new String[] { "Admin", "HR", "Interviewer" };
     Button acceptChangeButton = new Button("change user type");
 
-    public ChangeUserTypeWindow(AdminUserManagementLayout adminUserManagementLayout, String currentUser) {
+    public ChangeUserTypeWindow(AdminUserManagementLayout adminUserManagementLayout, String currentUser, String userLogin) {
         this.adminUserManagementLayout = adminUserManagementLayout;
         this.currentUser = currentUser;
+        this.userLogin = userLogin;
         setModal(true);
         setWidth("30%");
         setIcon(new ThemeResource("icons/32/change-user-type.png"));
@@ -59,6 +63,7 @@ public class ChangeUserTypeWindow extends Window implements AbstractSelect.NewIt
             }  else {
                 if (!GeneralController.checkUserTypeCategoty(currentUser, selectedUserType)){
                     GeneralController.changeUserType(currentUser, selectedUserType);
+                    GeneralController.setAuditInterviews(6, "User Type changed for user - " + currentUser + " to - " + selectedUserType, userLogin, new Date());
                     Notification n = new Notification("Смена типа юзера " + currentUser + " на " + selectedUserType + " завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
                     n.setDescription("На email юзера " + currentUser + " выслано письмо с уведомлением.");
                     n.setPosition(Notification.POSITION_CENTERED);
