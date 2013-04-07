@@ -104,7 +104,9 @@ public class ReportTemplateStudentsToInterview extends ReportTemplateBuilder{
         Iterator<Interview> iterator = interviews.iterator();
         while(iterator.hasNext()){
             
-          Interview interview = iterator.next();                           
+           Interview interview = iterator.next(); 
+           if(interview.getIdInterview() == 1){continue;}            
+                                    
           List forms = (new DAOReport()).getFormByIdInterview(interview.getIdInterview());
           String startInterview = formatter.format(interview.getStartDate());          
           

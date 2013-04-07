@@ -19,7 +19,7 @@ public class ReportBuilderAmountStudentsFaculty extends ReportBuilder {
 
     @Override
     public Label buildTitle() {
-        return report.getTitle("Количество абитуриентов по институтам-факультетам");
+        return report.getTitle("Количество абитуриентов по факультетам");
     }
 
     @Override

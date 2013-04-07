@@ -55,7 +55,7 @@ public class ReportTemplateAmountStudentCathedra extends ReportTemplateBuilder{
     public PdfPCell buildTitle() {
         PdfPCell cell= new PdfPCell();
         try {       
-            cell = report.setTitle("Количество абитуриентов по институтам-факультетам-кафедрам");
+            cell = report.setTitle("Количество абитуриентов по кафедрам");
         } catch (IOException ex) {
             Logger.getLogger(ReportTemplateAmountStudentCathedra.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException ex) {
@@ -69,7 +69,7 @@ public class ReportTemplateAmountStudentCathedra extends ReportTemplateBuilder{
     public PdfPCell buildTable() {
          String[]header = new String[]{"Кафедра", "Пришедшие", "Не пришедшие", "Всего"};
    
-         float[] size = new float[]{2f,  1f, 1f, 1f};
+         float[] size = new float[]{1.5f, 0.5f, 0.5f, 0.5f};
          DesignTable table = new DesignTableWithGroups(size);
      
          report.setDesignTable(table);

@@ -56,7 +56,7 @@ public class ReportTemplateAmountStudentFaculty extends ReportTemplateBuilder{
     public PdfPCell buildTitle() {
         PdfPCell cell= new PdfPCell();
         try {       
-            cell = report.setTitle("Количество абитуриентов по институтам-факультетам");
+            cell = report.setTitle("Количество абитуриентов по факультетам");
         } catch (IOException ex) {
             Logger.getLogger(ReportTemplateAmountStudentFaculty.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DocumentException ex) {
