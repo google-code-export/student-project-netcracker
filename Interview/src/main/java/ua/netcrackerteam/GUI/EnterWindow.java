@@ -8,6 +8,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.controller.GeneralController;
 
 import java.util.Date;
@@ -16,7 +17,7 @@ import java.util.Date;
  * Login form
  * @author Anna Kushnirenko
  */
-class EnterWindow extends Window {
+class EnterWindow extends Window implements Logable {
     private LoginForm loginForm = null;
     public static final int MODE_GUEST = -1;
     private int mode = MODE_GUEST;
@@ -60,6 +61,7 @@ class EnterWindow extends Window {
                     GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
                     Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
                     error.setPosition(Notification.POSITION_CENTERED);
+                    logger.getLog();
                     getWindow().showNotification(error);
                 }
             }
