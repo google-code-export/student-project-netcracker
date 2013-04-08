@@ -97,6 +97,17 @@ public class DAOCoreObject {
         return object;
     }
 
+    public <T> List<T> executeListGetSQLQuery(String inputQuery){
+        List<T> object = null;
+        try {
+            query = session.createSQLQuery(inputQuery);
+            object = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return object;
+    }
+
     public <T> void saveUpdatedObject(T updatedObjects) {
         try {
             session.saveOrUpdate(updatedObjects);

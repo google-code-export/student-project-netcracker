@@ -6,7 +6,6 @@ import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
 
-import java.lang.reflect.Field;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -476,64 +475,14 @@ public class HRPage {
 
     }
 
-    public static void getDiff() throws IllegalAccessException {
-
-        int idVerForm = 255;
-        int idNonVerFrom = 257;
-        StudentData stDataVer = getStDataByFormID(idVerForm);
-        StudentData stDataNonVer = getStDataByFormID(idNonVerFrom);
-        try {
-            Class stDataClass = Class.forName("ua.netcrackerteam.controller.StudentData");
-            Field[] stDataField = stDataClass.getDeclaredFields();
-            for (Field currField:stDataField) {
-                Boolean access = currField.isAccessible();
-                if (!(access == true)) {
-                    currField.setAccessible(true);
-                }
-                if (!(currField.get(stDataVer)==null) && (currField.get(stDataNonVer)==null)) {
-                    System.out.println(currField.toString() + "; old value " + currField.get(stDataVer) + "; new value is empty");
-                }
-                else if ((currField.get(stDataVer)==null) && !(currField.get(stDataNonVer)==null)) {
-                    System.out.println(currField.toString() + "; old value empty; new value " + currField.get(stDataNonVer));
-                }
-                else if ((currField.get(stDataVer)==null) && (currField.get(stDataNonVer)==null)) {
-                    System.out.println(currField.toString() + "; old value is empty; new value is empty");
-                }
-                else {
-                    if (!currField.get(stDataVer).equals(currField.get(stDataNonVer))) {
-                        System.out.println(currField.toString() + "; old value " + currField.get(stDataVer) + "; new value " + currField.get(stDataNonVer));
-                    }
-                }
-                currField.setAccessible(false);
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    public static List<DifferenceData> getDifferencesOfBlanks(int currFormId) {
+        DAOHRImpl currDAO = new DAOHRImpl();
+        Form currForm = currDAO.getForm(currFormId);
+        Integer currUserId = 0;
+        if (!(currForm == null)) {
+            currUserId = currForm.getUser().getIdUser();
         }
-
-
-    }
-
-    /*public static Object[] getFormDiff() {
-
-        Object[] formDiff = DAOHRImpl.getDiff();
-    }*/
-
-    public static void main(String[] args) {
-        //addNewInstFaculCath("New Inst","New Fak","New Cath");
-
-        /*List<HrTempInfo> hrTempInfos = getHRTempInfo();
-        for(HrTempInfo dvsd : hrTempInfos){
-            System.out.println(dvsd.getCathedraName());
-        }*/
-
-        //HrTempInfo hrTempInfo = getHRTempInfoByFormID(44);
-        //System.out.println(hrTempInfo.getCathedraName());
-        //addNewInstFaculCathByHrTempInfoByFormID(46);
-        try {
-            getDiff();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        return currDAO.getDiff(currUserId);
     }
 
 }

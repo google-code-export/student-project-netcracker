@@ -1,26 +1,17 @@
 package ua.netcrackerteam.DAO;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import ua.netcrackerteam.DAO.Entities.*;
-import ua.netcrackerteam.configuration.HibernateUtil;
+import ua.netcrackerteam.controller.DifferenceData;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Kushnirenko Anna, Filipenko Aleksey
  */
 public class DAOHRImpl extends DAOCoreObject implements DAOHR {
-    
-    public static void main(String[] args) {
-        
-        DAOHRImpl test = new DAOHRImpl();
-        test.getAllRegisteredForms();
-
-    }
 
     @Override
     public List<Form> search(String category, String value) {
@@ -43,7 +34,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         else {
             listOfParam.add(category);
             listOfParam.add(value);
-            query = "from Form where status = 1 and interview is not null and upper(:param0) like upper(:param1)";
+            query = "from Form where status = 1 and upper(:param0) like upper(:param1)";
         }
         List<Form> formList = super.<Form>executeListGetQuery(query, listOfParam);
         commitTransaction();
@@ -561,51 +552,88 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         
     }
 
-    public static void getDiff(int currUserId) {
-        Query query;
-        Session session = null;
-        Transaction transaction = null;
-        List columnData = null;
+    public Form getForm(int currFormId) {
+        Form currForm = null;
+        String query = "";
+        List listOfParams = new LinkedList();
+        beginTransaction();
+        query = "from Form where to_char(idForm) = to_char(:param0)";
+        listOfParams.add(currFormId);
+        currForm = super.<Form>executeSingleGetQuery(query,listOfParams);
+        return currForm;
+    }
+
+    public List<DifferenceData> getDiff(int currUserId) {
+
+        Hashtable tableOfNames = new Hashtable();
+        tableOfNames.put("ID_FORM",                 "Номер анкеты");
+        tableOfNames.put("FIRST_NAME",              "Фамилия");
+        tableOfNames.put("LAST_NAME",               "Имя");
+        tableOfNames.put("MIDDLE_NAME",             "Отчество");
+        tableOfNames.put("EXEC_PROJECT",            "Выполненные проекты");
+        tableOfNames.put("REASON",                  "Причина принятия в УЦ");
+        tableOfNames.put("EXTRA_INFO",              "Доп. информация");
+        tableOfNames.put("INSTITUTE_YEAR",          "Курс");
+        tableOfNames.put("INSTITUTE_GRAD_YEAR",     "Год окончания ВУЗа");
+        tableOfNames.put("EXTRA_KNOWLEDGE",         "Доп. знания");
+        tableOfNames.put("INTEREST_STUDY",          "Заин-сть учебой");
+        tableOfNames.put("INTEREST_WORK",           "Заин-сть работой");
+        tableOfNames.put("INTEREST_BRANCH_SOFT",    "Заин-сть разработкой ПО");
+        tableOfNames.put("INTEREST_OTHER",          "Заин-сть другим");
+        tableOfNames.put("INTEREST_DEEP_SPEC",      "Заин-сть глубокой специализацией");
+        tableOfNames.put("INTEREST_VARIOUS",        "Заин-сть разнообразной работой");
+        tableOfNames.put("INTEREST_MANAGMENT",      "Заин-сть руководством");
+        tableOfNames.put("INTEREST_SALE",           "Заин-сть продажами");
+
+        //currUserId = 2300;
+        String query = "";
         String queryText = "";
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            query = session.createSQLQuery("select column_name from ALL_TAB_COLUMNS where table_name = 'FORM'");
-            columnData = query.list();
-            Boolean first = true;
-            for (Object colunmName:columnData) {
-                String currColumnName = (String)colunmName;
-                if (!((String) colunmName).toLowerCase().equals("photo")) {
-                String currcolumnQuery = "select * from (select '" + currColumnName + "', to_char(f1." + currColumnName + "), to_char(f2." + currColumnName + ")" +
-                        "from form f1, form f2 where" +
-                        "(f1.id_user = f2.id_user) and (f1.id_user = "  + currUserId + " ) " +
-                        "and (f1." + currColumnName + "<> f2." + currColumnName +")) where rownum = 1";
-                if (first) {
-                    queryText = currcolumnQuery;
-                    first = false;
-                }
-                else {
-                    queryText = queryText + " union " + currcolumnQuery;
-                }
-                }
-
+        List listOfParams       = new ArrayList();
+        beginTransaction();
+        query = "select column_name from ALL_TAB_COLUMNS where table_name = 'FORM'";
+        List<String> listOfFields = super.<String>executeListGetSQLQuery(query, listOfParams);
+        Boolean first = true;
+        int k = 0;
+        for (String colunmName : listOfFields) {
+            if (colunmName.toLowerCase().contains("id") || colunmName.toLowerCase().contains("photo") ) {
+                continue;
             }
-
-            query = session.createSQLQuery(queryText);
-            columnData = query.list();
-
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
+            String currcolumnQuery = "select * from (select '" + colunmName + "', to_char(f1." + colunmName + "), to_char(f2." + colunmName + ")" +
+                    "from form f1, form f2 where" +
+                    "(f1.id_user = f2.id_user) and (f1.id_user = " + currUserId + " ) " +
+                    "and (f1." + colunmName + "<> f2." + colunmName + ")) where rownum = 1";
+            if (first) {
+                queryText = currcolumnQuery;
+                first = false;
+            } else {
+                queryText = queryText + " union " + currcolumnQuery;
             }
         }
+        List <Object[]> columnData = super.<Object[]>executeListGetSQLQuery(queryText);
 
-    }
+        List<DifferenceData> diffList = new LinkedList<DifferenceData>();
+        for (Object[] columnValue:columnData) {
+            String columnAlias  = (String)columnValue[0];
+            String oldValue     = (String)columnValue[1];
+            String newValue     = (String)columnValue[2];
+            DifferenceData currDiffData = new DifferenceData();
+            currDiffData.setFieldName((String) tableOfNames.get(columnAlias));
+            currDiffData.setOldValue(oldValue);
+            currDiffData.setNewValue(newValue);
+            diffList.add(currDiffData);
+        }
 
+        commitTransaction();
+        return diffList;
     }
+}
+
+
+
+
+
+
+
     
     
     
