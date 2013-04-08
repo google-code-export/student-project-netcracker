@@ -126,9 +126,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private void onButtonSearchClick() {
         String somethingValue = (String)something.getValue();
         String inWhichColumn = (String)searchSelect.getValue();
-        //List <StudentDataShort> searchResults = DAOHRImpl.searchSomethingSomewere(inWhichColumn, somethingValue);
-        //BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, searchResults);
-        //tableOfBlanks.setContainerDataSource(bean);
     }
 
     private void FillBlankGridLO(){
@@ -172,6 +169,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     markTextArea.setEnabled(false);
                     markSaveButton.setEnabled(false);
                     editButton.setEnabled(false);
+                    markTextArea.setEnabled(false);
                 }
                 else if(event.getItemId().equals("3")) {
                     FillBlankTable(HRPage.getBlankWithoutInterview());
@@ -179,6 +177,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     markTextArea.setEnabled(false);
                     markSaveButton.setEnabled(false);
                     editButton.setEnabled(false);
+                    markTextArea.setEnabled(false);
                 }
             }
         });
@@ -200,6 +199,13 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                             "",
                             Window.Notification.TYPE_TRAY_NOTIFICATION);
                     RefrashBlankGridLO();
+                    if (rightPanelTree.getValue().equals("1")) {
+                        FillBlankTable(HRPage.getAllForms());
+                    }else if (rightPanelTree.getValue().equals("2")) {
+                        FillBlankTable(HRPage.getNonVerificatedForms());
+                    }else if (rightPanelTree.getValue().equals("3")) {
+                        FillBlankTable(HRPage.getBlankWithoutInterview());
+                    }
                 }
                 else {
                     getWindow().showNotification(
@@ -366,23 +372,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private void FillInformationPanel() {
         //data source
         tableOfBlanks = new BlanksTable(new BeanItemContainer(StudentDataShort.class, HRPage.getAllForms()));
-        tableOfBlanks.addListener(new Table.ValueChangeListener() {
-            public void valueChange(Property.ValueChangeEvent event) {
-                Object value = event.getProperty().getValue();
-                if (!(null == value)) {
-                    StudentDataShort selectedValue = (StudentDataShort)value;
-                    markTextArea.setEnabled(true);
-                    markSaveButton.setEnabled(true);
-                    photoSaveButton.setEnabled(true);
-                    List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValue.getIdForm());
-                    FillResultsTable(currMarks);
-                }
-                else {
-                    markTextArea.setEnabled(false);
-                    markSaveButton.setEnabled(false);
-                }
-            }
-        });
         rightPanel.addComponent(tableOfBlanks);
 
         tableOfResults = new ResultsTable(new BeanItemContainer(StudentsMarks.class, null));
@@ -398,6 +387,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         rightPanel.addComponent(markTextArea);
 
         markSaveButton = new Button("Сохранить");
+        markSaveButton.setWidth("150");
         markSaveButton.setIcon(new ThemeResource("icons/32/page_table_warning.png"));
         markSaveButton.addListener(new Button.ClickListener() {
             @Override
@@ -426,11 +416,12 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
 
 
         photoSaveButton = new Button("Фото");
+        photoSaveButton.setWidth("150");
         photoSaveButton.setIcon(new ThemeResource("icons/32/photo.png"));
         photoSaveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                if (!photoSaveButton.getValue().equals("") && (!(photoSaveButton.getValue() == null))) {
+                if  (!(tableOfBlanks.getValue() == null)) {
                     StreamResource.StreamSource ss = new StreamResource.StreamSource() {
                         StudentDataShort selectedValue = (StudentDataShort) tableOfBlanks.getValue();
                         StudentData studentData = StudentPage.getStudentDataByIdForm(selectedValue.getIdForm());
@@ -456,6 +447,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         pdfLink = new Link();
         rightPanel.addComponent(pdfLink);
         markSaveButton.setEnabled(false);
+        photoSaveButton.setEnabled(false);
     }
 
     private class BlanksTable extends Table {
@@ -486,13 +478,26 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     Object value = event.getProperty().getValue();
                     if (!(null == value)) {
                         StudentDataShort selectedValue = (StudentDataShort) value;
-                        selectedValue = (StudentDataShort) value;
-                        markTextArea.setValue("");
-                        markTextArea.setEnabled(true);
-                        markSaveButton.setEnabled(true);
+                        List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValue.getIdForm());
+                        FillResultsTable(currMarks);
+
                         Link oldPDFLink = pdfLink;
                         pdfLink = getPDFLink();
                         rightPanel.replaceComponent(oldPDFLink, pdfLink);
+                        if (!rightPanelTree.getValue().equals("3") && !rightPanelTree.getValue().equals("2")) {
+                            markTextArea.setEnabled(true);
+                            markSaveButton.setEnabled(true);
+                            photoSaveButton.setEnabled(true);
+                        }else {
+                            markTextArea.setEnabled(false);
+                            markSaveButton.setEnabled(false);
+                            photoSaveButton.setEnabled(false);
+                        }
+                        markTextArea.setValue("");
+                    } else {
+                        markTextArea.setEnabled(false);
+                        markSaveButton.setEnabled(false);
+                        photoSaveButton.setEnabled(false);
                     }
                 }
             });

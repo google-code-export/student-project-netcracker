@@ -105,13 +105,16 @@ public class Form implements Serializable {
     @JoinColumn(name = "ID_INTERVIEW")
     private Interview interview;    
 
-    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER,orphanRemoval=true)
     private Set<Contact> contacts;
-    
-    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
+
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER,orphanRemoval=true)
+    private Set<HrTempInfo> hrTempInfos;
+
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER,orphanRemoval=true)
     private Set<Knowledge> knowledges;
     
-    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER )
+    @OneToMany(mappedBy= "form", fetch = FetchType.EAGER,orphanRemoval=true)
     private Set<Advert> adverts = new LinkedHashSet();
 
     public Form() {
@@ -355,6 +358,14 @@ public class Form implements Serializable {
 
     public void setInstitute(Institute institute) {
         this.institute = institute;
+    }
+
+    public Set<HrTempInfo> getHrTempInfos() {
+        return hrTempInfos;
+    }
+
+    public void setHrTempInfos(Set<HrTempInfo> hrTempInfos) {
+        this.hrTempInfos = hrTempInfos;
     }
     
     @Override

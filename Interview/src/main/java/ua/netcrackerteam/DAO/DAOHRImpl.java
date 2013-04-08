@@ -24,33 +24,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public List<Form> search(String category, String value) {
-        //Session session = null;
-        //Query query;
-        //String query = "";
-        //List<Form> formList = null;
-        //List listOfParam = new ArrayList();
-        /*try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            String queryStart = "from Form where status = 1 and interview is not null and upper(";
-            if (category.equals("institute")) {
-               query = session.createQuery(queryStart + "cathedra.faculty.institute.name) like upper('%" + value + "%')");
-            } else if (category.equals("faculty")) {
-               query = session.createQuery(queryStart + "cathedra.faculty.name) like upper('%" + value + "%')");
-            } else if (category.equals("cathedra")) {
-               query = session.createQuery(queryStart + "cathedra.name) like upper('%" + value + "%')");
-            } else {
-                query = session.createQuery(queryStart + category + ") like upper('%" + value + "%')");
-            }
-            formList =  query.list();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
         String query = "";
         List listOfParam = new ArrayList();
         value = '%'+value+'%';
@@ -79,39 +52,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     
     @Override
     public void setHRMark(int selectedFormID, String insertedMark, String userNameHR) {
-        /*Session session = null;
-        Query query = null;
-        Transaction transaction = null;
-        try {
-            InterviewRes interviewRes = null;
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            query = session.createQuery("from InterviewRes where form = "
-                    + selectedFormID
-                    + " and user.userName = '" +  userNameHR +"'");
-            interviewRes =  (InterviewRes) query.uniqueResult();
-            if(interviewRes != null) {
-                interviewRes.setScore(insertedMark);    
-            } else {                            
-                interviewRes = new InterviewRes();
-                query = session.createQuery("from Form where idForm = " + selectedFormID);
-                Form selectedForm = (Form) query.uniqueResult();
-                interviewRes.setForm(selectedForm);
-                query = session.createQuery("from UserList where userName = '" +userNameHR+"'");
-                UserList hr = (UserList) query.uniqueResult();
-                interviewRes.setIdUser(hr);
-                interviewRes.setScore(insertedMark);                
-            }            
-            session.save(interviewRes);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
         String query                        = "";
         InterviewRes currInterviewResult    = null;
         Form currFormForInsertResults       = null;
@@ -146,25 +86,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public UserList getUserDataByFormId(int formId) {
-        /*Session session = null;
-        UserList selectedUser = null;
-        Query query;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from Form where idForm = " + formId);
-            Form currForm = (Form)query.uniqueResult();
-            selectedUser = (UserList)currForm.getUser();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
 
-        return selectedUser;*/
         String query            = "";
         List listOfParams       = new ArrayList();
         Form userForm           = null;
@@ -180,23 +102,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
  
     @Override
     public List<Form> getAllRegisteredForms() {
-        /*Session session = null;
-        Query query;                
-        List<Form> formList = null;        
-        try {
-            //Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();            
-            query = session.createQuery("from Form where status = 1 and interview is not null");
-            formList =  query.list();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return formList;*/
         String query                = "";
         List<Form> selectedForms    = null;
         beginTransaction();
@@ -207,23 +112,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public List<HrTempInfo> getHrTempInfo() {
-        /*Session session = null;
-        Query query;
-        List<HrTempInfo> tempInfos = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from HrTempInfo");
-            tempInfos =  query.list();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return tempInfos;*/
         String query                = "";
         List<HrTempInfo> selectedInfo     = null;
         beginTransaction();
@@ -234,23 +122,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public HrTempInfo getHrTempInfoByFormID(int formID) {
-        /*Session session = null;
-        Query query;
-        HrTempInfo tempInfos = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from HrTempInfo where form.idForm = " + formID);
-            tempInfos = (HrTempInfo) query.uniqueResult();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return tempInfos;*/
         String query                = "";
         HrTempInfo selectedInfo     = null;
         List listOfParams           = new ArrayList();
@@ -263,21 +134,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public void setHrTempInfo(HrTempInfo hrTempInfo){
-        /*Session session = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            session.save(hrTempInfo);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
         beginTransaction();
         super.<HrTempInfo>saveUpdatedObject(hrTempInfo);
         commitTransaction();
@@ -303,24 +159,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }*/
 
     public void deleteHrTempInfo(int tempInfoID){
-        /*Session session = null;
-        Query query = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();
-            query = session.createQuery("from HrTempInfo where idHrTempInfo = " + tempInfoID);
-            HrTempInfo selectedHrTempInfo = (HrTempInfo) query.uniqueResult();
-            session.delete(selectedHrTempInfo);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
         String query        = "";
         List listOfParam    = new ArrayList();
         HrTempInfo currHRInfo = null;
@@ -332,24 +170,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public HrTempInfo getHrTempInfoByID(int tempInfoID){
-        /*Session session = null;
-        Query query;
-        HrTempInfo hrTempInfo = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from HrTempInfo"
-                    + " where idHrTempInfo = " + tempInfoID);
-            hrTempInfo = (HrTempInfo) query.uniqueResult();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return hrTempInfo;*/
         String query        = "";
         List listOfParam    = new ArrayList();
         HrTempInfo currHRInfo = null;
@@ -362,26 +182,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public List<Form> getNonVerificatedForms() {
-        /*Session session = null;
-        Query query;
-        Query queryForm;
-        List<Form> formList = null;        
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from Status where idStatus =5");
-            Status currStatus = (Status) query.uniqueResult();
-            queryForm = session.createQuery("from Form where status = " + currStatus.getIdStatus());
-            formList =  queryForm.list();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return formList;*/
         String queryForm        = "";
         List listOfParams       = new ArrayList();
         List<Form> listOfForms  = null;
@@ -405,32 +205,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public void verificateForm(int formID) {
-        /*Session session = null;
-        Query query = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();   
-            query = session.createQuery("from Status where idStatus = " + 1);
-            Status status = (Status) query.uniqueResult();
-            query = session.createQuery("from Form where idForm = " + formID);
-            Form selectedForm = (Form) query.uniqueResult();
-            UserList user = selectedForm.getUser();
-            query = session.createQuery("from Form where user = " + user.getIdUser() 
-                    + " and status = " + status.getIdStatus());
-            Form oldForm = (Form) query.uniqueResult();
-            session.delete(oldForm);
-            selectedForm.setStatus(status);
-            session.save(selectedForm);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
         String query            = "";
         Status currStatus       = null;
         List listOfParams       = new ArrayList();
@@ -455,24 +229,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public void deleteForm(int formID) {
-        /*Session session = null;
-        Query query = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();   
-            query = session.createQuery("from Form where idForm = " + formID);
-            Form selectedForm = (Form) query.uniqueResult();
-            session.delete(selectedForm);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
         String query            = "";
         List listOfParams       = new ArrayList();
         Form currForm           = null;
@@ -492,7 +248,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();   
+            transaction = session.beginTransaction();
             query = session.createQuery("from Form where idForm = " + formID);
             Form selectedForm = (Form) query.uniqueResult();
             query = session.createQuery("from Status where idStatus = " + statusID);
@@ -509,14 +265,23 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         }*/
         String query            = "";
         List listOfParams       = new ArrayList();
-        Form currForm           = null;
         beginTransaction();
+        listOfParams.add(formID);
+        query = "from Form where to_char(idForm) = to_char(:param0)";
+        Form selectedForm = super.<Form>executeSingleGetQuery(query, listOfParams);
+        listOfParams.clear();
+        query = "from Status where to_char(idStatus) = to_char(:param0)";
+        listOfParams.add(statusID);
+        Status selectedStatus = super.<Status>executeSingleGetQuery(query,listOfParams);
+        selectedForm.setStatusAttend(selectedStatus);
+        super.<Form>updatedObject(selectedForm);
+        commitTransaction();
 
     }
 
     @Override
     public List<InterviewRes> getInterviewersMarks(int selectedFormID) {
-        Session session = null;
+        /*Session session = null;
         Query query;                
         List<InterviewRes> marks = null;        
         try {
@@ -534,11 +299,19 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 session.close();
             }
         }
+        return marks;*/
+        String query            = "";
+        List listOfParams       = new ArrayList();
+        beginTransaction();
+        listOfParams.add(selectedFormID);
+        query = "from InterviewRes where to_char(form) = to_char(:param0) and user IN (select idUser from UserList where idUserCategory = 3)";
+        List<InterviewRes> marks = super.<InterviewRes>executeListGetSQLQuery(query, listOfParams);
+        commitTransaction();
         return marks;
     }
 
     public List<InterviewRes> getAllStudentsMarks(int selectedFormID) {
-        Session session = null;
+        /*Session session = null;
         Query query;
         List<InterviewRes> marks = null;
         try {
@@ -556,12 +329,21 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 session.close();
             }
         }
+        return marks;*/
+        String query            = "";
+        List listOfParams       = new ArrayList();
+        beginTransaction();
+        listOfParams.add(selectedFormID);
+        query = "from InterviewRes where to_char(form) = to_char(:param0) and user IN (select idUser from UserList where (idUserCategory = 3) or (idUserCategory = 2))";
+        List<InterviewRes> marks = super.<InterviewRes>executeListGetQuery(query, listOfParams);
+        commitTransaction();
         return marks;
+
     }
 
     @Override
     public String getInterviewerNameByID(int userID) {
-        Session session = null;
+        /*Session session = null;
         Query query;
         String name = "";        
         try {
@@ -579,11 +361,22 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 session.close();
             }
         }
+        return name;*/
+        String query            = "";
+        List listOfParams       = new ArrayList();
+        String name             = "";
+        beginTransaction();
+        listOfParams.add(userID);
+        query = "from UserList where to_char(idUser) = to_char(:param0)";
+        UserList currUser = super.<UserList>executeSingleGetQuery(query, listOfParams);
+        name = currUser.getUserName();
+        commitTransaction();
         return name;
+
     }
 
     public void addNewInterview(Interview newInterview) {
-        Session session = null;
+        /*Session session = null;
         Transaction transaction = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
@@ -597,12 +390,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
+        }*/
+        beginTransaction();
+        super.<Interview>saveUpdatedObject(newInterview);
+        commitTransaction();
     }
 
     @Override
     public void deleteInterview(int interviewId) {
-        Session session = null;
+        /*Session session = null;
         Query query = null;
         Transaction transaction = null;
         try {
@@ -626,11 +422,29 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             if (session != null && session.isOpen()) {
                 session.close();
             }
+        }*/
+        String query = "";
+        List listOfParams       = new ArrayList();
+        beginTransaction();
+        listOfParams.add(interviewId);
+        query = "from Form where to_char(interview) = to_char(:param0)";
+        List<Form> listOfForms = super.<Form>executeListGetSQLQuery(query, listOfParams);
+        query = "from Interview where reserve = 1";
+        Interview nullInterview = super.<Interview>executeSingleGetQuery(query);
+        for(Form currForm:listOfForms) {
+            currForm.setInterview(nullInterview);
         }
+        listOfParams.clear();
+        listOfParams.add(interviewId);
+        query = "from Interview where to_char(idInterview) = to_char(:param0)";
+        Interview selectedInterview = super.<Interview>executeSingleGetQuery(query, listOfParams);
+        super.<Interview>executeDeleteQuery(selectedInterview);
+        commitTransaction();
+
     }
 
     public void editInterview(Interview interview) {
-        Session session = null;
+        /*Session session = null;
         Transaction transaction = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
@@ -644,14 +458,18 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
+        }*/
+        beginTransaction();
+        super.<Interview>updatedObject(interview);
+        commitTransaction();
+
     }
     
     
     //Maksym added here bellow
     
     public Institute addInstitute(String instituteName) {
-        Session session = null;
+       /* Session session = null;
         Transaction transaction = null;
         Institute institute = null;
         try {
@@ -668,13 +486,19 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
-        return institute;
+        }*/
+        Institute newInstitute = null;
+        beginTransaction();
+        newInstitute = new Institute();
+        newInstitute.setName(instituteName);
+        super.<Institute>saveUpdatedObject(newInstitute);
+        commitTransaction();
+        return newInstitute;
     }
     
     
     public Faculty addFaculty(Institute institute, String facultyName) {
-        Session session = null;
+        /*Session session = null;
         Transaction transaction = null;
         Faculty faculty = null;
         try {
@@ -693,12 +517,20 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 session.close();
             }
         }
-        return faculty;
+        return faculty;*/
+        Faculty newFaculty = null;
+        beginTransaction();
+        newFaculty = new Faculty();
+        newFaculty.setName(facultyName);
+        newFaculty.setInstitute(institute);
+        super.<Faculty>saveUpdatedObject(newFaculty);
+        commitTransaction();
+        return newFaculty;
     }
     
     
     public Cathedra addCathedra(Faculty faculty, String cathedraName) {
-        Session session = null;
+        /*Session session = null;
         Transaction transaction = null;
         Cathedra cathedra = null;
         try {
@@ -717,7 +549,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 session.close();
             }
         }
-        return cathedra;
+        return cathedra;*/
+        Cathedra newCathedra = null;
+        beginTransaction();
+        newCathedra = new Cathedra();
+        newCathedra.setName(cathedraName);
+        newCathedra.setFaculty(faculty);
+        super.<Cathedra>saveUpdatedObject(newCathedra);
+        commitTransaction();
+        return newCathedra;
         
     }
 

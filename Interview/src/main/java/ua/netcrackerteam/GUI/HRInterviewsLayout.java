@@ -4,7 +4,6 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItemContainer;
@@ -13,21 +12,12 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.PopupDateField;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.controller.HRInterview;
+import ua.netcrackerteam.controller.HRPage;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,8 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import ua.netcrackerteam.controller.HRInterview;
-import ua.netcrackerteam.controller.HRPage;
 
 /**
  *
@@ -204,6 +192,7 @@ public class HRInterviewsLayout extends VerticalLayout {
         bottomLayout.setEndTime(interview.getEndTime());
         bottomLayout.setIntervCount(interview.getInterviewersNum());
         bottomLayout.setPositionsCount(interview.getPositionNum());
+        bottomLayout.setReserve(interview.getReserve());
         rightPanel.replaceComponent(old, bottomLayout);
     }
     
@@ -224,11 +213,11 @@ public class HRInterviewsLayout extends VerticalLayout {
         
         public String[] NATURAL_COL_ORDER = new String[] {
                 "date", "startTime", "endTime", 
-                "positionNum", "restOfPositions", "interviewersNum"};
+                "positionNum", "restOfPositions", "interviewersNum", "reserve"};
         
         public String[] COL_HEADERS_RUSSIAN = new String[] {
                 "Дата", "Время начала", "Время окончания",
-                "Количество мест", "Остаток мест", "Количество интервьюеров"};
+                "Количество мест", "Остаток мест", "Количество интервьюеров", "Резервное"};
         
         private InterviewsTable() {
             super();
@@ -305,6 +294,7 @@ public class HRInterviewsLayout extends VerticalLayout {
         private TextField positionNum;
         private TextField intervNum;
         private TextField duration;
+        private TextField reserve;
         private TimeSelection startTime;
         private TimeSelection endTime;
         private PopupDateField date;
@@ -316,7 +306,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             setMargin(true);
             setColumns(3);
             setImmediate(true);
-            setRows(3);
+            setRows(4);
             fillBottomLayout();
         }
         
@@ -348,6 +338,12 @@ public class HRInterviewsLayout extends VerticalLayout {
             duration.addValidator(new IntegerValidator("Ошибка! Введите число"));
             addComponent(duration,1,1);
 
+            reserve = new TextField("Резерв(1-да/0-нет)");
+            reserve.setWidth("150");
+            reserve.addListener(this);
+            reserve.addValidator(new IntegerValidator("Ошибка! Введите число"));
+            addComponent(reserve,1,2);
+
             positionNum = new TextField("Количество студентов");
             positionNum.setWidth("150");
             positionNum.setInputPrompt("Рекомендуемое: ?");
@@ -364,7 +360,7 @@ public class HRInterviewsLayout extends VerticalLayout {
                     saveInterview();
                 }
             });
-            addComponent(saveEdit,1,2);
+            addComponent(saveEdit,1,3);
         }
         
         @Override
@@ -431,12 +427,13 @@ public class HRInterviewsLayout extends VerticalLayout {
                     Date end = endTime.getDate((Date) date.getValue());
                     int intNum = Integer.parseInt(intervNum.getValue().toString());
                     int posNum = Integer.parseInt(positionNum.getValue().toString());
+                    int reserved = Integer.parseInt(reserve.getValue().toString());
                     if(!editable) {
-                        HRPage.saveNewInterview(start, end, intNum, posNum);
+                        HRPage.saveNewInterview(start, end, intNum, posNum, reserved);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     } else {
                         HRInterview interview = (HRInterview) table.getValue();
-                        HRPage.editInterview(interview.getId(), start, end, intNum, posNum);
+                        HRPage.editInterview(interview.getId(), start, end, intNum, posNum, reserved);
                         getWindow().showNotification("Собеседование успешно изменено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
                     setVisible(false);
@@ -472,6 +469,10 @@ public class HRInterviewsLayout extends VerticalLayout {
 
         private void setPositionsCount(int newPositionNum) {
             positionNum.setValue(newPositionNum);
+        }
+
+        private void setReserve(int newReserve) {
+            reserve.setValue(newReserve);
         }
         
     }
