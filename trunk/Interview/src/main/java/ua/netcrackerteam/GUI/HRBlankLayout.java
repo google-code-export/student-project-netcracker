@@ -41,7 +41,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private Button searchButton;
     private TextField something;
     private NativeSelect searchSelect;
-    //private StudentDataShort selectedValueInTable = null;
     private final String username;
     private Link pdfLink;
     private int height;
@@ -55,7 +54,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
     private TextArea            markTextArea;
     private Button              markSaveButton;
     private Button              photoSaveButton;
-    //private Button              viewAndPrintButton;
+    private Button              showDiffButton;
     private Button              deleteButton;
     private Button              editButton;
 
@@ -99,8 +98,8 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         Accordion leftSideAcc = new Accordion();
         leftSideAcc.setSizeFull();
         leftSideAcc.addTab(blankGridLO, "Анкеты");
-        leftSideAcc.addTab(interviewGridLO, "Собеседования");
-        leftSideAcc.addTab(universityLO, "Учебные заведения");
+        //leftSideAcc.addTab(interviewGridLO, "Собеседования");
+        //leftSideAcc.addTab(universityLO, "Учебные заведения");
         leftSideAcc.addTab(searchGridLO, "Поиск");
 
         leftPanel.addComponent(leftSideAcc);
@@ -232,14 +231,6 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     window.setHeight("80%");
                     window.setWidth("80%");
                     getWindow().addWindow(window);
-
-
-
-                    /*getWindow().showNotification(
-                            "Анкета подтверждена!",
-                            "",
-                            Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    FillBlankTable(HRPage.getNonVerificatedForms());*/
                 }
                 else {
                     getWindow().showNotification(
@@ -386,9 +377,11 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
         markTextArea.setEnabled(false);
         rightPanel.addComponent(markTextArea);
 
+        buttonPanel = new HorizontalLayout();
+
         markSaveButton = new Button("Сохранить");
         markSaveButton.setWidth("150");
-        markSaveButton.setIcon(new ThemeResource("icons/32/page_table_warning.png"));
+        //markSaveButton.setIcon(new ThemeResource("icons/32/page_table_warning.png"));
         markSaveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -412,12 +405,12 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                 }
             }
         });
-        rightPanel.addComponent(markSaveButton);
+        buttonPanel.addComponent(markSaveButton);
 
 
         photoSaveButton = new Button("Фото");
         photoSaveButton.setWidth("150");
-        photoSaveButton.setIcon(new ThemeResource("icons/32/photo.png"));
+        //photoSaveButton.setIcon(new ThemeResource("icons/32/photo.png"));
         photoSaveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -442,12 +435,36 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                 }
             }
         });
-        rightPanel.addComponent(photoSaveButton);
+        buttonPanel.addComponent(photoSaveButton);
+
+        showDiffButton = new Button("Различия");
+        showDiffButton.setWidth("150");
+        //showDiffButton.setIcon(new ThemeResource("icons/32/photo.png"));
+        showDiffButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if  (!(tableOfBlanks.getValue() == null)) {
+                    StudentDataShort selectedValue = (StudentDataShort) tableOfBlanks.getValue();
+                    Integer formID = selectedValue.getIdForm();
+                    BlankDifferensesWindow diffWindow = new BlankDifferensesWindow(mainPage, formID);
+                    getWindow().addWindow(diffWindow);
+                } else {
+                    getWindow().showNotification(
+                            "Ошибка!",
+                            "Перед просмотром выберите анкету из списка и введите оценку!",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        buttonPanel.addComponent(showDiffButton);
+
+        rightPanel.addComponent(buttonPanel);
 
         pdfLink = new Link();
         rightPanel.addComponent(pdfLink);
         markSaveButton.setEnabled(false);
         photoSaveButton.setEnabled(false);
+        showDiffButton.setEnabled(false);
     }
 
     private class BlanksTable extends Table {
@@ -484,20 +501,33 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                         Link oldPDFLink = pdfLink;
                         pdfLink = getPDFLink();
                         rightPanel.replaceComponent(oldPDFLink, pdfLink);
-                        if (!rightPanelTree.getValue().equals("3") && !rightPanelTree.getValue().equals("2")) {
-                            markTextArea.setEnabled(true);
-                            markSaveButton.setEnabled(true);
-                            photoSaveButton.setEnabled(true);
-                        }else {
-                            markTextArea.setEnabled(false);
-                            markSaveButton.setEnabled(false);
-                            photoSaveButton.setEnabled(false);
+                        try {
+                            if (rightPanelTree.getValue().equals("3")) {
+                                markTextArea.setEnabled(false);
+                                markSaveButton.setEnabled(false);
+                                photoSaveButton.setEnabled(true);
+                                showDiffButton.setEnabled(false);
+                            } else if (rightPanelTree.getValue().equals("2")) {
+                                markTextArea.setEnabled(false);
+                                markSaveButton.setEnabled(false);
+                                photoSaveButton.setEnabled(true);
+                                showDiffButton.setEnabled(true);
+                            } else {
+                                markTextArea.setEnabled(true);
+                                markSaveButton.setEnabled(true);
+                                photoSaveButton.setEnabled(true);
+                                showDiffButton.setEnabled(false);
+                            }
+                            markTextArea.setValue("");
                         }
-                        markTextArea.setValue("");
+                        catch (NullPointerException e) {
+
+                        }
                     } else {
                         markTextArea.setEnabled(false);
                         markSaveButton.setEnabled(false);
                         photoSaveButton.setEnabled(false);
+                        showDiffButton.setEnabled(false);
                     }
                 }
             });
