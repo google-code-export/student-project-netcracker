@@ -686,9 +686,7 @@ public class StudentPage {
             std.setStudentLastName(form.getLastName());
             std.setStudentFirstName(form.getFirstName());
             std.setStudentMiddleName(form.getMiddleName());
-            std.setStudentInstitute(form.getCathedra().getFaculty().getInstitute());
-            //std.setStudentInstituteCourse(form.getInstituteYear().toString());
-            //std.setStudentFaculty(form.getCathedra().getFaculty());
+            std.setStudentInstituteCourse(form.getInstituteYear().toString());
             std.setStudentInstitute(form.getInstitute());
             std.setStudentFaculty(form.getFaculty());
             std.setStudentCathedra(form.getCathedra());
@@ -700,21 +698,6 @@ public class StudentPage {
                 std.setStudentOtherInstitute(currHrTemp.getInstituteName() == null ? "" : currHrTemp.getInstituteName());
                 std.setStudentOtherFaculty(currHrTemp.getFacultyName() == null ? "" : currHrTemp.getFacultyName());
                 std.setStudentOtherCathedra(currHrTemp.getCathedraName() == null ? "" : currHrTemp.getCathedraName());
-               /* if(!currHrTemp.getInstituteName().equals("")){
-                    if(!daohr.getHrTempInfoByFormID(idForm).getFacultyName().equals("")){
-                        if (!daohr.getHrTempInfoByFormID(idForm).getCathedraName().equals("")){
-                            std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
-                            std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
-                            std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
-                        } else {
-                            std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
-                            std.setStudentOtherFaculty(daohr.getHrTempInfoByFormID(idForm).getFacultyName());
-                        }
-                    } else {
-                        std.setStudentOtherInstitute(daohr.getHrTempInfoByFormID(idForm).getInstituteName());
-                        std.setStudentOtherCathedra(daohr.getHrTempInfoByFormID(idForm).getCathedraName());
-                    }
-                }*/
             }
 
             std.setPhoto(form.getPhoto());

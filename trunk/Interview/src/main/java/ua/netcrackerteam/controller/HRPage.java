@@ -1,6 +1,5 @@
 package ua.netcrackerteam.controller;
 
-import oracle.net.jdbc.nl.mesg.NLSR_it;
 import ua.netcrackerteam.DAO.DAOHRImpl;
 import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.*;
@@ -203,6 +202,8 @@ public class HRPage {
                 int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
                 hrInterview.setRestOfPositions(hrInterview.getPositionNum() - amountStudentsToInterview);
 
+                hrInterview.setReserve(interview.getReserve());
+
                 intervList.add(hrInterview);
             }
         }
@@ -221,12 +222,13 @@ public class HRPage {
         return (int) Math.round(num);
     }
     
-    public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents) {
+    public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents, int reserved) {
         Interview interview = new Interview();
         interview.setEndDate(end);
         interview.setStartDate(start);
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
+        interview.setReserve(reserved);
         new DAOHRImpl().addNewInterview(interview);
     }
     
@@ -234,13 +236,14 @@ public class HRPage {
         new DAOHRImpl().deleteInterview(idInterview);
     }
     
-    public static void editInterview(int id, Date start, Date end, int intervNum, int maxStudents) {
+    public static void editInterview(int id, Date start, Date end, int intervNum, int maxStudents, int reserved) {
         Interview interview = new Interview();
         interview.setIdInterview(id);
         interview.setEndDate(end);
         interview.setStartDate(start);
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
+        interview.setReserve(reserved);
         new DAOHRImpl().editInterview(interview);
     }
 

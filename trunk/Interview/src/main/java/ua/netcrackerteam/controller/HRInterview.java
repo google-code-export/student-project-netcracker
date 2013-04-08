@@ -17,9 +17,18 @@ public class HRInterview {
     private int interviewersNum;
     private int positionNum;
     private int restOfPositions;
+    private int reserve;
 
     public int getId() {
         return id;
+    }
+
+    public int getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(int reserve) {
+        this.reserve = reserve;
     }
 
     public void setId(int id) {
