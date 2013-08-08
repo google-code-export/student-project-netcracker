@@ -44,7 +44,7 @@ public class MainPanel extends Panel {
             s = new String(array);
             in.close();
         } catch (IOException ex) {
-            System.out.println("File test_text.txt is not found");
+            System.out.println("File main_page_text.txt is not found");
         }
         richText = new Label(s);
         richText.setContentMode(Label.CONTENT_XHTML);

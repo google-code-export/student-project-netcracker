@@ -119,8 +119,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
                 GeneralController.setAuditInterviews(2, "User logon to application", getUserName(), new Date());
                 break;
             default: {
-                Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_ERROR_MESSAGE);
-                error.setPosition(Notification.POSITION_CENTERED);
+                Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION);
                 getMainWindow().showNotification(error);
             } break;
         }
