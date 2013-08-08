@@ -57,12 +57,6 @@ class EnterWindow extends Window implements Logable {
                         loginForm.removeListener(this);
                         EnterWindow.this.close();
                     }
-                } else {
-                    GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
-                    Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION);
-                    error.setPosition(Notification.POSITION_CENTERED);
-                    logger.getLog();
-                    getWindow().showNotification(error);
                 }
             }
         });
