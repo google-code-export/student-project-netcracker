@@ -113,23 +113,23 @@ public class HRInterviewsLayout extends VerticalLayout {
         });
         sidebar.addComponent(deleteInterview);
         
-        Button addTime = new Button("Запасное время");
-        addTime.setStyleName(Runo.BUTTON_LINK);
-        addTime.setIcon(new ThemeResource("icons/32/time-icon.png"));
-        sidebar.addComponent(addTime);
-        addTime.addListener(new Button.ClickListener() {
+//        Button addTime = new Button("Запасное время");
+//        addTime.setStyleName(Runo.BUTTON_LINK);
+//        addTime.setIcon(new ThemeResource("icons/32/time-icon.png"));
+//        sidebar.addComponent(addTime);
+//        addTime.addListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(ClickEvent event) {
+//                showAdditionalTimeInfo();
+//            }
+//        });
 
-            @Override
-            public void buttonClick(ClickEvent event) {
-                showAdditionalTimeInfo();
-            }
-        });
-        
     }
     
-    private void showAdditionalTimeInfo() {
-                
-    }
+//    private void showAdditionalTimeInfo() {
+//
+//    }
 
     private void fillRightPanel() {
         rightPanel.setHeight("100%");

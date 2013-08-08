@@ -305,7 +305,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         glayout1.addComponent(anotherLayout,0,5,2,5);
 
-        photoUpload = new Upload("Фото",this);
+        photoUpload = new Upload("Фото*",this);
         photoUpload.setButtonCaption("Загрузка");
         photoUpload.addListener((Upload.SucceededListener) this);
         photoUpload.addListener((Upload.StartedListener) this);
@@ -947,7 +947,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status, editorName);
                         } else {
                             Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
-                            n.setDescription("Все поля помеченные * обязательны к заполнению.");
+                            n.setDescription("Поля, отмеченные *, a также фото, обязательны для заполнения.");
                             getWindow().showNotification(n);
                         }
                     } else {
