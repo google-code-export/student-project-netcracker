@@ -12,7 +12,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
+import ua.netcrackerteam.controller.exceptions.FullInterviewException;
+import ua.netcrackerteam.controller.exceptions.NoFormException;
 import ua.netcrackerteam.controller.StudentInterview;
+import ua.netcrackerteam.controller.RegistrationToInterview;
 
 import java.text.DateFormatSymbols;
 import java.text.Format;
@@ -34,16 +37,19 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             }
         };
     private final InlineDateField calendar;
-    private final OptionGroup dates;
-    private final Button saveEdit;
-    private final Button print;
+    private OptionGroup dates;
+    private Button saveEdit;
+    private Button print;
     private String userName;
     private int selectedInterviewID;
     private boolean noPositionsFlag = true;
-    private ua.netcrackerteam.controller.RegistrationToInterview registration = new ua.netcrackerteam.controller.RegistrationToInterview();
+    private RegistrationToInterview registration = new RegistrationToInterview();
+    private GridLayout layout;
+    private MainPage mainPage;
 
     public InterviewLayout(String username, MainPage mainPage) {
         this.userName = username;
+        this.mainPage = mainPage;
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
         setHeight(webBrowser.getScreenHeight()-200,UNITS_PIXELS);
@@ -52,7 +58,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         Panel panel = new Panel("Выберите дату собеседования");
         panel.setWidth("100%");
         addComponent(panel);
-        GridLayout layout = new GridLayout(2,2);
+        layout = new GridLayout(2,2);
         layout.setSizeFull();
         panel.setContent(layout);
         layout.setSpacing(true);
@@ -61,8 +67,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         calendar.setImmediate(true);
         calendar.setValue(new Date());
         calendar.setResolution(InlineDateField.RESOLUTION_DAY);
-        layout.addComponent(calendar,0,0);
-        layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);       
+        layout.addComponent(calendar, 0, 0);
+        layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
         List<StudentInterview> interviews = registration.getInterviews();
         Interview selectedInterview = registration.getInterview(userName);
         int selectedInterviewID = 0;
@@ -73,32 +79,9 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         dates = new OptionGroup("Доступные даты:");
         dates.setRequired(true);
         layout.addComponent(dates,1,0);
-        for(StudentInterview stInterview : interviews) {
-            String strDate = getStrFromDate(stInterview.getInterviewStartDate(), 
-                    stInterview.getInterviewEndDate(), stInterview.getRestOfPositions());
-            dates.addItem(stInterview);
-            dates.setItemCaption(stInterview, strDate);
-            if (stInterview.getRestOfPositions() == 0) {
-                dates.setItemEnabled(stInterview, false);
-            } else {
-                noPositionsFlag = false;
-            }
-            //if (selectedInterview > 0) {
-            if (selectedInterviewID == stInterview.getStudentInterviewId()) {
-                dates.setValue(stInterview);
-                calendar.setValue(stInterview.getInterviewStartDate());
-            }
-            //}
-        }
-        if (noPositionsFlag) {
-            //StudentInterview nullInterview = registration.getNullInterview();
-            int restPos = nullInterview.getRestOfPositions();
-            dates.addItem(nullInterview);
-            dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
-            if(selectedInterview.getReserve() == 1) {
-                dates.setValue(nullInterview);
-            }
-        }
+
+        fillDates(interviews, nullInterview, selectedInterview);
+
         dates.addListener(this);
         dates.setImmediate(true);
         print = new Button("Отправить PDF");
@@ -116,9 +99,35 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.addComponent(saveEdit,0,1);
         saveEdit.setWidth("150");
         layout.setComponentAlignment(saveEdit, Alignment.TOP_CENTER);
-        saveEdit.addListener(new ButtonsListener());
-        
+        saveEdit.addListener(new ButtonsListener());        
     }
+
+    private void fillDates(List<StudentInterview> interviews, StudentInterview nullInterview, Interview selectedInterview) {
+        for(StudentInterview stInterview : interviews) {
+            String strDate = getStrFromDate(stInterview.getInterviewStartDate(),
+                    stInterview.getInterviewEndDate(), stInterview.getRestOfPositions());
+            dates.addItem(stInterview);
+            dates.setItemCaption(stInterview, strDate);
+            if (stInterview.getRestOfPositions() == 0) {
+                dates.setItemEnabled(stInterview, false);
+            } else {
+                noPositionsFlag = false;
+            }
+            if (selectedInterviewID == stInterview.getStudentInterviewId()) {
+                dates.setValue(stInterview);
+                calendar.setValue(stInterview.getInterviewStartDate());
+            }
+        }
+        if (noPositionsFlag) {
+            int restPos = nullInterview.getRestOfPositions();
+            dates.addItem(nullInterview);
+            dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
+            if(selectedInterview.getReserve() == 1) {
+                dates.setValue(nullInterview);
+            }
+        }
+    }
+
 
     @Override
     public void valueChange(ValueChangeEvent event) {
@@ -143,10 +152,20 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             Button source = event.getButton();
             if(source == saveEdit) {
                 if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
-                registration.updateRegistrationToInterview(userName, selectedInterviewID);
-                dates.setReadOnly(true);
-                print.setVisible(true);
-                saveEdit.setCaption("Редактировать");
+                    try {
+                        registration.updateRegistrationToInterview(userName, selectedInterviewID);
+                        dates.setReadOnly(true);
+                        print.setVisible(true);
+                        saveEdit.setCaption("Редактировать");
+                    } catch (FullInterviewException e) {
+                        getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+                        List<StudentInterview> interviews = registration.getInterviews();
+                        Interview selectedInterview = registration.getInterview(userName);
+                        StudentInterview nullInterview = registration.getNullInterview();
+                        fillDates(interviews, nullInterview, selectedInterview);
+                    } catch (NoFormException e) {
+                        getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    }
                 } else {
                     print.setVisible(false);
                     dates.setReadOnly(false);

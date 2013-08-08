@@ -6,7 +6,6 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.ThemeResource;
@@ -18,9 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import ua.netcrackerteam.DAO.Entities.Interview;
 
 import ua.netcrackerteam.GUI.Reports.ReportBuilder;
 import ua.netcrackerteam.GUI.Reports.TypeReports.ReportBuilderAdvertisingEfficiency;
@@ -44,10 +41,8 @@ import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateAmoun
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviews;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviewsDetail;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
-import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.StudentInterview;
-import ua.netcrackerteam.controller.StudentPage;
 
 /**
  * Panel for HR view

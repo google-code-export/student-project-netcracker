@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
+import ua.netcrackerteam.controller.RegistrationToInterview;
 
 /**
  * Panel for Interviewer view
@@ -58,7 +59,7 @@ public class MainPanelInterviewer extends MainPanel{
     private TextField searchField;
     private SettingsLayout settingsLayout;
     
-    private ua.netcrackerteam.controller.RegistrationToInterview registration = new ua.netcrackerteam.controller.RegistrationToInterview();
+    private RegistrationToInterview registration = new RegistrationToInterview();
     
     public MainPanelInterviewer(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);

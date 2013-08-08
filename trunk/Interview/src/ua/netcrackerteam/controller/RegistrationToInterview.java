@@ -8,6 +8,8 @@ import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
+import ua.netcrackerteam.controller.exceptions.FullInterviewException;
+import ua.netcrackerteam.controller.exceptions.NoFormException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,20 +27,27 @@ public class RegistrationToInterview implements  Logable{
      * @param userName - login student
      * @param interviewId - selected interview by student
      */
-    public void updateRegistrationToInterview(String userName, int interviewId) {        
+    public void updateRegistrationToInterview(String userName, int interviewId) throws FullInterviewException, NoFormException {
             Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
             if (form!=null) {
                 Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
-                form.setInterview(interview);
-                HibernateFactory.getInstance().getStudentDAO().updateForm(form);
+                if(getRestOfPositionsOnInterview(interview) > 0) {
+                    form.setInterview(interview);
+                    HibernateFactory.getInstance().getStudentDAO().updateForm(form);
+                } else {
+                   throw new FullInterviewException(FullInterviewException.FULL_INTERVIEW_EXCEPRION);
+                }
+            }  else {
+                throw new NoFormException(NoFormException.NO_FORM_EXCEPRION);
             }
+
     }
     
     /**
      * Get all interviews for view to the GUI
      * @return List<StudentInterview>
      */
-    public List<StudentInterview> getInterviews(){ 
+    public List<StudentInterview> getInterviews(){
        
        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
        ListIterator iterator = interviews.listIterator();
@@ -49,16 +58,21 @@ public class RegistrationToInterview implements  Logable{
        while(iterator.hasNext()){
             interview = (Interview)iterator.next();
             if(interview.getReserve()!=1) {
-                List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-                int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
                 StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
-                        interview.getStartDate(), interview.getEndDate(), interview.getMaxNumber() - amountStudentsToInterview);
+                        interview.getStartDate(), interview.getEndDate(), getRestOfPositionsOnInterview(interview));
                 listInterviews.add(stInterview);
             }
        }
        return listInterviews;
     }
-    
+
+    private int getRestOfPositionsOnInterview(Interview interview) {
+        List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+        int amountStudentsToInterview = (forms == null? 0: forms.size());
+        return interview.getMaxNumber() - amountStudentsToInterview;
+    }
+
+
     /** 
      * Get interview student by the student login
      * @param userName
@@ -88,9 +102,7 @@ public class RegistrationToInterview implements  Logable{
     
     public StudentInterview getNullInterview() {
         Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
-        List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
-        int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
-        StudentInterview stInterview = new StudentInterview(nullInterview.getIdInterview(),nullInterview.getMaxNumber() - amountStudentsToInterview);
+        StudentInterview stInterview = new StudentInterview(nullInterview.getIdInterview(),getRestOfPositionsOnInterview(nullInterview));
         return stInterview;
     }
     
