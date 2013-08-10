@@ -546,10 +546,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     }
     
     private void addNewContactField(String type, Property value) {
+        GridLayout gl = (GridLayout) contacts.getContent();
+        if(anotherContact != null) {
+            gl.removeComponent(anotherContact);
+        }
         anotherContact = new TextField(type,value);
         textFieldConfig(anotherContact);
         anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
-        GridLayout gl = (GridLayout) contacts.getContent();
         gl.removeComponent(addAnotherContactsBut);
         gl.addComponent(anotherContact,0,1);
         anotherContact.setWidth("220");
