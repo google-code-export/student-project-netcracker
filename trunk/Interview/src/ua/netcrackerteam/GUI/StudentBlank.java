@@ -160,7 +160,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         hlayout.addComponent(saveEdit);
         hlayout.setComponentAlignment(saveEdit, Alignment.MIDDLE_CENTER);
         if(!stData.getStudentFirstName().equals("")) {
-            getSavedData();
+            //getSavedData();
             setEditable(false);
             status = 2;
         }
