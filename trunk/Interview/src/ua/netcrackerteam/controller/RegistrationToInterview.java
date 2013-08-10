@@ -8,8 +8,7 @@ import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
-import ua.netcrackerteam.controller.exceptions.FullInterviewException;
-import ua.netcrackerteam.controller.exceptions.NoFormException;
+import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,20 +26,23 @@ public class RegistrationToInterview implements  Logable{
      * @param userName - login student
      * @param interviewId - selected interview by student
      */
-    public void updateRegistrationToInterview(String userName, int interviewId) throws FullInterviewException, NoFormException {
+    public void updateRegistrationToInterview(String userName, int interviewId) throws StudentInterviewException {
             Form form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
             if (form!=null) {
                 Interview interview = HibernateFactory.getInstance().getDAOInterview().getInterview(interviewId);
-                if(getRestOfPositionsOnInterview(interview) > 0) {
-                    form.setInterview(interview);
-                    HibernateFactory.getInstance().getStudentDAO().updateForm(form);
+                if (interview != null)        {
+                    if(getRestOfPositionsOnInterview(interview) > 0) {
+                        form.setInterview(interview);
+                        HibernateFactory.getInstance().getStudentDAO().updateForm(form);
+                    } else {
+                        throw new StudentInterviewException(StudentInterviewException.FULL_INTERVIEW_EXCEPTION);
+                    }
                 } else {
-                   throw new FullInterviewException(FullInterviewException.FULL_INTERVIEW_EXCEPRION);
+                    throw new  StudentInterviewException(StudentInterviewException.NO_INTERVIEW_EXCEPTION);
                 }
             }  else {
-                throw new NoFormException(NoFormException.NO_FORM_EXCEPRION);
+                throw new StudentInterviewException(StudentInterviewException.NO_FORM_EXCEPTION);
             }
-
     }
     
     /**

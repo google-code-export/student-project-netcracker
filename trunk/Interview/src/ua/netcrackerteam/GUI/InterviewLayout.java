@@ -12,10 +12,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
-import ua.netcrackerteam.controller.exceptions.FullInterviewException;
-import ua.netcrackerteam.controller.exceptions.NoFormException;
 import ua.netcrackerteam.controller.StudentInterview;
 import ua.netcrackerteam.controller.RegistrationToInterview;
+import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
 
 import java.text.DateFormatSymbols;
 import java.text.Format;
@@ -166,10 +165,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                         dates.setReadOnly(true);
                         print.setVisible(true);
                         saveEdit.setCaption("Редактировать");
-                    } catch (FullInterviewException e) {
+                    } catch (StudentInterviewException e) {
                         refreshInterviews();
-                        getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
-                    } catch (NoFormException e) {
                         getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
                 } else {
