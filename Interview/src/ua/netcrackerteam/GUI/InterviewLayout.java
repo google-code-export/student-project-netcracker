@@ -122,7 +122,7 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             int restPos = nullInterview.getRestOfPositions();
             dates.addItem(nullInterview);
             dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
-            if(selectedInterview.getReserve() == 1) {
+            if((selectedInterview!=null)&&(selectedInterview.getReserve() == 1)) {
                 dates.setValue(nullInterview);
             }
         }
