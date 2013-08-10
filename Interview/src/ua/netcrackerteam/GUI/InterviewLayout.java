@@ -45,11 +45,9 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
     private boolean noPositionsFlag = true;
     private RegistrationToInterview registration = new RegistrationToInterview();
     private GridLayout layout;
-    private MainPage mainPage;
 
     public InterviewLayout(String username, MainPage mainPage) {
         this.userName = username;
-        this.mainPage = mainPage;
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
         setHeight(webBrowser.getScreenHeight()-200,UNITS_PIXELS);
@@ -71,19 +69,11 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
         List<StudentInterview> interviews = registration.getInterviews();
         Interview selectedInterview = registration.getInterview(userName);
-        int selectedInterviewID = 0;
-        if (!(selectedInterview == null)) {
-            selectedInterviewID = selectedInterview.getIdInterview();
-        }
         StudentInterview nullInterview = registration.getNullInterview();
         dates = new OptionGroup("Доступные даты:");
-        dates.setRequired(true);
         layout.addComponent(dates,1,0);
-
         fillDates(interviews, nullInterview, selectedInterview);
 
-        dates.addListener(this);
-        dates.setImmediate(true);
         print = new Button("Отправить PDF");
         print.setWidth("150");
         layout.addComponent(print,1,1);
@@ -102,7 +92,23 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
         saveEdit.addListener(new ButtonsListener());        
     }
 
+    private void refreshInterviews() {
+        List<StudentInterview> interviews = registration.getInterviews();
+        Interview selectedInterview = registration.getInterview(userName);
+        StudentInterview nullInterview = registration.getNullInterview();
+        fillDates(interviews, nullInterview, selectedInterview);
+    }
+
     private void fillDates(List<StudentInterview> interviews, StudentInterview nullInterview, Interview selectedInterview) {
+        OptionGroup newDates = new OptionGroup("Доступные даты:");
+        layout.replaceComponent(dates,newDates);
+        dates = newDates;
+        dates.setRequired(true);
+        if (selectedInterview != null) {
+            selectedInterviewID = selectedInterview.getIdInterview();
+        } else {
+            selectedInterviewID = 0;
+        }
         for(StudentInterview stInterview : interviews) {
             String strDate = getStrFromDate(stInterview.getInterviewStartDate(),
                     stInterview.getInterviewEndDate(), stInterview.getRestOfPositions());
@@ -126,6 +132,8 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                 dates.setValue(nullInterview);
             }
         }
+        dates.addListener(this);
+        dates.setImmediate(true);
     }
 
 
@@ -154,15 +162,13 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
                 if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
                     try {
                         registration.updateRegistrationToInterview(userName, selectedInterviewID);
+                        refreshInterviews();
                         dates.setReadOnly(true);
                         print.setVisible(true);
                         saveEdit.setCaption("Редактировать");
                     } catch (FullInterviewException e) {
+                        refreshInterviews();
                         getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
-                        List<StudentInterview> interviews = registration.getInterviews();
-                        Interview selectedInterview = registration.getInterview(userName);
-                        StudentInterview nullInterview = registration.getNullInterview();
-                        fillDates(interviews, nullInterview, selectedInterview);
                     } catch (NoFormException e) {
                         getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
