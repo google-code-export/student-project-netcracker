@@ -137,7 +137,7 @@ public class StudentPage {
     public static List<Object> searchSomething (String tableForSearch, String inWhichColumn, String someThing) {
         Session session = null;
         org.hibernate.Query re = null;
-        List selectedSomething = null;
+        List selectedSomething = Collections.EMPTY_LIST;
 
         try {
             Locale.setDefault(Locale.ENGLISH);
