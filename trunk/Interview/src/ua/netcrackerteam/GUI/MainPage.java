@@ -38,6 +38,14 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private RegistrationWindow regWindow = null;
     private String userName;
 
+    public MainPanel getPanel() {
+        return panel;
+    }
+
+    public void setPanel(MainPanel panel) {
+        this.panel = panel;
+    }
+
     @Override
     public void init() {
 	    buildMainLayout();
