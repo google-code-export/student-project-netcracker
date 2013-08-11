@@ -370,7 +370,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWorkSphere.setSpacing(true);
         vlayout.addComponent(glayoutWorkSphere);
         development = new InterestSelection("Разработка ПО:", bean.getItemProperty("studentInterestDevelopment"));
-        anotherWorkSphere = new TextField("Другие: ", bean.getItemProperty("studentInterestOther"));
+        anotherWorkSphere = new TextField("Другие: ", bean.getItemProperty("studentInterestOther")==null ? String.valueOf(bean.getItemProperty("studentInterestOther")):"");
         anotherWorkSphere.setWidth("250");
         glayoutWorkSphere.addComponent(development);
         glayoutWorkSphere.addComponent(anotherWorkSphere);
@@ -388,7 +388,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWorkType.addComponent(variousWork);
         glayoutWorkType.addComponent(mrSpec);
         glayoutWorkType.addComponent(sale);
-        anotherWorkType = new TextField("Другие: ", bean.getItemProperty("studentWorkTypeOther"));
+        anotherWorkType = new TextField("Другие: ", bean.getItemProperty("studentWorkTypeOther") == null?String.valueOf(bean.getItemProperty("studentWorkTypeOther")):"");
         anotherWorkType.setWidth("250");
         glayoutWorkType.addComponent(anotherWorkType);
     }
