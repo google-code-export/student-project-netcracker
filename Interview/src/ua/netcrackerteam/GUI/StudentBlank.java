@@ -119,7 +119,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private final MainPage mainPage;
     private GridLayout glayout1 = new GridLayout(3,6);
     private String editorName;
-
+    private Button navigateToInterview = new Button("Запись на собеседование");
+    private ConfirmationToInterviewTime confirmationToInterviewTime;
+    private final HorizontalLayout hlayout = new HorizontalLayout();
+    private TabSheet pageTabs;
 
     public StudentBlank(String username, MainPage mainPage, String editorName) {
         this.username = username;
@@ -150,13 +153,17 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         agreementText = new Label("Я даю согласие на хранение, обработку и использование моих персональных данных с целью возможного обучения и трудоустройства в компании НЕТКРЕКЕР на данный момент и в будущем.");
         agreementText.setWidth("750");
         addComponent(agreementText);
-        HorizontalLayout hlayout = new HorizontalLayout();
         hlayout.setWidth("100%");
         hlayout.setSpacing(true);
         addComponent(hlayout);
         saveEdit = new Button("Сохранить");
         saveEdit.setWidth("200");
         saveEdit.addListener(buttonsListener);
+
+
+        navigateToInterview.setWidth(250);
+        navigateToInterview.addListener(buttonsListener);
+
         hlayout.addComponent(saveEdit);
         hlayout.setComponentAlignment(saveEdit, Alignment.MIDDLE_CENTER);
         if(!stData.getStudentFirstName().equals("")) {
@@ -765,6 +772,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             saveEdit.setCaption("Сохранить");
         } else {
             saveEdit.setCaption("Редактировать");
+            hlayout.addComponent(navigateToInterview);
         }
     }
 
@@ -941,15 +949,21 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     }
                     else {
                         getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество разделов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
-                    }  
-                } else if(source == saveEdit) {
-                    if(saveEdit.getCaption().equals("Сохранить")) {
-                        if(checkAllValid()) {
-                        stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
-                        setEditable(false);
-                        ua.netcrackerteam.controller.StudentPage.addNewForm(stData,username,status, editorName);
+                    }
+                } else if(source == navigateToInterview) {
+                    pageTabs = mainPage.getPanel().getTabSheet();
+                    pageTabs.setSelectedTab(2);
+                } else if (source == saveEdit) {
+                    if (saveEdit.getCaption().equals("Сохранить")) {
+                        if (checkAllValid()) {
+                            stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
+                            setEditable(false);
+                            ua.netcrackerteam.controller.StudentPage.addNewForm(stData, username, status, editorName);
+                            hlayout.addComponent(navigateToInterview);
+                            confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
+                            getWindow().addWindow(confirmationToInterviewTime);
                         } else {
-                            Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!",Window.Notification.TYPE_TRAY_NOTIFICATION);
+                            Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                             n.setDescription("Поля, отмеченные *, a также фото, обязательны для заполнения.");
                             getWindow().showNotification(n);
                         }
@@ -957,8 +971,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         setEditable(true);
                         status = 2;
                     }
-                    
-                } 
+
+                }
         }
     }
     

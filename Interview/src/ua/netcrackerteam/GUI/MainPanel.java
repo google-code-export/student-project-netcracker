@@ -22,7 +22,14 @@ public class MainPanel extends Panel {
     protected Label richText;
     protected VerticalLayout mainPageLo;
     protected TabSheet tabSheet;
-    
+
+    public TabSheet getTabSheet() {
+        return tabSheet;
+    }
+
+    public void setTabSheet(TabSheet tabSheet) {
+        this.tabSheet = tabSheet;
+    }
 
     public MainPanel(HeaderLayout hlayout, MainPage mainPage) {
         setStyleName(Reindeer.PANEL_LIGHT);
