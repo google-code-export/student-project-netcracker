@@ -34,8 +34,6 @@ public interface DAOAdmin {
 
     List getUsersSearchResultByCategoryNonBanned(String searchString, int userCategory);
 
-    boolean checkUserAvailability(String userName);
-
     List getAuditInterview();
 
     int getUserCategoryIDByUserName(String userName);
@@ -55,4 +53,6 @@ public interface DAOAdmin {
     UserCategory getUserCategoryByUserName(String userName);
 
     void deleteUserByName(String userName);
+
+    boolean checkUserAvailability(String userName, String userPassword);
 }

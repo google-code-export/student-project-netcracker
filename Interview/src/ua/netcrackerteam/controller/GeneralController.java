@@ -175,9 +175,15 @@ public class GeneralController implements Logable {
         HibernateFactory.getInstance().getAdminDAO().activeChangeUserByName(userName, "active");
     }
 
+    public static boolean checkUsersAvailability(String userName, String userPassword){
+        String hashedPassword = passwordHashing(userPassword);
+        boolean checkLogin = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName, hashedPassword);
+        return checkLogin;
+    }
+
     public static boolean checkUsersAvailability(String userName){
-        boolean checkUsers = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName);
-        return checkUsers;
+        //boolean checkUsers = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName);
+        return true;
     }
 
     public static boolean checkUserBan(String userName) {
