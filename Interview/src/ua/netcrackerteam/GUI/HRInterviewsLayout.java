@@ -17,6 +17,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.controller.HRInterview;
 import ua.netcrackerteam.controller.HRPage;
+import ua.netcrackerteam.controller.exceptions.HRException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -163,7 +164,11 @@ public class HRInterviewsLayout extends VerticalLayout {
             @Override
             public void buttonClick(ClickEvent event) {
                 HRInterview interview = (HRInterview) table.getValue();
-                HRPage.deleteInterview(interview.getId());
+                try {
+                    HRPage.deleteInterview(interview.getId(), interview.getReserve());
+                }catch (HRException hrE) {
+                    getWindow().showNotification(hrE.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
                 refreshTable();
                 getWindow().removeWindow(confirm);
             }

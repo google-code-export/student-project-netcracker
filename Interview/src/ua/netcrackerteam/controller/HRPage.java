@@ -5,6 +5,7 @@ import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
+import ua.netcrackerteam.controller.exceptions.HRException;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,8 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class HRPage {
+
+    private static int ID_NULL_INTERVIEW = 1;
 
     public static byte[] getPdfForView(int formID) {
         return new ApplicationForm(formID).generateFormPDF();
@@ -231,8 +234,12 @@ public class HRPage {
         new DAOHRImpl().addNewInterview(interview);
     }
     
-    public static void deleteInterview(int idInterview) {
-        new DAOHRImpl().deleteInterview(idInterview);
+    public static void deleteInterview(int idInterview, int idReserveInterview) throws HRException{
+        if (ID_NULL_INTERVIEW!= idReserveInterview) {
+            new DAOHRImpl().deleteInterview(idInterview);
+        }else {
+            throw new HRException(HRException.TRY_DELETE_NULL_INTERVIEW);
+        }
     }
     
     public static void editInterview(int id, Date start, Date end, int intervNum, int maxStudents, int reserved) {
