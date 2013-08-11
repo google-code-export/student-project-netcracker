@@ -21,7 +21,8 @@ class EnterWindow extends Window implements Logable {
     private LoginForm loginForm = null;
     public static final int MODE_GUEST = -1;
     private int mode = MODE_GUEST;
-    String userName;
+    private String userName;
+    private String userPassword;
 
     public EnterWindow(final MainPage mainPage) {
         setModal(true);
@@ -45,18 +46,23 @@ class EnterWindow extends Window implements Logable {
         loginForm.addListener(new LoginForm.LoginListener() {
             public void onLogin(LoginForm.LoginEvent event) {
                 userName = event.getLoginParameter("username");
-                if(GeneralController.checkUsersAvailability(userName)){
+                userPassword = event.getLoginParameter("password");
+                if(GeneralController.checkUsersAvailability(userName, userPassword)){
                     if(GeneralController.checkUserBan(userName)){
-                        GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                        //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
                         getWindow().showNotification("Вы забанены ! Уважаемый, " + userName + ", Вы были забанены. \n" +
                                 "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
                     } else {
-                        GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                        //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
                         mode = GeneralController.checkLogin(userName, event.getLoginParameter("password"));
                         mainPage.changeMode(mode, userName);
                         loginForm.removeListener(this);
                         EnterWindow.this.close();
                     }
+                } else {
+                    //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                    Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION);
+                    getWindow().showNotification(error);
                 }
             }
         });

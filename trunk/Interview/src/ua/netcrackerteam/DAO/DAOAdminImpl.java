@@ -29,11 +29,12 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     }
 
     @Override
-    public boolean checkUserAvailability(String userName){
+    public boolean checkUserAvailability(String userName, String userPassword){
         beginTransaction();
         List listOfParam = new ArrayList();
         listOfParam.add(userName);
-        String checkUserAvailabilityQuery = "from UserList where userName = :param0";
+        listOfParam.add(userPassword);
+        String checkUserAvailabilityQuery = "from UserList where userName = :param0 and password = :param1";
         List<UserList> userList = super.<UserList>executeListGetQuery(checkUserAvailabilityQuery, listOfParam);
         commitTransaction();
         if (userList.isEmpty()){
