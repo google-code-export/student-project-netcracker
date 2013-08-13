@@ -1,0 +1,49 @@
+ @import url(../runo/styles.css);
+.header {
+      background: #ccc url(images/header.png) repeat-x bottom left;
+}
+.header .v-button span {
+	text-decoration: none;
+        padding-bottom: 10px;
+}
+.user {
+      background: #F4F3F1;
+}
+.user .v-button span {
+	text-decoration: none;
+}
+.v-app {
+    background: white;
+}
+.v-tabsheet-deco {
+	height: 10px;
+        background: white;
+	margin-left: 9px;
+	overflow: visible;
+}
+.v-tabsheet-deco:before {
+	display: block;
+	content: "";
+	width: 9px;
+	height: 9px;
+	margin-left: -9px;
+	background: white;
+}
+.v-tabsheet-content {
+        border: 0;
+}
+.body {
+	  background: white;
+}
+.body .v-panel {
+	padding-left: 0px;
+	padding-top: 0px;
+}
+.emblem {
+	padding-left: 100px;
+}
+
+
+
+
+
