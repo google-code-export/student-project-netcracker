@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ua.netcrackerteam.configuration.HibernateUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,7 +85,7 @@ public class DAOCoreObject {
     }
 
     public <T> List<T> executeListGetSQLQuery(String inputQuery, List listOfParameters){
-        List<T> object = null;
+        List<T> object = new ArrayList<T>();
         try {
             query = session.createSQLQuery(inputQuery);
             for (int i = 0; i < listOfParameters.size(); i++) {
@@ -98,7 +99,7 @@ public class DAOCoreObject {
     }
 
     public <T> List<T> executeListGetSQLQuery(String inputQuery){
-        List<T> object = null;
+        List<T> object = new ArrayList<T>();
         try {
             query = session.createSQLQuery(inputQuery);
             object = query.list();
