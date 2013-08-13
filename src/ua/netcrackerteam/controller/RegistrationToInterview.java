@@ -52,18 +52,18 @@ public class RegistrationToInterview implements  Logable{
     public List<StudentInterview> getInterviews(){
        
        List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
-       ListIterator iterator = interviews.listIterator();
+       ListIterator<Interview> iterator = interviews.listIterator();
        
-       List<StudentInterview> listInterviews = new ArrayList();
+       List<StudentInterview> listInterviews = new ArrayList<StudentInterview>();
        Interview interview = null;
              
        while(iterator.hasNext()){
-            interview = (Interview)iterator.next();
-            if(interview.getReserve()!=1) {
-                StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
-                        interview.getStartDate(), interview.getEndDate(), getRestOfPositionsOnInterview(interview));
-                listInterviews.add(stInterview);
-            }
+            interview = iterator.next();
+            StudentInterview stInterview = new StudentInterview(interview.getIdInterview(),
+            		interview.getStartDate(), 
+            		interview.getEndDate(), 
+            		getRestOfPositionsOnInterview(interview));
+            listInterviews.add(stInterview);
        }
        return listInterviews;
     }
@@ -107,7 +107,4 @@ public class RegistrationToInterview implements  Logable{
         StudentInterview stInterview = new StudentInterview(nullInterview.getIdInterview(),getRestOfPositionsOnInterview(nullInterview));
         return stInterview;
     }
-    
-    
-    
 }

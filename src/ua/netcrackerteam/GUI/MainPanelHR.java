@@ -13,6 +13,7 @@ import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -48,6 +49,7 @@ import ua.netcrackerteam.controller.StudentInterview;
  * Panel for HR view
  * @author Anna Kushnirenko, Filipenko, Klitna Tetiana
  */
+@SuppressWarnings("serial")
 public class MainPanelHR extends MainPanel{
     
     private VerticalLayout settingsLo;

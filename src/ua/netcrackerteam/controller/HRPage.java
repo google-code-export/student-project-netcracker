@@ -203,9 +203,6 @@ public class HRPage {
                 List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
                 int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
                 hrInterview.setRestOfPositions(hrInterview.getPositionNum() - amountStudentsToInterview);
-
-                hrInterview.setReserve(interview.getReserve());
-
                 intervList.add(hrInterview);
             }
         }
@@ -224,13 +221,12 @@ public class HRPage {
         return (int) Math.round(num);
     }
     
-    public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents, int reserved) {
+    public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents) {
         Interview interview = new Interview();
         interview.setEndDate(end);
         interview.setStartDate(start);
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
-        interview.setReserve(reserved);
         new DAOHRImpl().addNewInterview(interview);
     }
     
@@ -242,14 +238,13 @@ public class HRPage {
         }
     }
     
-    public static void editInterview(int id, Date start, Date end, int intervNum, int maxStudents, int reserved) {
+    public static void editInterview(int id, Date start, Date end, int intervNum, int maxStudents) {
         Interview interview = new Interview();
         interview.setIdInterview(id);
         interview.setEndDate(end);
         interview.setStartDate(start);
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
-        interview.setReserve(reserved);
         new DAOHRImpl().editInterview(interview);
     }
 
@@ -257,12 +252,7 @@ public class HRPage {
         DAOHRImpl daohr = new DAOHRImpl();
         Institute institute = daohr.addInstitute(instituteName);
         Faculty faculty = daohr.addFaculty(institute, facultyName);
-        Cathedra cathedra = daohr.addCathedra(faculty, cathedraName);
-    }
-
-    private static void addNewInstFaculCathByHrTempInfoByFormID(int formID){
-        HrTempInfo hrTempInfo = getHRTempInfoByFormID(formID);
-        addNewInstFaculCath(hrTempInfo.getInstituteName(), hrTempInfo.getFacultyName(), hrTempInfo.getCathedraName());
+        daohr.addCathedra(faculty, cathedraName);
     }
 
     public static StudentData getStDataByFormID(int formID) {
