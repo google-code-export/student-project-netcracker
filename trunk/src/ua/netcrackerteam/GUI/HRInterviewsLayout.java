@@ -15,6 +15,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Runo;
+
 import ua.netcrackerteam.controller.HRInterview;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.exceptions.HRException;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
  *
  * @author Anna Kushnirenko
  */
+@SuppressWarnings("serial")
 public class HRInterviewsLayout extends VerticalLayout {
     private final Panel rightPanel;
     private final Panel sidebar;
@@ -113,24 +115,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             }
         });
         sidebar.addComponent(deleteInterview);
-        
-//        Button addTime = new Button("Запасное время");
-//        addTime.setStyleName(Runo.BUTTON_LINK);
-//        addTime.setIcon(new ThemeResource("icons/32/time-icon.png"));
-//        sidebar.addComponent(addTime);
-//        addTime.addListener(new Button.ClickListener() {
-//
-//            @Override
-//            public void buttonClick(ClickEvent event) {
-//                showAdditionalTimeInfo();
-//            }
-//        });
-
     }
-    
-//    private void showAdditionalTimeInfo() {
-//
-//    }
 
     private void fillRightPanel() {
         rightPanel.setHeight("100%");
@@ -227,7 +212,7 @@ public class HRInterviewsLayout extends VerticalLayout {
         private InterviewsTable() {
             super();
             List<HRInterview> interviews = HRPage.getInterviewsList();
-            BeanItemContainer<HRInterview> bean = new BeanItemContainer(HRInterview.class, interviews);
+            BeanItemContainer<HRInterview> bean = new BeanItemContainer<HRInterview>(HRInterview.class, interviews);
             setContainerDataSource(bean);
             setWidth("100%");
             setHeight(screenHeight-300,UNITS_PIXELS);
@@ -343,12 +328,6 @@ public class HRInterviewsLayout extends VerticalLayout {
             duration.addValidator(new IntegerValidator("Ошибка! Введите число"));
             addComponent(duration,1,1);
 
-            reserve = new TextField("Резерв(1-да/0-нет)");
-            reserve.setWidth("150");
-            reserve.addListener(this);
-            reserve.addValidator(new IntegerValidator("Ошибка! Введите число"));
-            addComponent(reserve,1,2);
-
             positionNum = new TextField("Количество студентов");
             positionNum.setWidth("150");
             positionNum.setInputPrompt("Рекомендуемое: ?");
@@ -432,13 +411,12 @@ public class HRInterviewsLayout extends VerticalLayout {
                     Date end = endTime.getDate((Date) date.getValue());
                     int intNum = Integer.parseInt(intervNum.getValue().toString());
                     int posNum = Integer.parseInt(positionNum.getValue().toString());
-                    int reserved = Integer.parseInt(reserve.getValue().toString());
                     if(!editable) {
-                        HRPage.saveNewInterview(start, end, intNum, posNum, reserved);
+                        HRPage.saveNewInterview(start, end, intNum, posNum);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     } else {
                         HRInterview interview = (HRInterview) table.getValue();
-                        HRPage.editInterview(interview.getId(), start, end, intNum, posNum, reserved);
+                        HRPage.editInterview(interview.getId(), start, end, intNum, posNum);
                         getWindow().showNotification("Собеседование успешно изменено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
                     setVisible(false);

@@ -82,6 +82,4 @@ public class HRInterview {
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
-
-    
 }

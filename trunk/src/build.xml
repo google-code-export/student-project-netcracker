@@ -1,0 +1,61 @@
+<project name="interview" default="deploy">
+
+    <property environment="env"/>
+    <property name="tomcat.home.dir" location="${env.CATALINA_HOME}" />
+
+    <path id="compile.classpath">
+		<fileset dir="${basedir}/lib/"/>
+        <fileset dir="${basedir}/webapp"/>
+        <fileset dir="${basedir}/ua"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${basedir}/dist/${ant.project.name}" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${basedir}/dist/${ant.project.name}" />
+    </target>
+
+    <target name="compile" depends="init">
+        <mkdir dir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" />
+    	<mkdir dir="${basedir}/dist/${ant.project.name}/WEB-INF/lib" />
+        <javac destdir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" debug="true" srcdir="ua">
+            <classpath refid="compile.classpath"/>
+        </javac>
+        <copy todir="${basedir}/dist/${ant.project.name}">
+            <fileset dir="${basedir}/webapp"/>
+        </copy>
+    	<copy todir="${basedir}/dist/${ant.project.name}/WEB-INF/lib">
+    		<fileset dir="${basedir}/lib/"></fileset>
+    	</copy>
+    	<copy todir="${basedir}/dist/${ant.project.name}/WEB-INF/classes">
+    	    <fileset file="${basedir}/hibernate.cfg.xml"></fileset>
+    		<fileset file="${basedir}/log4j.properties"></fileset>
+    		<fileset file="${basedir}/Logotip.png"></fileset>
+    		<fileset file="${basedir}/interview.log"></fileset>
+    	</copy>
+    </target>
+
+    <target name="war" depends="compile">
+        <war destfile="${tomcat.home.dir}/webapps/${ant.project.name}.war" webxml="${basedir}/webapp/WEB-INF/web.xml">
+            <fileset dir="${basedir}/dist/interview"/>
+        </war>
+    </target>
+
+    <target name="tomcat-start">
+        <java jar="${tomcat.home.dir}/bin/bootstrap.jar" fork="true">
+            <jvmarg value="-Dcatalina.home=${tomcat.home.dir}"/>
+        </java>
+    </target>
+
+    <target name="tomcat-stop">
+        <java jar="${tomcat.home.dir}/bin/bootstrap.jar" fork="true">
+            <jvmarg value="-Dcatalina.home=${tomcat.home.dir}"/>
+            <arg line="stop"/>
+        </java>
+    </target>
+
+    <target name="deploy" depends="tomcat-stop, clean, war, tomcat-start" >
+    </target>
+</project>

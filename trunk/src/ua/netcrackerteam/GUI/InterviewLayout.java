@@ -10,6 +10,7 @@ import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
 import ua.netcrackerteam.controller.StudentInterview;
@@ -26,6 +27,7 @@ import java.util.List;
  *
  * @author Anna Kushnirenko
  */
+@SuppressWarnings("serial")
 class InterviewLayout extends VerticalLayout implements Property.ValueChangeListener {
     
     private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols(){
@@ -127,9 +129,6 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             int restPos = nullInterview.getRestOfPositions();
             dates.addItem(nullInterview);
             dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
-            if((selectedInterview!=null)&&(selectedInterview.getReserve() == 1)) {
-                dates.setValue(nullInterview);
-            }
         }
         dates.addListener(this);
         dates.setImmediate(true);
@@ -180,6 +179,4 @@ class InterviewLayout extends VerticalLayout implements Property.ValueChangeList
             }
         }
     }
-    
-    
 }
