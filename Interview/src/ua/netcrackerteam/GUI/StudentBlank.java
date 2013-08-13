@@ -869,22 +869,22 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             addNewContactField(stData.getStudentOtherContactType(), bean.getItemProperty("studentOtherContact"));
         }
         if(!stData.getStudentLanguage1().equals("")) {
-            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage1Mark"),glayoutPrLang);
+            addNewSavedSlider(stData.getStudentLanguage1(),bean.getItemProperty("studentLanguage1Mark"),glayoutPrLang, true);
         }
         if(!stData.getStudentLanguage2().equals("")) {
-            addNewSavedSlider(stData.getStudentLanguage2(),bean.getItemProperty("studentLanguage2Mark"),glayoutPrLang);
+            addNewSavedSlider(stData.getStudentLanguage2(),bean.getItemProperty("studentLanguage2Mark"),glayoutPrLang, true);
         }
         if(!stData.getStudentLanguage3().equals("")) {
-            addNewSavedSlider(stData.getStudentLanguage3(),bean.getItemProperty("studentLanguage3Mark"),glayoutPrLang);
+            addNewSavedSlider(stData.getStudentLanguage3(),bean.getItemProperty("studentLanguage3Mark"),glayoutPrLang, true);
         }
         if(!stData.getStudentKnowledgeOther1().equals("")) {
-            addNewSavedSlider(stData.getStudentKnowledgeOther1(),bean.getItemProperty("studentKnowledgeOther1Mark"),glayoutKnow);
+            addNewSavedSlider(stData.getStudentKnowledgeOther1(), bean.getItemProperty("studentKnowledgeOther1Mark"), glayoutKnow, false);
         }
         if(!stData.getStudentKnowledgeOther2().equals("")) {
-            addNewSavedSlider(stData.getStudentKnowledgeOther2(),bean.getItemProperty("studentKnowledgeOther2Mark"),glayoutKnow);
+            addNewSavedSlider(stData.getStudentKnowledgeOther2(),bean.getItemProperty("studentKnowledgeOther2Mark"),glayoutKnow, false);
         }
         if(!stData.getStudentKnowledgeOther3().equals("")) {
-            addNewSavedSlider(stData.getStudentKnowledgeOther3(),bean.getItemProperty("studentKnowledgeOther3Mark"),glayoutKnow);
+            addNewSavedSlider(stData.getStudentKnowledgeOther3(),bean.getItemProperty("studentKnowledgeOther3Mark"),glayoutKnow, false);
         }
         if(!stData.getStudentOtherInstitute().equals("")) {
             newInstitute.setVisible(true);
@@ -897,12 +897,34 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
     }
 
-    private void addNewSavedSlider(String name, Property value, Layout lo) {
-        Slider newSlider = new Slider(name);
-        newSlider.setPropertyDataSource(value);
-        sliderConfig(newSlider,1);
-        programLangList.add(newSlider);
-        lo.addComponent(programLangList.get(programLangList.size()-1));
+    private void addNewSavedSlider(String name, Property value, Layout lo, boolean  isProgramLang) {
+        Iterator<Component> i;
+        if (isProgramLang) {
+            i = glayoutPrLang.getComponentIterator();
+        }else {
+            i = glayoutKnow.getComponentIterator();
+        }
+        Slider currSlider = null;
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            if (c instanceof Slider) {
+                currSlider = (Slider) c;
+                if (currSlider.getCaption().trim().equals(name.trim())) {
+                    break;
+                }
+            }
+            currSlider = null;
+        }
+        if (currSlider == null) {
+            currSlider = new Slider(name);
+            currSlider.setPropertyDataSource(value);
+            sliderConfig(currSlider,1);
+            programLangList.add(currSlider);
+            lo.addComponent(programLangList.get(programLangList.size()-1));
+        }else {
+            currSlider.setPropertyDataSource(value);
+            sliderConfig(currSlider,1);
+        };
     }
 
     private void showPhoto() {
