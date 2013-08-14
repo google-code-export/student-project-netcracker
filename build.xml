@@ -6,7 +6,7 @@
     <path id="compile.classpath">
 		<fileset dir="${basedir}/lib/"/>
         <fileset dir="${basedir}/webapp"/>
-        <fileset dir="${basedir}/ua"/>
+        <fileset dir="${basedir}/src/ua"/>
     </path>
 
     <target name="init">
@@ -20,7 +20,7 @@
     <target name="compile" depends="init">
         <mkdir dir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" />
     	<mkdir dir="${basedir}/dist/${ant.project.name}/WEB-INF/lib" />
-        <javac destdir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" debug="true" srcdir="ua">
+        <javac destdir="${basedir}/dist/${ant.project.name}/WEB-INF/classes" debug="true" srcdir="src">
             <classpath refid="compile.classpath"/>
         </javac>
         <copy todir="${basedir}/dist/${ant.project.name}">
