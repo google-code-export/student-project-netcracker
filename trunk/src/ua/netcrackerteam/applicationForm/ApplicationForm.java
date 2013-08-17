@@ -14,15 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-<<<<<<< .mine
-import ua.netcrackerteam.controller.bean.StudentData;
-=======
+
 
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
-import ua.netcrackerteam.controller.StudentData;
->>>>>>> .r464
 import ua.netcrackerteam.controller.StudentPage;
+import ua.netcrackerteam.controller.bean.StudentData;
 
 /**
  *
@@ -49,7 +46,6 @@ public class ApplicationForm{
   
     /**
      * Generate pdf with pdf-template and write it to binary stream
-     * @param OutputStream memory
      */
     public byte[] generateFormPDF() {
         byte[] pdfForView = null;
@@ -85,7 +81,6 @@ public class ApplicationForm{
     
     /**
      * Fill pdf template with data from Form
-     * @param form 
      * @throws IOException
      * @throws DocumentException      
      */
