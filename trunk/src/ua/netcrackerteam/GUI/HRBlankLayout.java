@@ -14,6 +14,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.controller.*;
+import ua.netcrackerteam.controller.bean.StudentData;
+import ua.netcrackerteam.controller.bean.StudentDataShort;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

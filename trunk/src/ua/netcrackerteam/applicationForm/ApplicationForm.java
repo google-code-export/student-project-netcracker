@@ -14,10 +14,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+<<<<<<< .mine
+import ua.netcrackerteam.controller.bean.StudentData;
+=======
 
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.StudentData;
+>>>>>>> .r464
 import ua.netcrackerteam.controller.StudentPage;
 
 /**

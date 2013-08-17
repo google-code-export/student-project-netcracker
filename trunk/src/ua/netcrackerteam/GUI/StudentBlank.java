@@ -23,7 +23,7 @@ import com.vaadin.ui.themes.Reindeer;
 import ua.netcrackerteam.DAO.Entities.Cathedra;
 import ua.netcrackerteam.DAO.Entities.Faculty;
 import ua.netcrackerteam.DAO.Entities.Institute;
-import ua.netcrackerteam.controller.StudentData;
+import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.StudentPage;
 
 import java.io.ByteArrayInputStream;

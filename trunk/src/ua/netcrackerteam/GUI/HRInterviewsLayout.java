@@ -16,7 +16,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Runo;
 
-import ua.netcrackerteam.controller.HRInterview;
+import ua.netcrackerteam.controller.bean.HRInterview;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.exceptions.HRException;
 

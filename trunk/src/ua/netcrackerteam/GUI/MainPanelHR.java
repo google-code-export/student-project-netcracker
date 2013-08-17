@@ -43,7 +43,7 @@ import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResul
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateResultOfInterviewsDetail;
 import ua.netcrackerteam.applicationForm.Reports.TypeReports.ReportTemplateStudentsToInterview;
 import ua.netcrackerteam.controller.RegistrationToInterview;
-import ua.netcrackerteam.controller.StudentInterview;
+import ua.netcrackerteam.controller.bean.StudentInterview;
 
 /**
  * Panel for HR view

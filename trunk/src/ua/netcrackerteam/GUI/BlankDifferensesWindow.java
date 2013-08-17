@@ -6,7 +6,7 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
-import ua.netcrackerteam.controller.DifferenceData;
+import ua.netcrackerteam.controller.bean.DifferenceData;
 import ua.netcrackerteam.controller.HRPage;
 
 import java.util.List;

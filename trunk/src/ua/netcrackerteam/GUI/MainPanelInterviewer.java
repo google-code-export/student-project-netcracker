@@ -20,8 +20,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.controller.InterviewerPage;
-import ua.netcrackerteam.controller.StudentDataShort;
-import ua.netcrackerteam.controller.StudentInterview;
+import ua.netcrackerteam.controller.bean.StudentDataShort;
+import ua.netcrackerteam.controller.bean.StudentInterview;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

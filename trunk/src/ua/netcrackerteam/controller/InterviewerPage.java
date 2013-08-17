@@ -7,6 +7,7 @@ package ua.netcrackerteam.controller;
 import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
+import ua.netcrackerteam.controller.bean.StudentDataShort;
 
 import java.util.ArrayList;
 import java.util.List;
