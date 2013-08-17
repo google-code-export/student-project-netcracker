@@ -354,6 +354,29 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
         
         
     }
+
+	@Override
+	public Form getFormByFormId(int idForm) {
+		Session session = null;
+        Query query;
+        Form form = null;
+        try {
+            Locale.setDefault(Locale.ENGLISH);
+            session = HibernateUtil.getSessionFactory().getCurrentSession();
+            session.beginTransaction();
+            query = session.createQuery("from Form "
+                    + "where id_form = " + idForm);
+            form = (Form) query.uniqueResult();
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+        return form;
+	}
 }
 
 

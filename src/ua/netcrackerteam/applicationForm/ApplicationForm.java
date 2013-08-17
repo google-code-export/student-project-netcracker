@@ -7,11 +7,16 @@ package ua.netcrackerteam.applicationForm;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.*;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import ua.netcrackerteam.DAO.Entities.Interview;
+import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.StudentData;
 import ua.netcrackerteam.controller.StudentPage;
 
@@ -26,13 +31,16 @@ public class ApplicationForm{
     private String path = ClassPath.getInstance().getWebInfPath();
     
     private StudentData studentData;
+    Interview interview;
     
     public ApplicationForm(int idForm){
         studentData = StudentPage.getStudentDataByIdForm(idForm);
+        interview = (HibernateFactory.getInstance().getStudentDAO().getFormByFormId(idForm)).getInterview();
     }
     
     public ApplicationForm(String userName){
       studentData = StudentPage.getStudentDataByUserName(userName);
+      interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
     }
   
     /**
@@ -82,7 +90,10 @@ public class ApplicationForm{
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault(), Locale.getDefault());
         calendar.setTime(new Date());
         int currentYear = calendar.get(Calendar.YEAR);
-             
+        String dateInterview = (new SimpleDateFormat("dd/MM")).format(interview.getStartDate()).concat(" ").concat((new SimpleDateFormat("HH:mm")).format(interview.getStartDate()));
+
+        fields.setField("dateInterview1", dateInterview);
+        fields.setField("dateInterview2", dateInterview);
         fields.setField("info1", studentData.getStudentLastName());
         fields.setField("info2", studentData.getStudentFirstName());
         fields.setField("info3", studentData.getStudentMiddleName());
