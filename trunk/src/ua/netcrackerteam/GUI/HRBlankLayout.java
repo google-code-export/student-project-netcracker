@@ -3,6 +3,7 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.StreamResource;
@@ -495,6 +496,7 @@ public class HRBlankLayout extends VerticalLayout implements Button.ClickListene
                     Object value = event.getProperty().getValue();
                     if (!(null == value)) {
                         StudentDataShort selectedValue = (StudentDataShort) value;
+                        rightPanel.setCaption("Информация: "+selectedValue.getStudentFirstName()+" "+selectedValue.getStudentLastName());
                         List<StudentsMarks> currMarks = HRPage.getStudentMark(selectedValue.getIdForm());
                         FillResultsTable(currMarks);
 
