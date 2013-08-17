@@ -12,6 +12,7 @@ import java.util.List;
 public interface DAOStudent {    
     
     public Form getFormByUserName(String userName);
+    public Form getFormByFormId(int idForm);
     public void addForm(Form form);
     public void updateForm(Form form);
     public List<Form> getFormsByInterviewId(int idInterview);
