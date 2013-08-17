@@ -1,7 +1,7 @@
 package ua.netcrackerteam.DAO;
 
 import ua.netcrackerteam.DAO.Entities.*;
-import ua.netcrackerteam.controller.DifferenceData;
+import ua.netcrackerteam.controller.bean.DifferenceData;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

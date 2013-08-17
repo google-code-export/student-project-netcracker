@@ -9,7 +9,7 @@ import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.DAO.Entities.UserList;
-import ua.netcrackerteam.controller.UsersData;
+import ua.netcrackerteam.controller.bean.UsersData;
 
 import static com.vaadin.data.Property.ValueChangeEvent;
 

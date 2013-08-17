@@ -1,6 +1,6 @@
 package ua.netcrackerteam.test;
 
-import ua.netcrackerteam.controller.StudentData;
+import ua.netcrackerteam.controller.bean.StudentData;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

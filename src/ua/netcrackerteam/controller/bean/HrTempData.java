@@ -1,4 +1,4 @@
-package ua.netcrackerteam.controller;
+package ua.netcrackerteam.controller.bean;
 
 /**
  * @author krygin

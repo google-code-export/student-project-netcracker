@@ -1,7 +1,7 @@
 package ua.netcrackerteam.test.eventBusTest;
 
 import ua.netcrackerteam.DAO.DAOCoreObject;
-import ua.netcrackerteam.controller.StudentData;
+import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.StudentPage;
 
 import java.io.File;

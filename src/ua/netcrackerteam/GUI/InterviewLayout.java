@@ -5,178 +5,238 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.terminal.gwt.server.WebApplicationContext;
-import com.vaadin.terminal.gwt.server.WebBrowser;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-
-import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
-import ua.netcrackerteam.controller.StudentInterview;
 import ua.netcrackerteam.controller.RegistrationToInterview;
+import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
 
-import java.text.DateFormatSymbols;
-import java.text.Format;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author Anna Kushnirenko
  */
 @SuppressWarnings("serial")
-class InterviewLayout extends VerticalLayout implements Property.ValueChangeListener {
-    
-    private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols(){
-            @Override
-            public String[] getMonths() {
-                return new String[]{"января", "февраля", "марта", "апреля", "мая", "июня",
-                    "июля", "августа", "сентября", "октября", "ноября", "декабря"};
-            }
-        };
-    private final InlineDateField calendar;
-    private OptionGroup dates;
-    private Button saveEdit;
-    private Button print;
-    private String userName;
-    private int selectedInterviewID;
-    private boolean noPositionsFlag = true;
-    private RegistrationToInterview registration = new RegistrationToInterview();
-    private GridLayout layout;
+class InterviewLayout extends VerticalLayout {
+
+
+    private final String username;
+    private final MainPage mainPage;
+    StudentInterview selectedInterview;
+    StudentInterview nullInterview;
+    private VerticalLayout verticalLayout;
+    private RegistrationToInterview controller = new RegistrationToInterview();
+    private List<StudentInterview> interviewsList;
+    private Button save;
+    private DaySelector daySelector;
 
     public InterviewLayout(String username, MainPage mainPage) {
-        this.userName = username;
-        WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
-        WebBrowser webBrowser = context.getBrowser();
-        setHeight(webBrowser.getScreenHeight()-200,UNITS_PIXELS);
-        setMargin(true);
-        setSpacing(true);
-        Panel panel = new Panel("Выберите дату собеседования");
+        this.mainPage = mainPage;
+        this.username = username;
+        loadPageSettings();
+        loadRegistrationPanelSettings();
+        interviewsList = controller.getInterviews();
+        selectedInterview = controller.getSelectedInterview(username);
+        nullInterview = controller.getNullInterview();
+        if (selectedInterview != null) {
+            showEditComponents();
+        }
+        daySelector = new DaySelector();
+        addSaveButton();
+    }
+
+    private void addSaveButton() {
+        save = new Button("Сохранить");
+        verticalLayout.addComponent(save);
+        verticalLayout.setComponentAlignment(save, Alignment.BOTTOM_CENTER);
+        save.setVisible(false);
+        save.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                if (daySelector.getOldTimeSelector().getValue() != null) {
+                    saveInterview();
+                } else {
+                    getWindow().showNotification("Выберите время собеседования!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+    }
+
+    private void saveInterview() {
+        try {
+            controller.updateRegistrationToInterview(username, selectedInterview.getStudentInterviewId());
+        } catch (StudentInterviewException e) {
+            getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+        }
+        refreshPage();
+    }
+
+    private void refreshPage() {
+        TabSheet studentTabs = mainPage.getPanel().getTabSheet();
+        InterviewLayout interviewLayout = new InterviewLayout(username, mainPage);
+        studentTabs.replaceComponent(this, interviewLayout);
+    }
+
+    private void showEditComponents() {
+        Label caption = new Label("Вы зарегистрированы на собеседование на " +
+                selectedInterview.getStartTime()  + " " +
+                selectedInterview.getInterviewStartDay() + ".");
+        verticalLayout.addComponent(caption);
+        caption = new Label("Внимание! Вы не сможете перерегистрироваться за пол часа до начала выбранного собеседования.");
+        verticalLayout.addComponent(caption);
+
+        HorizontalLayout buttonsLayout = new HorizontalLayout();
+        buttonsLayout.setSpacing(true);
+        verticalLayout.addComponent(buttonsLayout);
+
+        Button edit = new Button("Редактировать");
+        buttonsLayout.addComponent(edit);
+        edit.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                if (validTime()) {
+                    daySelector.setVisible(true);
+                } else {
+                    getWindow().showNotification("Вы не можете перерегистрироваться за пол часа до начала выбранного собеседования.",
+                            Window.Notification.TYPE_TRAY_NOTIFICATION);
+                }
+            }
+        });
+        Button sendPDF = new Button("Отправить PDF");
+        buttonsLayout.addComponent(sendPDF);
+        sendPDF.addListener(new
+                                    Button.ClickListener() {
+                                        @Override
+                                        public void buttonClick(Button.ClickEvent clickEvent) {
+                                            CreateLetterWithPDF letter = new CreateLetterWithPDF(username);
+                                            letter.sendPDFToStudent();
+                                        }
+                                    });
+    }
+
+    private boolean validTime() {
+        Date currentDate = new Date();
+        Date selectedInterviewDate = selectedInterview.getInterviewStartDate();
+        long differenceInMinutes = ((selectedInterviewDate.getTime() / 60000) - (currentDate.getTime() / 60000));
+        if (differenceInMinutes < 30) {
+            return false;
+        }
+        return true;
+    }
+
+    private void loadRegistrationPanelSettings() {
+        Panel panel = new Panel("Запись на собеседование");
         panel.setWidth("100%");
         addComponent(panel);
-        layout = new GridLayout(2,2);
-        layout.setSizeFull();
-        panel.setContent(layout);
-        layout.setSpacing(true);
-        layout.setMargin(true);
-        calendar = new InlineDateField();
-        calendar.setImmediate(true);
-        calendar.setValue(new Date());
-        calendar.setResolution(InlineDateField.RESOLUTION_DAY);
-        layout.addComponent(calendar, 0, 0);
-        layout.setComponentAlignment(calendar, Alignment.TOP_CENTER);
-        List<StudentInterview> interviews = registration.getInterviews();
-        Interview selectedInterview = registration.getInterview(userName);
-        StudentInterview nullInterview = registration.getNullInterview();
-        dates = new OptionGroup("Доступные даты:");
-        layout.addComponent(dates,1,0);
-        fillDates(interviews, nullInterview, selectedInterview);
-
-        print = new Button("Отправить PDF");
-        print.setWidth("150");
-        layout.addComponent(print,1,1);
-        layout.setComponentAlignment(print, Alignment.TOP_CENTER);
-        print.addListener(new ButtonsListener());
-        if(selectedInterviewID != 0) {
-            saveEdit = new Button("Редактировать");
-            dates.setReadOnly(true);
-        } else {
-            saveEdit = new Button("Сохранить");
-            print.setVisible(false);
-        }
-        layout.addComponent(saveEdit,0,1);
-        saveEdit.setWidth("150");
-        layout.setComponentAlignment(saveEdit, Alignment.TOP_CENTER);
-        saveEdit.addListener(new ButtonsListener());        
+        verticalLayout = new VerticalLayout();
+        verticalLayout.setSizeFull();
+        panel.setContent(verticalLayout);
+        verticalLayout.setSpacing(true);
+        verticalLayout.setMargin(true);
     }
 
-    private void refreshInterviews() {
-        List<StudentInterview> interviews = registration.getInterviews();
-        Interview selectedInterview = registration.getInterview(userName);
-        StudentInterview nullInterview = registration.getNullInterview();
-        fillDates(interviews, nullInterview, selectedInterview);
+    private void loadPageSettings() {
+        setMargin(true);
+        setSpacing(true);
     }
 
-    private void fillDates(List<StudentInterview> interviews, StudentInterview nullInterview, Interview selectedInterview) {
-        OptionGroup newDates = new OptionGroup("Доступные даты:");
-        layout.replaceComponent(dates,newDates);
-        dates = newDates;
-        dates.setRequired(true);
-        if (selectedInterview != null) {
-            selectedInterviewID = selectedInterview.getIdInterview();
-        } else {
-            selectedInterviewID = 0;
-        }
-        for(StudentInterview stInterview : interviews) {
-            String strDate = getStrFromDate(stInterview.getInterviewStartDate(),
-                    stInterview.getInterviewEndDate(), stInterview.getRestOfPositions());
-            dates.addItem(stInterview);
-            dates.setItemCaption(stInterview, strDate);
-            if (stInterview.getRestOfPositions() == 0) {
-                dates.setItemEnabled(stInterview, false);
-            } else {
-                noPositionsFlag = false;
+    private class DaySelector extends ComboBox {
+
+        private TimeSelector oldTimeSelector = new TimeSelector(this);
+
+        public DaySelector() {
+            super();
+            setWidth(400, UNITS_PIXELS);
+            setImmediate(true);
+            if (selectedInterview != null) {
+                setVisible(false);
             }
-            if (selectedInterviewID == stInterview.getStudentInterviewId()) {
-                dates.setValue(stInterview);
-                calendar.setValue(stInterview.getInterviewStartDate());
+            setNullSelectionAllowed(false);
+            List<StudentInterview> interviewDays = parseDays();
+            BeanItemContainer<StudentInterview> daysContainer = new BeanItemContainer(StudentInterview.class, interviewDays);
+            setCaption("Выберите день собеседования:");
+            setContainerDataSource(daysContainer);
+            verticalLayout.addComponent(this);
+            verticalLayout.addComponent(oldTimeSelector);
+            addListener(new ValueChangeListener() {
+                @Override
+                public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                    refreshTimeSelector();
+                }
+            });
+        }
+
+        private List<StudentInterview> parseDays() {
+            List<StudentInterview> days = new ArrayList<StudentInterview>();
+            String prevDay = null;
+            for (StudentInterview studentInterview : interviewsList) {
+                String currentDay = studentInterview.getInterviewStartDay();
+                if (!currentDay.equals(prevDay) && studentInterview.getRestOfPositions() > 0) {
+                    days.add(studentInterview);
+                }
+                prevDay = currentDay;
             }
+            return days;
         }
-        if (noPositionsFlag) {
-            int restPos = nullInterview.getRestOfPositions();
-            dates.addItem(nullInterview);
-            dates.setItemCaption(nullInterview, "Дополнительное время. Осталось мест: "+restPos);
+
+        private void refreshTimeSelector() {
+            TimeSelector newTimeSelector = new TimeSelector(this);
+            verticalLayout.replaceComponent(oldTimeSelector, newTimeSelector);
+            oldTimeSelector = newTimeSelector;
+            save.setVisible(true);
         }
-        dates.addListener(this);
-        dates.setImmediate(true);
+
+        public TimeSelector getOldTimeSelector() {
+            return oldTimeSelector;
+        }
     }
 
+    private class TimeSelector extends Table {
+        public Object[] NATURAL_COL_ORDER = new Object[]{"startTime", "endTime"};
+        public String[] COL_HEADERS_RUSSIAN = new String[]{"Время начала", "Время окончания"};
+        private DaySelector daySelector;
 
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-        StudentInterview itemID = (StudentInterview) event.getProperty().getValue();
-        selectedInterviewID = itemID.getStudentInterviewId();
-        calendar.setValue(itemID.getInterviewStartDate());
-    }
+        public TimeSelector(DaySelector daySelector) {
+            super();
+            this.daySelector = daySelector;
+            setVisible(true);
+            List<StudentInterview> availableTimes = filterAvailableTimes();
+            BeanItemContainer<StudentInterview> interviewContainer = new BeanItemContainer<StudentInterview>(StudentInterview.class, availableTimes);
+            setWidth("100%");
+            setHeight("50%");
+            setSelectable(true);
+            setImmediate(true);
+            setNullSelectionAllowed(false);
+            setContainerDataSource(interviewContainer);
+            setVisibleColumns(NATURAL_COL_ORDER);
+            setColumnHeaders(COL_HEADERS_RUSSIAN);
+            addListener(new ValueChangeListener() {
+                @Override
+                public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                    selectedInterview = (StudentInterview) valueChangeEvent.getProperty().getValue();
+                }
+            });
+        }
 
-    private String getStrFromDate(Date startDate, Date endDate, int availability) {
-        Format formatter = new SimpleDateFormat("dd MMMM HH:mm",myDateFormatSymbols);
-        String strDate = formatter.format(startDate);
-        formatter = new SimpleDateFormat("-HH:mm");
-        strDate = strDate + formatter.format(endDate);
-        strDate = strDate + ". Осталось мест: " + availability;
-        return strDate;
-    }
-    
-    private class ButtonsListener implements Button.ClickListener {
-
-        @Override
-        public void buttonClick(ClickEvent event) {
-            Button source = event.getButton();
-            if(source == saveEdit) {
-                if(dates.isValid() && saveEdit.getCaption().equals("Сохранить")) {
-                    try {
-                        registration.updateRegistrationToInterview(userName, selectedInterviewID);
-                        refreshInterviews();
-                        dates.setReadOnly(true);
-                        print.setVisible(true);
-                        saveEdit.setCaption("Редактировать");
-                    } catch (StudentInterviewException e) {
-                        refreshInterviews();
-                        getWindow().showNotification(e.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+        private List<StudentInterview> filterAvailableTimes() {
+            List<StudentInterview> availableTimes = new ArrayList<StudentInterview>();
+            StudentInterview selectedDate = (StudentInterview) daySelector.getValue();
+            if (selectedDate != null) {
+                for (StudentInterview studentInterview : interviewsList) {
+                    if (selectedDate.getInterviewStartDay().equals(studentInterview.getInterviewStartDay())
+                            && studentInterview.getRestOfPositions() > 0) {
+                        availableTimes.add(studentInterview);
                     }
-                } else {
-                    print.setVisible(false);
-                    dates.setReadOnly(false);
-                    saveEdit.setCaption("Сохранить");
                 }
             } else {
-                CreateLetterWithPDF letter =new CreateLetterWithPDF(userName);
-                letter.sendPDFToStudent();
+                setVisible(false);
             }
+
+            return availableTimes;
         }
+
     }
 }

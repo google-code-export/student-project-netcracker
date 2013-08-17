@@ -11,6 +11,7 @@ public class StudentInterviewException extends Exception{
     public static final String NO_INTERVIEW_EXCEPTION = "Это собеседование было удалено.";
     public static final String NO_FORM_EXCEPTION = "Перед тем, как записаться на интервью, необходимо заполнить анкету!";
     public static final String FULL_INTERVIEW_EXCEPTION = "К сожалению все места на это собеседование уже заняты! Выберите, пожалуйста, другое время.";
+    public static final String WRONG_TIME_EXCEPTION = "Вы не можете зарегистрироваться за пол часа до начала выбранного собеседования.";
 
     public StudentInterviewException() { super(); }
     public StudentInterviewException(String message) { super(message); }

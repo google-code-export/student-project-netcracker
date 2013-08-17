@@ -1,4 +1,4 @@
-package ua.netcrackerteam.controller;
+package ua.netcrackerteam.controller.bean;
 
 import ua.netcrackerteam.DAO.Entities.AuditInterview;
 import ua.netcrackerteam.DAO.Entities.UserList;

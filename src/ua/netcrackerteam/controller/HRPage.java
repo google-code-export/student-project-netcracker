@@ -5,6 +5,7 @@ import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
+import ua.netcrackerteam.controller.bean.*;
 import ua.netcrackerteam.controller.exceptions.HRException;
 
 import java.text.Format;

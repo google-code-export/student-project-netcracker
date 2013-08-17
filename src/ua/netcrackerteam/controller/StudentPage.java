@@ -6,6 +6,7 @@ import ua.netcrackerteam.DAO.*;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
+import ua.netcrackerteam.controller.bean.StudentData;
 
 import javax.imageio.ImageIO;
 import javax.interceptor.Interceptors;

@@ -11,7 +11,7 @@ import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.DAO.Entities.AuditInterview;
 import ua.netcrackerteam.controller.GeneralController;
-import ua.netcrackerteam.controller.UsersData;
+import ua.netcrackerteam.controller.bean.UsersData;
 
 /**
  * @author krygin
