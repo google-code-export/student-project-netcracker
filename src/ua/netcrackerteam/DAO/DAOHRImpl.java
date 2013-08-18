@@ -101,6 +101,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return selectedForms;
     }
+    
+    public Long getAllRegisteredFormsCount() {
+        String query                = "";
+        beginTransaction();
+        query = "select count(*) from Form where status = 1 and interview is not null";
+        Long count = executeSingleGetQuery(query);
+        commitTransaction();
+        return count;
+    }
 
     public List<HrTempInfo> getHrTempInfo() {
         String query                = "";
@@ -183,6 +192,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return listOfForms;
     }
+    
+    public Long getNonVerificatedFormsCount() {
+        String queryForm        = "";
+        beginTransaction();
+        queryForm = "select count(*) from Form where id_status is 5";
+        Long count = executeSingleGetQuery(queryForm);
+        commitTransaction();
+        return count;
+    }
 
     public List<Form> getBlanksWithoutInterview() {
         String queryForm        = "";
@@ -192,6 +210,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfForms = super.<Form>executeListGetQuery(queryForm);
         commitTransaction();
         return listOfForms;
+    }
+    
+    public Long getBlanksWithoutInterviewCount() {
+        String queryForm        = "";
+        beginTransaction();
+        queryForm = "select count(*) from Form where interview is null";
+        Long count = executeSingleGetQuery(queryForm);
+        commitTransaction();
+        return count;
     }
 
     @Override
@@ -627,19 +654,3 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         return diffList;
     }
 }
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
- 
-

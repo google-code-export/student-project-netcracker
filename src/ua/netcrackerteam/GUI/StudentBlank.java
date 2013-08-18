@@ -20,6 +20,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.themes.Reindeer;
+
 import ua.netcrackerteam.DAO.Entities.Cathedra;
 import ua.netcrackerteam.DAO.Entities.Faculty;
 import ua.netcrackerteam.DAO.Entities.Institute;
@@ -36,6 +37,7 @@ import java.util.*;
  *
  * @author akush_000
  */
+@SuppressWarnings("serial")
 public class StudentBlank extends VerticalLayout implements FieldEvents.BlurListener, Upload.SucceededListener,
                                    Upload.Receiver, Upload.StartedListener {
     private String username;
@@ -67,6 +69,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private StudentData stData;
     private final BeanItem<StudentData> bean;
     private static final List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
+    
+    private boolean isInEditMode = false;
     
     private ComboBox universities;
     private ComboBox faculties;
@@ -772,6 +776,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             saveEdit.setCaption("Сохранить");
         } else {
             saveEdit.setCaption("Редактировать");
+            isInEditMode = true;
             hlayout.addComponent(navigateToInterview);
         }
     }
@@ -981,9 +986,13 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                             stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
                             setEditable(false);
                             ua.netcrackerteam.controller.StudentPage.addNewForm(stData, username, status, editorName);
-                            hlayout.addComponent(navigateToInterview);
-                            confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
-                            getWindow().addWindow(confirmationToInterviewTime);
+                            if (!isInEditMode) { 
+                            	hlayout.addComponent(navigateToInterview);
+                            	confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
+                            	getWindow().addWindow(confirmationToInterviewTime);
+                            }
+                            Window currentWindow = getWindow();
+                            getWindow().getParent().removeWindow(currentWindow);
                         } else {
                             Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                             n.setDescription("Поля, отмеченные *, a также фото, обязательны для заполнения.");
