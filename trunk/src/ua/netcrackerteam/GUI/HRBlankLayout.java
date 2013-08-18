@@ -135,9 +135,9 @@ public class HRBlankLayout extends HorizontalSplitPanel {
 			searchCriteria.addItem(currCategory);
 		}
 		
-		int formCount = HRPage.getCountOfAllForms();
-		int notAppliedCount = HRPage.getCountOfBlankWithoutInterview();
-		int notVerificatedCount = HRPage.getCountOfNonVerificatedForms();
+		Long formCount = HRPage.getCountOfAllForms();
+		Long notAppliedCount = HRPage.getCountOfBlankWithoutInterview();
+		Long notVerificatedCount = HRPage.getCountOfNonVerificatedForms();
 		
 		String allFormsTitle = "Все записанные(" + String.valueOf(formCount) + ")";
 		String notAppliedFormsTitle = "Не записанные(" + String.valueOf(notAppliedCount) + ")";

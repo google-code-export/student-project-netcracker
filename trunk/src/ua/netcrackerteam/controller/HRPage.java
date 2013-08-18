@@ -70,22 +70,16 @@ public class HRPage {
         return studentList;
     }
 
-    public static int getCountOfAllForms() {
-        int count = 0;
-        count = new DAOHRImpl().getAllRegisteredForms().size();
-        return count;
+    public static Long getCountOfAllForms() {
+        return new DAOHRImpl().getAllRegisteredFormsCount();
     }
 
-    public static int getCountOfNonVerificatedForms() {
-        int count = 0;
-        count = new DAOHRImpl().getNonVerificatedForms().size();
-        return count;
+    public static Long getCountOfNonVerificatedForms() {
+        return new DAOHRImpl().getNonVerificatedFormsCount();
     }
 
-    public static int getCountOfBlankWithoutInterview() {
-        int count = 0;
-        count = new DAOHRImpl().getBlanksWithoutInterview().size();
-        return count;
+    public static Long getCountOfBlankWithoutInterview() {
+        return new DAOHRImpl().getBlanksWithoutInterviewCount();
     }
 
     public static List<StudentDataShort> getBlankWithoutInterview() {

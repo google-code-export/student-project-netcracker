@@ -4,11 +4,14 @@
  */
 package ua.netcrackerteam.controller.bean;
 
+import java.io.Serializable;
+
 /**
  *
  * @author akush_000
  */
-public class StudentDataShort {
+@SuppressWarnings("serial")
+public class StudentDataShort implements Serializable{
     private int idForm;
     private String studentLastName = "";
     private String studentFirstName = "";
