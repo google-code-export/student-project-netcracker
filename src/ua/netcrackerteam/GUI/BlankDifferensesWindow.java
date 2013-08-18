@@ -19,14 +19,13 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 @SuppressWarnings("serial")
-public class BlankDifferensesWindow extends Window implements Button.ClickListener {
+public class BlankDifferensesWindow extends Window {
     private Integer formId;
     private DifferenceDataTable table;
     private List<DifferenceData> currUserDiffData = null;
     private int height;
     HorizontalLayout buttonsLayout;
     VerticalLayout tableLayout;
-    Button exitButton;
 
     public BlankDifferensesWindow(MainPage mainPage, Integer formID) {
         this.formId = formID;
@@ -45,25 +44,10 @@ public class BlankDifferensesWindow extends Window implements Button.ClickListen
         tableLayout = new VerticalLayout();
         addComponent(tableLayout);
 
-        exitButton = new Button("Exit");
-        exitButton.setVisible(true);
-        exitButton.setIcon(new ThemeResource("icons/32/exit.png"));
-        buttonsLayout.addComponent(exitButton);
-        exitButton.addListener(this);
-
         currUserDiffData = HRPage.getDifferencesOfBlanks(this.formId);
 
         table = new DifferenceDataTable(new BeanItemContainer<DifferenceData>(DifferenceData.class, currUserDiffData));
         tableLayout.addComponent(table);
-    }
-
-
-    @Override
-    public void buttonClick(Button.ClickEvent event) {
-        Button source = event.getButton();
-        if (source == exitButton) {
-            BlankDifferensesWindow.this.close();
-        }
     }
 
     private class DifferenceDataTable extends Table {

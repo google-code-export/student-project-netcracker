@@ -9,9 +9,9 @@ import java.util.List;
 
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.controller.HRPage;
+import ua.netcrackerteam.controller.StudentPage;
 import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
-import ua.netcrackerteam.controller.StudentPage;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import com.vaadin.data.Property;
@@ -26,7 +26,6 @@ import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
@@ -34,7 +33,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
