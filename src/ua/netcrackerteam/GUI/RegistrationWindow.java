@@ -4,6 +4,8 @@
  */
 package ua.netcrackerteam.GUI;
 
+import java.sql.SQLException;
+
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -11,7 +13,9 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+
 import org.apache.commons.mail.EmailException;
+
 import ua.netcrackerteam.controller.GeneralController;
 import ua.netcrackerteam.controller.SendMails;
 
@@ -19,6 +23,7 @@ import ua.netcrackerteam.controller.SendMails;
  *
  * @author akush_000
  */
+@SuppressWarnings("serial")
 class RegistrationWindow extends Window implements FieldEvents.BlurListener{
     CaptchaField captchaField;
     TextField captchaInput;
@@ -85,7 +90,10 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener{
         captchaInput.setRequired(true);
         captchaInput.addValidator(new AbstractValidator("Текст введен неверно.") {
             public boolean isValid(Object value) {
-                return captchaField.validateCaptcha((String)captchaInput.getValue());
+            	if (value != null && captchaInput.getValue() != null)
+            		return captchaField.validateCaptcha((String)captchaInput.getValue());
+            	else
+            		return false;
             }
         });
         Button okBut = new Button("Регистрация");
@@ -105,7 +113,16 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener{
             String userName = String.valueOf(this.getUsername());
             String userPassword = String.valueOf(this.getPassword());
             String userEmail = String.valueOf(this.getEmail());
-            GeneralController.setUsualUser(userName, userPassword, userEmail);
+            try {
+            	GeneralController.setUsualUser(userName, userPassword, userEmail);
+            } catch (SQLException e) {
+                Notification n = new Notification("Ошибка", Notification.TYPE_TRAY_NOTIFICATION);
+                n.setDescription("Такой пользователь уже существует");
+                n.setPosition(Notification.POSITION_CENTERED);
+                mainPage.getMainWindow().showNotification(n);
+                return;
+            }
+            
             Notification n = new Notification("Регистрация завершена успешно!", Notification.TYPE_TRAY_NOTIFICATION);
             n.setDescription("На ваш email выслано письмо с регистрационными данными.\n" +
                     "Теперы Вы можете зайти под своим логином.");
@@ -116,16 +133,14 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener{
                 e.printStackTrace();
             }
             mainPage.getMainWindow().showNotification(n);
-            RegistrationWindow.this.close();
+            close();
         }
     }
     
     private boolean isValid() {
-        if(email.isValid() && password.isValid() && password2.isValid() && captchaInput.isValid() && username.isValid()) {
-            return true;
-        }
+        boolean result =  (email.isValid() && password.isValid() && password2.isValid() && username.isValid());
         captchaField.validateCaptcha("");
-        return false;
+        return result;
     }
 
     public void blur(BlurEvent event) {

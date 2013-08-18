@@ -115,7 +115,7 @@ public class GeneralController implements Logable {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public static void setUsualUser(String userName, String userPassword, String userEmail){
+    public static void setUsualUser (String userName, String userPassword, String userEmail) throws SQLException {
         String active = "active";
         int idUserCategory = 4;
         String hashPassword = passwordHashing(userPassword);
@@ -124,6 +124,7 @@ public class GeneralController implements Logable {
         } catch (SQLException e) {
             e.printStackTrace();
             logger.getLog().error(e);
+            throw new SQLException();
         }
     }
 

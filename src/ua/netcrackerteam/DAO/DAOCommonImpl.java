@@ -40,7 +40,8 @@ public class DAOCommonImpl implements DAOCommon{
             session.save(userList);
             transaction.commit();
         } catch (Exception e) {
-            System.out.println(e);
+            //Propagate instead of handling
+        	throw new SQLException();
         } finally {
             if (session != null && session.isOpen()) {
                 session.close();
