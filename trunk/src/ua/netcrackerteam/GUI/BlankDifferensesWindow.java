@@ -18,6 +18,7 @@ import java.util.List;
  * Time: 5:55
  * To change this template use File | Settings | File Templates.
  */
+@SuppressWarnings("serial")
 public class BlankDifferensesWindow extends Window implements Button.ClickListener {
     private Integer formId;
     private DifferenceDataTable table;
@@ -52,7 +53,7 @@ public class BlankDifferensesWindow extends Window implements Button.ClickListen
 
         currUserDiffData = HRPage.getDifferencesOfBlanks(this.formId);
 
-        table = new DifferenceDataTable(new BeanItemContainer(DifferenceData.class, currUserDiffData));
+        table = new DifferenceDataTable(new BeanItemContainer<DifferenceData>(DifferenceData.class, currUserDiffData));
         tableLayout.addComponent(table);
     }
 
