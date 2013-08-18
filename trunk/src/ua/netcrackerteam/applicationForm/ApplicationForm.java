@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.StudentPage;
@@ -33,16 +34,13 @@ public class ApplicationForm{
     private String path = ClassPath.getInstance().getWebInfPath();
     
     private StudentData studentData;
-    Interview interview;
     
     public ApplicationForm(int idForm){
-        studentData = StudentPage.getStudentDataByIdForm(idForm);
-        interview = (HibernateFactory.getInstance().getStudentDAO().getFormByFormId(idForm)).getInterview();
+        studentData = StudentPage.getStudentDataByIdForm(idForm);        
     }
     
     public ApplicationForm(String userName){
-      studentData = StudentPage.getStudentDataByUserName(userName);
-      interview = (HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName)).getInterview();
+        studentData = StudentPage.getStudentDataByUserName(userName);
     }
   
     /**
@@ -82,6 +80,8 @@ public class ApplicationForm{
     
     private String getDateInterview(){
     	
+    	Interview interview = HibernateFactory.getInstance().getStudentDAO().getFormByFormId(studentData.getIdForm()).getInterview();
+        	
     	if(interview == null){
     		return "";
     	}
@@ -90,9 +90,15 @@ public class ApplicationForm{
     	    
          DateFormatSymbols dfs = new DateFormatSymbols(new Locale("ru"));
          dfs.setMonths(months);
-         SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM", dfs);
+         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMMM", dfs);
+         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
        
-        return sdf.format(interview.getStartDate());
+         StringBuilder sb = new StringBuilder();
+         sb.append(dateFormatter.format(interview.getStartDate()));
+         sb.append(" ");
+         sb.append(timeFormatter.format(interview.getStartDate()));
+         
+         return sb.toString();
     }
     
     /**
