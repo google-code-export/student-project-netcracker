@@ -7,7 +7,10 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
+
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
+import ua.netcrackerteam.applicationForm.Letter;
+import ua.netcrackerteam.applicationForm.LetterPDF;
 import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
@@ -111,8 +114,9 @@ class InterviewLayout extends VerticalLayout {
                                     Button.ClickListener() {
                                         @Override
                                         public void buttonClick(Button.ClickEvent clickEvent) {
-                                            CreateLetterWithPDF letter = new CreateLetterWithPDF(username);
-                                            letter.sendPDFToStudent();
+                                        	Letter letter = new LetterPDF(username);
+                                            CreateLetterWithPDF sender = new CreateLetterWithPDF(username, letter);
+                                            sender.sendPDFToStudent();
                                         }
                                     });
     }
