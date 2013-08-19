@@ -43,7 +43,14 @@
 	padding-left: 100px;
 }
 
+.v-textfield-error {
+    border-color: red;
+    background: #FFDFDF;
+}
 
+.v-label-errorLable{
+    color: red;
+}
 
 
 

@@ -92,6 +92,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
             regWindow.addListener(new Window.CloseListener() {
                 public void windowClose(CloseEvent e) {
                     addRegListener();
+                    regWindow = null;
                 }
             });
         }

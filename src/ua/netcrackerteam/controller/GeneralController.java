@@ -115,7 +115,7 @@ public class GeneralController implements Logable {
     }
 
     @Interceptors(ShowHibernateSQLInterceptor.class)
-    public static void setUsualUser (String userName, String userPassword, String userEmail) throws SQLException {
+    public static void setUsualUser (String userName, String userPassword, String userEmail) throws SQLException{
         String active = "active";
         int idUserCategory = 4;
         String hashPassword = passwordHashing(userPassword);
@@ -176,15 +176,27 @@ public class GeneralController implements Logable {
         HibernateFactory.getInstance().getAdminDAO().activeChangeUserByName(userName, "active");
     }
 
-    public static boolean checkUsersAvailability(String userName, String userPassword){
+    public static boolean checkUsersAvailability(String userName, String userPassword) throws SQLException{
         String hashedPassword = passwordHashing(userPassword);
-        boolean checkLogin = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName, hashedPassword);
-        return checkLogin;
+        try{
+            return HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName, hashedPassword);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+            throw new SQLException();
+        }
     }
 
-    public static boolean checkUsersAvailability(String userName){
-        //boolean checkUsers = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName);
-        return true;
+    public static boolean checkUsersAvailability(String userName) throws SQLException{
+        try{
+            boolean checkUsers = HibernateFactory.getInstance().getAdminDAO().checkUserAvailability(userName);
+            return checkUsers;
+        } catch (SQLException e){
+            e.printStackTrace();
+            logger.getLog().error(e);
+            throw new SQLException();
+        }
+
     }
 
     public static boolean checkUserBan(String userName) {
@@ -284,6 +296,8 @@ public class GeneralController implements Logable {
                 HibernateFactory.getInstance().getAdminDAO().addAudit(auditInterview);
             }
         } catch (NullPointerException e){
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
