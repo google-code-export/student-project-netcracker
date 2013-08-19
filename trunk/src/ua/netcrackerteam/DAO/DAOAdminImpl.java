@@ -29,19 +29,44 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     }
 
     @Override
-    public boolean checkUserAvailability(String userName, String userPassword){
-        beginTransaction();
-        List listOfParam = new ArrayList();
-        listOfParam.add(userName);
-        listOfParam.add(userPassword);
-        String checkUserAvailabilityQuery = "from UserList where userName = :param0 and password = :param1";
-        List<UserList> userList = super.<UserList>executeListGetQuery(checkUserAvailabilityQuery, listOfParam);
-        commitTransaction();
-        if (userList.isEmpty()){
-            return false;
-        }else {
-            return true;
+    public boolean checkUserAvailability(String userName, String userPassword) throws SQLException{
+        try{
+            beginTransaction();
+            List listOfParam = new ArrayList();
+            listOfParam.add(userName);
+            listOfParam.add(userPassword);
+            String checkUserAvailabilityQuery = "from UserList where userName = :param0 and password = :param1";
+            List<UserList> userList = super.<UserList>executeListGetQuery(checkUserAvailabilityQuery, listOfParam);
+            commitTransaction();
+            if (userList.isEmpty()){
+                return false;
+            }else {
+                return true;
+            }
+        }  catch (Exception e){
+                throw new SQLException();
         }
+
+    }
+
+    @Override
+    public boolean checkUserAvailability(String userName) throws SQLException{
+        try{
+            beginTransaction();
+            List listOfParam = new ArrayList();
+            listOfParam.add(userName);
+            String checkUserAvailabilityQuery = "from UserList where userName = :param0";
+            List<UserList> userList = super.<UserList>executeListGetQuery(checkUserAvailabilityQuery, listOfParam);
+            commitTransaction();
+            if (userList.isEmpty()){
+                return false;
+            }else {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new SQLException();
+        }
+
     }
 
     @Override

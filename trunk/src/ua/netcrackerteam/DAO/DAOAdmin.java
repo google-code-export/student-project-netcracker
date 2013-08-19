@@ -54,5 +54,7 @@ public interface DAOAdmin {
 
     void deleteUserByName(String userName);
 
-    boolean checkUserAvailability(String userName, String userPassword);
+    boolean checkUserAvailability(String userName, String userPassword) throws SQLException;
+
+    boolean checkUserAvailability(String userName) throws SQLException;
 }

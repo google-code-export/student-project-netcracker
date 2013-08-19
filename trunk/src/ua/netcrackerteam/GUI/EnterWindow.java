@@ -11,7 +11,11 @@ import com.vaadin.ui.Window;
 import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.controller.GeneralController;
 
-import java.util.Date;
+import java.sql.SQLException;
+
+import static ua.netcrackerteam.validation.SystemMessages.LOGIN_ERROR;
+import static ua.netcrackerteam.validation.SystemMessages.RUNTIME_ERROR;
+import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
 
 /**
  * Login form
@@ -23,6 +27,7 @@ class EnterWindow extends Window implements Logable {
     private int mode = MODE_GUEST;
     private String userName;
     private String userPassword;
+    private Notification error;
 
     public EnterWindow(final MainPage mainPage) {
         setModal(true);
@@ -47,23 +52,31 @@ class EnterWindow extends Window implements Logable {
             public void onLogin(LoginForm.LoginEvent event) {
                 userName = event.getLoginParameter("username");
                 userPassword = event.getLoginParameter("password");
-                if(GeneralController.checkUsersAvailability(userName, userPassword)){
-                    if(GeneralController.checkUserBan(userName)){
-                        //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
-                        getWindow().showNotification("Вы забанены ! Уважаемый, " + userName + ", Вы были забанены. \n" +
-                                "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
+                try {
+                    if(GeneralController.checkUsersAvailability(userName, userPassword)){
+                        if(GeneralController.checkUserBan(userName)){
+                            //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                            getWindow().showNotification("Вы забанены ! Уважаемый, " + userName + ", Вы были забанены. \n" +
+                                    "По данному вопросу обращайтесь к Администратору.", Notification.TYPE_TRAY_NOTIFICATION);
+                        } else {
+                            //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
+                            mode = GeneralController.checkLogin(userName, event.getLoginParameter("password"));
+                            mainPage.changeMode(mode, userName);
+                            loginForm.removeListener(this);
+                            EnterWindow.this.close();
+                        }
                     } else {
                         //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
-                        mode = GeneralController.checkLogin(userName, event.getLoginParameter("password"));
-                        mainPage.changeMode(mode, userName);
-                        loginForm.removeListener(this);
-                        EnterWindow.this.close();
+                        getWindow().showNotification(LOGIN_ERROR.getNotification());
                     }
-                } else {
-                    //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
-                    Notification error = new Notification("Логин и/или пароль не верны!",Notification.TYPE_TRAY_NOTIFICATION);
-                    getWindow().showNotification(error);
+                } catch(SQLException e){
+                    mainPage.getMainWindow().showNotification(SQL_CONNECTION_ERROR.getNotification());
+                    return;
+                } catch(RuntimeException e){
+                    mainPage.getMainWindow().showNotification(RUNTIME_ERROR.getNotification());
+                    return;
                 }
+
             }
         });
     }
