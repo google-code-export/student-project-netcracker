@@ -22,6 +22,7 @@ import java.util.*;
 public class HRPage {
 
     private static int ID_NULL_INTERVIEW = 1;
+    private DAOHRImpl dao = new DAOHRImpl();
 
     public static byte[] getPdfForView(int formID) {
         return new ApplicationForm(formID).generateFormPDF();
@@ -171,7 +172,7 @@ public class HRPage {
     /*
      * Anna
      */
-    public static List<HRInterview> getInterviewsList() {
+    public List<HRInterview> getInterviewsList() {
         List<HRInterview> intervList = new ArrayList<HRInterview>();
         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
         for(Interview interview : interviews) {
@@ -201,21 +202,17 @@ public class HRPage {
                 intervList.add(hrInterview);
             }
         }
+        Collections.sort(intervList, new CustomComparator());
         return intervList;
     }
-    
-    public static int getRecommendedStudentsNum(Date start, Date end, int duration, int intervCount) {
-        Calendar calStart = Calendar.getInstance();
-        calStart.setTime(start);
-        Calendar calEnd = Calendar.getInstance();
-        calEnd.setTime(end);
-        long diff = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
-        long seconds = diff / 1000;
-        long minutes = seconds / 60;
-        double num = minutes/duration*intervCount;
-        return (int) Math.round(num);
+
+    public class CustomComparator implements Comparator<HRInterview> {
+        @Override
+        public int compare(HRInterview o1, HRInterview o2) {
+            return o1.getDate().compareTo(o2.getDate());
+        }
     }
-    
+
     public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents) {
         Interview interview = new Interview();
         interview.setEndDate(end);
@@ -224,8 +221,32 @@ public class HRPage {
         interview.setMaxNumber(maxStudents);
         new DAOHRImpl().addNewInterview(interview);
     }
+
+    private Date addMinutesToDate(Date date, int minutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, minutes);
+        return cal.getTime();
+    }
+
+    public void saveNewInterviews(Date startDate, Date endDate, int intervNum, int maxStudents, int oneDuration) {
+        Date currentEndDate = addMinutesToDate(startDate,oneDuration);
+        Date currentStartDate = startDate;
+        while(currentEndDate.before(endDate)) {
+            Interview interview = new Interview();
+            interview.setEndDate(currentEndDate);
+            interview.setStartDate(currentStartDate);
+            interview.setInterviwerNumber(intervNum);
+            interview.setMaxNumber(maxStudents);
+            dao.addNewInterview(interview);
+            currentStartDate = currentEndDate;
+            currentEndDate = addMinutesToDate(currentStartDate,oneDuration);
+        }
+    }
+
+
     
-    public static void deleteInterview(int idInterview, int idReserveInterview) throws HRException{
+    public void deleteInterview(int idInterview, int idReserveInterview) throws HRException{
         if (ID_NULL_INTERVIEW!= idReserveInterview) {
             new DAOHRImpl().deleteInterview(idInterview);
         }else {

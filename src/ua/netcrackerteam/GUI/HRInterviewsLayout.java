@@ -22,9 +22,7 @@ import ua.netcrackerteam.controller.exceptions.HRException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,6 +37,7 @@ public class HRInterviewsLayout extends VerticalLayout {
     private final int screenHeight;
     private InterviewsTable table;
     private boolean editable = false;
+    private HRPage controller = new HRPage();
 
     private BottomLayout bottomLayout;
 
@@ -140,7 +139,7 @@ public class HRInterviewsLayout extends VerticalLayout {
          confirm.setWidth("20%");
          confirm.setResizable(false);
          confirm.center();
-         confirm.addComponent(new Label("Вы уверены что хотите удалить собеседование?"));
+         confirm.addComponent(new Label("Вы уверены что хотите удалить собеседование(я)?"));
          HorizontalLayout layout = new HorizontalLayout();
          Button ok = new Button("ОК");
          ok.setWidth("100");
@@ -148,11 +147,13 @@ public class HRInterviewsLayout extends VerticalLayout {
 
             @Override
             public void buttonClick(ClickEvent event) {
-                HRInterview interview = (HRInterview) table.getValue();
-                try {
-                    HRPage.deleteInterview(interview.getId(), interview.getReserve());
-                }catch (HRException hrE) {
-                    getWindow().showNotification(hrE.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+                Set<HRInterview> interviews = (Set<HRInterview>) table.getValue();
+                for(HRInterview interview: interviews) {
+                    try {
+                        controller.deleteInterview(interview.getId(), interview.getReserve());
+                    }catch (HRException hrE) {
+                        getWindow().showNotification(hrE.getMessage(), Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    }
                 }
                 refreshTable();
                 getWindow().removeWindow(confirm);
@@ -174,16 +175,23 @@ public class HRInterviewsLayout extends VerticalLayout {
     }
     
     private void editInterview() {
-        BottomLayout old = bottomLayout;
-        bottomLayout = new BottomLayout();
-        HRInterview interview = (HRInterview) table.getValue();
-        bottomLayout.setDate(interview.getDate());
-        bottomLayout.setStartTime(interview.getStartTime());
-        bottomLayout.setEndTime(interview.getEndTime());
-        bottomLayout.setIntervCount(interview.getInterviewersNum());
-        bottomLayout.setPositionsCount(interview.getPositionNum());
-        bottomLayout.setReserve(interview.getReserve());
-        rightPanel.replaceComponent(old, bottomLayout);
+        Set<HRInterview> interviews = (Set<HRInterview>) table.getValue();
+        if(interviews.size()==1)  {
+            BottomLayout old = bottomLayout;
+            bottomLayout = new BottomLayout();
+            HRInterview interview = interviews.iterator().next();
+            bottomLayout.setDate(interview.getDate());
+            bottomLayout.setStartTime(interview.getStartTime());
+            bottomLayout.setEndTime(interview.getEndTime());
+            bottomLayout.setIntervCount(interview.getInterviewersNum());
+            bottomLayout.setPositionsCount(interview.getPositionNum());
+            bottomLayout.duration.setRequired(false);
+            bottomLayout.duration.setReadOnly(true);
+            bottomLayout.setReserve(interview.getReserve());
+            rightPanel.replaceComponent(old, bottomLayout);
+        } else {
+            getWindow().showNotification("Выберите только одно собеседование из списка!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+        }
     }
     
     private void refreshTable() {
@@ -211,13 +219,14 @@ public class HRInterviewsLayout extends VerticalLayout {
         
         private InterviewsTable() {
             super();
-            List<HRInterview> interviews = HRPage.getInterviewsList();
+            List<HRInterview> interviews = controller.getInterviewsList();
             BeanItemContainer<HRInterview> bean = new BeanItemContainer<HRInterview>(HRInterview.class, interviews);
             setContainerDataSource(bean);
             setWidth("100%");
             setHeight(screenHeight-300,UNITS_PIXELS);
             setSelectable(true);
             setImmediate(true);
+            setMultiSelect(true);
             setColumnReorderingAllowed(true);
             setColumnCollapsingAllowed(true);
             setVisibleColumns(NATURAL_COL_ORDER);
@@ -225,7 +234,7 @@ public class HRInterviewsLayout extends VerticalLayout {
         }
     }
     
-    private class TimeSelection extends GridLayout implements Property.ValueChangeListener{
+    private class TimeSelection extends GridLayout{
         private final NativeSelect hours;
         private final NativeSelect minutes;
 
@@ -256,8 +265,6 @@ public class HRInterviewsLayout extends VerticalLayout {
             addComponent(hours,0,1);
             addComponent(new Label(": "),1,1);
             addComponent(minutes,2,1);
-            minutes.addListener(this);
-            hours.addListener(this);
         }
 
         public Date getDate(Date day) throws ParseException {
@@ -274,13 +281,9 @@ public class HRInterviewsLayout extends VerticalLayout {
             minutes.setValue(strTime.substring(index+1));
         }
 
-        @Override
-        public void valueChange(ValueChangeEvent event) {
-            bottomLayout.setRecommendedStNum();
-        }
     }
     
-    private class BottomLayout extends GridLayout implements FieldEvents.BlurListener{
+    private class BottomLayout extends GridLayout{
         private TextField positionNum;
         private TextField intervNum;
         private TextField duration;
@@ -318,19 +321,17 @@ public class HRInterviewsLayout extends VerticalLayout {
             intervNum = new TextField("Количество интервьюеров");
             intervNum.setWidth("150");
             intervNum.setRequired(true);
-            intervNum.addListener(this);
             intervNum.addValidator(new IntegerValidator("Ошибка! Введите число"));
             addComponent(intervNum,0,1);
 
             duration = new TextField("Длительность 1го (мин)");
             duration.setWidth("150");
-            duration.addListener(this);
+            duration.setRequired(true);
             duration.addValidator(new IntegerValidator("Ошибка! Введите число"));
             addComponent(duration,1,1);
 
             positionNum = new TextField("Количество студентов");
             positionNum.setWidth("150");
-            positionNum.setInputPrompt("Рекомендуемое: ?");
             positionNum.setRequired(true);
             positionNum.addValidator(new IntegerValidator("Ошибка! Введите число"));
             addComponent(positionNum,2,1);
@@ -346,19 +347,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             });
             addComponent(saveEdit,1,3);
         }
-        
-        @Override
-        public void blur(BlurEvent event) {
-            setRecommendedStNum();
-        }
-        
-        public boolean isValid() {
-            if(intervNum.isValid() && duration.isValid() && !duration.getValue().equals("")) {
-                return true;
-            }
-            return false;
-        }
-        
+
         public boolean isValidForSave() {
             try {
                 if(intervNum.isValid() && duration.isValid() && positionNum.isValid() ) {
@@ -383,40 +372,20 @@ public class HRInterviewsLayout extends VerticalLayout {
             
         }
         
-        public void setRecommendedStNum() {
-            if(bottomLayout.isValid()) {
-                try {
-                    Date start = startTime.getDate((Date) date.getValue());
-                    Date end = endTime.getDate((Date) date.getValue());
-                    int dur = Integer.parseInt(duration.getValue().toString());
-                    int intNum = Integer.parseInt(intervNum.getValue().toString());
-                    int recNum = HRPage.getRecommendedStudentsNum(start, end, dur, intNum);
-                    if(recNum < 0) {
-                        getWindow().showNotification("Время начала не может быть меньше времени окончания!",
-                                Window.Notification.TYPE_TRAY_NOTIFICATION);
-                        positionNum.setInputPrompt("Рекомендуемое: ?");
-                    } else {
-                        positionNum.setInputPrompt("Рекомендуемое: "+recNum);
-                    }
-                } catch (ParseException ex) {
-                    Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
         private void saveInterview() {
             if(isValidForSave()) {
                 try {
                     Date start = startTime.getDate((Date) date.getValue());
                     Date end = endTime.getDate((Date) date.getValue());
+                    int oneDuration = Integer.parseInt(duration.getValue().toString());
                     int intNum = Integer.parseInt(intervNum.getValue().toString());
                     int posNum = Integer.parseInt(positionNum.getValue().toString());
                     if(!editable) {
-                        HRPage.saveNewInterview(start, end, intNum, posNum);
+                        controller.saveNewInterviews(start, end, intNum, posNum, oneDuration);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     } else {
                         HRInterview interview = (HRInterview) table.getValue();
-                        HRPage.editInterview(interview.getId(), start, end, intNum, posNum);
+                        controller.editInterview(interview.getId(), start, end, intNum, posNum);
                         getWindow().showNotification("Собеседование успешно изменено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
                     setVisible(false);
