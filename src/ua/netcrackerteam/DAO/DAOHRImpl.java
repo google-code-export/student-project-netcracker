@@ -51,15 +51,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         List listOfParams = new ArrayList();
         listOfParams.add(selectedFormID);
         listOfParams.add(userNameHR);
-        query = "from InterviewRes where form = :param0 and user.userName = :param1";
+        query = "from InterviewRes where form.formId = :param0 and user.userName = :param1";
         currInterviewResult = super.<InterviewRes>executeSingleGetQuery(query, listOfParams);
         listOfParams.clear();
         if (currInterviewResult != null) {
             currInterviewResult.setScore(insertedMark);
+            super.saveUpdatedObject(currInterviewResult);
         }
         else {
             currInterviewResult = new InterviewRes();
-            listOfParams.add(selectedFormID);
             listOfParams.add(selectedFormID);
             query = "from Form where to_char(idForm) = to_char(:param0)";
             currFormForInsertResults = super.<Form>executeSingleGetQuery(query, listOfParams);
@@ -421,8 +421,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         List listOfParams       = new ArrayList();
         beginTransaction();
         listOfParams.add(interviewId);
-        query = "from Form where to_char(interview.idInterview) = to_char(:param0)";
-        List<Form> listOfForms = super.<Form>executeListGetQuery(query, listOfParams);
+        query = "from Form where to_char(interview) = to_char(:param0)";
+        List<Form> listOfForms = super.<Form>executeListGetSQLQuery(query, listOfParams);
         query = "from Interview where reserve = 1";
         Interview nullInterview = super.<Interview>executeSingleGetQuery(query);
         for(Form currForm:listOfForms) {
