@@ -89,7 +89,9 @@ public class InterviewerPage {
     
     public static void sendLetterToStudentWithFormToReservInterview(){   
     	
-         List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsToReservInterview();  
+         List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsToReservInterview();
+         if(forms == null){
+        	 return;}
          Iterator<Form> iterator = forms.iterator();
          while(iterator.hasNext()){
         	 Form form = iterator.next();

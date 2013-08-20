@@ -378,6 +378,9 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
 		    List<Form> forms = null;
 	        beginTransaction();
 	        Interview reservInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
+	        if(reservInterview == null){
+	        	return null;
+	        }
 	        String query = "from Form where id_status = 1 and id_interview = " + reservInterview.getIdInterview();
 	        forms = super.<Form>executeListGetQuery(query);
 	        commitTransaction();
