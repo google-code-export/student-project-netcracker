@@ -19,6 +19,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
+import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Reindeer;
 
 import ua.netcrackerteam.DAO.Entities.Cathedra;
@@ -198,7 +199,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         newFaculty = new TextField("Ваш факультет",(Property) bean.getItemProperty("studentOtherFaculty"));
         
         List<Institute>insts = StudentPage.getUniversityList();
-        BeanItemContainer<Institute> objects = new BeanItemContainer(Institute.class, insts);
+        BeanItemContainer<Institute> objects = new BeanItemContainer<Institute>(Institute.class, insts);
         universities = new ComboBox("ВУЗ",objects);
         universities.setPropertyDataSource((Property) bean.getItemProperty("studentInstitute"));
         universities.setItemCaptionPropertyId("name");
@@ -851,7 +852,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     public void uploadStarted(StartedEvent event) {
         if (maxSize < event.getContentLength()) {
             photoUpload.interruptUpload();
-            getWindow().showNotification("Недопустимый размер! Максимум 300Kb",Window.Notification.TYPE_TRAY_NOTIFICATION);
+            getWindow().showNotification("Недопустимый размер! Максимум 300Kb",Notification.TYPE_TRAY_NOTIFICATION);
             return;
         }
         String filename = event.getFilename();
@@ -864,7 +865,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         else {
             photoUpload.interruptUpload();
-            getWindow().showNotification("Файл не является изображением! Допустимые форматы: JPEG",Window.Notification.TYPE_TRAY_NOTIFICATION);
+            getWindow().showNotification("Файл не является изображением! Допустимые форматы: JPEG",Notification.TYPE_TRAY_NOTIFICATION);
         }
     }
    
@@ -963,21 +964,21 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         addNewContact();
                     }
                     else {
-                        getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество контактов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
+                        getWindow().showNotification(new Notification("Вы добавили максимальное количество контактов.",Notification.TYPE_TRAY_NOTIFICATION));
                     }
                 } else if(source == addPrLangBut) {
                     if(programLangList == null || programLangList.size()<3) {
                         addProgrammingLanguage();
                     }
                     else {
-                        getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество языков.",Window.Notification.TYPE_TRAY_NOTIFICATION));
+                        getWindow().showNotification(new Notification("Вы добавили максимальное количество языков.",Notification.TYPE_TRAY_NOTIFICATION));
                     }                    
                 } else if (source == addKnowlegeBut) {
                     if(knowlegesList == null || knowlegesList.size()<3) {
                         addKnowlege();
                     }
                     else {
-                        getWindow().showNotification(new Window.Notification("Вы добавили максимальное количество разделов.",Window.Notification.TYPE_TRAY_NOTIFICATION));
+                        getWindow().showNotification(new Notification("Вы добавили максимальное количество разделов.",Notification.TYPE_TRAY_NOTIFICATION));
                     }
                 } else if(source == navigateToInterview) {
                     pageTabs = mainPage.getPanel().getTabSheet();
@@ -989,16 +990,18 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                             //stData.setStudentInterestOther((String)anotherWorkSphere.getValue());
                             //stData.setStudentWorkTypeOther((String)anotherWorkType.getValue());
                             setEditable(false);
-                            ua.netcrackerteam.controller.StudentPage.addNewForm(stData, username, status, editorName);
+                            StudentPage.addNewForm(stData, username, status, editorName);
                             if (!isInEditMode) { 
                             	hlayout.addComponent(navigateToInterview);
                             	confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
                             	getWindow().addWindow(confirmationToInterviewTime);
                             }
-                            Window currentWindow = getWindow();
-                            getWindow().getParent().removeWindow(currentWindow);
+                            if (getWindow().getParent() != null) {
+                            	Window currentWindow = getWindow();
+                            	getWindow().getParent().removeWindow(currentWindow);
+                            }
                         } else {
-                            Window.Notification n = new Window.Notification("Проверьте правильность заполнения полей!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                            Notification n = new Notification("Проверьте правильность заполнения полей!", Notification.TYPE_TRAY_NOTIFICATION);
                             n.setDescription("Поля, отмеченные *, a также фото, обязательны для заполнения.");
                             getWindow().showNotification(n);
                         }

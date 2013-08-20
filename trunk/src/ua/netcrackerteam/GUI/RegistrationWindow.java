@@ -7,18 +7,19 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
+
 import ua.netcrackerteam.controller.GeneralController;
 import ua.netcrackerteam.validation.FormValidator;
 import ua.netcrackerteam.validation.MessageUtil;
-
-import java.sql.SQLException;
-
 import static ua.netcrackerteam.validation.SystemMessages.REGISTRATION_SUCCESSFUL;
 import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
+
+import java.sql.SQLException;
 
 /**
  * @author akush_000
  */
+@SuppressWarnings("serial")
 class RegistrationWindow extends Window implements FieldEvents.BlurListener {
     private MainPage mainPage;
     private TextField email;
