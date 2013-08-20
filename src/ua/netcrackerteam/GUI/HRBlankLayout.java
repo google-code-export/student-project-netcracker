@@ -1,19 +1,5 @@
 package ua.netcrackerteam.GUI;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
-import ua.netcrackerteam.applicationForm.ApplicationForm;
-import ua.netcrackerteam.controller.HRPage;
-import ua.netcrackerteam.controller.StudentPage;
-import ua.netcrackerteam.controller.bean.StudentData;
-import ua.netcrackerteam.controller.bean.StudentDataShort;
-import ua.netcrackerteam.controller.bean.StudentsMarks;
-
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -22,23 +8,23 @@ import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.StreamResource;
 import com.vaadin.terminal.StreamResource.StreamSource;
 import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Accordion;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.NativeSelect;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.Tree;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.applicationForm.ApplicationForm;
+import ua.netcrackerteam.controller.HRPage;
+import ua.netcrackerteam.controller.StudentPage;
+import ua.netcrackerteam.controller.bean.StudentData;
+import ua.netcrackerteam.controller.bean.StudentDataShort;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class HRBlankLayout extends HorizontalSplitPanel {
@@ -344,11 +330,11 @@ public class HRBlankLayout extends HorizontalSplitPanel {
 	}
 	
 	private void fillFormsTable(List<StudentDataShort> data) {
-		formTable.setContainerDataSource(new BeanItemContainer<>(StudentDataShort.class, data));
+		formTable.setContainerDataSource(new BeanItemContainer(StudentDataShort.class, data));
 	}
 	
 	private void fillResultsTable(List<StudentsMarks> data) {
-		resultsTable.setContainerDataSource(new BeanItemContainer<>(StudentsMarks.class, data));
+		resultsTable.setContainerDataSource(new BeanItemContainer(StudentsMarks.class, data));
 	}
 	
 	private void showNotification(String header, String message) {

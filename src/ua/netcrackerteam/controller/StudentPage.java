@@ -726,12 +726,12 @@ public class StudentPage {
             std.setStudentInterestStudy(form.getInterestStudy());
             std.setStudentInterestWork(form.getInterestWork());
             std.setStudentInterestDevelopment(form.getInterestBranchSoft());
-            std.setStudentInterestOther(form.getInterestBranchOther());
+            std.setStudentInterestOther(form.getInterestBranchOther()== null ? "" : form.getInterestBranchOther());
             std.setStudentWorkTypeDeepSpec(form.getInterestDeepSpec());
             std.setStudentWorkTypeVarious(form.getInterestVarious());
             std.setStudentWorkTypeManagement(form.getInterestManagment());
             std.setStudentWorkTypeSale(form.getInterestSale());
-            std.setStudentWorkTypeOther(form.getInterestOther());
+            std.setStudentWorkTypeOther(form.getInterestOther()== null ? "" : form.getInterestOther());
 
             Set knowledges = form.getKnowledges();
             Iterator iterKnow = knowledges.iterator();

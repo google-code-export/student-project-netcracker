@@ -219,6 +219,7 @@ public class HRPage {
         interview.setStartDate(start);
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
+        interview.setReserve(0);
         new DAOHRImpl().addNewInterview(interview);
     }
 

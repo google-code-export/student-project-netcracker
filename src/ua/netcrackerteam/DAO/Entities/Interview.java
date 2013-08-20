@@ -39,6 +39,9 @@ public class Interview implements Serializable {
     @Column(name= "INTERVIEWERS_NUMBER")
     private Integer interviwerNumber;
 
+    @Column(name= "RESERVE")
+    private Integer reserve;
+
     public Integer getInterviwerNumber() {
         return interviwerNumber;
     }
@@ -69,6 +72,14 @@ public class Interview implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Integer getReserve() {
+        return reserve;
+    }
+
+    public void setReserve(Integer reserve) {
+        this.reserve = reserve;
     }
 
     public Integer getMaxNumber() {
