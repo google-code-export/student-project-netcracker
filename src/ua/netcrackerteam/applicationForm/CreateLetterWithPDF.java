@@ -39,13 +39,13 @@ public class CreateLetterWithPDF {
     private String pathPropertiesAuthentification = "resources/Authentification.properties";
     
     private Letter letter;        
-    private String userName;
+    private String email;
     
     public CreateLetterWithPDF(String userName, Letter letter){
-        this.userName = userName;
+        this.email =  HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName);
         this.letter = letter;
     }
-    
+      
     /**
      * Send mail to the student with attachment pdf file for interview
      * @param userName 
@@ -62,7 +62,7 @@ public class CreateLetterWithPDF {
                                                                
             String sender = propertiesAuthentification.getProperty("mail");
             String senderPassword = propertiesAuthentification.getProperty("password");
-            String recipient = HibernateFactory.getInstance().getStudentDAO().getEmailByUserName(userName); 
+            String recipient = email; 
            
             String subject = "Учебный Центр NetCracker при ОНПУ"; 	         	                    
                          

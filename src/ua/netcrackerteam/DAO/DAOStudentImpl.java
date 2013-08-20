@@ -3,13 +3,18 @@ package ua.netcrackerteam.DAO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import ua.netcrackerteam.DAO.Entities.AuditInterview;
 import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.DAO.Entities.UserCategory;
 import ua.netcrackerteam.DAO.Entities.UserList;
+import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
+
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -357,25 +362,27 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
 
 	@Override
 	public Form getFormByFormId(int idForm) {
-		Session session = null;
-        Query query;
-        Form form = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
-            query = session.createQuery("from Form "
-                    + "where id_form = " + idForm);
-            form = (Form) query.uniqueResult();
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }
-        return form;
+		
+		 Form form = null;
+	     String query        = "";
+	     beginTransaction();
+	     query = "from Form "
+                    + "where id_status = 1 and id_form = " + idForm;
+	     form = super.<Form>executeSingleGetQuery(query);
+	     commitTransaction();
+	     return form;
+	}
+
+	@Override
+	public List<Form> getFormsToReservInterview() {
+		    List<Form> forms = null;
+	        beginTransaction();
+	        Interview reservInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
+	        String query = "from Form where id_status = 1 and id_interview = " + reservInterview.getIdInterview();
+	        forms = super.<Form>executeListGetQuery(query);
+	        commitTransaction();
+	        return forms;
+	  
 	}
 }
 

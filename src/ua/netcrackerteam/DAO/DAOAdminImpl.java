@@ -1,6 +1,7 @@
 package ua.netcrackerteam.DAO;
 
 import ua.netcrackerteam.DAO.Entities.AuditInterview;
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.DAO.Entities.UserCategory;
 import ua.netcrackerteam.DAO.Entities.UserList;
 
@@ -309,9 +310,20 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     public void deleteUserByName(String userName) {
         beginTransaction();
         List listOfParam = new ArrayList();
-        listOfParam.add(userName);
+        listOfParam.add(userName); 
         String deleteUserByNameQuery = "delete from UserList where userName =:param0";
         executeDeleteQuery(deleteUserByNameQuery, listOfParam);
         commitTransaction();
     }
+
+	@Override
+	public UserList getUser(int userId) {
+		 UserList user = null;
+	     String query        = "";
+	     beginTransaction();
+	     query = "from UserList where id_user = " + userId;
+	     user = super.<UserList>executeSingleGetQuery(query);
+	     commitTransaction();
+	     return user;
+	}
 }

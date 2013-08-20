@@ -5,11 +5,20 @@
 package ua.netcrackerteam.controller;
 
 import ua.netcrackerteam.DAO.DAOInterviewerImpl;
+import ua.netcrackerteam.DAO.DAOStudentImpl;
+import ua.netcrackerteam.DAO.InterviewDAOImpl;
 import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.DAO.Entities.Interview;
+import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
+import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
+import ua.netcrackerteam.applicationForm.Letter;
+import ua.netcrackerteam.applicationForm.LetterReserv;
+import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 /**
  *
@@ -76,6 +85,19 @@ public class InterviewerPage {
             studentList = getStudentDataList(allForms);
         }
         return studentList;
+    }
+    
+    public static void sendLetterToStudentWithFormToReservInterview(){   
+    	
+         List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsToReservInterview();  
+         Iterator<Form> iterator = forms.iterator();
+         while(iterator.hasNext()){
+        	 Form form = iterator.next();
+        	 UserList user = form.getUser(); 
+        	 Letter letter = new LetterReserv(user.getUserName());
+        	 CreateLetterWithPDF sendLetter = new CreateLetterWithPDF(user.getUserName(), letter);
+        	 sendLetter.sendPDFToStudent();
+         }
     }
     
 }
