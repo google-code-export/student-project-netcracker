@@ -9,6 +9,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
+
 import ua.netcrackerteam.applicationForm.Letter;
 import ua.netcrackerteam.applicationForm.LetterPDF;
 import ua.netcrackerteam.controller.RegistrationToInterview;

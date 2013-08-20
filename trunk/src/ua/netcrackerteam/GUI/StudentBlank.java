@@ -381,7 +381,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWorkSphere.setSpacing(true);
         vlayout.addComponent(glayoutWorkSphere);
         development = new InterestSelection("Разработка ПО:", bean.getItemProperty("studentInterestDevelopment"));
-        anotherWorkSphere = new TextField("Другие: ", bean.getItemProperty("studentInterestOther")==null ? String.valueOf(bean.getItemProperty("studentInterestOther")):"");
+        //anotherWorkSphere = new TextField("Другие: ", bean.getItemProperty("studentInterestOther")==null ? String.valueOf(bean.getItemProperty("studentInterestOther")):"");
+        anotherWorkSphere = new TextField("Другие: ", bean.getItemProperty("studentInterestOther"));
         anotherWorkSphere.setWidth("250");
         glayoutWorkSphere.addComponent(development);
         glayoutWorkSphere.addComponent(anotherWorkSphere);
@@ -399,7 +400,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayoutWorkType.addComponent(variousWork);
         glayoutWorkType.addComponent(mrSpec);
         glayoutWorkType.addComponent(sale);
-        anotherWorkType = new TextField("Другие: ", bean.getItemProperty("studentWorkTypeOther") == null?String.valueOf(bean.getItemProperty("studentWorkTypeOther")):"");
+        //anotherWorkType = new TextField("Другие: ", bean.getItemProperty("studentWorkTypeOther") == null?String.valueOf(bean.getItemProperty("studentWorkTypeOther")):"");
+        anotherWorkType = new TextField("Другие: ", bean.getItemProperty("studentWorkTypeOther"));
         anotherWorkType.setWidth("250");
         glayoutWorkType.addComponent(anotherWorkType);
     }
@@ -984,6 +986,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                     if (saveEdit.getCaption().equals("Сохранить")) {
                         if (checkAllValid()) {
                             stData.setStudentHowHearAboutCentre((Collection) advert.getValue());
+                            //stData.setStudentInterestOther((String)anotherWorkSphere.getValue());
+                            //stData.setStudentWorkTypeOther((String)anotherWorkType.getValue());
                             setEditable(false);
                             ua.netcrackerteam.controller.StudentPage.addNewForm(stData, username, status, editorName);
                             if (!isInEditMode) { 

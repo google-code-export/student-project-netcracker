@@ -416,37 +416,13 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public void deleteInterview(int interviewId) {
-        /*Session session = null;
-        Query query = null;
-        Transaction transaction = null;
-        try {
-            Locale.setDefault(Locale.ENGLISH);
-            session = HibernateUtil.getSessionFactory().getCurrentSession();
-            transaction = session.beginTransaction();   
-            query = session.createQuery("from Form where interview = " + interviewId);
-            List<Form> forms = query.list();
-            query = session.createQuery("from Interview where idInterview = " + 0);
-            Interview nullInterview = (Interview) query.uniqueResult();
-            for(Form form: forms) {
-                form.setInterview(nullInterview);
-            }
-            query = session.createQuery("from Interview where idInterview = " + interviewId);
-            Interview selectedInterview = (Interview) query.uniqueResult();
-            session.delete(selectedInterview);
-            transaction.commit();
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
-            if (session != null && session.isOpen()) {
-                session.close();
-            }
-        }*/
+
         String query = "";
         List listOfParams       = new ArrayList();
         beginTransaction();
         listOfParams.add(interviewId);
-        query = "from Form where to_char(interview) = to_char(:param0)";
-        List<Form> listOfForms = super.<Form>executeListGetSQLQuery(query, listOfParams);
+        query = "from Form where to_char(interview.idInterview) = to_char(:param0)";
+        List<Form> listOfForms = super.<Form>executeListGetQuery(query, listOfParams);
         query = "from Interview where reserve = 1";
         Interview nullInterview = super.<Interview>executeSingleGetQuery(query);
         for(Form currForm:listOfForms) {
