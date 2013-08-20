@@ -16,7 +16,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Runo;
 
+import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.controller.HRPage;
+import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.bean.HRInterview;
 import ua.netcrackerteam.controller.exceptions.HRException;
 
@@ -383,6 +385,7 @@ public class HRInterviewsLayout extends VerticalLayout {
                     if(!editable) {
                         controller.saveNewInterviews(start, end, intNum, posNum, oneDuration);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                        InterviewerPage.sendLetterToStudentWithFormToReservInterview();
                     } else {
                         HRInterview interview = (HRInterview) table.getValue();
                         controller.editInterview(interview.getId(), start, end, intNum, posNum);
@@ -396,7 +399,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             }
         }
 
-        private void setDate(String newStrDate) {
+		private void setDate(String newStrDate) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date newDate = new Date();
             try {

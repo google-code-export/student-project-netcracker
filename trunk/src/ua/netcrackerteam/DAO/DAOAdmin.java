@@ -1,6 +1,7 @@
 package ua.netcrackerteam.DAO;
 
 import ua.netcrackerteam.DAO.Entities.UserCategory;
+import ua.netcrackerteam.DAO.Entities.UserList;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -57,4 +58,6 @@ public interface DAOAdmin {
     boolean checkUserAvailability(String userName, String userPassword) throws SQLException;
 
     boolean checkUserAvailability(String userName) throws SQLException;
+    
+    UserList getUser(int userId);
 }
