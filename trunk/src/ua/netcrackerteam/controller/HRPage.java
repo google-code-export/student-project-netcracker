@@ -175,8 +175,9 @@ public class HRPage {
     public List<HRInterview> getInterviewsList() {
         List<HRInterview> intervList = new ArrayList<HRInterview>();
         List<Interview> interviews = HibernateFactory.getInstance().getDAOInterview().getInterview();
+        Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
         for(Interview interview : interviews) {
-            if(interview.getIdInterview()!=0) {
+            if(!interview.equals(nullInterview)) {
                 HRInterview hrInterview = new HRInterview();
 
                 hrInterview.setId(interview.getIdInterview());
