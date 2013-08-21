@@ -8,15 +8,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.IntegerValidator;
-import com.vaadin.event.FieldEvents;
-import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.Runo;
-
-import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.bean.HRInterview;
@@ -24,7 +20,10 @@ import ua.netcrackerteam.controller.exceptions.HRException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -189,7 +188,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             bottomLayout.setPositionsCount(interview.getPositionNum());
             bottomLayout.duration.setRequired(false);
             bottomLayout.duration.setReadOnly(true);
-            bottomLayout.setReserve(interview.getReserve());
+            //bottomLayout.setReserve(interview.getReserve());
             rightPanel.replaceComponent(old, bottomLayout);
         } else {
             getWindow().showNotification("Выберите только одно собеседование из списка!", Window.Notification.TYPE_TRAY_NOTIFICATION);
