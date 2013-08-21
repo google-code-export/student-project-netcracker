@@ -53,7 +53,9 @@ public class RegistrationToInterview implements Logable {
         if (getRestOfPositionsOnInterview(interview) == 0) {
             throw new StudentInterviewException(StudentInterviewException.FULL_INTERVIEW_EXCEPTION);
         }
-        if (validTime(interview)) {
+        Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
+        if (validTime(interview) || interview.equals(nullInterview)) {
+
             form.setInterview(interview);
             HibernateFactory.getInstance().getStudentDAO().updateForm(form);
         } else {
@@ -101,7 +103,7 @@ public class RegistrationToInterview implements Logable {
         StudentInterview studentInterview = new StudentInterview(interview.getIdInterview(),
                 getRestOfPositionsOnInterview(interview));
         Date startDate = interview.getStartDate();
-        Format formatter = new SimpleDateFormat("dd MMMM (EEEE)", myDateFormatSymbols);
+        Format formatter = new SimpleDateFormat("dd MMMM", myDateFormatSymbols);
         String strDate = formatter.format(startDate);
         studentInterview.setInterviewStartDay(strDate);
 
@@ -156,6 +158,7 @@ public class RegistrationToInterview implements Logable {
     public StudentInterview getNullInterview() {
         Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
         StudentInterview stInterview = new StudentInterview(nullInterview.getIdInterview(), getRestOfPositionsOnInterview(nullInterview));
+        stInterview.setInterviewStartDay("Резервное время");
         return stInterview;
     }
 
