@@ -213,11 +213,11 @@ public class HRInterviewsLayout extends VerticalLayout {
         
         public String[] NATURAL_COL_ORDER = new String[] {
                 "date", "startTime", "endTime", 
-                "positionNum", "restOfPositions", "interviewersNum", "reserve"};
+                "positionNum", "restOfPositions", "interviewersNum"};
         
         public String[] COL_HEADERS_RUSSIAN = new String[] {
                 "Дата", "Время начала", "Время окончания",
-                "Количество мест", "Остаток мест", "Количество интервьюеров", "Резервное"};
+                "Количество мест", "Остаток мест", "Количество интервьюеров"};
         
         private InterviewsTable() {
             super();
