@@ -79,4 +79,14 @@ public class StudentInterview {
     public void setInterviewStartDate(Date interviewStartDate) {
         this.interviewStartDate = interviewStartDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StudentInterview)) return false;
+
+        StudentInterview interview = (StudentInterview) o;
+        if (studentInterviewId != interview.getStudentInterviewId()) return false;
+        return true;
+    }
 }

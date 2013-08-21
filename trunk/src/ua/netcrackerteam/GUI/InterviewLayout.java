@@ -7,9 +7,7 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
-
 import ua.netcrackerteam.applicationForm.Letter;
 import ua.netcrackerteam.applicationForm.LetterPDF;
 import ua.netcrackerteam.controller.RegistrationToInterview;
@@ -60,7 +58,7 @@ class InterviewLayout extends VerticalLayout {
         save.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                if (daySelector.getOldTimeSelector().getValue() != null) {
+                if (daySelector.getOldTimeSelector().getValue() != null || selectedInterview.equals(nullInterview)) {
                     saveInterview();
                 } else {
                     getWindow().showNotification("Выберите время собеседования!", Window.Notification.TYPE_TRAY_NOTIFICATION);
@@ -85,12 +83,11 @@ class InterviewLayout extends VerticalLayout {
     }
 
     private void showEditComponents() {
-        Label caption = new Label("Вы зарегистрированы на собеседование на " +
-                selectedInterview.getStartTime()  + " " +
-                selectedInterview.getInterviewStartDay() + ".");
-        verticalLayout.addComponent(caption);
-        caption = new Label("Внимание! Вы не сможете перерегистрироваться за пол часа до начала выбранного собеседования.");
-        verticalLayout.addComponent(caption);
+        if (selectedInterview.equals(nullInterview)) {
+            showLabelsForNullInterview();
+        } else {
+            showLabels();
+        }
 
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         buttonsLayout.setSpacing(true);
@@ -101,7 +98,7 @@ class InterviewLayout extends VerticalLayout {
         edit.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                if (validTime()) {
+                if (validTime() || selectedInterview.equals(nullInterview)) {
                     daySelector.setVisible(true);
                 } else {
                     getWindow().showNotification("Вы не можете перерегистрироваться за пол часа до начала выбранного собеседования.",
@@ -112,14 +109,30 @@ class InterviewLayout extends VerticalLayout {
         Button sendPDF = new Button("Отправить PDF");
         buttonsLayout.addComponent(sendPDF);
         sendPDF.addListener(new
+
                                     Button.ClickListener() {
                                         @Override
                                         public void buttonClick(Button.ClickEvent clickEvent) {
-                                        	Letter letter = new LetterPDF(username);
+                                            Letter letter = new LetterPDF(username);
                                             CreateLetterWithPDF sender = new CreateLetterWithPDF(username, letter);
                                             sender.sendPDFToStudent();
                                         }
                                     });
+    }
+
+    private void showLabelsForNullInterview() {
+        String time = "резервное время. В случае добавления дополнительных собеседований Вы будете оповещены по email";
+        Label caption = new Label("Вы зарегистрированы на " + time + ".");
+        verticalLayout.addComponent(caption);
+    }
+
+    private void showLabels() {
+        String time = "собеседование на " + selectedInterview.getStartTime() + " " +
+                selectedInterview.getInterviewStartDay();
+        Label caption = new Label("Вы зарегистрированы на " + time + ".");
+        verticalLayout.addComponent(caption);
+        caption = new Label("Внимание! Вы не сможете перерегистрироваться за пол часа до начала выбранного собеседования.");
+        verticalLayout.addComponent(caption);
     }
 
     private boolean validTime() {
@@ -160,7 +173,10 @@ class InterviewLayout extends VerticalLayout {
                 setVisible(false);
             }
             setNullSelectionAllowed(false);
-            List<StudentInterview> interviewDays = parseDays();
+            final List<StudentInterview> interviewDays = parseDays();
+            if (interviewDays.size() == 0) {
+                interviewDays.add(nullInterview);
+            }
             BeanItemContainer<StudentInterview> daysContainer = new BeanItemContainer(StudentInterview.class, interviewDays);
             setCaption("Выберите день собеседования:");
             setContainerDataSource(daysContainer);
@@ -169,7 +185,12 @@ class InterviewLayout extends VerticalLayout {
             addListener(new ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-                    refreshTimeSelector();
+                    if (!interviewDays.contains(nullInterview)) {
+                        refreshTimeSelector();
+                    } else {
+                        selectedInterview = nullInterview;
+                        save.setVisible(true);
+                    }
                 }
             });
         }
