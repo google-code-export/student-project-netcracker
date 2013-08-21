@@ -214,16 +214,6 @@ public class HRPage {
         }
     }
 
-    public static void saveNewInterview(Date start, Date end, int intervNum, int maxStudents) {
-        Interview interview = new Interview();
-        interview.setEndDate(end);
-        interview.setStartDate(start);
-        interview.setInterviwerNumber(intervNum);
-        interview.setMaxNumber(maxStudents);
-        interview.setReserve(0);
-        new DAOHRImpl().addNewInterview(interview);
-    }
-
     private Date addMinutesToDate(Date date, int minutes) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
@@ -240,6 +230,7 @@ public class HRPage {
             interview.setStartDate(currentStartDate);
             interview.setInterviwerNumber(intervNum);
             interview.setMaxNumber(maxStudents);
+            interview.setReserve(0);
             dao.addNewInterview(interview);
             currentStartDate = currentEndDate;
             currentEndDate = addMinutesToDate(currentStartDate,oneDuration);
@@ -263,6 +254,7 @@ public class HRPage {
         interview.setStartDate(start);
         interview.setInterviwerNumber(intervNum);
         interview.setMaxNumber(maxStudents);
+        interview.setReserve(0);
         new DAOHRImpl().editInterview(interview);
     }
 
