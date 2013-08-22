@@ -48,7 +48,7 @@ public class NavigationPanel extends Panel {
 	}
 	
 	public enum State {
-		VALIDATED, NOT_APPLIED, NOT_CHECKED
+		VALIDATED, NOT_CHECKED
 	}
 	
 	private void initialize() {
@@ -90,6 +90,7 @@ public class NavigationPanel extends Panel {
 				table.setCurrentState((State)event.getItemId());
 				enableButtons((State)event.getItemId());
 				refreshCount();
+				formCategories.select((State)event.getItemId());
 			}
 		});
 		
@@ -156,33 +157,22 @@ public class NavigationPanel extends Panel {
 			deleteButton.setEnabled(true);
 			verifyButton.setEnabled(true);
 		}
-		
-		if (state == State.NOT_APPLIED) {
-			editButton.setEnabled(true);
-			deleteButton.setEnabled(true);
-			verifyButton.setEnabled(false);
-		}
 	}
 	
 	private void refreshCount() {
 		Long formCount = HRPage.getCountOfAllForms();
-		Long notAppliedCount = HRPage.getCountOfBlankWithoutInterview();
 		Long notVerificatedCount = HRPage.getCountOfNonVerificatedForms();
 		
-		String allFormsTitle = "Все записанные(" + String.valueOf(formCount) + ")";
-		String notAppliedFormsTitle = "Не записанные(" + String.valueOf(notAppliedCount) + ")";
-		String notVerifiedFormsTitle = "Не проверенные("+ String.valueOf(notVerificatedCount) + ")";
+		String allFormsTitle = "Все (" + String.valueOf(formCount) + ")";
+		String notVerifiedFormsTitle = "Не подтвержденные ("+ String.valueOf(notVerificatedCount) + ")";
 		
 		formCategories.addItem(State.VALIDATED);
-		formCategories.addItem(State.NOT_APPLIED);
 		formCategories.addItem(State.NOT_CHECKED);
+		formCategories.setChildrenAllowed(allFormsTitle, false);	
+		formCategories.setChildrenAllowed(notVerifiedFormsTitle, false);
 		
 		formCategories.setItemCaption(State.VALIDATED, allFormsTitle);
-		formCategories.setItemCaption(State.NOT_APPLIED, notAppliedFormsTitle);
 		formCategories.setItemCaption(State.NOT_CHECKED, notVerifiedFormsTitle);
 		
-		formCategories.setChildrenAllowed(allFormsTitle, false);
-		formCategories.setChildrenAllowed(notAppliedFormsTitle, false);		
-		formCategories.setChildrenAllowed(notVerifiedFormsTitle, false);
 	}
 }

@@ -32,26 +32,16 @@ public class HRBlankLayout extends HorizontalSplitPanel {
 			if (state == State.VALIDATED) {
 				mainPanel.addComponent(resultsTable);
 				return HRPage.getAllForms();
-			}
-			
-			if (state == State.NOT_APPLIED) {
-				mainPanel.removeComponent(resultsTable);
-				return HRPage.getBlankWithoutInterview();
-			}
-			
-			if (state == State.NOT_CHECKED) {
+			} else {
 				mainPanel.removeComponent(resultsTable);
 				return HRPage.getNonVerificatedForms();
 			}
-			
-			return null;
-		}};
+		}
+	};
 		
-	private State currentState;
 	private FormsTable formTable = new FormsTable(dataLoader);
 	private NavigationPanel navPanel = new NavigationPanel(formTable);
 	private ResultsTable resultsTable;
-
 
 	public HRBlankLayout(String userName) {
 		this.username = userName;
@@ -61,7 +51,7 @@ public class HRBlankLayout extends HorizontalSplitPanel {
 	
 	private void initialize() {
 		setStyleName(Runo.SPLITPANEL_REDUCED);
-		setSplitPosition(200, Sizeable.UNITS_PIXELS);
+		setSplitPosition(230, Sizeable.UNITS_PIXELS);
 		
 		mainPanel.addComponent(formTable);
 		mainPanel.addComponent(resultsTable);
@@ -125,38 +115,11 @@ public class HRBlankLayout extends HorizontalSplitPanel {
 				String input = navPanel.getSearchInput();
 				if (!input.equals("")) {
 					List<StudentDataShort> data = HRPage.searchStudents(criteria, input);
-					formTable.setCurrentState(State.VALIDATED);
+					formTable.fillTable(data);
 				}
 			}
 		});
-		
-
 	}
-	
-	/*private void fillTable(Object id) {
-		List<StudentDataShort> data = null;
-		if (id == null || id.equals("1") ) {
-			data = HRPage.getAllForms();
-			navPanel.disableApproveButton(true);
-			navPanel.disableEditButton(false);
-			markTextArea.setEnabled(false);
-			markSaveButton.setEnabled(false);
-		} else if (id.equals("2")) {
-			data = HRPage.getNonVerificatedForms();
-			navPanel.disableApproveButton(false);
-			navPanel.disableEditButton(true);
-			markTextArea.setEnabled(false);
-			markSaveButton.setEnabled(false);
-			markTextArea.setEnabled(false);
-		} else if (id.equals("3")) {
-			data = HRPage.getBlankWithoutInterview();
-			navPanel.disableApproveButton(true);
-			navPanel.disableEditButton(true);
-			markTextArea.setEnabled(false);
-			markSaveButton.setEnabled(false);
-			markTextArea.setEnabled(false);
-		}
-	}*/
 	
 	private void showNotification(String header, String message) {
 		getWindow().showNotification(header, message, Window.Notification.TYPE_TRAY_NOTIFICATION);

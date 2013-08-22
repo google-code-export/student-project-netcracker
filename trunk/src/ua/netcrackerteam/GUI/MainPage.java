@@ -24,6 +24,7 @@ import java.util.Date;
  * @version 
  */
 
+@SuppressWarnings("serial")
 public class MainPage extends Application implements Button.ClickListener, HttpServletRequestListener {
     private static ThreadLocal<MainPage> threadLocal = new ThreadLocal<MainPage>();
 
@@ -147,6 +148,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         hlayoutUser = new HeaderLayout(exit, username);
         MainPanel oldPanel = panel;
         panel = new MainPanelHR(hlayoutUser,this);
+        panel.setSizeFull();
         layoutfull.replaceComponent(oldPanel, panel);
         VerticalLayout vl = (VerticalLayout) layoutfull.getContent();
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
