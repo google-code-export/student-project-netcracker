@@ -8,6 +8,7 @@ import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import javax.interceptor.Interceptors;
 import java.io.File;
@@ -371,4 +372,25 @@ public class GeneralController implements Logable {
     public static void main(String[] args) throws SQLException {
         System.out.println(checkUsersAvailability("klatt"));
     }
+
+    public List<StudentsMarks> getStudentMarks(int idForm) {
+        List<StudentsMarks> currScores = new ArrayList<StudentsMarks>();
+
+        return currScores;
+    }
+
+    public void setStudentMark(int idForm, StudentsMarks currMarks) {
+
+
+
+    }
+
+    public List<StudentsMarks> getAvailableStudentmarks(){
+
+        List<StudentsMarks> marksList = new ArrayList<StudentsMarks>();
+
+        return marksList;
+
+    }
+
 }

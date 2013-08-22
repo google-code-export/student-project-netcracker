@@ -491,4 +491,8 @@ public class HRPage {
         return currDAO.getDiff(currUserId);
     }
 
+    public List<StudentsMarks> getStudebtMarksByFormID(int idForm) {
+        List<StudentsMarks> currMarks = new GeneralController().getStudentMarks(idForm);
+        return currMarks;
+    }
 }
