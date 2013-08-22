@@ -1,5 +1,7 @@
 package ua.netcrackerteam.controller.bean;
 
+import ua.netcrackerteam.DAO.Entities.EnrollmentScores;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Bri
@@ -9,32 +11,59 @@ package ua.netcrackerteam.controller.bean;
  */
 public class StudentsMarks {
 
-    private int idUser;
-    private String userName;
-    private String studentMark;
+    private String interviewerName;
+    private String comment;
+    private String javaKnowledge;
+    private String sqlKnowledge;
+    private EnrollmentScores enrollment;
+    private boolean groupWork;
 
-    public String getUserName() {
-        return userName;
+    public String getInterviewerName() {
+        return interviewerName;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public void setInterviewerName(String interviewerName) {
+        this.interviewerName = interviewerName;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public String getComment() {
+        return comment;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getStudentMark() {
-        return studentMark;
+    public String getJavaKnowledge() {
+        return javaKnowledge;
     }
 
-    public void setStudentMark(String studentMark) {
-        this.studentMark = studentMark;
+    public void setJavaKnowledge(String javaKnowledge) {
+        this.javaKnowledge = javaKnowledge;
+    }
+
+    public String getSqlKnowledge() {
+        return sqlKnowledge;
+    }
+
+    public void setSqlKnowledge(String sqlKnowledge) {
+        this.sqlKnowledge = sqlKnowledge;
+    }
+
+    public EnrollmentScores getEnrollment() {
+        return enrollment;
+    }
+
+    public void setEnrollment(EnrollmentScores enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    public boolean isGroupWork() {
+        return groupWork;
+    }
+
+    public void setGroupWork(boolean groupWork) {
+        this.groupWork = groupWork;
     }
 
     @Override
@@ -43,17 +72,22 @@ public class StudentsMarks {
         if (o == null || getClass() != o.getClass()) return false;
 
         StudentsMarks that = (StudentsMarks) o;
-
-        if (studentMark != null ? !studentMark.equals(that.studentMark) : that.studentMark != null) return false;
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+        if (sqlKnowledge != null ? !sqlKnowledge.equals(that.sqlKnowledge) : that.sqlKnowledge != null) return false;
+        if (javaKnowledge != null ? !javaKnowledge.equals(that.javaKnowledge) : that.javaKnowledge != null) return false;
+        if (enrollment != null ? !enrollment.equals(that.enrollment) : that.enrollment != null) return false;
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+        if (interviewerName != null ? !interviewerName.equals(that.interviewerName) : that.interviewerName != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = userName != null ? userName.hashCode() : 0;
-        result = 31 * result + (studentMark != null ? studentMark.hashCode() : 0);
+        int result = interviewerName != null ? interviewerName.hashCode() : 0;
+        result = 31 * result + (sqlKnowledge != null ? sqlKnowledge.hashCode() : 0);
+        result = 31 * result + (javaKnowledge != null ? javaKnowledge.hashCode() : 0);
+        result = 31 * result + (enrollment != null ? enrollment.hashCode() : 0);
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
         return result;
     }
 }
