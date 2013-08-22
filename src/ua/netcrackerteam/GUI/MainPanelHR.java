@@ -104,7 +104,7 @@ public class MainPanelHR extends MainPanel{
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == blanksLo) {
                     HRBlankLayout blankLayout = new HRBlankLayout(hlayout.getUsername());
-                    blankLayout.setHeight(height,UNITS_PIXELS);
+                    blankLayout.setHeight(height+300, UNITS_PIXELS);
                     blankLayout.setWidth("100%");
                     blankLayout.setMargin(true, false, false, false);
                     source.replaceComponent(blanksLo, blankLayout);

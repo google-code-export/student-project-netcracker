@@ -5,7 +5,6 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
-import com.vaadin.terminal.gwt.server.WebBrowser;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import java.io.DataInputStream;
@@ -17,6 +16,7 @@ import java.io.IOException;
  * Main panel with editable text 
  * @author Anna Kushnirenko
  */
+@SuppressWarnings("serial")
 public class MainPanel extends Panel {
     private final VerticalLayout layout;
     protected Label richText;

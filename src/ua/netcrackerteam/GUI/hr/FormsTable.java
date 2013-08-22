@@ -67,7 +67,7 @@ public class FormsTable extends Panel {
 	
 	private void initialize() {
 		table.setWidth("100%");
-		table.setHeight("300");
+		table.setHeight("375");
 		table.setSelectable(true);
 		table.setImmediate(true);
 		table.setContainerDataSource(container);
@@ -162,15 +162,7 @@ public class FormsTable extends Panel {
 			photoSaveButton.setEnabled(true);
 			showDiffButton.setEnabled(false);
 			return;
-		}
-		
-		if (currentState == State.NOT_APPLIED) {
-			photoSaveButton.setEnabled(true);
-			showDiffButton.setEnabled(false);
-			return;
-		} 
-		
-		if (currentState == State.VALIDATED) {
+		} else {
 			photoSaveButton.setEnabled(true);
 			showDiffButton.setEnabled(false);
 		}
@@ -213,5 +205,9 @@ public class FormsTable extends Panel {
 	
 	public void refresh() {
 		setCurrentState(currentState);
+	}
+	
+	public void fillTable(List<StudentDataShort> data) {
+		table.setContainerDataSource(new BeanItemContainer<StudentDataShort>(StudentDataShort.class, data));
 	}
 }
