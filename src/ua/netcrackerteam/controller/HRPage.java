@@ -126,9 +126,8 @@ public class HRPage {
         List<StudentsMarks> currStudentsMarks = new ArrayList<StudentsMarks>();
         for(InterviewRes currRes:currInterviewRes) {
             StudentsMarks currMark = new StudentsMarks();
-            currMark.setIdUser(currRes.getUser().getIdUser());
-            currMark.setUserName(currRes.getUser().getUserName());
-            currMark.setStudentMark(currRes.getScore());
+            currMark.setInterviewerName(currRes.getUser().getUserName());
+            currMark.setComment(currRes.getScore());
             currStudentsMarks.add(currMark);
         }
 
