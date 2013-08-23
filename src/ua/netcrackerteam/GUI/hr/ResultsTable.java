@@ -9,6 +9,7 @@ import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
@@ -20,10 +21,9 @@ import com.vaadin.ui.Button.ClickListener;
 @SuppressWarnings("serial")
 public class ResultsTable extends Panel {
 	
-	private static final Object[] NATURAL_COL_ORDER = new Object[] { "idUser", "userName",
-			"studentMark" };
-	private static final String[] COL_HEADERS_RUSSIAN = new String[] {
-			"Идентификатор пользователя", "Имя пользователя", "Оценка" };
+	private static final Object[] NATURAL_COL_ORDER = new Object[] {"interviewerName",
+			"javaKnowledge", "sqlKnowledge", "groupWork", "enrollment" };
+	private static final String[] COL_HEADERS_RUSSIAN = new String[] {"Интервьюер", "Java", "SQL", "Работа в команде", "Общая оценка" };
 	
 	private FormsTable formsTable;
 	private String username;
