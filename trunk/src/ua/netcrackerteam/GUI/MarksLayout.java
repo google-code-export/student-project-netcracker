@@ -8,6 +8,7 @@ import ua.netcrackerteam.DAO.Entities.EnrollmentScores;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,44 +23,96 @@ public class MarksLayout extends VerticalLayout {
     private MarksMode marksMode;
     private HorizontalLayout dropDownsLayout = new HorizontalLayout();
     private HRPage controller = new HRPage();
-    public static enum MarksMode {
-        HR, INTERVIEWER
-    }
+    private Button saveEditButton;
+    private static String SAVE = "Сохранить";
+    private static String EDIT = "Редактировать";
+    private final String currentUserName;
 
-    public MarksLayout(StudentsMarks studentsMarks, MarksMode mode) {
+    public MarksLayout(StudentsMarks studentsMarks, MarksMode mode, String currentUserName) {
         this.marksMode = mode;
+        this.currentUserName = currentUserName;
         studentsMarksBeanItem = new BeanItem<StudentsMarks>(studentsMarks);
         setSpacing(true);
         setMargin(true);
         setWidth(100, UNITS_PERCENTAGE);
-        addHeader();
+        addHeader(studentsMarks.getInterviewerName());
         dropDownsLayout.setSpacing(true);
         addComponent(dropDownsLayout);
         addEnrollmentDropDown();
         addCommandWorkDropDown();
-        if(mode.equals(marksMode.INTERVIEWER)) {
+        if (mode.equals(marksMode.INTERVIEWER)) {
             addJavaKnowledgeField();
-            addSQLKnowledgeField(); 
+            addSQLKnowledgeField();
         }
         addCommentField();
+        addSaveButton();
     }
 
-    private void addHeader() {
-        Label header = new Label();
-        if(marksMode.equals(marksMode.HR)) {
-            header.setCaption("Оценка HR:");
-        }  else {
-            header.setCaption("Оценка технического интервьюера:");
+    private void addSaveButton() {
+        saveEditButton = new Button(SAVE);
+        saveEditButton.setWidth(150,UNITS_PIXELS);
+        saveEditButton.addListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                if(saveEditButton.getCaption().equals(SAVE))  {
+                    saveMarks();
+                } else {
+                    setReadOnly(false);
+                }
+            }
+        });
+        addComponent(saveEditButton);
+    }
+
+    private void saveMarks() {
+       if(isAllValid()) {
+           setReadOnly(true);
+       } else {
+           getWindow().showNotification("Заполните все поля!", Window.Notification.TYPE_TRAY_NOTIFICATION);
+       }
+    }
+
+    private boolean isAllValid() {
+        boolean isValid = true;
+        Iterator<Component> i = getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            if(c instanceof TextArea) {
+                TextArea textArea = (TextArea) c;
+                isValid &= textArea.isValid();
+            }
         }
+        i = dropDownsLayout.getComponentIterator();
+        while (i.hasNext()) {
+            ComboBox comboBox = (ComboBox) i.next();
+            isValid &= comboBox.isValid();
+        }
+        return isValid;
+    }
+
+    private void addHeader(String interviewerName) {
+        Label header = new Label();
+        StringBuilder headerCaption = new StringBuilder();
+        headerCaption.append("Оценка ");
+        if (marksMode.equals(marksMode.HR)) {
+            headerCaption.append("HR");
+        } else {
+            headerCaption.append("технического интервьюера");
+        }
+        if (interviewerName != "") {
+            headerCaption.append(" (" + interviewerName + ")");
+        }
+        headerCaption.append(":");
+        header.setCaption(headerCaption.toString());
         addComponent(header);
     }
 
     private void addCommentField() {
         TextArea commentField = new TextArea();
-        commentField.setWidth(100,UNITS_PERCENTAGE);
+        commentField.setWidth(100, UNITS_PERCENTAGE);
         commentField.setRows(3);
         commentField.setRequired(true);
-        if(marksMode.equals(MarksMode.HR)){
+        if (marksMode.equals(MarksMode.HR)) {
             commentField.setCaption("Общие впечатления");
         } else {
             commentField.setCaption("Другие впечатления");
@@ -72,7 +125,7 @@ public class MarksLayout extends VerticalLayout {
         TextArea sqlField = new TextArea("Знание SQL");
         sqlField.setRows(3);
         sqlField.setRequired(true);
-        sqlField.setWidth(100,UNITS_PERCENTAGE);
+        sqlField.setWidth(100, UNITS_PERCENTAGE);
         sqlField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("sqlKnowledge"));
         addComponent(sqlField);
     }
@@ -81,30 +134,31 @@ public class MarksLayout extends VerticalLayout {
         TextArea javaField = new TextArea("Знания Java");
         javaField.setRows(3);
         javaField.setRequired(true);
-        javaField.setWidth(100,UNITS_PERCENTAGE);
+        javaField.setWidth(100, UNITS_PERCENTAGE);
         javaField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("javaKnowledge"));
         addComponent(javaField);
     }
 
     private void addCommandWorkDropDown() {
         ComboBox commandWork = new ComboBox("Готов ли к работе в команде");
-        commandWork.setWidth(300,UNITS_PIXELS);
+        commandWork.setWidth(300, UNITS_PIXELS);
         commandWork.setRequired(true);
-        commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("groupWork"));
         commandWork.setNullSelectionAllowed(false);
+        commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("groupWork"));
 
-        boolean yesItem = true;
-        boolean noItem = false;
+        Boolean yesItem = true;
+        Boolean noItem = false;
         commandWork.addItem(yesItem);
         commandWork.addItem(noItem);
-        commandWork.setItemCaption(yesItem,"Да");
-        commandWork.setItemCaption(noItem,"Нет");
+        commandWork.setItemCaption(yesItem, "Да");
+        commandWork.setItemCaption(noItem, "Нет");
+
         dropDownsLayout.addComponent(commandWork);
     }
 
     private void addEnrollmentDropDown() {
         ComboBox enrollmentScores = new ComboBox("Зачисление");
-        enrollmentScores.setWidth(300,UNITS_PIXELS);
+        enrollmentScores.setWidth(300, UNITS_PIXELS);
         enrollmentScores.setRequired(true);
         enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("enrollment"));
         enrollmentScores.setNullSelectionAllowed(false);
@@ -112,6 +166,37 @@ public class MarksLayout extends VerticalLayout {
         BeanItemContainer<EnrollmentScores> objects = new BeanItemContainer<EnrollmentScores>(EnrollmentScores.class, scoresList);
         enrollmentScores.setContainerDataSource(objects);
         dropDownsLayout.addComponent(enrollmentScores);
+    }
+
+    public void setReadOnly(boolean isReadOnly) {
+        Iterator<Component> i = getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            if(c instanceof Button) {
+
+            } else {
+                c.setReadOnly(isReadOnly);
+            }
+        }
+        i = dropDownsLayout.getComponentIterator();
+        while (i.hasNext()) {
+            Component c = (Component) i.next();
+            c.setReadOnly(isReadOnly);
+        }
+        if(isReadOnly) {
+            saveEditButton.setCaption(EDIT);
+        } else {
+            saveEditButton.setCaption(SAVE);
+        }
+
+    }
+
+    public void setEditable(boolean isEditable) {
+        saveEditButton.setVisible(isEditable);
+    }
+
+    public static enum MarksMode {
+        HR, INTERVIEWER
     }
 
 }

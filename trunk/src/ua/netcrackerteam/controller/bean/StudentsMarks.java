@@ -16,7 +16,7 @@ public class StudentsMarks {
     private String javaKnowledge = "";
     private String sqlKnowledge = "";
     private EnrollmentScores enrollment;
-    private boolean groupWork;
+    private Boolean groupWork;
 
     public String getInterviewerName() {
         return interviewerName;
@@ -58,11 +58,11 @@ public class StudentsMarks {
         this.enrollment = enrollment;
     }
 
-    public boolean isGroupWork() {
+    public Boolean getGroupWork() {
         return groupWork;
     }
 
-    public void setGroupWork(boolean groupWork) {
+    public void setGroupWork(Boolean groupWork) {
         this.groupWork = groupWork;
     }
 
