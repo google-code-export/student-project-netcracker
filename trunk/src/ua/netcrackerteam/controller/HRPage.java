@@ -491,4 +491,8 @@ public class HRPage {
         List<EnrollmentScores> enrollmentScores = new ArrayList<EnrollmentScores>();
         return enrollmentScores;
     }
+
+    public void saveHRMarks(StudentsMarks studentsMarks, String HRUserName) {
+
+    }
 }
