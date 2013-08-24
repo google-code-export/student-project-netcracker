@@ -479,19 +479,11 @@ public class HRPage {
 
     public StudentsMarks getHRStudentMarksByFormID(int idForm) {
         StudentsMarks hrStudentMark = new StudentsMarks();
-//        //hrStudentMark.setGroupWork(true);
-//        hrStudentMark.setInterviewerName("qwe");
-//        hrStudentMark.setComment("qweqwe");
         return hrStudentMark;
     }
 
     public StudentsMarks getInterviewerMarksByFormID(int idForm) {
         StudentsMarks interviewerStudentMark = new StudentsMarks();
-        interviewerStudentMark.setGroupWork(true);
-        interviewerStudentMark.setInterviewerName("qweq");
-        interviewerStudentMark.setJavaKnowledge("-_-");
-        interviewerStudentMark.setSqlKnowledge("o_O");
-        interviewerStudentMark.setComment("qweqwe");
         return interviewerStudentMark;
     }
 
