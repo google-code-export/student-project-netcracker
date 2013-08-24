@@ -114,7 +114,7 @@ public class HRBlankLayout extends VerticalLayout {
 
     private Component getInterviewerMarkLayout() {
         StudentsMarks interviewerMarks = controller.getInterviewerMarksByFormID(currFormID);
-        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, username);
+        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, currFormID);
         markLayout.setReadOnly(true);
         markLayout.setEditable(false);
         return markLayout;
@@ -122,8 +122,9 @@ public class HRBlankLayout extends VerticalLayout {
 
     private Component getHRMarkLayout() {
         StudentsMarks hrMarks = controller.getHRStudentMarksByFormID(currFormID);
-        Component markLayout = new MarksLayout(hrMarks,MarksLayout.MarksMode.HR, username);
-        if(!hrMarks.getInterviewerName().equals("")) {
+        hrMarks.setInterviewerName(username);
+        Component markLayout = new MarksLayout(hrMarks,MarksLayout.MarksMode.HR, currFormID);
+        if(!hrMarks.getComment().equals("")) {
             markLayout.setReadOnly(true);
         }
         return markLayout;

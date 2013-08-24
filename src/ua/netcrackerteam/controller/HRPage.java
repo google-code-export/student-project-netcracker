@@ -492,7 +492,7 @@ public class HRPage {
         return enrollmentScores;
     }
 
-    public void saveHRMarks(StudentsMarks studentsMarks, String HRUserName) {
+    public void saveHRMarks(StudentsMarks studentsMarks, int studentFormId) {
 
     }
 }
