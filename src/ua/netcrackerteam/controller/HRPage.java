@@ -120,20 +120,6 @@ public class HRPage {
         return studentList;
     }
 
-    public static List<StudentsMarks> getStudentMark(int formID) {
-
-        List<InterviewRes> currInterviewRes = new DAOHRImpl().getAllStudentsMarks(formID);
-        List<StudentsMarks> currStudentsMarks = new ArrayList<StudentsMarks>();
-        for(InterviewRes currRes:currInterviewRes) {
-            StudentsMarks currMark = new StudentsMarks();
-            currMark.setInterviewerName(currRes.getUser().getUserName());
-            currMark.setComment(currRes.getScore());
-            currStudentsMarks.add(currMark);
-        }
-
-        return currStudentsMarks;
-    }
-
     public static void setStudentMark(int formID, String hrName, String Mark) {
         new DAOHRImpl().setHRMark(formID, Mark, hrName);
     }
@@ -491,8 +477,13 @@ public class HRPage {
         return currDAO.getDiff(currUserId);
     }
 
-    public List<StudentsMarks> getStudebtMarksByFormID(int idForm) {
-        List<StudentsMarks> currMarks = new GeneralController().getStudentMarks(idForm);
-        return currMarks;
+    public StudentsMarks getHRStudentMarksByFormID(int idForm) {
+        StudentsMarks hrStudentMark = new StudentsMarks();
+        return hrStudentMark;
+    }
+
+    public StudentsMarks getInterviewerMarksByFormID(int idForm) {
+        StudentsMarks interviewerStudentMark = new StudentsMarks();
+        return interviewerStudentMark;
     }
 }

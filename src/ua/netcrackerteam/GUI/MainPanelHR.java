@@ -75,7 +75,7 @@ public class MainPanelHR extends MainPanel{
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
-        height = webBrowser.getScreenHeight()-300;
+        height = webBrowser.getScreenHeight()-290;
         /*edit = new Button("Редактировать");
         mainPageLo.addComponent(edit);
         mainPageLo.setComponentAlignment(edit, Alignment.TOP_CENTER);
@@ -103,7 +103,7 @@ public class MainPanelHR extends MainPanel{
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == blanksLo) {
-                    HRBlankLayout blankLayout = new HRBlankLayout(hlayout.getUsername());
+                    HRBlankLayout blankLayout = new HRBlankLayout(hlayout,mainPage);
                     blankLayout.setHeight(height+300, UNITS_PIXELS);
                     blankLayout.setWidth("100%");
                     blankLayout.setMargin(true, false, false, false);

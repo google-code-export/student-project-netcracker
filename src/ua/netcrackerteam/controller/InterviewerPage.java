@@ -13,7 +13,6 @@ import ua.netcrackerteam.applicationForm.Letter;
 import ua.netcrackerteam.applicationForm.LetterReserv;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
-import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -100,9 +99,4 @@ public class InterviewerPage {
          }
     }
 
-    public List<StudentsMarks> getStudebtMarksByFormID(int idForm) {
-        List<StudentsMarks> currMarks = new GeneralController().getStudentMarks(idForm);
-        return currMarks;
-    }
-    
 }
