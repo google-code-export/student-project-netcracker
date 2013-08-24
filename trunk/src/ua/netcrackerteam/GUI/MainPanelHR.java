@@ -75,11 +75,7 @@ public class MainPanelHR extends MainPanel{
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
-        height = webBrowser.getScreenHeight()-290;
-        /*edit = new Button("Редактировать");
-        mainPageLo.addComponent(edit);
-        mainPageLo.setComponentAlignment(edit, Alignment.TOP_CENTER);
-        edit.addListener(this);*/
+        height = webBrowser.getScreenHeight();
         blanksLo = new VerticalLayout();
         tabSheet.addTab(blanksLo,"Анкеты");
         final Component c1 = new VerticalLayout();
@@ -104,7 +100,7 @@ public class MainPanelHR extends MainPanel{
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == blanksLo) {
                     HRBlankLayout blankLayout = new HRBlankLayout(hlayout,mainPage);
-                    blankLayout.setHeight(height+300, UNITS_PIXELS);
+                    blankLayout.setHeight(height+100,UNITS_PIXELS);
                     blankLayout.setWidth("100%");
                     blankLayout.setMargin(true, false, false, false);
                     source.replaceComponent(blanksLo, blankLayout);

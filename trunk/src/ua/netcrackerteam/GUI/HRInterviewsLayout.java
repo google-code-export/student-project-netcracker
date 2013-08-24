@@ -224,7 +224,7 @@ public class HRInterviewsLayout extends VerticalLayout {
             BeanItemContainer<HRInterview> bean = new BeanItemContainer<HRInterview>(HRInterview.class, interviews);
             setContainerDataSource(bean);
             setWidth("100%");
-            setHeight(screenHeight-300,UNITS_PIXELS);
+            setHeight(300,UNITS_PIXELS);
             setSelectable(true);
             setImmediate(true);
             setMultiSelect(true);

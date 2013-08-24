@@ -17,6 +17,7 @@ import ua.netcrackerteam.controller.StudentPage;
 import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
 import ua.netcrackerteam.controller.bean.StudentInterview;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -34,13 +35,12 @@ import java.util.*;
 public class HRBlankLayout extends VerticalLayout {
     private static final List<String> categories = Arrays.asList(new String[]{"Фамилия", "Имя", "Номер анкеты",
             "ВУЗ", "Курс", "Факультет", "Кафедра"});
+    private HRPage controller = new HRPage();
     private final MainPage mainPage;
     private final String username;
     private Accordion accordion;
-    private TextArea markField;
     private Panel rightPanel;
     private StudentsTable table;
-    private Button saveEdit;
     private VerticalLayout bottomLayout;
     private int currFormID;
     private NativeSelect searchFilter;
@@ -55,8 +55,6 @@ public class HRBlankLayout extends VerticalLayout {
     public HRBlankLayout(final HeaderLayout hlayout, final MainPage mainPage) {
         this.mainPage = mainPage;
         this.username = hlayout.getUsername();
-        final Component c = new VerticalLayout();
-        final Component c2 = new VerticalLayout();
         fillInterviewsLayout();
     }
 
@@ -107,24 +105,21 @@ public class HRBlankLayout extends VerticalLayout {
         bottomLayout.setSpacing(true);
         bottomLayout.setMargin(true);
         bottomLayout.addComponent(getButtonsLayout());
-        bottomLayout.addComponent(getMarkLayout());
+        if(selectMode.equals(SelectMode.ONE)){
+            bottomLayout.addComponent(getHRMarkLayout());
+            bottomLayout.addComponent(getInterviewerMarkLayout());
+        }
         return bottomLayout;
     }
 
-    private Component getMarkLayout() {
-        VerticalLayout markLayout = new VerticalLayout();
+    private Component getInterviewerMarkLayout() {
+        StudentsMarks interviewerMarks = controller.getInterviewerMarksByFormID(currFormID);
+        return new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER);
+    }
 
-        markField = new TextArea("Оценка HR:");
-        markField.setWidth("100%");
-        markField.setRequired(true);
-        markField.setRows(4);
-
-        saveEdit = new Button();
-        saveEdit.addListener(new SaveOrEditButtonListener());
-        saveEdit.setWidth("150");
-        //markLayout.addComponent(saveEdit);
-        //markLayout.setComponentAlignment(saveEdit, Alignment.MIDDLE_CENTER);
-        return markLayout;
+    private Component getHRMarkLayout() {
+        StudentsMarks hrMarks = controller.getHRStudentMarksByFormID(currFormID);
+        return new MarksLayout(hrMarks,MarksLayout.MarksMode.HR);
     }
 
     private Component getButtonsLayout() {
@@ -481,24 +476,6 @@ public class HRBlankLayout extends VerticalLayout {
 
             } else {
                 bottomLayout.setVisible(false);
-            }
-        }
-
-    }
-
-    private class SaveOrEditButtonListener implements Button.ClickListener {
-
-        @Override
-        public void buttonClick(Button.ClickEvent event) {
-            if (saveEdit.getCaption().equals("Сохранить") && markField.isValid()) {
-                InterviewerPage.setStudentMark(currFormID, username, markField.getValue().toString());
-                markField.setReadOnly(true);
-                saveEdit.setCaption("Редактировать");
-            } else if (saveEdit.getCaption().equals("Редактировать")) {
-                markField.setReadOnly(false);
-                saveEdit.setCaption("Сохранить");
-            } else {
-                getWindow().showNotification("Введите оценку!", Window.Notification.TYPE_TRAY_NOTIFICATION);
             }
         }
 
