@@ -486,4 +486,9 @@ public class HRPage {
         StudentsMarks interviewerStudentMark = new StudentsMarks();
         return interviewerStudentMark;
     }
+
+    public List<EnrollmentScores> getEnrollmentScores() {
+        List<EnrollmentScores> enrollmentScores = new ArrayList<EnrollmentScores>();
+        return enrollmentScores;
+    }
 }

@@ -11,10 +11,10 @@ import ua.netcrackerteam.DAO.Entities.EnrollmentScores;
  */
 public class StudentsMarks {
 
-    private String interviewerName;
-    private String comment;
-    private String javaKnowledge;
-    private String sqlKnowledge;
+    private String interviewerName = "";
+    private String comment = "";
+    private String javaKnowledge = "";
+    private String sqlKnowledge = "";
     private EnrollmentScores enrollment;
     private boolean groupWork;
 
