@@ -27,10 +27,12 @@ public class MarksLayout extends VerticalLayout {
     private static String SAVE = "Сохранить";
     private static String EDIT = "Редактировать";
     private final String currentUserName;
+    private StudentsMarks studentsMarks;
 
     public MarksLayout(StudentsMarks studentsMarks, MarksMode mode, String currentUserName) {
         this.marksMode = mode;
         this.currentUserName = currentUserName;
+        this.studentsMarks = studentsMarks;
         studentsMarksBeanItem = new BeanItem<StudentsMarks>(studentsMarks);
         setSpacing(true);
         setMargin(true);
@@ -66,6 +68,7 @@ public class MarksLayout extends VerticalLayout {
 
     private void saveMarks() {
        if(isAllValid()) {
+           controller.saveHRMarks(studentsMarks,currentUserName);
            setReadOnly(true);
        } else {
            getWindow().showNotification("Заполните все поля!", Window.Notification.TYPE_TRAY_NOTIFICATION);
