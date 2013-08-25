@@ -8,7 +8,7 @@ import com.vaadin.ui.Window.Notification;
  */
 public enum SystemMessages {
     SQL_CONNECTION_ERROR("Ошибка", Notification.TYPE_TRAY_NOTIFICATION,
-            "Возникли проблемы вовремя подключения к базе данных"),
+            "Не удалось подключиться к базе данных. Проверьте соединение с интернетом"),
 
     RUNTIME_ERROR("Ошибка выполнения", Notification.TYPE_TRAY_NOTIFICATION,
             "Пожалуйста перезагрузите страницу"),
@@ -18,7 +18,7 @@ public enum SystemMessages {
     PASSWORD_ERROR("Неверный текущий пароль !", Notification.TYPE_TRAY_NOTIFICATION),
 
     REGISTRATION_SUCCESSFUL("Регистрация пользователя {0} завершена успешно!",  Notification.TYPE_TRAY_NOTIFICATION,
-            "На ваш email выслано письмо с регистрационными данными. Теперы Вы можете зайти под своим логином.", Notification.POSITION_CENTERED),
+            "На ваш email выслано письмо с регистрационными данными. Теперы Вы можете зайти под своим логином."),
 
     CHANGE_PASSWORD_SUCCESSFUL("Изменение пароля юзера завершено успешно!",  Notification.TYPE_TRAY_NOTIFICATION,
             "На email юзера {0} выслано письмо с новым паролем. Теперь юзер может зайти под своими новыми аккаунт данными.", Notification.POSITION_CENTERED);
