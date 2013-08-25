@@ -164,6 +164,7 @@ public class MarksLayout extends VerticalLayout {
         enrollmentScores.setWidth(300, UNITS_PIXELS);
         enrollmentScores.setRequired(true);
         enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("enrollment"));
+        enrollmentScores.setItemCaptionPropertyId("NAME");
         enrollmentScores.setNullSelectionAllowed(false);
         List<EnrollmentScores> scoresList = controller.getEnrollmentScores();
         BeanItemContainer<EnrollmentScores> objects = new BeanItemContainer<EnrollmentScores>(EnrollmentScores.class, scoresList);
