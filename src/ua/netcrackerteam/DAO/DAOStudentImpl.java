@@ -3,8 +3,6 @@ package ua.netcrackerteam.DAO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import ua.netcrackerteam.DAO.Entities.AuditInterview;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.Interview;
 import ua.netcrackerteam.DAO.Entities.UserCategory;
@@ -14,7 +12,6 @@ import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
-
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
@@ -387,6 +384,13 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
 	        return forms;
 	  
 	}
+
+    @Override
+    public void romoveForm(Form form) {
+        beginTransaction();
+        executeDeleteQuery(form);
+        commitTransaction();
+    }
 }
 
 

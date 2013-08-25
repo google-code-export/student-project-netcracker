@@ -18,4 +18,5 @@ public interface DAOStudent {
     public List<Form> getFormsByInterviewId(int idInterview);
     public String getEmailByUserName(String userName);
     public List<Form> getFormsToReservInterview();
+    void romoveForm(Form form);
 }

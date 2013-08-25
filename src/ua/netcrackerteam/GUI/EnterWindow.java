@@ -4,18 +4,15 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.LoginForm;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
+import ua.netcrackerteam.DAO.Entities.Form;
+import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.controller.GeneralController;
 
 import java.sql.SQLException;
 
-import static ua.netcrackerteam.validation.SystemMessages.LOGIN_ERROR;
-import static ua.netcrackerteam.validation.SystemMessages.RUNTIME_ERROR;
-import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
+import static ua.netcrackerteam.validation.SystemMessages.*;
 
 /**
  * Login form
@@ -28,6 +25,7 @@ class EnterWindow extends Window implements Logable {
     private String userName;
     private String userPassword;
     private Notification error;
+    private Form form;
 
     public EnterWindow(final MainPage mainPage) {
         setModal(true);
@@ -62,6 +60,12 @@ class EnterWindow extends Window implements Logable {
                             //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
                             mode = GeneralController.checkLogin(userName, event.getLoginParameter("password"));
                             mainPage.changeMode(mode, userName);
+                            form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
+                            if(form != null){
+                                if(form.getInterview() == null){
+                                    HibernateFactory.getInstance().getStudentDAO().romoveForm(form);
+                                }
+                            }
                             loginForm.removeListener(this);
                             EnterWindow.this.close();
                         }
