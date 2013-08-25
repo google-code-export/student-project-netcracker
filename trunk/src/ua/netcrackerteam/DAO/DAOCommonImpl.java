@@ -159,7 +159,7 @@ public class DAOCommonImpl extends DAOCoreObject implements DAOCommon{
         }
     }
 
-    public StudentsMarks getStudentMark(int idForm, int idUserCategory) {
+    public StudentsMarks getStudentMark(int idForm, int idUserCategory){
         StudentsMarks currStudentsMark = new StudentsMarks();
         InterviewRes currInterviewRes = new InterviewRes();
         UserList currUser = new UserList();
@@ -172,21 +172,25 @@ public class DAOCommonImpl extends DAOCoreObject implements DAOCommon{
         currInterviewRes = super.executeSingleGetQuery(query, listOfParams);
         query = "from UserList where to_char(idUser)=to_char(:param0)";
         listOfParams.clear();
-            StudentsMarks currStMark = new StudentsMarks();
-            currStMark.setSqlKnowledge(currInterviewRes == null ? "" : currInterviewRes.getSqlKnowledge());
-            currStMark.setJavaKnowledge(currInterviewRes == null ? "" : currInterviewRes.getJavaKnowledge());
-            currStMark.setComment(currInterviewRes == null ? "" : currInterviewRes.getScore());
-            currStMark.setEnrollment        (currInterviewRes == null ? new EnrollmentScores():currInterviewRes.getEnrollmentScore());
-            String currUserName = "";
-            if (!(currInterviewRes == null)) {
-                listOfParams.add(currInterviewRes.getUser().getIdUser());
-                currUser = super.executeSingleGetQuery(query, listOfParams);
-                currUserName = currUser.getUserName();
-            }
-            currStMark.setInterviewerName   (currUserName);
-            currStMark.setGroupWork(currInterviewRes == null ? false:currInterviewRes.getWorkInTeam()==0 ? false: true);
+        StudentsMarks currStMark = null;
+        if (!(currInterviewRes == null)) {
+        currStMark = new StudentsMarks();
+        currStMark.setSqlKnowledge(currInterviewRes.getSqlKnowledge());
+        currStMark.setJavaKnowledge(currInterviewRes.getJavaKnowledge());
+        currStMark.setComment(currInterviewRes.getScore());
+        currStMark.setEnrollment(currInterviewRes.getEnrollmentScore());
+        String currUserName = "";
+        listOfParams.add(currInterviewRes.getUser().getIdUser());
+        currUser = super.executeSingleGetQuery(query, listOfParams);
+        currUserName = currUser.getUserName();
+        currStMark.setInterviewerName   (currUserName);
+        currStMark.setGroupWork(currInterviewRes.getWorkInTeam()==0 ? false: true);
         commitTransaction();
+        }
+
         return currStMark;
+
+
     }
 
     public List<EnrollmentScores> getEnrollmentScores() {

@@ -176,6 +176,8 @@ public class HRInterviewsLayout extends VerticalLayout {
     }
     
     private void editInterview() {
+
+
         Set<HRInterview> interviews = (Set<HRInterview>) table.getValue();
         if(interviews.size()==1)  {
             BottomLayout old = bottomLayout;

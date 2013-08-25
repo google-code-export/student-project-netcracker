@@ -571,9 +571,35 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     public void setHRMark(StudentsMarks currMark, int idForm) {
 
-        DAOCommonImpl currDAOCommon = new DAOCommonImpl();
-        boolean marksUpdate = !(currDAOCommon.getStudentMark(idForm, ID_USER_CATEGORY_HR) == null);
-
+        InterviewRes currInterviewRes = new InterviewRes();
+        UserList currUser = new UserList();
+        String query        = "";
+        List listOfParams   = new ArrayList();
+        listOfParams.add(idForm);
+        listOfParams.add(ID_USER_CATEGORY_HR);
+        beginTransaction();
+        query = "from InterviewRes where to_char(form) = to_char(:param0) and to_char(user.idUserCategory) = to_char(:param1)";
+        currInterviewRes = super.executeSingleGetQuery(query, listOfParams);
+        if (currInterviewRes == null) {
+            currInterviewRes = new InterviewRes();
+            listOfParams.clear();
+            listOfParams.add(idForm);
+            query = "from Form where to_char(idForm) = to_char(:param0)";
+            Form currFormForInsertResults = super.<Form>executeSingleGetQuery(query, listOfParams);
+            currInterviewRes.setForm(currFormForInsertResults);
+            listOfParams.clear();
+            listOfParams.add(51);
+            query = "from UserList where to_char(idUser) = to_char(:param0)";
+            UserList currHR = super.<UserList>executeSingleGetQuery(query,listOfParams);
+            currInterviewRes.setIdUser(currHR);
+        }
+        currInterviewRes.setScore(currMark.getComment());
+        currInterviewRes.setEnrollmentScore(currMark.getEnrollment());
+        currInterviewRes.setJavaKnowledge(currMark.getJavaKnowledge());
+        currInterviewRes.setSqlKnowledge(currMark.getSqlKnowledge());
+        currInterviewRes.setWorkInTeam(currMark.getGroupWork()==true ? 1:0);
+        super.saveUpdatedObject(currInterviewRes);
+        commitTransaction();
 
     }
 

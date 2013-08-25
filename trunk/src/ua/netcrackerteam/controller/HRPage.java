@@ -482,13 +482,13 @@ public class HRPage {
 
     public StudentsMarks getHRStudentMarksByFormID(int idForm) {
         DAOCommonImpl currDAO = new DAOCommonImpl();
-        StudentsMarks hrStudentMark = currDAO.getStudentMark(idForm, ID_USER_CATEGORY_HR);
+        StudentsMarks hrStudentMark = (currDAO.getStudentMark(idForm, ID_USER_CATEGORY_HR)==null ? new StudentsMarks():currDAO.getStudentMark(idForm, ID_USER_CATEGORY_HR));
         return hrStudentMark;
     }
 
     public StudentsMarks getInterviewerMarksByFormID(int idForm) {
         DAOCommonImpl currDAO = new DAOCommonImpl();
-        StudentsMarks interviewerStudentMark = currDAO.getStudentMark(idForm, ID_USER_CATEGORY_INTERVIEWER);
+        StudentsMarks interviewerStudentMark = (currDAO.getStudentMark(idForm, ID_USER_CATEGORY_INTERVIEWER)==null ? new StudentsMarks():currDAO.getStudentMark(idForm, ID_USER_CATEGORY_INTERVIEWER));
         return interviewerStudentMark;
     }
 
@@ -499,6 +499,7 @@ public class HRPage {
     }
 
     public void saveHRMarks(StudentsMarks studentsMarks, int studentFormId) {
-
+        DAOHRImpl currDAO = new DAOHRImpl();
+        currDAO.setHRMark(studentsMarks, studentFormId);
     }
 }
