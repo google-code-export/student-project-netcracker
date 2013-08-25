@@ -3,18 +3,22 @@ package ua.netcrackerteam.DAO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ua.netcrackerteam.DAO.Entities.EnrollmentScores;
+import ua.netcrackerteam.DAO.Entities.InterviewRes;
 import ua.netcrackerteam.DAO.Entities.UserCategory;
 import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateUtil;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 /**
  *
  */
-public class DAOCommonImpl implements DAOCommon{
+public class DAOCommonImpl extends DAOCoreObject implements DAOCommon{
     @Override
     public void setUser(String userName,
                         String userPassword,
@@ -153,5 +157,44 @@ public class DAOCommonImpl implements DAOCommon{
                 session.close();
             }
         }
+    }
+
+    public StudentsMarks getStudentMark(int idForm, int idUserCategory) {
+        StudentsMarks currStudentsMark = new StudentsMarks();
+        InterviewRes currInterviewRes = new InterviewRes();
+        UserList currUser = new UserList();
+        String query        = "";
+        List listOfParams   = new ArrayList();
+        listOfParams.add(idForm);
+        listOfParams.add(idUserCategory);
+        beginTransaction();
+        query = "from InterviewRes where to_char(form) = to_char(:param0) and to_char(user.idUserCategory) = to_char(:param1)";
+        currInterviewRes = super.executeSingleGetQuery(query, listOfParams);
+        query = "from UserList where to_char(idUser)=to_char(:param0)";
+        listOfParams.clear();
+            StudentsMarks currStMark = new StudentsMarks();
+            currStMark.setSqlKnowledge(currInterviewRes == null ? "" : currInterviewRes.getSqlKnowledge());
+            currStMark.setJavaKnowledge(currInterviewRes == null ? "" : currInterviewRes.getJavaKnowledge());
+            currStMark.setComment(currInterviewRes == null ? "" : currInterviewRes.getScore());
+            currStMark.setEnrollment        (currInterviewRes == null ? new EnrollmentScores():currInterviewRes.getEnrollmentScore());
+            String currUserName = "";
+            if (!(currInterviewRes == null)) {
+                listOfParams.add(currInterviewRes.getUser().getIdUser());
+                currUser = super.executeSingleGetQuery(query, listOfParams);
+                currUserName = currUser.getUserName();
+            }
+            currStMark.setInterviewerName   (currUserName);
+            currStMark.setGroupWork(currInterviewRes == null ? false:currInterviewRes.getWorkInTeam()==0 ? false: true);
+        commitTransaction();
+        return currStMark;
+    }
+
+    public List<EnrollmentScores> getEnrollmentScores() {
+        List<EnrollmentScores> currEnrolls = new ArrayList<EnrollmentScores>();
+        String query = "";
+        beginTransaction();
+        query = "from EnrollmentScores";
+        currEnrolls = super.executeListGetQuery(query);
+        return currEnrolls;
     }
 }

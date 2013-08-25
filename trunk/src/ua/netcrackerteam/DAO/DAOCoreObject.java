@@ -109,6 +109,20 @@ public class DAOCoreObject {
         return object;
     }
 
+    public List<Object[]> executeObjectListGetSQLQuery(String inputQuery, List listOfParameters){
+        List object = new ArrayList();
+        try {
+            query = session.createSQLQuery(inputQuery);
+            for (int i = 0; i < listOfParameters.size(); i++) {
+                query.setParameter("param" + String.valueOf(i), listOfParameters.get(i));
+            }
+            object = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return object;
+    }
+
     public <T> void saveUpdatedObject(T updatedObjects) {
         try {
             session.saveOrUpdate(updatedObjects);

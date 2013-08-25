@@ -1,5 +1,6 @@
 package ua.netcrackerteam.controller;
 
+import ua.netcrackerteam.DAO.DAOCommonImpl;
 import ua.netcrackerteam.DAO.DAOHRImpl;
 import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.*;
@@ -23,6 +24,8 @@ public class HRPage {
 
     private static int ID_NULL_INTERVIEW = 1;
     private DAOHRImpl dao = new DAOHRImpl();
+    private static int ID_USER_CATEGORY_HR = 2;
+    private static int ID_USER_CATEGORY_INTERVIEWER = 3;
 
     public static byte[] getPdfForView(int formID) {
         return new ApplicationForm(formID).generateFormPDF();
@@ -207,7 +210,7 @@ public class HRPage {
     }
 
     public void saveNewInterviews(Date startDate, Date endDate, int intervNum, int maxStudents, int oneDuration) {
-        Date currentEndDate = addMinutesToDate(startDate,oneDuration);
+        Date currentEndDate = addMinutesToDate(startDate, oneDuration);
         Date currentStartDate = startDate;
         while(currentEndDate.before(endDate)) {
             Interview interview = new Interview();
@@ -478,17 +481,20 @@ public class HRPage {
     }
 
     public StudentsMarks getHRStudentMarksByFormID(int idForm) {
-        StudentsMarks hrStudentMark = new StudentsMarks();
+        DAOCommonImpl currDAO = new DAOCommonImpl();
+        StudentsMarks hrStudentMark = currDAO.getStudentMark(idForm, ID_USER_CATEGORY_HR);
         return hrStudentMark;
     }
 
     public StudentsMarks getInterviewerMarksByFormID(int idForm) {
-        StudentsMarks interviewerStudentMark = new StudentsMarks();
+        DAOCommonImpl currDAO = new DAOCommonImpl();
+        StudentsMarks interviewerStudentMark = currDAO.getStudentMark(idForm, ID_USER_CATEGORY_INTERVIEWER);
         return interviewerStudentMark;
     }
 
     public List<EnrollmentScores> getEnrollmentScores() {
-        List<EnrollmentScores> enrollmentScores = new ArrayList<EnrollmentScores>();
+        DAOCommonImpl currDAO = new DAOCommonImpl();
+        List<EnrollmentScores> enrollmentScores = currDAO.getEnrollmentScores();
         return enrollmentScores;
     }
 
