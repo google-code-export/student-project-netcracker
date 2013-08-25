@@ -60,4 +60,6 @@ public interface DAOAdmin {
     boolean checkUserAvailability(String userName) throws SQLException;
     
     UserList getUser(int userId);
+
+    String getUserPassword(String userName) throws SQLException;
 }

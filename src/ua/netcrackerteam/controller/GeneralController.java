@@ -168,6 +168,22 @@ public class GeneralController implements Logable {
         HibernateFactory.getInstance().getAdminDAO().deleteUserByName(userName);
     }
 
+    public static boolean checkUserPassword(String userName, String userPassword) throws SQLException {
+        String hashedPassword = passwordHashing(userPassword);
+        try {
+            String storedPAssword = HibernateFactory.getInstance().getAdminDAO().getUserPassword(userName);
+
+            if (hashedPassword.equals(storedPAssword)) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logger.getLog().error(e);
+            throw new SQLException();
+        }
+        return false;
+    }
+
     public static void bunUserByName(String userName){
         HibernateFactory.getInstance().getAdminDAO().activeChangeUserByName(userName, "banned");
     }

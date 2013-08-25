@@ -15,8 +15,13 @@ public enum SystemMessages {
 
     LOGIN_ERROR("Логин и/или пароль не верны!", Notification.TYPE_TRAY_NOTIFICATION),
 
+    PASSWORD_ERROR("Неверный текущий пароль !", Notification.TYPE_TRAY_NOTIFICATION),
+
     REGISTRATION_SUCCESSFUL("Регистрация пользователя {0} завершена успешно!",  Notification.TYPE_TRAY_NOTIFICATION,
-            "На ваш email выслано письмо с регистрационными данными. Теперы Вы можете зайти под своим логином.", Notification.POSITION_CENTERED);
+            "На ваш email выслано письмо с регистрационными данными. Теперы Вы можете зайти под своим логином.", Notification.POSITION_CENTERED),
+
+    CHANGE_PASSWORD_SUCCESSFUL("Изменение пароля юзера завершено успешно!",  Notification.TYPE_TRAY_NOTIFICATION,
+            "На email юзера {0} выслано письмо с новым паролем. Теперь юзер может зайти под своими новыми аккаунт данными.", Notification.POSITION_CENTERED);
 
     private String caption;
     private String description;

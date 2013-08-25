@@ -74,6 +74,7 @@ class EnterWindow extends Window implements Logable {
                     return;
                 } catch(RuntimeException e){
                     mainPage.getMainWindow().showNotification(RUNTIME_ERROR.getNotification());
+                    mainPage.getMainWindow().executeJavaScript("window.location.reload();");
                     return;
                 }
 

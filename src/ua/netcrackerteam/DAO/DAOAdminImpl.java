@@ -96,6 +96,21 @@ public class DAOAdminImpl extends DAOCoreObject implements DAOAdmin{
     }
 
     @Override
+    public String getUserPassword(String userName) throws SQLException {
+        try {
+            beginTransaction();
+            List listOfParam = new ArrayList();
+            listOfParam.add(userName);
+            String getUserPasswordQuery = "from UserList where userName = :param0";
+            UserList userList = executeSingleGetQuery(getUserPasswordQuery, listOfParam);
+            commitTransaction();
+            return userList.getPassword();
+        } catch (Exception e) {
+            throw new SQLException();
+        }
+    }
+
+    @Override
     public List getUsersBanned(){
         beginTransaction();
         String getUsersBannedQuery = "from UserList where active = 'banned'";
