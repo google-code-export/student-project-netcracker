@@ -32,8 +32,53 @@ public class InterviewRes implements Serializable {
     @JoinColumn(name = "ID_USER")
     private UserList user;
 
+    @ManyToOne(fetch = FetchType.EAGER,optional=true)
+    @JoinColumn(name = "ID_ENROLLMENT_SCORE")
+    private EnrollmentScores enrollmentScore;
+
     @Column(name= "SCORE")
     private String score;
+
+    @Column(name= "WORK_IN_TEAM")
+    private int workInTeam;
+
+    @Column(name= "SQL_KNOWLEDGE")
+    private String sqlKnowledge;
+
+    @Column(name= "JAVA_KNOWLEDGE")
+    private String javaKnowledge;
+
+    public EnrollmentScores getEnrollmentScore() {
+        return enrollmentScore;
+    }
+
+    public void setEnrollmentScore(EnrollmentScores enrollmentScore) {
+        this.enrollmentScore = enrollmentScore;
+    }
+
+    public int getWorkInTeam() {
+        return workInTeam;
+    }
+
+    public void setWorkInTeam(int workInTeam) {
+        this.workInTeam = workInTeam;
+    }
+
+    public String getSqlKnowledge() {
+        return sqlKnowledge;
+    }
+
+    public void setSqlKnowledge(String sqlKnowledge) {
+        this.sqlKnowledge = sqlKnowledge;
+    }
+
+    public String getJavaKnowledge() {
+        return javaKnowledge;
+    }
+
+    public void setJavaKnowledge(String javaKnowledge) {
+        this.javaKnowledge = javaKnowledge;
+    }
 
     public Integer getIdInterviewRes() {
         return idInterviewRes;

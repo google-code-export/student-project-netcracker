@@ -11,7 +11,8 @@ import java.io.Serializable;
  * Time: 22:39
  * To change this template use File | Settings | File Templates.
  */
-
+@Entity
+@Table(name="ENROLLMENT_SCORES")
 public class EnrollmentScores implements Serializable {
     private static final long serialVersionUID = -3235404536546181452L;
 

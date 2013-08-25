@@ -31,6 +31,7 @@
       <mapping class="ua.netcrackerteam.DAO.Entities.AuditInterview" />
       <mapping class="ua.netcrackerteam.DAO.Entities.ActionCategories" />
       <mapping class="ua.netcrackerteam.DAO.Entities.HrTempInfo" />
+      <mapping class="ua.netcrackerteam.DAO.Entities.EnrollmentScores" />
 
   </session-factory>
 </hibernate-configuration>

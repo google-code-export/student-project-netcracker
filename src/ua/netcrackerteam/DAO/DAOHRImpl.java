@@ -2,6 +2,7 @@ package ua.netcrackerteam.DAO;
 
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.controller.bean.DifferenceData;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -12,6 +13,8 @@ import java.util.List;
  * @author Kushnirenko Anna, Filipenko Aleksey
  */
 public class DAOHRImpl extends DAOCoreObject implements DAOHR {
+
+    public static int ID_USER_CATEGORY_HR = 2;
 
     @Override
     public List<Form> search(String category, String value) {
@@ -564,6 +567,14 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfParams.add(currFormId);
         currForm = super.<Form>executeSingleGetQuery(query,listOfParams);
         return currForm;
+    }
+
+    public void setHRMark(StudentsMarks currMark, int idForm) {
+
+        DAOCommonImpl currDAOCommon = new DAOCommonImpl();
+        boolean marksUpdate = !(currDAOCommon.getStudentMark(idForm, ID_USER_CATEGORY_HR) == null);
+
+
     }
 
     public List<DifferenceData> getDiff(int currUserId) {
