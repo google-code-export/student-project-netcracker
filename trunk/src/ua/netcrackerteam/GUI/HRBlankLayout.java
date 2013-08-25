@@ -18,6 +18,10 @@ import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
+import ua.netcrackerteam.util.xls.source.UserInfoXlsSource;
+import ua.netcrackerteam.util.zip.entity.ZipContentFile;
+import ua.netcrackerteam.util.zip.source.ZipSource;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -158,7 +162,7 @@ public class HRBlankLayout extends VerticalLayout {
         generateXls.addListener(new Button.ClickListener() {
 
             public void buttonClick(Button.ClickEvent event) {
-                controller.generateXls();
+                generateXls();
             }
         });
         return generateXls;
@@ -171,7 +175,7 @@ public class HRBlankLayout extends VerticalLayout {
         generateZip.addListener(new Button.ClickListener() {
 
             public void buttonClick(Button.ClickEvent event) {
-                controller.generateZip();
+                generateZip();
             }
         });
         return generateZip;
@@ -519,6 +523,24 @@ public class HRBlankLayout extends VerticalLayout {
             }
         }
 
+    }
+
+    public void generateZip() {
+        List<ZipContentFile> zipContentFileList = controller.getStudentsPhotosForZip();
+
+        StreamResource.StreamSource streamSource = new ZipSource(zipContentFileList);
+        StreamResource streamResource = new StreamResource(streamSource, "student_photos.zip", getApplication());
+
+        getWindow().open(streamResource);
+    }
+
+    public void generateXls() {
+        List<XlsUserInfo> xlsUserList = controller.getStudentssListForXls();
+
+        StreamResource.StreamSource streamSource = new UserInfoXlsSource(xlsUserList);
+        StreamResource streamResource = new StreamResource(streamSource, "students.xls", getApplication());
+
+        getWindow().open(streamResource);
     }
 
     private class StudentsTable extends Table {

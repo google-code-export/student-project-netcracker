@@ -8,6 +8,8 @@ import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.bean.*;
 import ua.netcrackerteam.controller.exceptions.HRException;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
+import ua.netcrackerteam.util.zip.entity.ZipContentFile;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -195,10 +197,14 @@ public class HRPage {
         return intervList;
     }
 
-    public void generateZip() {
+    public List<XlsUserInfo> getStudentssListForXls() {
+        List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
+        return xlsUserList;
     }
 
-    public void generateXls() {
+    public List<ZipContentFile> getStudentsPhotosForZip() {
+        List<ZipContentFile> zipContentFileList = new ArrayList<ZipContentFile>();
+        return zipContentFileList;
     }
 
     public class CustomComparator implements Comparator<HRInterview> {
