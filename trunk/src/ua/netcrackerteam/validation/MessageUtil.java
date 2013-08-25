@@ -11,8 +11,10 @@ import java.text.MessageFormat;
 public class MessageUtil {
 
     public static Notification compositeNotification(Notification notification, Object ... arguments){
-       String fullCaption = MessageFormat.format(notification.getCaption(), arguments);
-       notification.setCaption(fullCaption);
-       return notification;
+        String fullCaption = MessageFormat.format(notification.getCaption(), arguments);
+        String fullDesc = MessageFormat.format(notification.getDescription(), arguments);
+        notification.setCaption(fullCaption);
+        notification.setDescription(fullDesc);
+        return notification;
     }
 }
