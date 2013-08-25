@@ -195,6 +195,12 @@ public class HRPage {
         return intervList;
     }
 
+    public void generateZip() {
+    }
+
+    public void generateXls() {
+    }
+
     public class CustomComparator implements Comparator<HRInterview> {
         @Override
         public int compare(HRInterview o1, HRInterview o2) {

@@ -61,7 +61,7 @@ public class HRBlankLayout extends VerticalLayout {
     private void fillInterviewsLayout() {
         HorizontalSplitPanel splitH = new HorizontalSplitPanel();
         splitH.setStyleName(Runo.SPLITPANEL_REDUCED);
-        splitH.setSplitPosition(200, Sizeable.UNITS_PIXELS);
+        splitH.setSplitPosition(240, Sizeable.UNITS_PIXELS);
         addComponent(splitH);
 
         Panel sidebar = new Panel("Навигация");
@@ -77,14 +77,21 @@ public class HRBlankLayout extends VerticalLayout {
         sidebar.setHeight("100%");
         accordion = new Accordion();
         accordion.setSizeFull();
-        accordion.addTab(getTreeMenu(), "Списки");
+        accordion.addTab(getMenuLayout(), "Списки");
         accordion.addTab(getSearchLayout(), "Быстрый поиск");
-        accordion.addTab(getFunctionsMenu(), "Функции");
         sidebar.setContent(accordion);
     }
 
-    private Component getFunctionsMenu() {
-        return new VerticalLayout();
+    private VerticalLayout getMenuLayout() {
+        VerticalLayout menuLayout = new VerticalLayout();
+        menuLayout.addComponent(getTreeMenu());
+        VerticalLayout buttonsLayout = new VerticalLayout();
+        buttonsLayout.setMargin(true);
+        buttonsLayout.setSpacing(true);
+        buttonsLayout.addComponent(getGenerateXlsButton());
+        buttonsLayout.addComponent(getGenerateZipButton());
+        menuLayout.addComponent(buttonsLayout);
+        return menuLayout;
     }
 
     private void fillRightPanel() {
@@ -141,8 +148,33 @@ public class HRBlankLayout extends VerticalLayout {
             buttonsLayout.addComponent(getShowFormsDifferenceButton());
             buttonsLayout.addComponent(getAcceptButton());
         }
-
         return buttonsLayout;
+    }
+
+    private Component getGenerateXlsButton() {
+        Button generateXls = new Button("Скачать таблицу в Exel");
+        generateXls.setWidth(200,UNITS_PIXELS);
+        generateXls.setIcon(new ThemeResource("icons/32/document-excel-icon.png"));
+        generateXls.addListener(new Button.ClickListener() {
+
+            public void buttonClick(Button.ClickEvent event) {
+                controller.generateXls();
+            }
+        });
+        return generateXls;
+    }
+
+    private Component getGenerateZipButton() {
+        Button generateZip = new Button("Загрузить фото в Zip");
+        generateZip.setWidth(200,UNITS_PIXELS);
+        generateZip.setIcon(new ThemeResource("icons/32/Zip-icon.png"));
+        generateZip.addListener(new Button.ClickListener() {
+
+            public void buttonClick(Button.ClickEvent event) {
+                controller.generateZip();
+            }
+        });
+        return generateZip;
     }
 
     private Component getDeleteFormButton() {
@@ -406,7 +438,7 @@ public class HRBlankLayout extends VerticalLayout {
         if (selectedObject instanceof StudentInterview) {
             StudentInterview stInterview = (StudentInterview) selectedObject;
             stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
-            state = FormState.VALIDATED;
+            state = FormState.SCHEDULED;
         } else if (selectedObject.equals(allFormsTreeItem)) {
             stData = HRPage.getAllForms();
             state = FormState.VALIDATED;
@@ -415,7 +447,7 @@ public class HRBlankLayout extends VerticalLayout {
             state = FormState.NOT_CHECKED;
         } else if (selectedObject instanceof List) {
             stData = (List<StudentDataShort>) selectedObject;
-            state = FormState.VALIDATED;
+            state = FormState.SEARCHED;
         }
         BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
         StudentsTable oldTable = table;
@@ -425,7 +457,7 @@ public class HRBlankLayout extends VerticalLayout {
     }
 
     private enum FormState {
-        VALIDATED, NOT_CHECKED
+        VALIDATED, SCHEDULED, SEARCHED, NOT_CHECKED
     }
 
     private enum SelectMode {
