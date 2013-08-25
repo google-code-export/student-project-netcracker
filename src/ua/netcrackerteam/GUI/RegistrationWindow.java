@@ -7,14 +7,13 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
-
 import ua.netcrackerteam.controller.GeneralController;
 import ua.netcrackerteam.validation.FormValidator;
 import ua.netcrackerteam.validation.MessageUtil;
-import static ua.netcrackerteam.validation.SystemMessages.REGISTRATION_SUCCESSFUL;
-import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
 
 import java.sql.SQLException;
+
+import static ua.netcrackerteam.validation.SystemMessages.*;
 
 /**
  * @author akush_000
@@ -29,6 +28,7 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener {
     private VerticalLayout layout;
     private Button okBut;
     private FormValidator formValidator;
+    private GreetingsWindow greetingsWindow;
 
     public RegistrationWindow(MainPage mainPage) {
         this.mainPage = mainPage;
@@ -103,6 +103,8 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener {
         if (isValid()) {
             try{
                 GeneralController.setUsualUser(username.toString(), password.toString(), email.toString());
+                greetingsWindow = new GreetingsWindow(mainPage, username);
+                getParent().addWindow(greetingsWindow);
                 close();
                 mainPage.getMainWindow().showNotification(MessageUtil.compositeNotification(REGISTRATION_SUCCESSFUL.getNotification(), username));
             } catch (SQLException e){
