@@ -177,7 +177,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             status = 2;
         }
     }
-    
+
   
     private void persInfoPanelFill() {
         
@@ -991,7 +991,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                             //stData.setStudentWorkTypeOther((String)anotherWorkType.getValue());
                             setEditable(false);
                             StudentPage.addNewForm(stData, username, status, editorName);
-                            if (!isInEditMode) { 
+                            if (!isInEditMode) {
                             	hlayout.addComponent(navigateToInterview);
                             	confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
                             	getWindow().addWindow(confirmationToInterviewTime);

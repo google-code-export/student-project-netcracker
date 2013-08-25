@@ -3,9 +3,6 @@ package ua.netcrackerteam.GUI;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 /**
  * @author AlexK
  * @version 1.0.0
@@ -30,7 +27,7 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
         setWidth("30%");
         setResizable(false);
         center();
-        CONFIRMATION_MESSAGE = "Анкета сохранена успешно! " + userName + ", хотите выбрать время собеседования сейчас?";
+        CONFIRMATION_MESSAGE = userName + "выбирите время собеседования, иначе анкета не будет сохранена !";
         initButtons();
         initLayouts();
     }
