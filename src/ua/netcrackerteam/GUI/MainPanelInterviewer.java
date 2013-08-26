@@ -19,6 +19,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
 import ua.netcrackerteam.controller.bean.StudentInterview;
@@ -32,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.controller.RegistrationToInterview;
+import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 /**
  * Panel for Interviewer view
@@ -46,10 +48,8 @@ public class MainPanelInterviewer extends MainPanel{
     private static final List<String> categories = Arrays.asList(new String[] { "Фамилия", "Имя", "Номер анкеты",
             "ВУЗ", "Курс", "Факультет", "Кафедра" });
 
-    private TextArea markField;
     private Panel rightPanel;
     private StudentsTable table;
-    private Button saveEdit;
     private Link pdfLink;
     private VerticalLayout bottomLayout;
     private final String username;
@@ -58,6 +58,7 @@ public class MainPanelInterviewer extends MainPanel{
     private Tree tree;
     private TextField searchField;
     private SettingsLayout settingsLayout;
+    private HRPage hrcontroller = new HRPage();
     
     private RegistrationToInterview registration = new RegistrationToInterview();
     
@@ -128,26 +129,19 @@ public class MainPanelInterviewer extends MainPanel{
         table = new StudentsTable(bean);
         rightPanel.addComponent(table);
 
-        bottomLayout = new VerticalLayout();
-        bottomLayout.setSpacing(true);
-        bottomLayout.setMargin(true);
+        bottomLayout = getBottomLayout();
         bottomLayout.setVisible(false);
         rightPanel.addComponent(bottomLayout);
-        
-        markField = new TextArea("Оценка интервьюера:");
-        markField.setWidth("100%");
-        markField.setRequired(true);
-        markField.setRows(4);
-        bottomLayout.addComponent(markField);
-        
-        pdfLink = new Link();
-        bottomLayout.addComponent(pdfLink);
-        
-        saveEdit = new Button();
-        saveEdit.addListener(new SaveOrEditButtonListener());
-        saveEdit.setWidth("150");
-        bottomLayout.addComponent(saveEdit);
-        bottomLayout.setComponentAlignment(saveEdit, Alignment.MIDDLE_CENTER);
+    }
+
+    private Component getInterviewerMarkLayout() {
+        StudentsMarks interviewerMarks = hrcontroller.getInterviewerMarksByFormID(currFormID);
+        interviewerMarks.setInterviewerName(username);
+        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, currFormID);
+        if(!interviewerMarks.getComment().equals("")) {
+            markLayout.setReadOnly(true);
+        }
+        return markLayout;
     }
 
     private Component getTreeMenu() {
@@ -216,15 +210,7 @@ public class MainPanelInterviewer extends MainPanel{
         pdf.setIcon(icon);
         return pdf;
     }
-    
-    private TextArea getMarkField() {
-        TextArea markField = new TextArea("Оценка интервьюера:");
-        markField.setWidth("100%");
-        markField.setRequired(true);
-        markField.setRows(4);
-        return markField;
-    }
-    
+
     private void refreshTable(List<StudentDataShort> stData) {
             BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
             StudentsTable oldTable = table;
@@ -237,7 +223,6 @@ public class MainPanelInterviewer extends MainPanel{
             
         @Override
         public InputStream getStream() {
-            //return new ByteArrayInputStream(InterviewerPage.getPdfForView(currFormID));
             ApplicationForm form = new ApplicationForm(currFormID);
             return new ByteArrayInputStream(form.generateFormPDF());
         } 
@@ -282,50 +267,27 @@ public class MainPanelInterviewer extends MainPanel{
         public void valueChange(ValueChangeEvent event) {
             StudentDataShort student = (StudentDataShort) event.getProperty().getValue();
             if (student != null) {
-                bottomLayout.setVisible(true);
                 currFormID = student.getIdForm();
-                
-                TextArea oldMarkField = markField;
-                markField = getMarkField();
-                markField.setValue(InterviewerPage.getStudentMark(currFormID, username));
-                bottomLayout.replaceComponent(oldMarkField, markField);
-                
-                if(markField.getValue().equals("")) {
-                    markField.setReadOnly(false);
-                    saveEdit.setCaption("Сохранить");
-                } else {
-                    markField.setReadOnly(true);
-                    saveEdit.setCaption("Редактировать");
-                }
-                
-                Link oldPDFLink = pdfLink;
-                pdfLink = getPDFLink();
-                bottomLayout.replaceComponent(oldPDFLink, pdfLink);
+                Component oldBottomLayout = bottomLayout;
+                rightPanel.replaceComponent(oldBottomLayout, getBottomLayout());
+
             } else {
                 bottomLayout.setVisible(false);
             }
         }
         
     }
-    
-    private class SaveOrEditButtonListener implements Button.ClickListener {
 
-        @Override
-        public void buttonClick(ClickEvent event) {
-            if (saveEdit.getCaption().equals("Сохранить") && markField.isValid()) {
-                InterviewerPage.setStudentMark(currFormID,username,markField.getValue().toString());
-                markField.setReadOnly(true);
-                saveEdit.setCaption("Редактировать");
-            } else if (saveEdit.getCaption().equals("Редактировать")) {
-                markField.setReadOnly(false);
-                saveEdit.setCaption("Сохранить");
-            } else {
-                getWindow().showNotification("Введите оценку!",Window.Notification.TYPE_TRAY_NOTIFICATION);
-            }
-        }
-        
+    private VerticalLayout getBottomLayout() {
+        bottomLayout = new VerticalLayout();
+        bottomLayout.setSpacing(true);
+        bottomLayout.setMargin(true);
+        pdfLink = getPDFLink();
+        bottomLayout.addComponent(pdfLink);
+        bottomLayout.addComponent(getInterviewerMarkLayout());
+        return bottomLayout;
     }
-    
+
     private class StudentsTable extends Table {
         
         public Object[] NATURAL_COL_ORDER = new Object[] {
