@@ -9,6 +9,7 @@ import ua.netcrackerteam.controller.bean.*;
 import ua.netcrackerteam.controller.exceptions.HRException;
 import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 import ua.netcrackerteam.util.zip.entity.ZipContentFile;
+import ua.netcrackerteam.util.zip.entity.ZipContentImage;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -213,9 +214,20 @@ public class HRPage {
     }
 
     public List<ZipContentFile> getStudentsPhotosForZip() {
-        List<ZipContentFile> zipContentFileList = new ArrayList<ZipContentFile>();
-        
-        return zipContentFileList;
+    	   List<ZipContentFile> zipContentFileList = new ArrayList<ZipContentFile>();
+           List<Form> forms =  new DAOHRImpl().getAllRegisteredForms();
+           Iterator<Form> it = forms.iterator();
+           while(it.hasNext())
+           {
+           	Form form = it.next();
+           	StudentData sd = StudentPage.getStudentDataByIdForm(form.getIdForm());
+           	byte[] photo = sd.getPhoto();
+           	String nameFile = "Anketa_#" + form.getIdForm() + ".jpg";
+           	ZipContentFile file = new ZipContentImage( nameFile, photo);
+           	zipContentFileList.add(file);
+           }
+           
+           return zipContentFileList;
     }
 
     public class CustomComparator implements Comparator<HRInterview> {

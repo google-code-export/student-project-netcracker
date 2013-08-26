@@ -22,6 +22,8 @@ public class ZipSource implements ZipSourceI {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         ZipOutputStream zipOutputStream = new ZipOutputStream(new BufferedOutputStream(outputStream));
+      
+       
         try {
             for (ZipContentFile zipContentFile : files) {
                 zipContentFile.writeToZip(zipOutputStream);
