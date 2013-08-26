@@ -35,14 +35,8 @@ public class StudentsFullTable extends Table {
         setContainerDataSource(dataSource);
         setColumnReorderingAllowed(true);
         setColumnCollapsingAllowed(true);
-        setColumnCollapsed("number2", true);
-        setColumnCollapsed("secondName", true);
-        setColumnCollapsed("email2", true);
         setVisibleColumns(NATURAL_COL_ORDER);
         setColumnHeaders(COL_HEADERS_RUSSIAN);
-//        setColumnExpandRatio("studentInstitute", 3);
-//        setColumnExpandRatio("studentFaculty", 2);
-//        setColumnExpandRatio("studentInstituteCourse", 1);
     }
 
 }
