@@ -55,7 +55,7 @@ public class HRBlankLayout extends VerticalLayout {
 
     public HRBlankLayout(final HeaderLayout hlayout, final MainPage mainPage) {
         this.mainPage = mainPage;
-        this.username = hlayout.getUsername();
+        this.username = hlayout.getUserName();
         fillInterviewsLayout();
     }
 
@@ -524,6 +524,7 @@ public class HRBlankLayout extends VerticalLayout {
 
                 Component oldBottomLayout = bottomLayout;
                 rightPanel.replaceComponent(oldBottomLayout, getBottomLayout());
+
             } else {
                 bottomLayout.setVisible(false);
             }
