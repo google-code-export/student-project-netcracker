@@ -51,6 +51,7 @@ public class HRBlankLayout extends VerticalLayout {
     private FormState state = FormState.VALIDATED;
     private SelectMode selectMode = SelectMode.ONE;
     private XlsUserInfo selectedStudent;
+    private SelectStudentListener listener = new SelectStudentListener();
 
     public HRBlankLayout(final HeaderLayout hlayout, final MainPage mainPage) {
         this.mainPage = mainPage;
@@ -101,8 +102,7 @@ public class HRBlankLayout extends VerticalLayout {
         vl.setSpacing(true);
         List<XlsUserInfo> stData = controller.getStData();
         BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
-        table = new StudentsFullTable(bean);
-        table.addListener(new SelectStudentListener());
+        table = new StudentsFullTable(bean,listener,true);
         rightPanel.addComponent(table);
         rightPanel.addComponent(getBottomLayout());
         bottomLayout.setVisible(false);
@@ -130,7 +130,7 @@ public class HRBlankLayout extends VerticalLayout {
     private Component getHRMarkLayout() {
         selectedStudent.setHr1(username);
         Component markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.HR);
-        if (!selectedStudent.getComment1().equals("")) {
+        if (!selectedStudent.getComment1().equals("-")) {
             markLayout.setReadOnly(true);
         }
         return markLayout;
@@ -424,14 +424,6 @@ public class HRBlankLayout extends VerticalLayout {
         return pdf;
     }
 
-    private TextArea getMarkField() {
-        TextArea markField = new TextArea("Оценка интервьюера:");
-        markField.setWidth("100%");
-        markField.setRequired(true);
-        markField.setRows(4);
-        return markField;
-    }
-
     private void refreshTable(Object selectedMenuItem) {
         Object selectedObject = selectedMenuItem;
         List<XlsUserInfo> stData = new ArrayList<XlsUserInfo>();
@@ -451,7 +443,7 @@ public class HRBlankLayout extends VerticalLayout {
         }
         BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
         StudentsFullTable oldTable = table;
-        table = new StudentsFullTable(bean);
+        table = new StudentsFullTable(bean,listener,true);
         rightPanel.replaceComponent(oldTable, table);
         bottomLayout.setVisible(false);
     }
@@ -531,7 +523,6 @@ public class HRBlankLayout extends VerticalLayout {
 
                 Component oldBottomLayout = bottomLayout;
                 rightPanel.replaceComponent(oldBottomLayout, getBottomLayout());
-
             } else {
                 bottomLayout.setVisible(false);
             }

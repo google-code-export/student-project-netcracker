@@ -157,8 +157,8 @@ public class MarksLayout extends VerticalLayout {
         } else {
             commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("work_in_team2"));
         }
-        Boolean yesItem = true;
-        Boolean noItem = false;
+        Integer yesItem = 1;
+        Integer noItem = 0;
         commandWork.addItem(yesItem);
         commandWork.addItem(noItem);
         commandWork.setItemCaption(yesItem, "Да");
@@ -176,7 +176,6 @@ public class MarksLayout extends VerticalLayout {
         } else {
             enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("result2"));
         }
-        enrollmentScores.setItemCaptionPropertyId("NAME");
         enrollmentScores.setNullSelectionAllowed(false);
         List<String> scoresList = controller.getEnrollmentScores();
         BeanItemContainer<String> objects = new BeanItemContainer<String>(String.class, scoresList);

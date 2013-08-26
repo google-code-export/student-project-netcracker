@@ -25,18 +25,19 @@ public class StudentsFullTable extends Table {
             "Курс", "Специальность", "ВУЗ",
             "e-mail", "e-mail 2", "телефон"};
 
-    public StudentsFullTable(Container dataSource) {
+    public StudentsFullTable(Container dataSource, ValueChangeListener listener, boolean isMultiselect) {
         super();
         setWidth("100%");
         setHeight(300, UNITS_PIXELS);
         setSelectable(true);
         setImmediate(true);
-        setMultiSelect(true);
+        setMultiSelect(isMultiselect);
         setContainerDataSource(dataSource);
         setColumnReorderingAllowed(true);
         setColumnCollapsingAllowed(true);
         setVisibleColumns(NATURAL_COL_ORDER);
         setColumnHeaders(COL_HEADERS_RUSSIAN);
+        addListener(listener);
     }
 
 }
