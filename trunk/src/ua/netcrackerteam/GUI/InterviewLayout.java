@@ -58,7 +58,7 @@ class InterviewLayout extends VerticalLayout {
         save.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                if (daySelector.getOldTimeSelector().getValue() != null || selectedInterview.equals(nullInterview)) {
+                if (daySelector.getOldTimeSelector().getValue() != null || (selectedInterview != null && selectedInterview.equals(nullInterview))) {
                     saveInterview();
                 } else {
                     getWindow().showNotification("Выберите время собеседования!", Window.Notification.TYPE_TRAY_NOTIFICATION);
