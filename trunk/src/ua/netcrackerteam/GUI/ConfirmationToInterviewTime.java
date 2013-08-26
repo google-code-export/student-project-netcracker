@@ -11,7 +11,6 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
     private MainPage mainPage;
     private String userName;
     private Button yesButton;
-    private Button noButton;
     private VerticalLayout layout = (VerticalLayout) getContent();
     private HorizontalLayout buttonsPanel = new HorizontalLayout();
     private String CONFIRMATION_MESSAGE;
@@ -27,18 +26,15 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
         setWidth("30%");
         setResizable(false);
         center();
-        CONFIRMATION_MESSAGE = userName + "выбирите время собеседования, иначе анкета не будет сохранена !";
+        CONFIRMATION_MESSAGE = userName + " выбирите время собеседования, иначе анкета не будет сохранена !";
         initButtons();
         initLayouts();
     }
 
     private void initButtons() {
-        yesButton = new Button("Ок");
+        yesButton = new Button("Продолжить");
         yesButton.setVisible(true);
         yesButton.addListener(this);
-        noButton = new Button("Отмена");
-        noButton.setVisible(true);
-        noButton.addListener(this);
         message = new Label(CONFIRMATION_MESSAGE);
     }
 
@@ -51,7 +47,6 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
         layout.addComponent(buttonsPanel);
         layout.setComponentAlignment(buttonsPanel, Alignment.BOTTOM_CENTER);
         buttonsPanel.addComponent(yesButton);
-        buttonsPanel.addComponent(noButton);
     }
 
     @Override
@@ -60,8 +55,6 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
         if (source == yesButton) {
             pageTabs = mainPage.getPanel().getTabSheet();
             pageTabs.setSelectedTab(2);
-            ConfirmationToInterviewTime.this.close();
-        } else if (source == noButton) {
             ConfirmationToInterviewTime.this.close();
         }
     }
