@@ -201,4 +201,18 @@ public class DAOCommonImpl extends DAOCoreObject implements DAOCommon{
         currEnrolls = super.executeListGetQuery(query);
         return currEnrolls;
     }
+
+    public List<String> getEnrollmentScoresInString() {
+        List<String> currEnrolls = new ArrayList<String>();
+        String query = "";
+        beginTransaction();
+        query = "select name from ENROLLMENT_SCORES";
+        currEnrolls = super.executeListGetSQLQuery(query);
+        return currEnrolls;
+    }
+
+    /*public static void main (String[] arrgs) {
+        DAOCommonImpl currDAO = new DAOCommonImpl();
+        List<String> currLit = currDAO.getEnrollmentScoresInString();
+    }*/
 }

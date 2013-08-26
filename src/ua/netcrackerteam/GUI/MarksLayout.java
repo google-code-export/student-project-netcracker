@@ -2,14 +2,11 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import ua.netcrackerteam.DAO.Entities.EnrollmentScores;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
 
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -166,10 +163,10 @@ public class MarksLayout extends VerticalLayout {
         enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("enrollment"));
         enrollmentScores.setItemCaptionPropertyId("NAME");
         enrollmentScores.setNullSelectionAllowed(false);
-        List<EnrollmentScores> scoresList = controller.getEnrollmentScores();
+        /*List<EnrollmentScores> scoresList = controller.getEnrollmentScores();
         BeanItemContainer<EnrollmentScores> objects = new BeanItemContainer<EnrollmentScores>(EnrollmentScores.class, scoresList);
         enrollmentScores.setContainerDataSource(objects);
-        dropDownsLayout.addComponent(enrollmentScores);
+        dropDownsLayout.addComponent(enrollmentScores);*/
     }
 
     public void setReadOnly(boolean isReadOnly) {
