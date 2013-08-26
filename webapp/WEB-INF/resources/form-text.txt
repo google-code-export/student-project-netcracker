@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<p>
+			<span style="font-size:12px;"><span style="color:#0070c0;"><span><strong>ШАГ 2: </strong>АНКЕТА</span></span></span></p>
+		<p>
+			<span style="font-size:11px;">Для регистрации на собеседования в УЦ, пожалуйста, &nbsp;предварительно заполни анкету.</span></p>
+		<p>
+			<span style="font-size:11px;">Укажи необходимую информацию об образовании, интересах, достижениях, а также контакты, чтобы мы могли с тобой связаться после собеседований.&nbsp;</span></p>
+	</body>
+</html>

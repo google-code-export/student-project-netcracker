@@ -35,13 +35,13 @@ public class MainPanelStudent extends MainPanel{
             public void selectedTabChange(SelectedTabChangeEvent event) {
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == c1) {
-                    blankLayout = new StudentBlank(hlayout.getUsername(),mainPage,hlayout.getUsername());
+                    blankLayout = new StudentBlank(hlayout.getUserName(),mainPage,hlayout.getUserName());
                     source.replaceComponent(c1, blankLayout);
                 } else if (source.getSelectedTab() == c2) {
-                    interviewLayout = new InterviewLayout(hlayout.getUsername(), mainPage);
+                    interviewLayout = new InterviewLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(c2, interviewLayout);
                 } else if (source.getSelectedTab() == c3) {
-                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
+                    settingsLayout = new SettingsLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(c3, settingsLayout);
                 }
             }

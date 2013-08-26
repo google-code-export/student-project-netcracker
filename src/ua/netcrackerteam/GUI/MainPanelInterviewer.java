@@ -65,7 +65,7 @@ public class MainPanelInterviewer extends MainPanel{
     public MainPanelInterviewer(final HeaderLayout hlayout, final MainPage mainPage) {
         super(hlayout,mainPage);
         this.mainPage = mainPage;
-        this.username = hlayout.getUsername();
+        this.username = hlayout.getUserName();
         setContent(getUserLayout(hlayout));
         WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
         WebBrowser webBrowser = context.getBrowser();
@@ -88,7 +88,7 @@ public class MainPanelInterviewer extends MainPanel{
                     fillInterviewsLayout();
                     tabSheet.replaceComponent(c, interviewsLo);
                 } else if (source.getSelectedTab() == c2) {
-                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
+                    settingsLayout = new SettingsLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(c2, settingsLayout);
                 }
             }

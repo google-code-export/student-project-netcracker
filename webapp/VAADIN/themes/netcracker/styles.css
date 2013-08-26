@@ -1,7 +1,14 @@
  @import url(../runo/styles.css);
 .header {
-      background: #ccc url(images/header.png) repeat-x bottom left;
+	background: white url('images/logo.png') no-repeat 20px center;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	margin-top:5px;
+	width: 800px;
+	height: 110px;
 }
+
 .header .v-button span {
 	text-decoration: none;
         padding-bottom: 10px;
@@ -15,6 +22,45 @@
 .v-app {
     background: white;
 }
+
+.header-hr {
+	width:100% !imprtant;
+}
+
+.header-hr .header-buttons {
+	left: 1230px;
+}
+
+.header-buttons {
+	position: relative;
+	left: 650px;
+	top: 80px;
+}
+
+.header-buttons .v-button {
+	margin: 0px 10px;
+}
+
+.form-info {
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #bdbdbd;
+	height: auto;
+	width: 798px;
+	height: auto;
+	background: white;
+}
+
+.form-info p {
+	padding: 0px 10px;
+}
+
+.infotext {
+	padding: 0px 20px !important;
+	margin: 8px 0px;
+}
+
 .v-tabsheet-deco {
 	height: 10px;
         background: white;
@@ -30,10 +76,13 @@
 	background: white;
 }
 .v-tabsheet-content {
-        border: 0;
+	/*-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	border: 1px solid #bdbdbd;*/
 }
 .body {
-	  background: white;
+	  background: #c9dde8;
 }
 .body .v-panel {
 	padding-left: 0px;
@@ -51,6 +100,5 @@
 .v-label-errorLable{
     color: red;
 }
-
 
 
