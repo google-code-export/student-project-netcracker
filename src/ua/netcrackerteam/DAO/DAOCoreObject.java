@@ -135,6 +135,45 @@ public class DAOCoreObject {
         return object;
     }
 
+    public <T> List<T> executeListGetSQLQueryToBean(String inputQuery, List listOfParams){
+        List<T> object = new ArrayList<T>();
+        try {
+            sqlQuery = (SQLQuery) session.createSQLQuery(inputQuery).setResultTransformer(new AliasToBeanResultTransformer(XlsUserInfo.class));
+            sqlQuery.addScalar("number2",               StringType.INSTANCE);
+            sqlQuery.addScalar("surname",               StringType.INSTANCE);
+            sqlQuery.addScalar("name",                  StringType.INSTANCE);
+            sqlQuery.addScalar("secondName",            StringType.INSTANCE);
+            sqlQuery.addScalar("finalResult",           StringType.INSTANCE);
+            sqlQuery.addScalar("hr1",                   StringType.INSTANCE);
+            sqlQuery.addScalar("result1",               StringType.INSTANCE);
+            sqlQuery.addScalar("comment1",              StringType.INSTANCE);
+            sqlQuery.addScalar("work_in_team1",         IntegerType.INSTANCE);
+            sqlQuery.addScalar("hr2",                   StringType.INSTANCE);
+            sqlQuery.addScalar("result2",               StringType.INSTANCE);
+            sqlQuery.addScalar("comment2",              StringType.INSTANCE);
+            sqlQuery.addScalar("work_in_team2",         IntegerType.INSTANCE);
+            sqlQuery.addScalar("javaKnowledge",         StringType.INSTANCE);
+            sqlQuery.addScalar("sqlKnowledge",          StringType.INSTANCE);
+            sqlQuery.addScalar("cource",                StringType.INSTANCE);
+            sqlQuery.addScalar("averageHighSchoolGrade",StringType.INSTANCE);
+            sqlQuery.addScalar("speciality",            StringType.INSTANCE);
+            sqlQuery.addScalar("highSchoolName",        StringType.INSTANCE);
+            sqlQuery.addScalar("email1",                StringType.INSTANCE);
+            sqlQuery.addScalar("email2",                StringType.INSTANCE);
+            sqlQuery.addScalar("telNumber",             StringType.INSTANCE);
+
+            for (int i = 0; i < listOfParams.size(); i++) {
+                query.setParameter("param" + String.valueOf(i), listOfParams.get(i));
+            }
+
+            object = sqlQuery.list();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return object;
+    }
+
     public <T> List<T> executeListGetSQLQuery(String inputQuery){
         List<T> object = new ArrayList<T>();
         try {

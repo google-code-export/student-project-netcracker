@@ -634,16 +634,15 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         query = "from EnrollmentScores where to_char(name) = to_char(:param0)";
         EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query,listOfParams);
         currInterviewRes.setEnrollmentScore(currEnr);
-        currInterviewRes.setJavaKnowledge(userInfo.getJavaKnowledge());
-        currInterviewRes.setSqlKnowledge(userInfo.getSqlKnowledge());
+        currInterviewRes.setJavaKnowledge("");
+        currInterviewRes.setSqlKnowledge("");
         currInterviewRes.setWorkInTeam(userInfo.getWork_in_team1());
         super.saveUpdatedObject(currInterviewRes);
         commitTransaction();
 
     }
 
-    public List<XlsUserInfo> getXLSInfo() {
-        List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
+    private String getCoreQueryText() {
         String query        =   "with results_hr as (" +
                 "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name, results.WORK_IN_TEAM " +
                 "  from  interview_res results," +
@@ -689,8 +688,32 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "      form2data2.id_form = form2data5.id_form and" +
                 "      form2data.id_institute = institute.id_institute and" +
                 "      form2data.id_cathedra = cathedra.id_cathedra";
+        return query;
+    }
+
+    public List<XlsUserInfo> getXLSInfo(boolean verificated) {
+        List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
+        String query = getCoreQueryText();
+        if (verificated) {
+            query = query + " and form2data.id_status = 1";
+        }
+        else {
+            query = query + " and form2data.id_status = 5";
+        }
         beginTransaction();
         xlsUserList = super.<XlsUserInfo>executeListGetSQLQueryToBean(query);
+        return xlsUserList;
+    }
+
+    public List<XlsUserInfo> getXLSStudentInfoByInterviewID(int interviewID) {
+        List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
+        String query = getCoreQueryText();
+        query = query + " and form2data.id_status = 1";
+        query = query + " and to_char(form2data.id_interview) = to_char(:param0)";
+        List listOfParams = new ArrayList();
+        listOfParams.add(interviewID);
+        beginTransaction();
+        xlsUserList = super.<XlsUserInfo>executeListGetSQLQueryToBean(query, listOfParams);
         return xlsUserList;
     }
 

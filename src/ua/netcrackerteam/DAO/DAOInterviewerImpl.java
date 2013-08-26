@@ -3,13 +3,16 @@ package ua.netcrackerteam.DAO;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ua.netcrackerteam.DAO.Entities.EnrollmentScores;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.InterviewRes;
 import ua.netcrackerteam.DAO.Entities.UserList;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import javax.interceptor.Interceptors;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,7 +20,7 @@ import java.util.Locale;
  *
  * @author Zhokha Maksym
  */
-public class DAOInterviewerImpl implements DAOInterviewer
+public class DAOInterviewerImpl extends DAOCoreObject implements DAOInterviewer
 {
     //Parameters to give them into search method
     public static final String LAST_NAME = "lastName";
@@ -27,6 +30,7 @@ public class DAOInterviewerImpl implements DAOInterviewer
     public static final String CATHEDRA = "cathedra.name";
     public static final String FACULTY = "cathedra.faculty.name";
     public static final String INSTITUTE = "cathedra.faculty.institute.name";
+    public static int ID_USER_CATEGORY_INTERVIEWER = 3;
     
     
     
@@ -200,6 +204,43 @@ public class DAOInterviewerImpl implements DAOInterviewer
             }
         }
     }
+
+    public void saveStudentInterviewMark(XlsUserInfo userInfo) {
+        InterviewRes currInterviewRes = new InterviewRes();
+        UserList currUser = new UserList();
+        String query        = "";
+        List listOfParams   = new ArrayList();
+        listOfParams.add(userInfo.getNumber2());
+        listOfParams.add(ID_USER_CATEGORY_INTERVIEWER);
+        beginTransaction();
+        query = "from InterviewRes where to_char(form) = to_char(:param0) and to_char(user.idUserCategory) = to_char(:param1)";
+        currInterviewRes = super.executeSingleGetQuery(query, listOfParams);
+        if (currInterviewRes == null) {
+            currInterviewRes = new InterviewRes();
+            listOfParams.clear();
+            listOfParams.add(userInfo.getNumber2());
+            query = "from Form where to_char(idForm) = to_char(:param0)";
+            Form currFormForInsertResults = super.<Form>executeSingleGetQuery(query, listOfParams);
+            currInterviewRes.setForm(currFormForInsertResults);
+            listOfParams.clear();
+            listOfParams.add(userInfo.getHr2());
+            query = "from UserList where to_char(userName) = to_char(:param0)";
+            UserList currHR = super.<UserList>executeSingleGetQuery(query,listOfParams);
+            currInterviewRes.setIdUser(currHR);
+        }
+        currInterviewRes.setScore(userInfo.getComment2());
+        listOfParams.clear();
+        listOfParams.add(userInfo.getResult1());
+        query = "from EnrollmentScores where to_char(name) = to_char(:param0)";
+        EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query,listOfParams);
+        currInterviewRes.setEnrollmentScore(currEnr);
+        currInterviewRes.setJavaKnowledge(userInfo.getJavaKnowledge());
+        currInterviewRes.setSqlKnowledge(userInfo.getSqlKnowledge());
+        currInterviewRes.setWorkInTeam(userInfo.getWork_in_team2());
+        super.saveUpdatedObject(currInterviewRes);
+        commitTransaction();
+    }
+
     
     @Override
     public List<Form> search(String filter, String searchText) {

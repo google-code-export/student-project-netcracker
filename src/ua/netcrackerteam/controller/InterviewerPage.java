@@ -4,6 +4,7 @@
  */
 package ua.netcrackerteam.controller;
 
+import ua.netcrackerteam.DAO.DAOHRImpl;
 import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.DAO.Entities.UserList;
@@ -13,6 +14,7 @@ import ua.netcrackerteam.applicationForm.Letter;
 import ua.netcrackerteam.applicationForm.LetterReserv;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.controller.bean.StudentDataShort;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,12 +60,17 @@ public class InterviewerPage {
         return studentList;
     }
     
-    public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
+    /*public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
         List<Form> allForms = new DAOInterviewerImpl().getAllFormsByInterview(interviewID);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
         if(allForms != null) {
             studentList = getStudentDataList(allForms);
         }
+        return studentList;
+    }*/
+    public static List<XlsUserInfo> getStudentsByInterviewID (int interviewID) {
+        DAOHRImpl currDAO = new DAOHRImpl();
+        List<XlsUserInfo> studentList = new ArrayList<XlsUserInfo>();
         return studentList;
     }
     
@@ -73,6 +80,11 @@ public class InterviewerPage {
     
     public static void setStudentMark(int formID, String interviewerName, String Mark) {
         new DAOInterviewerImpl().saveStudentInterviewMark(formID, interviewerName, Mark);
+    }
+
+    public void saveInterMarks(XlsUserInfo userInfo) {
+        DAOInterviewerImpl currDAO = new DAOInterviewerImpl();
+        currDAO.saveStudentInterviewMark(userInfo);
     }
     
     public static List<StudentDataShort> searchStudents(String searchFilter, String value) {

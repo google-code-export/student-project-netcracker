@@ -430,12 +430,13 @@ public class HRBlankLayout extends VerticalLayout {
         if (selectedObject instanceof StudentInterview) {
             StudentInterview stInterview = (StudentInterview) selectedObject;
             //stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
+            stData = HRPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
             state = FormState.SCHEDULED;
         } else if (selectedObject.equals(allFormsTreeItem)) {
             stData = controller.getStData();
             state = FormState.VALIDATED;
         } else if (selectedObject.equals(notAcceptedFormsTreeItem)) {
-            //stData = HRPage.getNonVerificatedForms();
+            stData = HRPage.getNonVerificatedForms();
             state = FormState.NOT_CHECKED;
         } else if (selectedObject instanceof List) {
             stData = (List<XlsUserInfo>) selectedObject;
