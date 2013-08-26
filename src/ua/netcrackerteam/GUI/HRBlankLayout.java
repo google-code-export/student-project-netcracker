@@ -15,7 +15,6 @@ import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.StudentPage;
 import ua.netcrackerteam.controller.bean.StudentData;
-import ua.netcrackerteam.controller.bean.StudentDataShort;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
 import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
@@ -44,9 +43,8 @@ public class HRBlankLayout extends VerticalLayout {
     private final String username;
     private Accordion accordion;
     private Panel rightPanel;
-    private StudentsTable table;
+    private StudentsFullTable table;
     private VerticalLayout bottomLayout;
-    private int currFormID;
     private NativeSelect searchFilter;
     private Tree tree;
     private TextField searchField;
@@ -55,6 +53,7 @@ public class HRBlankLayout extends VerticalLayout {
     private String notAcceptedFormsTreeItem;
     private FormState state = FormState.VALIDATED;
     private SelectMode selectMode = SelectMode.ONE;
+    private XlsUserInfo selectedStudent;
 
     public HRBlankLayout(final HeaderLayout hlayout, final MainPage mainPage) {
         this.mainPage = mainPage;
@@ -103,9 +102,10 @@ public class HRBlankLayout extends VerticalLayout {
         VerticalLayout vl = (VerticalLayout) rightPanel.getContent();
         vl.setMargin(false);
         vl.setSpacing(true);
-        List<StudentDataShort> stData = InterviewerPage.getAllStudents();
-        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
-        table = new StudentsTable(bean);
+        List<XlsUserInfo> stData = controller.getStudentssListForXls();
+        BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
+        table = new StudentsFullTable(bean);
+        table.addListener(new SelectStudentListener());
         rightPanel.addComponent(table);
         rightPanel.addComponent(getBottomLayout());
         bottomLayout.setVisible(false);
@@ -124,18 +124,16 @@ public class HRBlankLayout extends VerticalLayout {
     }
 
     private Component getInterviewerMarkLayout() {
-        StudentsMarks interviewerMarks = controller.getInterviewerMarksByFormID(currFormID);
-        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, currFormID);
+        MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER);
         markLayout.setReadOnly(true);
         markLayout.setEditable(false);
         return markLayout;
     }
 
     private Component getHRMarkLayout() {
-        StudentsMarks hrMarks = controller.getHRStudentMarksByFormID(currFormID);
-        hrMarks.setInterviewerName(username);
-        Component markLayout = new MarksLayout(hrMarks,MarksLayout.MarksMode.HR, currFormID);
-        if(!hrMarks.getComment().equals("")) {
+        selectedStudent.setHr1(username);
+        Component markLayout = new MarksLayout(selectedStudent,MarksLayout.MarksMode.HR);
+        if(!selectedStudent.getComment1().equals("")) {
             markLayout.setReadOnly(true);
         }
         return markLayout;
@@ -211,9 +209,9 @@ public class HRBlankLayout extends VerticalLayout {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                Set<StudentDataShort> forms = (Set<StudentDataShort>) table.getValue();
-                for(StudentDataShort form: forms) {
-                    HRPage.deleteStudentBlank(form.getIdForm());
+                Set<XlsUserInfo> forms = (Set<XlsUserInfo>) table.getValue();
+                for(XlsUserInfo form: forms) {
+                    HRPage.deleteStudentBlank(Integer.parseInt(form.getNumber2()));
                 }
                 refreshTable(tree.getValue());
                 refreshCount();
@@ -247,7 +245,7 @@ public class HRBlankLayout extends VerticalLayout {
                 @Override
                 public void buttonClick(Button.ClickEvent clickEvent) {
                     final Window window = new Window("Window");
-                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(currFormID), mainPage, username);
+                    StudentBlank studentBlank = new StudentBlank(HRPage.getUserNameByFormId(Integer.parseInt(selectedStudent.getNumber2())), mainPage, username);
                     window.setCaption("Просмотр анкеты");
                     window.setContent(studentBlank);
                     window.setHeight("80%");
@@ -267,9 +265,9 @@ public class HRBlankLayout extends VerticalLayout {
         acceptButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                Set<StudentDataShort> forms = (Set<StudentDataShort>) table.getValue();
-                for(StudentDataShort form: forms) {
-                    currFormID = form.getIdForm();
+                Set<XlsUserInfo> forms = (Set<XlsUserInfo>) table.getValue();
+                for(XlsUserInfo form: forms) {
+                    int currFormID = Integer.parseInt(form.getNumber2());
                     HRPage.verificateForm(currFormID);
                 }
                 getWindow().showNotification(
@@ -303,7 +301,7 @@ public class HRBlankLayout extends VerticalLayout {
                 @Override
                 public void buttonClick(Button.ClickEvent clickEvent) {
                     BlankDifferensesWindow diffWindow = new BlankDifferensesWindow(
-                            MainPage.getInstance(), currFormID);
+                            MainPage.getInstance(), Integer.parseInt(selectedStudent.getNumber2()));
                     getWindow().addWindow(diffWindow);
                 }
             });
@@ -322,7 +320,7 @@ public class HRBlankLayout extends VerticalLayout {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     StreamResource.StreamSource ss = new StreamResource.StreamSource() {
-                        StudentData studentData = StudentPage.getStudentDataByIdForm(currFormID);
+                        StudentData studentData = StudentPage.getStudentDataByIdForm(Integer.parseInt(selectedStudent.getNumber2()));
                         byte[] bytes = studentData.getPhoto();
                         InputStream is = new ByteArrayInputStream(bytes);
 
@@ -438,24 +436,24 @@ public class HRBlankLayout extends VerticalLayout {
 
     private void refreshTable(Object selectedMenuItem) {
         Object selectedObject = selectedMenuItem;
-        List<StudentDataShort> stData = new ArrayList<StudentDataShort>();
+        List<XlsUserInfo> stData = new ArrayList<XlsUserInfo>();
         if (selectedObject instanceof StudentInterview) {
             StudentInterview stInterview = (StudentInterview) selectedObject;
-            stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
+            //stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
             state = FormState.SCHEDULED;
         } else if (selectedObject.equals(allFormsTreeItem)) {
-            stData = HRPage.getAllForms();
+            //stData = HRPage.getAllForms();
             state = FormState.VALIDATED;
         } else if (selectedObject.equals(notAcceptedFormsTreeItem)) {
-            stData = HRPage.getNonVerificatedForms();
+            //stData = HRPage.getNonVerificatedForms();
             state = FormState.NOT_CHECKED;
         } else if (selectedObject instanceof List) {
-            stData = (List<StudentDataShort>) selectedObject;
+            stData = (List<XlsUserInfo>) selectedObject;
             state = FormState.SEARCHED;
         }
-        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
-        StudentsTable oldTable = table;
-        table = new StudentsTable(bean);
+        BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
+        StudentsFullTable oldTable = table;
+        table = new StudentsFullTable(bean);
         rightPanel.replaceComponent(oldTable, table);
         bottomLayout.setVisible(false);
     }
@@ -472,7 +470,7 @@ public class HRBlankLayout extends VerticalLayout {
 
         @Override
         public InputStream getStream() {
-            ApplicationForm form = new ApplicationForm(currFormID);
+            ApplicationForm form = new ApplicationForm(Integer.parseInt(selectedStudent.getNumber2()));
             return new ByteArrayInputStream(form.generateFormPDF());
         }
     }
@@ -484,8 +482,8 @@ public class HRBlankLayout extends VerticalLayout {
             if (searchField.isValid()) {
                 String filter = (String) searchFilter.getValue();
                 String value = (String) searchField.getValue();
-                List<StudentDataShort> stData = HRPage.searchStudents(filter, value);
-                refreshTable(stData);
+                //List<XlsUserInfo> stData = HRPage.searchStudents(filter, value);
+                //refreshTable(stData);
             } else {
                 getWindow().showNotification("Введите значение для поиска!", Window.Notification.TYPE_TRAY_NOTIFICATION);
             }
@@ -506,10 +504,10 @@ public class HRBlankLayout extends VerticalLayout {
 
         @Override
         public void valueChange(Property.ValueChangeEvent event) {
-            Set<StudentDataShort> students = (Set<StudentDataShort>) event.getProperty().getValue();
+            Set<XlsUserInfo> students = (Set<XlsUserInfo>) event.getProperty().getValue();
             if (students.size() != 0) {
                 if(students.size() == 1) {
-                    currFormID = students.iterator().next().getIdForm();
+                    selectedStudent = students.iterator().next();
                     selectMode = SelectMode.ONE;
                 }   else {
                     selectMode = SelectMode.MULTI;
@@ -543,36 +541,6 @@ public class HRBlankLayout extends VerticalLayout {
         getWindow().open(streamResource);
     }
 
-    private class StudentsTable extends Table {
 
-        public Object[] NATURAL_COL_ORDER = new Object[]{
-                "idForm", "studentLastName", "studentFirstName", "studentMiddleName", "studentInstitute",
-                "studentInstituteCourse", "studentFaculty", "studentCathedra"};
-        public String[] COL_HEADERS_RUSSIAN = new String[]{
-                "Номер анкеты", "Фамилия", "Имя", "Отчество",
-                "ВУЗ", "Курс", "Факультет", "Кафедра"};
-
-        public StudentsTable(Container dataSource) {
-            super();
-            setWidth("100%");
-            setHeight(300, UNITS_PIXELS);
-            setSelectable(true);
-            setImmediate(true);
-            setMultiSelect(true);
-            setContainerDataSource(dataSource);
-            setColumnReorderingAllowed(true);
-            setColumnCollapsingAllowed(true);
-            setColumnCollapsed("idForm", true);
-            setColumnCollapsed("studentMiddleName", true);
-            setColumnCollapsed("studentCathedra", true);
-            setVisibleColumns(NATURAL_COL_ORDER);
-            setColumnHeaders(COL_HEADERS_RUSSIAN);
-            setColumnExpandRatio("studentInstitute", 3);
-            setColumnExpandRatio("studentFaculty", 2);
-            setColumnExpandRatio("studentInstituteCourse", 1);
-            addListener(new SelectStudentListener());
-        }
-
-    }
 
 }
