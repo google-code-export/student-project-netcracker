@@ -1,7 +1,9 @@
 package ua.netcrackerteam.util.xls.entity;
 
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @author unconsionable
@@ -54,6 +56,9 @@ public class XlsUserInfo implements XlsEntity {
     @Column(name = "telNumber")
     protected String telNumber;
 
+    public XlsUserInfo() {
+
+    }
 
     public Integer getWork_in_team1() {
         return work_in_team1;
@@ -63,12 +68,28 @@ public class XlsUserInfo implements XlsEntity {
         this.work_in_team1 = work_in_team1;
     }
 
+    public String getWorkInTeam1Str() {
+        if (work_in_team1 == 0) {
+            return TeamWorkItems.NO.toString();
+        } else {
+            return TeamWorkItems.YES.toString();
+        }
+    }
+
     public Integer getWork_in_team2() {
         return work_in_team2;
     }
 
     public void setWork_in_team2(Integer work_in_team2) {
         this.work_in_team2 = work_in_team2;
+    }
+
+    public String getWorkInTeam2Str() {
+        if (work_in_team2 == 0) {
+            return TeamWorkItems.NO.toString();
+        } else {
+            return TeamWorkItems.YES.toString();
+        }
     }
 
     public String getJavaKnowledge() {
@@ -85,10 +106,6 @@ public class XlsUserInfo implements XlsEntity {
 
     public void setSqlKnowledge(String sqlKnowledge) {
         this.sqlKnowledge = sqlKnowledge;
-    }
-
-    public XlsUserInfo() {
-
     }
 
     public String getNumber2() {
@@ -155,6 +172,16 @@ public class XlsUserInfo implements XlsEntity {
         this.comment1 = comment1;
     }
 
+    public String getCalculableComment1() {
+        if (!comment1.equals("-")) {
+            StringBuilder comment = new StringBuilder();
+            comment.append(comment1 + ". ");
+            comment.append("Работа в комманде: " + getWorkInTeam1Str() + ". ");
+            return comment.toString();
+        }
+        return "-";
+    }
+
     public String getHr2() {
         return hr2;
     }
@@ -177,6 +204,18 @@ public class XlsUserInfo implements XlsEntity {
 
     public void setComment2(String comment2) {
         this.comment2 = comment2;
+    }
+
+    public String getCalculableComment2() {
+        if (!comment2.equals("-")) {
+            StringBuilder comment = new StringBuilder();
+            comment.append(comment2 + ". ");
+            comment.append("Работа в комманде: " + getWorkInTeam2Str() + ". ");
+            comment.append("Java: " + javaKnowledge + ". ");
+            comment.append("SQL: " + sqlKnowledge + ".");
+            return comment.toString();
+        }
+        return "-";
     }
 
     public String getCource() {
@@ -233,5 +272,19 @@ public class XlsUserInfo implements XlsEntity {
 
     public void setTelNumber(String telNumber) {
         this.telNumber = telNumber;
+    }
+
+    public enum TeamWorkItems {
+        YES("Да"), NO("Нет");
+        private String str;
+
+        TeamWorkItems(String str) {
+            this.str = str;
+        }
+
+        @Override
+        public String toString() {
+            return str;
+        }
     }
 }

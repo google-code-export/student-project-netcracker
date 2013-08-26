@@ -14,8 +14,8 @@ public class StudentsFullTable extends Table {
 
     public Object[] NATURAL_COL_ORDER = new Object[]{
             "number2", "surname", "name", "secondName",
-            "hr1", "result1", "comment1",
-            "hr2", "result2", "comment2",
+            "hr1", "result1", "calculableComment1",
+            "hr2", "result2", "calculableComment2",
             "cource", "speciality", "highSchoolName",
             "email1", "email2", "telNumber"};
     public String[] COL_HEADERS_RUSSIAN = new String[]{

@@ -32,7 +32,7 @@ import java.util.*;
  * Time: 23:22
  * To change this template use File | Settings | File Templates.
  */
-public class HRBlankLayout extends VerticalLayout {
+public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
     private static final List<String> categories = Arrays.asList(new String[]{"Фамилия", "Имя", "Номер анкеты",
             "ВУЗ", "Курс", "Факультет", "Кафедра"});
     private final MainPage mainPage;
@@ -121,7 +121,7 @@ public class HRBlankLayout extends VerticalLayout {
     }
 
     private Component getInterviewerMarkLayout() {
-        MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER);
+        MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER, this);
         markLayout.setReadOnly(true);
         markLayout.setEditable(false);
         return markLayout;
@@ -129,7 +129,7 @@ public class HRBlankLayout extends VerticalLayout {
 
     private Component getHRMarkLayout() {
         selectedStudent.setHr1(username);
-        Component markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.HR);
+        Component markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.HR, this);
         if (!selectedStudent.getComment1().equals("-")) {
             markLayout.setReadOnly(true);
         }
@@ -424,12 +424,15 @@ public class HRBlankLayout extends VerticalLayout {
         return pdf;
     }
 
+    public void refreshTableAfterMarksSave() {
+        refreshTable(tree.getValue());
+    }
+
     private void refreshTable(Object selectedMenuItem) {
         Object selectedObject = selectedMenuItem;
         List<XlsUserInfo> stData = new ArrayList<XlsUserInfo>();
         if (selectedObject instanceof StudentInterview) {
             StudentInterview stInterview = (StudentInterview) selectedObject;
-            //stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
             stData = HRPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
             state = FormState.SCHEDULED;
         } else if (selectedObject.equals(allFormsTreeItem)) {
@@ -438,10 +441,11 @@ public class HRBlankLayout extends VerticalLayout {
         } else if (selectedObject.equals(notAcceptedFormsTreeItem)) {
             stData = HRPage.getNonVerificatedForms();
             state = FormState.NOT_CHECKED;
-        } else if (selectedObject instanceof List) {
-            stData = (List<XlsUserInfo>) selectedObject;
-            state = FormState.SEARCHED;
         }
+//        else if (selectedObject instanceof List) {
+//            stData = (List<XlsUserInfo>) selectedObject;
+//            state = FormState.SEARCHED;
+//        }
         BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
         StudentsFullTable oldTable = table;
         table = new StudentsFullTable(bean,listener,true);

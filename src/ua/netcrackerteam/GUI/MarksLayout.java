@@ -5,7 +5,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.controller.HRPage;
-import ua.netcrackerteam.controller.bean.StudentsMarks;
+import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import java.util.Iterator;
@@ -22,15 +22,18 @@ public class MarksLayout extends VerticalLayout {
     private BeanItem<XlsUserInfo> studentsMarksBeanItem;
     private MarksMode marksMode;
     private HorizontalLayout dropDownsLayout = new HorizontalLayout();
-    private HRPage controller = new HRPage();
+    private HRPage hrcontroller = new HRPage();
+    private InterviewerPage intController = new InterviewerPage();
     private Button saveEditButton;
     private static String SAVE = "Сохранить";
     private static String EDIT = "Редактировать";
     private XlsUserInfo studentsMarks;
+    private BlanksLayoutI blankLayout;
 
-    public MarksLayout(XlsUserInfo studentsMarks, MarksMode mode) {
+    public MarksLayout(XlsUserInfo studentsMarks, MarksMode mode, BlanksLayoutI blankLayout) {
         this.marksMode = mode;
         this.studentsMarks = studentsMarks;
+        this.blankLayout = blankLayout;
         studentsMarksBeanItem = new BeanItem<XlsUserInfo>(studentsMarks);
         setSpacing(true);
         setMargin(true);
@@ -66,7 +69,12 @@ public class MarksLayout extends VerticalLayout {
 
     private void saveMarks() {
        if(isAllValid()) {
-           controller.saveHRMarks(studentsMarks);
+           if(marksMode.equals(MarksMode.HR)){
+               hrcontroller.saveHRMarks(studentsMarks);
+           } else {
+               intController.saveInterMarks(studentsMarks);
+           }
+           blankLayout.refreshTableAfterMarksSave();
            setReadOnly(true);
        } else {
            getWindow().showNotification("Заполните все поля!", Window.Notification.TYPE_TRAY_NOTIFICATION);
@@ -171,15 +179,15 @@ public class MarksLayout extends VerticalLayout {
         ComboBox enrollmentScores = new ComboBox("Зачисление");
         enrollmentScores.setWidth(240, UNITS_PIXELS);
         enrollmentScores.setRequired(true);
+        enrollmentScores.setNullSelectionAllowed(false);
+        List<String> scoresList = hrcontroller.getEnrollmentScores();
+        BeanItemContainer<String> objects = new BeanItemContainer<String>(String.class, scoresList);
+        enrollmentScores.setContainerDataSource(objects);
         if(marksMode.equals(MarksMode.HR)) {
             enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("result1"));
         } else {
             enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("result2"));
         }
-        enrollmentScores.setNullSelectionAllowed(false);
-        List<String> scoresList = controller.getEnrollmentScores();
-        BeanItemContainer<String> objects = new BeanItemContainer<String>(String.class, scoresList);
-        enrollmentScores.setContainerDataSource(objects);
         dropDownsLayout.addComponent(enrollmentScores);
     }
 

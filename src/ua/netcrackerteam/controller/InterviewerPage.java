@@ -59,15 +59,7 @@ public class InterviewerPage {
         }
         return studentList;
     }
-    
-    /*public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
-        List<Form> allForms = new DAOInterviewerImpl().getAllFormsByInterview(interviewID);
-        List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
-        if(allForms != null) {
-            studentList = getStudentDataList(allForms);
-        }
-        return studentList;
-    }*/
+
     public static List<XlsUserInfo> getStudentsByInterviewID (int interviewID) {
         DAOHRImpl currDAO = new DAOHRImpl();
         List<XlsUserInfo> studentList = new ArrayList<XlsUserInfo>();
