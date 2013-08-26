@@ -2,7 +2,6 @@ package ua.netcrackerteam.controller;
 
 import ua.netcrackerteam.DAO.DAOCommonImpl;
 import ua.netcrackerteam.DAO.DAOHRImpl;
-import ua.netcrackerteam.DAO.DAOInterviewerImpl;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.configuration.HibernateFactory;
@@ -107,21 +106,30 @@ public class HRPage {
         return user.getIdUser();
     }
 
-    public static List<StudentDataShort> getNonVerificatedForms() {
-        List<Form> allForms = new DAOHRImpl().getNonVerificatedForms();
+    public static List<XlsUserInfo> getNonVerificatedForms() {
+        /*List<Form> allForms = new DAOHRImpl().getNonVerificatedForms();
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
         if(allForms != null) {
             studentList = getStudentDataList(allForms);
         }
-        return studentList;
+        return studentList;*/
+        DAOHRImpl currDAO = new DAOHRImpl();
+        List<XlsUserInfo> nonVerForm = currDAO.getXLSInfo(false);
+        return nonVerForm;
     }
 
-    public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
+    /*public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
         List<Form> allForms = new DAOInterviewerImpl().getAllFormsByInterview(interviewID);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
         if(allForms != null) {
             studentList = getStudentDataList(allForms);
         }
+        return studentList;
+    }*/
+
+    public static List<XlsUserInfo> getStudentsByInterviewID (int interviewID) {
+        DAOHRImpl currDAO = new DAOHRImpl();
+        List<XlsUserInfo> studentList = new ArrayList<XlsUserInfo>();
         return studentList;
     }
 
@@ -200,7 +208,7 @@ public class HRPage {
     public List<XlsUserInfo> getStData() {
         List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
         DAOHRImpl currDAO = new DAOHRImpl();
-        xlsUserList = currDAO.getXLSInfo();
+        xlsUserList = currDAO.getXLSInfo(true);
         return xlsUserList;
     }
 

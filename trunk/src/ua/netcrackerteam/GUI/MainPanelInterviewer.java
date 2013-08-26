@@ -4,7 +4,6 @@
  */
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItemContainer;
@@ -19,9 +18,12 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.themes.Runo;
+import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.InterviewerPage;
+import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.bean.StudentInterview;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -30,9 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import ua.netcrackerteam.applicationForm.ApplicationForm;
-import ua.netcrackerteam.controller.RegistrationToInterview;
-import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 /**
  * Panel for Interviewer view
@@ -249,8 +248,8 @@ public class MainPanelInterviewer extends MainPanel{
             Object selectedObject = event.getItemId();
             if (selectedObject instanceof StudentInterview) {
                 StudentInterview stInterview = (StudentInterview) selectedObject;
-                //List<XlsUserInfo> stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
-                //refreshTable(stData);
+                List<XlsUserInfo> stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
+                refreshTable(stData);
             } else if(selectedObject.equals("Все студенты")) {
                 List<XlsUserInfo> stData = hrcontroller.getStData();
                 refreshTable(stData);
