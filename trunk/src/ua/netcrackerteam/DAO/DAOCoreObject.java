@@ -163,7 +163,7 @@ public class DAOCoreObject {
             sqlQuery.addScalar("telNumber",             StringType.INSTANCE);
 
             for (int i = 0; i < listOfParams.size(); i++) {
-                query.setParameter("param" + String.valueOf(i), listOfParams.get(i));
+                sqlQuery.setParameter("param" + String.valueOf(i), listOfParams.get(i));
             }
 
             object = sqlQuery.list();
