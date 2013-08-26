@@ -714,6 +714,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfParams.add(interviewID);
         beginTransaction();
         xlsUserList = super.<XlsUserInfo>executeListGetSQLQueryToBean(query, listOfParams);
+        commitTransaction();
         return xlsUserList;
     }
 

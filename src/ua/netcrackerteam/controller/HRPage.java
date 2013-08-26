@@ -131,6 +131,7 @@ public class HRPage {
     public static List<XlsUserInfo> getStudentsByInterviewID (int interviewID) {
         DAOHRImpl currDAO = new DAOHRImpl();
         List<XlsUserInfo> studentList = new ArrayList<XlsUserInfo>();
+        studentList = currDAO.getXLSStudentInfoByInterviewID(interviewID);
         return studentList;
     }
 
