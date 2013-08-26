@@ -364,7 +364,7 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
 	     String query        = "";
 	     beginTransaction();
 	     query = "from Form "
-                    + "where id_status = 1 and id_form = " + idForm;
+                    + "where id_form = " + idForm;
 	     form = super.<Form>executeSingleGetQuery(query);
 	     commitTransaction();
 	     return form;

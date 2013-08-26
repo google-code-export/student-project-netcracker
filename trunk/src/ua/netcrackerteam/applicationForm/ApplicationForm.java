@@ -80,7 +80,13 @@ public class ApplicationForm{
     
     private String getDateInterview(){
     	
-    	Interview interview = HibernateFactory.getInstance().getStudentDAO().getFormByFormId(studentData.getIdForm()).getInterview();
+    	Form form = HibernateFactory.getInstance().getStudentDAO().getFormByFormId(studentData.getIdForm());
+    	
+    	if(form == null){
+    		return "";
+    	}
+    	
+    	Interview interview = form.getInterview();
         	
     	if(interview == null){
     		return "";

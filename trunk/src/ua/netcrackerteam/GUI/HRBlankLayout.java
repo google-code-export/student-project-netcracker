@@ -478,7 +478,8 @@ public class HRBlankLayout extends VerticalLayout {
 
         @Override
         public InputStream getStream() {
-            ApplicationForm form = new ApplicationForm(Integer.parseInt(selectedStudent.getNumber2()));
+        	int id = Integer.parseInt(selectedStudent.getNumber2());
+            ApplicationForm form = new ApplicationForm(id);
             return new ByteArrayInputStream(form.generateFormPDF());
         }
     }
