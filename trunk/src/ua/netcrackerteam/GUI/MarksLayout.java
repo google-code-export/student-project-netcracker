@@ -144,7 +144,7 @@ public class MarksLayout extends VerticalLayout {
 
     private void addCommandWorkDropDown() {
         ComboBox commandWork = new ComboBox("Готов ли к работе в команде");
-        commandWork.setWidth(300, UNITS_PIXELS);
+        commandWork.setWidth(240, UNITS_PIXELS);
         commandWork.setRequired(true);
         commandWork.setNullSelectionAllowed(false);
         commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("groupWork"));
@@ -161,7 +161,7 @@ public class MarksLayout extends VerticalLayout {
 
     private void addEnrollmentDropDown() {
         ComboBox enrollmentScores = new ComboBox("Зачисление");
-        enrollmentScores.setWidth(300, UNITS_PIXELS);
+        enrollmentScores.setWidth(240, UNITS_PIXELS);
         enrollmentScores.setRequired(true);
         enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("enrollment"));
         enrollmentScores.setItemCaptionPropertyId("NAME");
