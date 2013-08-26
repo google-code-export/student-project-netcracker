@@ -197,8 +197,10 @@ public class HRPage {
         return intervList;
     }
 
-    public List<XlsUserInfo> getStudentssListForXls() {
+    public List<XlsUserInfo> getStData() {
         List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
+        DAOHRImpl currDAO = new DAOHRImpl();
+        xlsUserList = currDAO.getXLSInfo();
         return xlsUserList;
     }
 
