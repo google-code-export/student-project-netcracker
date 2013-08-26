@@ -2,11 +2,14 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,25 +19,23 @@ import java.util.Iterator;
  * To change this template use File | Settings | File Templates.
  */
 public class MarksLayout extends VerticalLayout {
-    private BeanItem<StudentsMarks> studentsMarksBeanItem;
+    private BeanItem<XlsUserInfo> studentsMarksBeanItem;
     private MarksMode marksMode;
     private HorizontalLayout dropDownsLayout = new HorizontalLayout();
     private HRPage controller = new HRPage();
     private Button saveEditButton;
     private static String SAVE = "Сохранить";
     private static String EDIT = "Редактировать";
-    private StudentsMarks studentsMarks;
-    private int studentFormId;
+    private XlsUserInfo studentsMarks;
 
-    public MarksLayout(StudentsMarks studentsMarks, MarksMode mode, int studentFormId) {
+    public MarksLayout(XlsUserInfo studentsMarks, MarksMode mode) {
         this.marksMode = mode;
         this.studentsMarks = studentsMarks;
-        this.studentFormId = studentFormId;
-        studentsMarksBeanItem = new BeanItem<StudentsMarks>(studentsMarks);
+        studentsMarksBeanItem = new BeanItem<XlsUserInfo>(studentsMarks);
         setSpacing(true);
         setMargin(true);
         setWidth(100, UNITS_PERCENTAGE);
-        addHeader(studentsMarks.getInterviewerName());
+        addHeader();
         dropDownsLayout.setSpacing(true);
         addComponent(dropDownsLayout);
         addEnrollmentDropDown();
@@ -65,7 +66,7 @@ public class MarksLayout extends VerticalLayout {
 
     private void saveMarks() {
        if(isAllValid()) {
-           controller.saveHRMarks(studentsMarks,studentFormId);
+           controller.saveHRMarks(studentsMarks);
            setReadOnly(true);
        } else {
            getWindow().showNotification("Заполните все поля!", Window.Notification.TYPE_TRAY_NOTIFICATION);
@@ -90,14 +91,17 @@ public class MarksLayout extends VerticalLayout {
         return isValid;
     }
 
-    private void addHeader(String interviewerName) {
+    private void addHeader() {
+        String interviewerName;
         Label header = new Label();
         StringBuilder headerCaption = new StringBuilder();
         headerCaption.append("Оценка ");
         if (marksMode.equals(marksMode.HR)) {
             headerCaption.append("HR");
+            interviewerName = studentsMarks.getHr1();
         } else {
             headerCaption.append("технического интервьюера");
+            interviewerName = studentsMarks.getHr2();
         }
         if (interviewerName != "") {
             headerCaption.append(" (" + interviewerName + ")");
@@ -117,7 +121,11 @@ public class MarksLayout extends VerticalLayout {
         } else {
             commentField.setCaption("Другие впечатления");
         }
-        commentField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("comment"));
+        if(marksMode.equals(MarksMode.HR)) {
+            commentField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("comment1"));
+        }  else {
+            commentField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("comment2"));
+        }
         addComponent(commentField);
     }
 
@@ -144,8 +152,11 @@ public class MarksLayout extends VerticalLayout {
         commandWork.setWidth(240, UNITS_PIXELS);
         commandWork.setRequired(true);
         commandWork.setNullSelectionAllowed(false);
-        commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("groupWork"));
-
+        if(marksMode.equals(MarksMode.HR)) {
+            commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("work_in_team1"));
+        } else {
+            commandWork.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("work_in_team2"));
+        }
         Boolean yesItem = true;
         Boolean noItem = false;
         commandWork.addItem(yesItem);
@@ -160,13 +171,17 @@ public class MarksLayout extends VerticalLayout {
         ComboBox enrollmentScores = new ComboBox("Зачисление");
         enrollmentScores.setWidth(240, UNITS_PIXELS);
         enrollmentScores.setRequired(true);
-        enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("enrollment"));
+        if(marksMode.equals(MarksMode.HR)) {
+            enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("result1"));
+        } else {
+            enrollmentScores.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("result2"));
+        }
         enrollmentScores.setItemCaptionPropertyId("NAME");
         enrollmentScores.setNullSelectionAllowed(false);
-        /*List<EnrollmentScores> scoresList = controller.getEnrollmentScores();
-        BeanItemContainer<EnrollmentScores> objects = new BeanItemContainer<EnrollmentScores>(EnrollmentScores.class, scoresList);
+        List<String> scoresList = controller.getEnrollmentScores();
+        BeanItemContainer<String> objects = new BeanItemContainer<String>(String.class, scoresList);
         enrollmentScores.setContainerDataSource(objects);
-        dropDownsLayout.addComponent(enrollmentScores);*/
+        dropDownsLayout.addComponent(enrollmentScores);
     }
 
     public void setReadOnly(boolean isReadOnly) {

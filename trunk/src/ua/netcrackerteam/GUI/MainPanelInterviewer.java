@@ -135,13 +135,13 @@ public class MainPanelInterviewer extends MainPanel{
     }
 
     private Component getInterviewerMarkLayout() {
-        StudentsMarks interviewerMarks = hrcontroller.getInterviewerMarksByFormID(currFormID);
-        interviewerMarks.setInterviewerName(username);
-        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, currFormID);
-        if(!interviewerMarks.getComment().equals("")) {
-            markLayout.setReadOnly(true);
-        }
-        return markLayout;
+//        interviewerMarks.setInterviewerName(username);
+//        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, currFormID);
+//        if(!interviewerMarks.getComment().equals("")) {
+//            markLayout.setReadOnly(true);
+//        }
+//        return markLayout;
+        return new VerticalLayout();
     }
 
     private Component getTreeMenu() {
