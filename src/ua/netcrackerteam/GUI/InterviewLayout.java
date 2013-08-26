@@ -6,6 +6,8 @@ package ua.netcrackerteam.GUI;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
@@ -15,6 +17,10 @@ import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
 
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -149,6 +155,23 @@ class InterviewLayout extends VerticalLayout {
     private void loadRegistrationPanelSettings() {
         Panel panel = new Panel("Запись на собеседование");
         panel.setWidth("100%");
+        addComponent(new Embedded(null, new ThemeResource("images/interview-logo.png")));
+        String s = null;
+        try {
+            WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
+            File file = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/interview-text.txt") );
+            DataInputStream in = new DataInputStream(new FileInputStream(file));
+            byte[] array = new byte[in.available()];
+            in.read(array);
+            s = new String(array);
+            in.close();
+        } catch (IOException ex) {
+            System.out.println("File interview-text.txt is not found");
+        }
+        Label label = new Label(s);
+        label.setContentMode(Label.CONTENT_XHTML);
+        label.setStyleName("form-info");
+        addComponent(label);
         addComponent(panel);
         verticalLayout = new VerticalLayout();
         verticalLayout.setSizeFull();
