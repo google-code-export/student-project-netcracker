@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<p>
+			<span style="font-size:12px;"><span style="color:#0070c0;"><strong>ШАГ 3: </strong>СОБЕСЕДОВАНИЕ</span></span></p>
+		<p>
+			<span style="font-size:12px;">Чтобы записаться на собеседования, выбери удобный день и время. Приходи вовремя, обязательно возьми с собой распечатанную анкету.</span></p>
+		<p>
+			<span style="font-size:12px;">Мы ждём тебя!</span></p>
+		<p>
+			<span style="font-size:12px;">Успехов на собеседовании!</span></p>
+	</body>
+</html>

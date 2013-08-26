@@ -116,7 +116,7 @@ public class MainPanelHR extends MainPanel{
                  else if(source.getSelectedTab() == reportsLo){
                     fillReportsLayout();
                 } */ else if (source.getSelectedTab() == settingsLo) {
-                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
+                    settingsLayout = new SettingsLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(settingsLo, settingsLayout);
                 }
             }

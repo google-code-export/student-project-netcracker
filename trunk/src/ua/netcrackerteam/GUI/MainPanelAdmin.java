@@ -29,10 +29,10 @@ public class MainPanelAdmin extends MainPanel {
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 final TabSheet source = (TabSheet) event.getSource();
                 if(source.getSelectedTab() == c1) {
-                    blankLayout = new AdminUserManagementLayout(hlayout.getUsername(),mainPage);
+                    blankLayout = new AdminUserManagementLayout(hlayout.getUserName(),mainPage);
                     source.replaceComponent(c1, blankLayout);
                 }  else if (source.getSelectedTab() == c2) {
-                    settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
+                    settingsLayout = new SettingsLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(c2, settingsLayout);
                 }
             }

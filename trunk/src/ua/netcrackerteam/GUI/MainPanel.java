@@ -4,9 +4,11 @@
  */
 package ua.netcrackerteam.GUI;
 
+import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,7 +40,6 @@ public class MainPanel extends Panel {
         layout = (VerticalLayout) getContent();
         layout.setMargin(false);
         layout.setSpacing(true);
-        layout.setWidth("100%");
         layout.addComponent(hlayout);
         String s = "";
         DataInputStream in;
@@ -55,21 +56,29 @@ public class MainPanel extends Panel {
         }
         richText = new Label(s);
         richText.setContentMode(Label.CONTENT_XHTML);
-        layout.addComponent(richText);
-        layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
+        richText.setStyleName("infotext");
+        Embedded img = new Embedded(null, new ThemeResource("images/main-logo.png"));
+        img.setStyleName("infotext");
+        CssLayout wrapper = new CssLayout();
+        wrapper.addComponent(img);
+        wrapper.addComponent(richText);
+        wrapper.setStyleName("form-info");
+        layout.addComponent(wrapper);
+        //layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
     }
 
     public VerticalLayout getUserLayout(HeaderLayout hlayout) {
         layout.removeAllComponents();
-        layout.setSpacing(false);
         layout.addComponent(hlayout);
-        hlayout.setStyleName("user");
-        mainPageLo = new VerticalLayout();
-        mainPageLo.addComponent(richText);
-        layout.setStyleName("user");
+        Embedded img = new Embedded(null, new ThemeResource("images/main-logo.png"));
+        img.setStyleName("infotext");
+        CssLayout wrapper = new CssLayout();
+        wrapper.addComponent(img);
+        wrapper.addComponent(richText);
+        //wrapper.setStyleName("form-info");
         tabSheet = new TabSheet();
         layout.addComponent(tabSheet);
-        tabSheet.addTab(mainPageLo,"Главная");
+        tabSheet.addTab(wrapper,"Главная");
         return layout;
     }
 }

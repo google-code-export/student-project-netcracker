@@ -15,6 +15,8 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.terminal.StreamResource;
+import com.vaadin.terminal.ThemeResource;
+import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Upload.StartedEvent;
@@ -30,6 +32,10 @@ import ua.netcrackerteam.controller.StudentPage;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -140,6 +146,24 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         setWidth("100%");
         persInfo = new Panel("Персональная информация");
         persInfoPanelFill();
+        Embedded img = new Embedded(null, new ThemeResource("images/form-logo.png"));
+        String s = null;
+        try {
+            WebApplicationContext context = (WebApplicationContext) mainPage.getContext();
+            File file = new File (context.getHttpSession().getServletContext().getRealPath("/WEB-INF/resources/form-text.txt") );
+            DataInputStream in = new DataInputStream(new FileInputStream(file));
+            byte[] array = new byte[in.available()];
+            in.read(array);
+            s = new String(array);
+            in.close();
+        } catch (IOException ex) {
+            System.out.println("File form-text.txt is not found");
+        }
+        Label label = new Label(s);
+        label.setContentMode(Label.CONTENT_XHTML);
+        label.setStyleName("form-info");
+        addComponent(img);
+        addComponent(label);
         addComponent(persInfo);
         contacts = new Panel("Контакты");
         addComponent(contacts);

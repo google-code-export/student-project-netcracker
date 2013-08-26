@@ -7,15 +7,18 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.Application;
+import com.vaadin.terminal.gwt.client.BrowserInfo;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Runo;
+
 import ua.netcrackerteam.controller.GeneralController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.Date;
 
 /**
@@ -70,7 +73,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
         registr.addListener(this);
         exit.addListener(this);
         hlayoutGuest = new HeaderLayout(enter, registr);
-        panel = new MainPanel(hlayoutGuest,this);
+        hlayoutUser = new HeaderLayout(enter, registr);
+        panel = new MainPanel(hlayoutUser,this);
         layoutfull.addComponent(panel);
         vl.setComponentAlignment(panel, Alignment.TOP_CENTER);
         getMainWindow().setContent(layoutfull);
@@ -136,7 +140,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     }
 
     private void changeModeAdmin(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
+        hlayoutUser.changeButtons(exit, username);
         MainPanel oldPanel = panel;
         panel = new MainPanelAdmin(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);
@@ -145,7 +149,8 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     }
 
     private void changeModeHR(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
+        hlayoutUser.changeButtons(exit, username);
+        hlayoutUser.setSizeFull();
         MainPanel oldPanel = panel;
         panel = new MainPanelHR(hlayoutUser,this);
         panel.setSizeFull();
@@ -155,7 +160,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     }
 
     private void changeModeStudent(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
+        hlayoutUser.changeButtons((exit != null ? exit : new Button("Выход", this)), username);
         MainPanel oldPanel = panel;
         panel = new MainPanelStudent(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);
@@ -164,7 +169,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     }
     
     private void changeModeInterviewer(String username) {
-        hlayoutUser = new HeaderLayout(exit, username);
+        hlayoutUser.changeButtons(exit, username);
         MainPanel oldPanel = panel;
         panel = new MainPanelInterviewer(hlayoutUser,this);
         layoutfull.replaceComponent(oldPanel, panel);

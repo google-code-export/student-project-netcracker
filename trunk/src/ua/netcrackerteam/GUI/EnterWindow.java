@@ -5,6 +5,7 @@
 package ua.netcrackerteam.GUI;
 
 import com.vaadin.ui.*;
+
 import ua.netcrackerteam.DAO.Entities.Form;
 import ua.netcrackerteam.configuration.HibernateFactory;
 import ua.netcrackerteam.configuration.Logable;
@@ -18,6 +19,7 @@ import static ua.netcrackerteam.validation.SystemMessages.*;
  * Login form
  * @author Anna Kushnirenko
  */
+@SuppressWarnings("serial")
 class EnterWindow extends Window implements Logable {
     private LoginForm loginForm = null;
     public static final int MODE_GUEST = -1;
@@ -78,6 +80,7 @@ class EnterWindow extends Window implements Logable {
                     return;
                 } catch(RuntimeException e){
                     mainPage.getMainWindow().showNotification(RUNTIME_ERROR.getNotification());
+                    e.printStackTrace();
                     mainPage.getMainWindow().executeJavaScript("window.location.reload();");
                     return;
                 }
