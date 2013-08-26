@@ -2,6 +2,7 @@ package ua.netcrackerteam.DAO;
 
 import org.hibernate.*;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.IntegerType;
 import org.hibernate.type.StringType;
 import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
@@ -112,9 +113,11 @@ public class DAOCoreObject {
             sqlQuery.addScalar("hr1",                   StringType.INSTANCE);
             sqlQuery.addScalar("result1",               StringType.INSTANCE);
             sqlQuery.addScalar("comment1",              StringType.INSTANCE);
+            sqlQuery.addScalar("work_in_team1",         IntegerType.INSTANCE);
             sqlQuery.addScalar("hr2",                   StringType.INSTANCE);
             sqlQuery.addScalar("result2",               StringType.INSTANCE);
             sqlQuery.addScalar("comment2",              StringType.INSTANCE);
+            sqlQuery.addScalar("work_in_team2",         IntegerType.INSTANCE);
             sqlQuery.addScalar("javaKnowledge",         StringType.INSTANCE);
             sqlQuery.addScalar("sqlKnowledge",          StringType.INSTANCE);
             sqlQuery.addScalar("cource",                StringType.INSTANCE);

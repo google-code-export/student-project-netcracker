@@ -514,4 +514,8 @@ public class HRPage {
         DAOHRImpl currDAO = new DAOHRImpl();
         currDAO.setHRMark(studentsMarks, studentFormId);
     }
+    public void saveHRMarks(XlsUserInfo userInfo) {
+        DAOHRImpl currDAO = new DAOHRImpl();
+        currDAO.setHRMark(userInfo);
+    }
 }

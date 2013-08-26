@@ -604,10 +604,48 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     }
 
+    public void setHRMark(XlsUserInfo userInfo) {
+
+        InterviewRes currInterviewRes = new InterviewRes();
+        UserList currUser = new UserList();
+        String query        = "";
+        List listOfParams   = new ArrayList();
+        listOfParams.add(userInfo.getNumber2());
+        listOfParams.add(ID_USER_CATEGORY_HR);
+        beginTransaction();
+        query = "from InterviewRes where to_char(form) = to_char(:param0) and to_char(user.idUserCategory) = to_char(:param1)";
+        currInterviewRes = super.executeSingleGetQuery(query, listOfParams);
+        if (currInterviewRes == null) {
+            currInterviewRes = new InterviewRes();
+            listOfParams.clear();
+            listOfParams.add(userInfo.getNumber2());
+            query = "from Form where to_char(idForm) = to_char(:param0)";
+            Form currFormForInsertResults = super.<Form>executeSingleGetQuery(query, listOfParams);
+            currInterviewRes.setForm(currFormForInsertResults);
+            listOfParams.clear();
+            listOfParams.add(userInfo.getHr1());
+            query = "from UserList where to_char(userName) = to_char(:param0)";
+            UserList currHR = super.<UserList>executeSingleGetQuery(query,listOfParams);
+            currInterviewRes.setIdUser(currHR);
+        }
+        currInterviewRes.setScore(userInfo.getComment1());
+        listOfParams.clear();
+        listOfParams.add(userInfo.getComment1());
+        query = "from EnrollmentScores where to_char(name) = to_char(:param0)";
+        EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query,listOfParams);
+        currInterviewRes.setEnrollmentScore(currEnr);
+        currInterviewRes.setJavaKnowledge(userInfo.getJavaKnowledge());
+        currInterviewRes.setSqlKnowledge(userInfo.getSqlKnowledge());
+        currInterviewRes.setWorkInTeam(userInfo.getWork_in_team1());
+        super.saveUpdatedObject(currInterviewRes);
+        commitTransaction();
+
+    }
+
     public List<XlsUserInfo> getXLSInfo() {
         List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
         String query        =   "with results_hr as (" +
-                "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name " +
+                "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name, results.WORK_IN_TEAM " +
                 "  from  interview_res results," +
                 "        user_list result2user_cat," +
                 "        enrollment_scores enr_score" +
@@ -615,7 +653,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "        result2user_cat.id_user_category = 2 and" +
                 "        results.id_enrollment_score = enr_score.score_id)," +
                 "  results_int as (" +
-                "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name, results.java_knowledge, results.sql_knowledge " +
+                "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name, results.java_knowledge, results.sql_knowledge, results.work_in_team " +
                 "  from  interview_res results," +
                 "        user_list result2user_cat," +
                 "        enrollment_scores enr_score" +
@@ -632,7 +670,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "  select info, id_form from contact where id_contact_category = 4" +
                 "  )" +
                 "        " +
-                "select form2data.id_form as number2, form2data.last_name as surname, form2data.first_name as name, form2data.middle_name as secondName, '-' as finalResult, nvl(res.user_name, '-') as hr1 , nvl(res.score, '-') as result1, nvl(res.name, '-') as comment1, nvl(res2.user_name,'-') as hr2 ,nvl(res2.score, '-') as result2, nvl(res2.name, '-') as comment2, nvl(res2.java_knowledge, '-') as javaKnowledge, nvl(res2.sql_knowledge, '-') as sqlKnowledge, form2data.institute_year as cource, '-' as averageHighSchoolGrade, cathedra.name as speciality, institute.name as highSchoolName, nvl(e1.info, '-') as email1, nvl(e2.info, '-') as email2, nvl(phone.info, '-') as telNumber " +
+                "select form2data.id_form as number2, form2data.last_name as surname, form2data.first_name as name, form2data.middle_name as secondName, '-' as finalResult, nvl(res.user_name, '-') as hr1 , nvl(res.score, '-') as result1, nvl(res.name, '-') as comment1, nvl(res.work_in_team, 0) as work_in_team1, nvl(res2.user_name,'-') as hr2 ,nvl(res2.score, '-') as result2, nvl(res2.name, '-') as comment2, nvl(res2.work_in_team, 0) as work_in_team2, nvl(res2.java_knowledge, '-') as javaKnowledge, nvl(res2.sql_knowledge, '-') as sqlKnowledge, form2data.institute_year as cource, '-' as averageHighSchoolGrade, cathedra.name as speciality, institute.name as highSchoolName, nvl(e1.info, '-') as email1, nvl(e2.info, '-') as email2, nvl(phone.info, '-') as telNumber " +
                 "from  form form2data left join results_hr res " +
                 "      on form2data.id_form = res.id_form," +
                 "      form form2data2 left join results_int res2" +
@@ -653,7 +691,6 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "      form2data.id_cathedra = cathedra.id_cathedra";
         beginTransaction();
         xlsUserList = super.<XlsUserInfo>executeListGetSQLQueryToBean(query);
-        //xlsUserList = super.<XlsUserInfo>executeListGetSQLQuery(query);
         return xlsUserList;
     }
 
@@ -720,4 +757,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return diffList;
     }
+
+    /*public static void main (String[] arrgs) {
+        DAOHRImpl currDAO = new DAOHRImpl();
+        List<XlsUserInfo> currLit = currDAO.getXLSInfo();
+    }*/
 }
