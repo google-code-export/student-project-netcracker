@@ -37,7 +37,7 @@ import java.util.List;
  * Panel for Interviewer view
  * @author Anna Kushnirenko
  */
-public class MainPanelInterviewer extends MainPanel{
+public class MainPanelInterviewer extends MainPanel implements BlanksLayoutI{
     
     private VerticalLayout interviewsLo;
     private Accordion accordion;
@@ -135,7 +135,7 @@ public class MainPanelInterviewer extends MainPanel{
 
     private Component getInterviewerMarkLayout() {
         selectedStudent.setHr2(username);
-        MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER);
+        MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER, this);
         if (!selectedStudent.getComment1().equals("-")) {
             markLayout.setReadOnly(true);
         }
@@ -216,8 +216,13 @@ public class MainPanelInterviewer extends MainPanel{
             rightPanel.replaceComponent(oldTable, table);
             bottomLayout.setVisible(false);
     }
-    
-          private class PdfStreamSource implements StreamResource.StreamSource {
+
+    @Override
+    public void refreshTableAfterMarksSave() {
+        //refreshTable();
+    }
+
+    private class PdfStreamSource implements StreamResource.StreamSource {
             
         @Override
         public InputStream getStream() {

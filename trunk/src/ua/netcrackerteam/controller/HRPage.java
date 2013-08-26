@@ -119,15 +119,6 @@ public class HRPage {
         return nonVerForm;
     }
 
-    /*public static List<StudentDataShort> getStudentsByInterviewID (int interviewID) {
-        List<Form> allForms = new DAOInterviewerImpl().getAllFormsByInterview(interviewID);
-        List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
-        if(allForms != null) {
-            studentList = getStudentDataList(allForms);
-        }
-        return studentList;
-    }*/
-
     public static List<XlsUserInfo> getStudentsByInterviewID (int interviewID) {
         DAOHRImpl currDAO = new DAOHRImpl();
         List<XlsUserInfo> studentList = new ArrayList<XlsUserInfo>();
@@ -534,10 +525,6 @@ public class HRPage {
         return enrollmentScores;
     }
 
-    public void saveHRMarks(StudentsMarks studentsMarks, int studentFormId) {
-        DAOHRImpl currDAO = new DAOHRImpl();
-        currDAO.setHRMark(studentsMarks, studentFormId);
-    }
     public void saveHRMarks(XlsUserInfo userInfo) {
         DAOHRImpl currDAO = new DAOHRImpl();
         currDAO.setHRMark(userInfo);
