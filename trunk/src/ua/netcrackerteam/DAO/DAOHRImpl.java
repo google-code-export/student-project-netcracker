@@ -3,6 +3,7 @@ package ua.netcrackerteam.DAO;
 import ua.netcrackerteam.DAO.Entities.*;
 import ua.netcrackerteam.controller.bean.DifferenceData;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -603,6 +604,59 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     }
 
+    public List<XlsUserInfo> getXLSInfo() {
+        List<XlsUserInfo> xlsUserList = new ArrayList<XlsUserInfo>();
+        String query        =   "with results_hr as (" +
+                "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name " +
+                "  from  interview_res results," +
+                "        user_list result2user_cat," +
+                "        enrollment_scores enr_score" +
+                "  where results.id_user = result2user_cat.id_user and" +
+                "        result2user_cat.id_user_category = 2 and" +
+                "        results.id_enrollment_score = enr_score.score_id)," +
+                "  results_int as (" +
+                "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name, results.java_knowledge, results.sql_knowledge " +
+                "  from  interview_res results," +
+                "        user_list result2user_cat," +
+                "        enrollment_scores enr_score" +
+                "  where results.id_user = result2user_cat.id_user and" +
+                "        result2user_cat.id_user_category = 3 and" +
+                "        results.id_enrollment_score = enr_score.score_id)," +
+                "  contacts_email_1 as (" +
+                "  select info, id_form from contact where id_contact_category = 2" +
+                "  )," +
+                "  contacts_email_2 as (" +
+                "  select info, id_form from contact where id_contact_category = 3" +
+                "  )," +
+                "  contacts_phone as (" +
+                "  select info, id_form from contact where id_contact_category = 4" +
+                "  )" +
+                "        " +
+                "select form2data.id_form as number2, form2data.last_name as surname, form2data.first_name as name, form2data.middle_name as secondName, '-' as finalResult, nvl(res.user_name, '-') as hr1 , nvl(res.score, '-') as result1, nvl(res.name, '-') as comment1, nvl(res2.user_name,'-') as hr2 ,nvl(res2.score, '-') as result2, nvl(res2.name, '-') as comment2, nvl(res2.java_knowledge, '-') as javaKnowledge, nvl(res2.sql_knowledge, '-') as sqlKnowledge, form2data.institute_year as cource, '-' as averageHighSchoolGrade, cathedra.name as speciality, institute.name as highSchoolName, nvl(e1.info, '-') as email1, nvl(e2.info, '-') as email2, nvl(phone.info, '-') as telNumber " +
+                "from  form form2data left join results_hr res " +
+                "      on form2data.id_form = res.id_form," +
+                "      form form2data2 left join results_int res2" +
+                "      on form2data2.id_form = res2.id_form, " +
+                "      form form2data3 left join contacts_email_1 e1 " +
+                "      on form2data3.id_form = e1.id_form," +
+                "      form form2data4 left join contacts_email_2 e2 " +
+                "      on form2data4.id_form = e2.id_form," +
+                "      form form2data5 left join contacts_phone phone " +
+                "      on form2data5.id_form = phone.id_form," +
+                "      institute," +
+                "      cathedra " +
+                "where form2data2.id_form = form2data.id_form and" +
+                "      form2data2.id_form = form2data3.id_form and" +
+                "      form2data2.id_form = form2data4.id_form and" +
+                "      form2data2.id_form = form2data5.id_form and" +
+                "      form2data.id_institute = institute.id_institute and" +
+                "      form2data.id_cathedra = cathedra.id_cathedra";
+        beginTransaction();
+        xlsUserList = super.<XlsUserInfo>executeListGetSQLQueryToBean(query);
+        //xlsUserList = super.<XlsUserInfo>executeListGetSQLQuery(query);
+        return xlsUserList;
+    }
+
     public List<DifferenceData> getDiff(int currUserId) {
 
         Hashtable tableOfNames = new Hashtable();
@@ -665,5 +719,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
         commitTransaction();
         return diffList;
+    }
+    public static void main(String[] arrgs) {
+        DAOHRImpl currDAO =  new DAOHRImpl();
+        List<XlsUserInfo> xlsUserList = currDAO.getXLSInfo();
     }
 }

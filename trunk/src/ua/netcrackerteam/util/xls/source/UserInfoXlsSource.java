@@ -66,7 +66,7 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
     }
     
     private void fillRow(Row row, XlsUserInfo rowData) {
-        row.createCell(0).setCellValue(rowData.getNumber());
+        row.createCell(0).setCellValue(rowData.getNumber2());
         row.createCell(1).setCellValue(rowData.getSurname());
         row.createCell(2).setCellValue(rowData.getName());
         row.createCell(3).setCellValue(rowData.getFinalResult());

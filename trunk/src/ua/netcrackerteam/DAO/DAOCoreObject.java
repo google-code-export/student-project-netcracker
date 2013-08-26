@@ -1,9 +1,10 @@
 package ua.netcrackerteam.DAO;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.StringType;
 import ua.netcrackerteam.configuration.HibernateUtil;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class DAOCoreObject {
     private Query query = null;
+    private SQLQuery sqlQuery = null;
     private Session session = null;
     private Transaction transaction = null;
 
@@ -92,6 +94,38 @@ public class DAOCoreObject {
                 query.setParameter("param" + String.valueOf(i), listOfParameters.get(i));
             }
             object = query.list();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return object;
+    }
+
+    public <T> List<T> executeListGetSQLQueryToBean(String inputQuery){
+        List<T> object = new ArrayList<T>();
+        try {
+            sqlQuery = (SQLQuery) session.createSQLQuery(inputQuery).setResultTransformer(new AliasToBeanResultTransformer(XlsUserInfo.class));
+            sqlQuery.addScalar("number2",               StringType.INSTANCE);
+            sqlQuery.addScalar("surname",               StringType.INSTANCE);
+            sqlQuery.addScalar("name",                  StringType.INSTANCE);
+            sqlQuery.addScalar("secondName",            StringType.INSTANCE);
+            sqlQuery.addScalar("finalResult",           StringType.INSTANCE);
+            sqlQuery.addScalar("hr1",                   StringType.INSTANCE);
+            sqlQuery.addScalar("result1",               StringType.INSTANCE);
+            sqlQuery.addScalar("comment1",              StringType.INSTANCE);
+            sqlQuery.addScalar("hr2",                   StringType.INSTANCE);
+            sqlQuery.addScalar("result2",               StringType.INSTANCE);
+            sqlQuery.addScalar("comment2",              StringType.INSTANCE);
+            sqlQuery.addScalar("javaKnowledge",         StringType.INSTANCE);
+            sqlQuery.addScalar("sqlKnowledge",          StringType.INSTANCE);
+            sqlQuery.addScalar("cource",                StringType.INSTANCE);
+            sqlQuery.addScalar("averageHighSchoolGrade",StringType.INSTANCE);
+            sqlQuery.addScalar("speciality",            StringType.INSTANCE);
+            sqlQuery.addScalar("highSchoolName",        StringType.INSTANCE);
+            sqlQuery.addScalar("email1",                StringType.INSTANCE);
+            sqlQuery.addScalar("email2",                StringType.INSTANCE);
+            sqlQuery.addScalar("telNumber",             StringType.INSTANCE);
+            object = sqlQuery.list();
+
         } catch (Exception e) {
             System.out.println(e);
         }

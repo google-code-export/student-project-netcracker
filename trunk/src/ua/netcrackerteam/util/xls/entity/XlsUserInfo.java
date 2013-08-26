@@ -1,37 +1,82 @@
 package ua.netcrackerteam.util.xls.entity;
 
+
+import javax.persistence.*;
+
 /**
  * @author unconsionable
  */
+@Entity(name = "XlsUserInfo")
 public class XlsUserInfo implements XlsEntity {
-    
-    protected int number;
+    @Id
+    @Column(name = "number2")
+    protected String number2;
+    @Column(name = "surname")
     protected String surname;
+    @Column(name = "name")
     protected String name;
+    @Column(name = "secondName")
+    protected String secondName;
+    @Column(name = "finalResult")
     protected String finalResult;
+    @Column(name = "hr1")
     protected String hr1;
+    @Column(name = "result1")
+
     protected String result1;
+    @Column(name = "comment1")
     protected String comment1;
+    @Column(name = "hr2")
     protected String hr2;
+    @Column(name = "result2")
     protected String result2;
+    @Column(name = "comment2")
     protected String comment2;
+    @Column(name = "javaKnowledge")
+    protected String javaKnowledge;
+    @Column(name = "sqlKnowledge")
+    protected String sqlKnowledge;
+    @Column(name = "cource")
     protected String cource;
+    @Column(name = "averageHighSchoolGrade")
     protected String averageHighSchoolGrade;
+    @Column(name = "speciality")
     protected String speciality;
+    @Column(name = "highSchoolName")
     protected String highSchoolName;
+    @Column(name = "email1")
     protected String email1;
+    @Column(name = "email2")
     protected String email2;
+    @Column(name = "telNumber")
     protected String telNumber;
 
+    public String getJavaKnowledge() {
+        return javaKnowledge;
+    }
+
+    public void setJavaKnowledge(String javaKnowledge) {
+        this.javaKnowledge = javaKnowledge;
+    }
+
+    public String getSqlKnowledge() {
+        return sqlKnowledge;
+    }
+
+    public void setSqlKnowledge(String sqlKnowledge) {
+        this.sqlKnowledge = sqlKnowledge;
+    }
+
     public XlsUserInfo() {
+
     }
 
-    public int getNumber() {
-        return number;
+    public String getNumber2() {
+        return number2;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setNumber2(String number2) {
+        this.number2 = number2;
     }
 
     public String getSurname() {
@@ -48,6 +93,14 @@ public class XlsUserInfo implements XlsEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
     public String getFinalResult() {
