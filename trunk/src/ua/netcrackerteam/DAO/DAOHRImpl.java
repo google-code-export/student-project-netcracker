@@ -720,8 +720,4 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return diffList;
     }
-    public static void main(String[] arrgs) {
-        DAOHRImpl currDAO =  new DAOHRImpl();
-        List<XlsUserInfo> xlsUserList = currDAO.getXLSInfo();
-    }
 }
