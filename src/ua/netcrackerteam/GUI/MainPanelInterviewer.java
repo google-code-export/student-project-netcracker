@@ -21,7 +21,6 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.controller.HRPage;
 import ua.netcrackerteam.controller.InterviewerPage;
-import ua.netcrackerteam.controller.bean.StudentDataShort;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 
 import java.io.ByteArrayInputStream;
@@ -33,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.controller.RegistrationToInterview;
-import ua.netcrackerteam.controller.bean.StudentsMarks;
+import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
 /**
  * Panel for Interviewer view
@@ -49,17 +48,18 @@ public class MainPanelInterviewer extends MainPanel{
             "ВУЗ", "Курс", "Факультет", "Кафедра" });
 
     private Panel rightPanel;
-    private StudentsTable table;
+    private StudentsFullTable table;
     private Link pdfLink;
     private VerticalLayout bottomLayout;
     private final String username;
-    private int currFormID;
+    private XlsUserInfo selectedStudent;
     private NativeSelect searchFilter;
     private Tree tree;
     private TextField searchField;
     private SettingsLayout settingsLayout;
     private HRPage hrcontroller = new HRPage();
-    
+    private SelectStudentListener listener = new SelectStudentListener();
+
     private RegistrationToInterview registration = new RegistrationToInterview();
     
     public MainPanelInterviewer(final HeaderLayout hlayout, final MainPage mainPage) {
@@ -124,9 +124,9 @@ public class MainPanelInterviewer extends MainPanel{
         VerticalLayout vl = (VerticalLayout) rightPanel.getContent();
         vl.setMargin(false);
         vl.setSpacing(true);
-        List<StudentDataShort> stData = InterviewerPage.getAllStudents();
-        BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
-        table = new StudentsTable(bean);
+        List<XlsUserInfo> stData = hrcontroller.getStData();
+        BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
+        table = new StudentsFullTable(bean,listener,false);
         rightPanel.addComponent(table);
 
         bottomLayout = getBottomLayout();
@@ -135,13 +135,12 @@ public class MainPanelInterviewer extends MainPanel{
     }
 
     private Component getInterviewerMarkLayout() {
-//        interviewerMarks.setInterviewerName(username);
-//        MarksLayout markLayout = new MarksLayout(interviewerMarks, MarksLayout.MarksMode.INTERVIEWER, currFormID);
-//        if(!interviewerMarks.getComment().equals("")) {
-//            markLayout.setReadOnly(true);
-//        }
-//        return markLayout;
-        return new VerticalLayout();
+        selectedStudent.setHr2(username);
+        MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER);
+        if (!selectedStudent.getComment1().equals("-")) {
+            markLayout.setReadOnly(true);
+        }
+        return markLayout;
     }
 
     private Component getTreeMenu() {
@@ -211,10 +210,10 @@ public class MainPanelInterviewer extends MainPanel{
         return pdf;
     }
 
-    private void refreshTable(List<StudentDataShort> stData) {
-            BeanItemContainer<StudentDataShort> bean = new BeanItemContainer(StudentDataShort.class, stData);
-            StudentsTable oldTable = table;
-            table = new StudentsTable(bean);
+    private void refreshTable(List<XlsUserInfo> stData) {
+            BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
+            StudentsFullTable oldTable = table;
+            table = new StudentsFullTable(bean,listener,false);
             rightPanel.replaceComponent(oldTable, table);
             bottomLayout.setVisible(false);
     }
@@ -223,7 +222,7 @@ public class MainPanelInterviewer extends MainPanel{
             
         @Override
         public InputStream getStream() {
-            ApplicationForm form = new ApplicationForm(currFormID);
+            ApplicationForm form = new ApplicationForm(Integer.parseInt(selectedStudent.getNumber2()));
             return new ByteArrayInputStream(form.generateFormPDF());
         } 
     }
@@ -235,8 +234,8 @@ public class MainPanelInterviewer extends MainPanel{
             if(searchField.isValid()) {
                 String filter = (String) searchFilter.getValue();
                 String value = (String) searchField.getValue();
-                List<StudentDataShort> stData = InterviewerPage.searchStudents(filter, value);
-                refreshTable(stData);
+                //List<XlsUserInfo> stData = InterviewerPage.searchStudents(filter, value);
+                //refreshTable(stData);
             } else {
                 getWindow().showNotification("Введите значение для поиска!",Window.Notification.TYPE_TRAY_NOTIFICATION);
             }
@@ -250,10 +249,10 @@ public class MainPanelInterviewer extends MainPanel{
             Object selectedObject = event.getItemId();
             if (selectedObject instanceof StudentInterview) {
                 StudentInterview stInterview = (StudentInterview) selectedObject;
-                List<StudentDataShort> stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
-                refreshTable(stData);
+                //List<XlsUserInfo> stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
+                //refreshTable(stData);
             } else if(selectedObject.equals("Все студенты")) {
-                List<StudentDataShort> stData = InterviewerPage.getAllStudents();
+                List<XlsUserInfo> stData = hrcontroller.getStData();
                 refreshTable(stData);
             }
         }
@@ -265,9 +264,9 @@ public class MainPanelInterviewer extends MainPanel{
 
         @Override
         public void valueChange(ValueChangeEvent event) {
-            StudentDataShort student = (StudentDataShort) event.getProperty().getValue();
+            XlsUserInfo student = (XlsUserInfo) event.getProperty().getValue();
             if (student != null) {
-                currFormID = student.getIdForm();
+                selectedStudent = student;
                 Component oldBottomLayout = bottomLayout;
                 rightPanel.replaceComponent(oldBottomLayout, getBottomLayout());
 
@@ -284,39 +283,10 @@ public class MainPanelInterviewer extends MainPanel{
         bottomLayout.setMargin(true);
         pdfLink = getPDFLink();
         bottomLayout.addComponent(pdfLink);
-        bottomLayout.addComponent(getInterviewerMarkLayout());
-        return bottomLayout;
-    }
-
-    private class StudentsTable extends Table {
-        
-        public Object[] NATURAL_COL_ORDER = new Object[] {
-                "idForm", "studentLastName", "studentFirstName", "studentMiddleName", "studentInstitute",
-                "studentInstituteCourse", "studentFaculty", "studentCathedra" };
-        public String[] COL_HEADERS_RUSSIAN = new String[] {
-                "Номер анкеты", "Фамилия", "Имя", "Отчество",
-                "ВУЗ", "Курс", "Факультет", "Кафедра" };
-        
-        public StudentsTable(Container dataSource) {
-            super();
-            setWidth("100%");
-            setHeight(height-300,UNITS_PIXELS);
-            setSelectable(true);
-            setImmediate(true);
-            setContainerDataSource(dataSource);
-            setColumnReorderingAllowed(true);
-            setColumnCollapsingAllowed(true);
-            setColumnCollapsed("idForm",true);
-            setColumnCollapsed("studentMiddleName",true);
-            setColumnCollapsed("studentCathedra",true);
-            setVisibleColumns(NATURAL_COL_ORDER);
-            setColumnHeaders(COL_HEADERS_RUSSIAN);
-            setColumnExpandRatio("studentInstitute", 3);
-            setColumnExpandRatio("studentFaculty",2);
-            setColumnExpandRatio("studentInstituteCourse",1);
-            addListener(new SelectStudentListener());
+        if(selectedStudent != null) {
+            bottomLayout.addComponent(getInterviewerMarkLayout());
         }
-        
+        return bottomLayout;
     }
 
 }
