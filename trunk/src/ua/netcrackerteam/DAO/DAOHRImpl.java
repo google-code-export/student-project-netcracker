@@ -630,7 +630,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         }
         currInterviewRes.setScore(userInfo.getComment1());
         listOfParams.clear();
-        listOfParams.add(userInfo.getComment1());
+        listOfParams.add(userInfo.getResult1());
         query = "from EnrollmentScores where to_char(name) = to_char(:param0)";
         EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query,listOfParams);
         currInterviewRes.setEnrollmentScore(currEnr);
