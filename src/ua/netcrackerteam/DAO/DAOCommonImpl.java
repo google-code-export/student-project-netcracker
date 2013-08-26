@@ -174,18 +174,18 @@ public class DAOCommonImpl extends DAOCoreObject implements DAOCommon{
         listOfParams.clear();
         StudentsMarks currStMark = null;
         if (!(currInterviewRes == null)) {
-        currStMark = new StudentsMarks();
-        currStMark.setSqlKnowledge(currInterviewRes.getSqlKnowledge());
-        currStMark.setJavaKnowledge(currInterviewRes.getJavaKnowledge());
-        currStMark.setComment(currInterviewRes.getScore());
-        currStMark.setEnrollment(currInterviewRes.getEnrollmentScore());
-        String currUserName = "";
-        listOfParams.add(currInterviewRes.getUser().getIdUser());
-        currUser = super.executeSingleGetQuery(query, listOfParams);
-        currUserName = currUser.getUserName();
-        currStMark.setInterviewerName   (currUserName);
-        currStMark.setGroupWork(currInterviewRes.getWorkInTeam()==0 ? false: true);
-        commitTransaction();
+            currStMark = new StudentsMarks();
+            currStMark.setSqlKnowledge(currInterviewRes.getSqlKnowledge());
+            currStMark.setJavaKnowledge(currInterviewRes.getJavaKnowledge());
+            currStMark.setComment(currInterviewRes.getScore());
+            currStMark.setEnrollment(currInterviewRes.getEnrollmentScore());
+            String currUserName = "";
+            listOfParams.add(currInterviewRes.getUser().getIdUser());
+            currUser = super.executeSingleGetQuery(query, listOfParams);
+            currUserName = currUser.getUserName();
+            currStMark.setInterviewerName   (currUserName);
+            currStMark.setGroupWork(currInterviewRes.getWorkInTeam()==0 ? false: true);
+            commitTransaction();
         }
 
         return currStMark;
