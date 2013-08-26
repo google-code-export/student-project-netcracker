@@ -504,9 +504,9 @@ public class HRPage {
         return interviewerStudentMark;
     }
 
-    public List<EnrollmentScores> getEnrollmentScores() {
+    public List<String> getEnrollmentScores() {
         DAOCommonImpl currDAO = new DAOCommonImpl();
-        List<EnrollmentScores> enrollmentScores = currDAO.getEnrollmentScores();
+        List<String> enrollmentScores = currDAO.getEnrollmentScoresInString();
         return enrollmentScores;
     }
 
