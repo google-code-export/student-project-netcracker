@@ -80,8 +80,8 @@ public class MainPanelHR extends MainPanel{
         tabSheet.addTab(blanksLo,"Анкеты");
         final Component c1 = new VerticalLayout();
         tabSheet.addTab(c1,"Собеседования");
-        final Component c2 = new VerticalLayout();
-        tabSheet.addTab(c2,"Статистика");
+        //final Component c2 = new VerticalLayout();
+        //tabSheet.addTab(c2,"Статистика");
         settingsLo = new VerticalLayout();
         tabSheet.addTab(settingsLo,"Настройки");
         
@@ -107,14 +107,15 @@ public class MainPanelHR extends MainPanel{
                 }  else if (source.getSelectedTab() == c1) {
                     interviewsLo = new HRInterviewsLayout(height);
                     source.replaceComponent(c1, interviewsLo);
-                }  else if (source.getSelectedTab() == c2) {
+                }  /*else if (source.getSelectedTab() == c2) {
                    
                      reportsLo = new VerticalLayout();
                      fillReportsLayout();
                      source.replaceComponent(c2, reportsLo);                    
-                } else if(source.getSelectedTab() == reportsLo){
+                }
+                 else if(source.getSelectedTab() == reportsLo){
                     fillReportsLayout();
-                }  else if (source.getSelectedTab() == settingsLo) {
+                } */ else if (source.getSelectedTab() == settingsLo) {
                     settingsLayout = new SettingsLayout(hlayout.getUsername(), mainPage);
                     source.replaceComponent(settingsLo, settingsLayout);
                 }

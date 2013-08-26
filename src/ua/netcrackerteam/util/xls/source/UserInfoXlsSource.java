@@ -37,8 +37,8 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
         initHeaders(sh.createRow(0));
         initStyles(sh);
 
-        for (int i = 0; i < rows.size(); i++) {
-            fillRow(sh.createRow(i + 1), rows.get(i));
+        for (int i = 0; i < rows.size(); i++) {        
+            fillRow(sh, sh.createRow(i + 1), rows.get(i));           
         }
     }
 
@@ -51,7 +51,9 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
 
     private void initStyles(Sheet sh) {
         for (int i = 0; i < SHEET_COLUMN_WIDTH.length; i++) {
-            sh.setColumnWidth(i, SHEET_COLUMN_WIDTH[i]);
+        	//Klitna 26.08
+            //sh.setColumnWidth(i, SHEET_COLUMN_WIDTH[i]);
+            sh.autoSizeColumn(i);
         }
 
         style = wb.createCellStyle();
@@ -65,7 +67,7 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
         }
     }
     
-    private void fillRow(Row row, XlsUserInfo rowData) {
+    private void fillRow(Sheet sheet, Row row, XlsUserInfo rowData) {
         row.createCell(0).setCellValue(rowData.getNumber2());
         row.createCell(1).setCellValue(rowData.getSurname());
         row.createCell(2).setCellValue(rowData.getName());
@@ -83,9 +85,16 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
         row.createCell(14).setCellValue(rowData.getEmail1());
         row.createCell(15).setCellValue(rowData.getEmail2());
         row.createCell(16).setCellValue(rowData.getTelNumber());
+        
+        ////Klitna 26.08
+        for(int i = 0; i < 17; i++){
+        	sheet.autoSizeColumn(i);
+        }
+       
 
         for (int i = 0; i < SHEET_HEADERS.length; i++) {
             row.getCell(i).setCellStyle(style);
+            
         }
     }
 }
