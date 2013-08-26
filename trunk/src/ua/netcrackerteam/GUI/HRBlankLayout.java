@@ -1,6 +1,5 @@
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -11,12 +10,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Runo;
 import ua.netcrackerteam.applicationForm.ApplicationForm;
 import ua.netcrackerteam.controller.HRPage;
-import ua.netcrackerteam.controller.InterviewerPage;
 import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.StudentPage;
 import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.bean.StudentInterview;
-import ua.netcrackerteam.controller.bean.StudentsMarks;
 import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 import ua.netcrackerteam.util.xls.source.UserInfoXlsSource;
 import ua.netcrackerteam.util.zip.entity.ZipContentFile;
@@ -102,7 +99,7 @@ public class HRBlankLayout extends VerticalLayout {
         VerticalLayout vl = (VerticalLayout) rightPanel.getContent();
         vl.setMargin(false);
         vl.setSpacing(true);
-        List<XlsUserInfo> stData = controller.getStudentssListForXls();
+        List<XlsUserInfo> stData = controller.getStData();
         BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
         table = new StudentsFullTable(bean);
         table.addListener(new SelectStudentListener());
@@ -533,7 +530,7 @@ public class HRBlankLayout extends VerticalLayout {
     }
 
     public void generateXls() {
-        List<XlsUserInfo> xlsUserList = controller.getStudentssListForXls();
+        List<XlsUserInfo> xlsUserList = controller.getStData();
 
         StreamResource.StreamSource streamSource = new UserInfoXlsSource(xlsUserList);
         StreamResource streamResource = new StreamResource(streamSource, "students.xls", getApplication());
