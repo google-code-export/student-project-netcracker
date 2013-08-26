@@ -22,16 +22,19 @@ public class XlsUserInfo implements XlsEntity {
     @Column(name = "hr1")
     protected String hr1;
     @Column(name = "result1")
-
     protected String result1;
     @Column(name = "comment1")
     protected String comment1;
+    @Column(name = "work_in_team1")
+    protected Integer work_in_team1;
     @Column(name = "hr2")
     protected String hr2;
     @Column(name = "result2")
     protected String result2;
     @Column(name = "comment2")
     protected String comment2;
+    @Column(name = "work_in_team2")
+    protected Integer work_in_team2;
     @Column(name = "javaKnowledge")
     protected String javaKnowledge;
     @Column(name = "sqlKnowledge")
@@ -50,6 +53,23 @@ public class XlsUserInfo implements XlsEntity {
     protected String email2;
     @Column(name = "telNumber")
     protected String telNumber;
+
+
+    public Integer getWork_in_team1() {
+        return work_in_team1;
+    }
+
+    public void setWork_in_team1(Integer work_in_team1) {
+        this.work_in_team1 = work_in_team1;
+    }
+
+    public Integer getWork_in_team2() {
+        return work_in_team2;
+    }
+
+    public void setWork_in_team2(Integer work_in_team2) {
+        this.work_in_team2 = work_in_team2;
+    }
 
     public String getJavaKnowledge() {
         return javaKnowledge;
