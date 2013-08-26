@@ -35,9 +35,9 @@ import java.util.*;
 public class HRBlankLayout extends VerticalLayout {
     private static final List<String> categories = Arrays.asList(new String[]{"Фамилия", "Имя", "Номер анкеты",
             "ВУЗ", "Курс", "Факультет", "Кафедра"});
-    private HRPage controller = new HRPage();
     private final MainPage mainPage;
     private final String username;
+    private HRPage controller = new HRPage();
     private Accordion accordion;
     private Panel rightPanel;
     private StudentsFullTable table;
@@ -113,7 +113,7 @@ public class HRBlankLayout extends VerticalLayout {
         bottomLayout.setSpacing(true);
         bottomLayout.setMargin(true);
         bottomLayout.addComponent(getButtonsLayout());
-        if(selectMode.equals(SelectMode.ONE)){
+        if (selectedStudent != null && selectMode.equals(SelectMode.ONE)) {
             bottomLayout.addComponent(getHRMarkLayout());
             bottomLayout.addComponent(getInterviewerMarkLayout());
         }
@@ -129,8 +129,8 @@ public class HRBlankLayout extends VerticalLayout {
 
     private Component getHRMarkLayout() {
         selectedStudent.setHr1(username);
-        Component markLayout = new MarksLayout(selectedStudent,MarksLayout.MarksMode.HR);
-        if(!selectedStudent.getComment1().equals("")) {
+        Component markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.HR);
+        if (!selectedStudent.getComment1().equals("")) {
             markLayout.setReadOnly(true);
         }
         return markLayout;
@@ -152,7 +152,7 @@ public class HRBlankLayout extends VerticalLayout {
 
     private Component getGenerateXlsButton() {
         Button generateXls = new Button("Скачать таблицу в Exel");
-        generateXls.setWidth(200,UNITS_PIXELS);
+        generateXls.setWidth(200, UNITS_PIXELS);
         generateXls.setIcon(new ThemeResource("icons/32/document-excel-icon.png"));
         generateXls.addListener(new Button.ClickListener() {
 
@@ -165,7 +165,7 @@ public class HRBlankLayout extends VerticalLayout {
 
     private Component getGenerateZipButton() {
         Button generateZip = new Button("Загрузить фото в Zip");
-        generateZip.setWidth(200,UNITS_PIXELS);
+        generateZip.setWidth(200, UNITS_PIXELS);
         generateZip.setIcon(new ThemeResource("icons/32/Zip-icon.png"));
         generateZip.addListener(new Button.ClickListener() {
 
@@ -181,11 +181,11 @@ public class HRBlankLayout extends VerticalLayout {
         deleteFormButton.setStyleName(Runo.BUTTON_LINK);
         deleteFormButton.setIcon(new ThemeResource("icons/32/document-delete.png"));
         deleteFormButton.addListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent clickEvent) {
-                    deleteForms();
-                }
-            });
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                deleteForms();
+            }
+        });
         return deleteFormButton;
     }
 
@@ -207,7 +207,7 @@ public class HRBlankLayout extends VerticalLayout {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 Set<XlsUserInfo> forms = (Set<XlsUserInfo>) table.getValue();
-                for(XlsUserInfo form: forms) {
+                for (XlsUserInfo form : forms) {
                     HRPage.deleteStudentBlank(Integer.parseInt(form.getNumber2()));
                 }
                 refreshTable(tree.getValue());
@@ -218,13 +218,14 @@ public class HRBlankLayout extends VerticalLayout {
         });
         Button cancel = new Button("Отмена");
         cancel.setWidth("100");
-        cancel.addListener(new Button.ClickListener() {
+        cancel.addListener(new
+                                   Button.ClickListener() {
 
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                getWindow().removeWindow(confirm);
-            }
-        });
+                                       @Override
+                                       public void buttonClick(Button.ClickEvent event) {
+                                           getWindow().removeWindow(confirm);
+                                       }
+                                   });
         layout.addComponent(ok);
         layout.addComponent(cancel);
         confirm.addComponent(layout);
@@ -235,7 +236,7 @@ public class HRBlankLayout extends VerticalLayout {
         Button editFormButton = new Button("Редактировать анкету");
         editFormButton.setStyleName(Runo.BUTTON_LINK);
         editFormButton.setIcon(new ThemeResource("icons/32/document-edit.png"));
-        if(selectMode.equals(SelectMode.MULTI)){
+        if (selectMode.equals(SelectMode.MULTI)) {
             editFormButton.setVisible(false);
         } else {
             editFormButton.addListener(new Button.ClickListener() {
@@ -263,7 +264,7 @@ public class HRBlankLayout extends VerticalLayout {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 Set<XlsUserInfo> forms = (Set<XlsUserInfo>) table.getValue();
-                for(XlsUserInfo form: forms) {
+                for (XlsUserInfo form : forms) {
                     int currFormID = Integer.parseInt(form.getNumber2());
                     HRPage.verificateForm(currFormID);
                 }
@@ -291,7 +292,7 @@ public class HRBlankLayout extends VerticalLayout {
         Button showDiffButton = new Button("Различия");
         showDiffButton.setStyleName(Runo.BUTTON_LINK);
         showDiffButton.setIcon(new ThemeResource("icons/32/Difference-tables-icon.png"));
-        if(selectMode.equals(SelectMode.MULTI)){
+        if (selectMode.equals(SelectMode.MULTI)) {
             showDiffButton.setVisible(false);
         } else {
             showDiffButton.addListener(new Button.ClickListener() {
@@ -310,7 +311,7 @@ public class HRBlankLayout extends VerticalLayout {
         Button downloadPhotoButton = new Button("Открыть фото");
         downloadPhotoButton.setStyleName(Runo.BUTTON_LINK);
         downloadPhotoButton.setIcon(new ThemeResource("icons/32/photo.png"));
-        if(selectMode.equals(SelectMode.MULTI)){
+        if (selectMode.equals(SelectMode.MULTI)) {
             downloadPhotoButton.setVisible(false);
         } else {
             downloadPhotoButton.addListener(new Button.ClickListener() {
@@ -346,7 +347,7 @@ public class HRBlankLayout extends VerticalLayout {
         String allFormsTreeItemCaption = "Основные анкеты (" + String.valueOf(formCount) + ")";
         allFormsTreeItem = "Основные анкеты";
         tree.addItem(allFormsTreeItem);
-        tree.setItemCaption(allFormsTreeItem,allFormsTreeItemCaption);
+        tree.setItemCaption(allFormsTreeItem, allFormsTreeItemCaption);
         tree.setValue(allFormsTreeItem);
         tree.setChildrenAllowed(allFormsTreeItem, false);
         tree.setItemIcon(allFormsTreeItem, new ThemeResource("icons/32/users.png"));
@@ -405,7 +406,7 @@ public class HRBlankLayout extends VerticalLayout {
         Link pdf = new Link();
         pdf.setIcon(new ThemeResource("icons/32/document-pdf.png"));
         pdf.setCaption("Просмотреть/Распечатать анкету");
-        if(selectMode.equals(SelectMode.MULTI)) {
+        if (selectMode.equals(SelectMode.MULTI)) {
             pdf.setVisible(false);
         } else {
             StreamResource resource = new StreamResource(new PdfStreamSource(), "form.pdf", mainPage);
@@ -439,7 +440,7 @@ public class HRBlankLayout extends VerticalLayout {
             //stData = InterviewerPage.getStudentsByInterviewID(stInterview.getStudentInterviewId());
             state = FormState.SCHEDULED;
         } else if (selectedObject.equals(allFormsTreeItem)) {
-            //stData = HRPage.getAllForms();
+            stData = controller.getStData();
             state = FormState.VALIDATED;
         } else if (selectedObject.equals(notAcceptedFormsTreeItem)) {
             //stData = HRPage.getNonVerificatedForms();
@@ -453,6 +454,24 @@ public class HRBlankLayout extends VerticalLayout {
         table = new StudentsFullTable(bean);
         rightPanel.replaceComponent(oldTable, table);
         bottomLayout.setVisible(false);
+    }
+
+    public void generateZip() {
+        List<ZipContentFile> zipContentFileList = controller.getStudentsPhotosForZip();
+
+        StreamResource.StreamSource streamSource = new ZipSource(zipContentFileList);
+        StreamResource streamResource = new StreamResource(streamSource, "student_photos.zip", getApplication());
+
+        getWindow().open(streamResource);
+    }
+
+    public void generateXls() {
+        List<XlsUserInfo> xlsUserList = controller.getStData();
+
+        StreamResource.StreamSource streamSource = new UserInfoXlsSource(xlsUserList);
+        StreamResource streamResource = new StreamResource(streamSource, "students.xls", getApplication());
+
+        getWindow().open(streamResource);
     }
 
     private enum FormState {
@@ -503,10 +522,10 @@ public class HRBlankLayout extends VerticalLayout {
         public void valueChange(Property.ValueChangeEvent event) {
             Set<XlsUserInfo> students = (Set<XlsUserInfo>) event.getProperty().getValue();
             if (students.size() != 0) {
-                if(students.size() == 1) {
+                if (students.size() == 1) {
                     selectedStudent = students.iterator().next();
                     selectMode = SelectMode.ONE;
-                }   else {
+                } else {
                     selectMode = SelectMode.MULTI;
                 }
 
@@ -519,25 +538,6 @@ public class HRBlankLayout extends VerticalLayout {
         }
 
     }
-
-    public void generateZip() {
-        List<ZipContentFile> zipContentFileList = controller.getStudentsPhotosForZip();
-
-        StreamResource.StreamSource streamSource = new ZipSource(zipContentFileList);
-        StreamResource streamResource = new StreamResource(streamSource, "student_photos.zip", getApplication());
-
-        getWindow().open(streamResource);
-    }
-
-    public void generateXls() {
-        List<XlsUserInfo> xlsUserList = controller.getStData();
-
-        StreamResource.StreamSource streamSource = new UserInfoXlsSource(xlsUserList);
-        StreamResource streamResource = new StreamResource(streamSource, "students.xls", getApplication());
-
-        getWindow().open(streamResource);
-    }
-
 
 
 }
