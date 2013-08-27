@@ -667,9 +667,24 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "  )," +
                 "  contacts_phone as (" +
                 "  select info, id_form from contact where id_contact_category = 4" +
-                "  )" +
-                "        " +
-                "select form2data.id_form as number2, form2data.last_name as surname, form2data.first_name as name, form2data.middle_name as secondName, '-' as finalResult, nvl(res.user_name, '-') as hr1 , nvl(res.name, '-') as result1, nvl(res.score, '-') as comment1, nvl(res.work_in_team, 0) as work_in_team1, nvl(res2.user_name,'-') as hr2 ,nvl(res2.name, '-') as result2, nvl(res2.score, '-') as comment2, nvl(res2.work_in_team, 0) as work_in_team2, nvl(res2.java_knowledge, '-') as javaKnowledge, nvl(res2.sql_knowledge, '-') as sqlKnowledge, form2data.institute_year as cource, '-' as averageHighSchoolGrade, cathedra.name as speciality, institute.name as highSchoolName, nvl(e1.info, '-') as email1, nvl(e2.info, '-') as email2, nvl(phone.info, '-') as telNumber " +
+                "  )," +
+                " hr_info as (" +
+                " select id_form, INSTITUTE_NAME, FACULTY_NAME, CATHEDRA_NAME   from hr_temp_info" +
+                " )" +
+                "select form2data.id_form as number2, form2data.last_name as surname, form2data.first_name as name, form2data.middle_name as secondName, '-' as finalResult, nvl(res.user_name, '-') as hr1 , nvl(res.name, '-') as result1, nvl(res.score, '-') as comment1, nvl(res.work_in_team, 0) as work_in_team1, nvl(res2.user_name,'-') as hr2 ,nvl(res2.name, '-') as result2, nvl(res2.score, '-') as comment2, nvl(res2.work_in_team, 0) as work_in_team2, nvl(res2.java_knowledge, '-') as javaKnowledge, nvl(res2.sql_knowledge, '-') as sqlKnowledge, form2data.institute_year as cource, '-' as averageHighSchoolGrade, " +
+                "case " +
+                "when info.CATHEDRA_NAME is not null then cathedra.name || '(' || info.CATHEDRA_NAME || ')' " +
+                "else " +
+                "cathedra.name " +
+                "end as speciality, " +
+                "case " +
+                "when info.INSTITUTE_NAME is not null then institute.name || '(' || info.INSTITUTE_NAME || ')' " +
+                "else " +
+                "institute.name " +
+                "end as highSchoolName, " +
+                "institute.name as highSchoolName, " +
+                "nvl(e1.info, '-') as email1, nvl(e2.info, '-') as email2, " +
+                "nvl(phone.info, '-') as telNumber " +
                 "from  form form2data left join results_hr res " +
                 "      on form2data.id_form = res.id_form," +
                 "      form form2data2 left join results_int res2" +
@@ -680,13 +695,16 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "      on form2data4.id_form = e2.id_form," +
                 "      form form2data5 left join contacts_phone phone " +
                 "      on form2data5.id_form = phone.id_form," +
+                "      form form2data6 left join hr_info info " +
+                "      on form2data6.id_form = info.id_form, " +
                 "      institute," +
                 "      cathedra " +
                 "where form2data2.id_form = form2data.id_form and" +
                 "      form2data2.id_form = form2data3.id_form and" +
                 "      form2data2.id_form = form2data4.id_form and" +
                 "      form2data2.id_form = form2data5.id_form and" +
-                "      form2data.id_institute = institute.id_institute and" +
+                "      form2data.id_institute = institute.id_institute and"+
+                "       form2data2.id_form = form2data6.id_form and "      +
                 "      form2data.id_cathedra = cathedra.id_cathedra";
         return query;
     }
