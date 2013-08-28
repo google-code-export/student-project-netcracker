@@ -245,8 +245,8 @@ class InterviewLayout extends VerticalLayout {
     }
 
     private class TimeSelector extends Table {
-        public Object[] NATURAL_COL_ORDER = new Object[]{"startTime", "endTime"};
-        public String[] COL_HEADERS_RUSSIAN = new String[]{"Время начала", "Время окончания"};
+        public Object[] NATURAL_COL_ORDER = new Object[]{"startTime"};//, "endTime"};
+        public String[] COL_HEADERS_RUSSIAN = new String[]{"Начало собеседования"};//, "Время окончания"};
         private DaySelector daySelector;
 
         public TimeSelector(DaySelector daySelector) {
@@ -255,7 +255,7 @@ class InterviewLayout extends VerticalLayout {
             setVisible(true);
             List<StudentInterview> availableTimes = filterAvailableTimes();
             BeanItemContainer<StudentInterview> interviewContainer = new BeanItemContainer<StudentInterview>(StudentInterview.class, availableTimes);
-            setWidth("100%");
+            setWidth("56%");
             setHeight("50%");
             setSelectable(true);
             setImmediate(true);
@@ -263,6 +263,7 @@ class InterviewLayout extends VerticalLayout {
             setContainerDataSource(interviewContainer);
             setVisibleColumns(NATURAL_COL_ORDER);
             setColumnHeaders(COL_HEADERS_RUSSIAN);
+            
             addListener(new ValueChangeListener() {
                 @Override
                 public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
