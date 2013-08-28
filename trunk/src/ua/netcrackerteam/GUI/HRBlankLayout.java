@@ -78,8 +78,8 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
         sidebar.setHeight("100%");
         accordion = new Accordion();
         accordion.setSizeFull();
-        accordion.addTab(getMenuLayout(), "Списки");
         accordion.addTab(getSearchLayout(), "Быстрый поиск");
+        accordion.addTab(getMenuLayout(), "Списки");
         sidebar.setContent(accordion);
     }
 
@@ -139,9 +139,9 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
     private Component getButtonsLayout() {
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         buttonsLayout.setSpacing(true);
+        buttonsLayout.addComponent(getEditFormButton());
         buttonsLayout.addComponent(getPDFLink());
         buttonsLayout.addComponent(getDownloadPhotoLink());
-        buttonsLayout.addComponent(getEditFormButton());
         buttonsLayout.addComponent(getDeleteFormButton());
         if (state.equals(FormState.NOT_CHECKED)) {
             buttonsLayout.addComponent(getShowFormsDifferenceButton());
