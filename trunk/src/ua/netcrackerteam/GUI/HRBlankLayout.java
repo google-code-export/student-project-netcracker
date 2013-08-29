@@ -153,7 +153,7 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
     }
 
     private Component getGenerateXlsButton() {
-        Button generateXls = new Button("Скачать таблицу в Exel");
+        Button generateXls = new Button("Скачать таблицу в Excel");
         generateXls.setWidth(200, UNITS_PIXELS);
         generateXls.setIcon(new ThemeResource("icons/32/document-excel-icon.png"));
         generateXls.addListener(new Button.ClickListener() {
