@@ -380,16 +380,16 @@ public class HRInterviewsLayout extends VerticalLayout {
                 try {
                     Date start = startTime.getDate((Date) date.getValue());
                     Date end = endTime.getDate((Date) date.getValue());
-                    int oneDuration = Integer.parseInt(duration.getValue().toString());
                     int intNum = Integer.parseInt(intervNum.getValue().toString());
                     int posNum = Integer.parseInt(positionNum.getValue().toString());
                     if(!editable) {
+                        int oneDuration = Integer.parseInt(duration.getValue().toString());
                         controller.saveNewInterviews(start, end, intNum, posNum, oneDuration);
                         getWindow().showNotification("Собеседование успешно добавлено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                         InterviewerPage.sendLetterToStudentWithFormToReservInterview();
                     } else {
-                        HRInterview interview = (HRInterview) table.getValue();
-                        controller.editInterview(interview.getId(), start, end, intNum, posNum);
+                        Set<HRInterview> interviews = (Set<HRInterview>) table.getValue();
+                        controller.editInterview(interviews.iterator().next().getId(), start, end, intNum, posNum);
                         getWindow().showNotification("Собеседование успешно изменено!", Window.Notification.TYPE_TRAY_NOTIFICATION);
                     }
                     setVisible(false);
