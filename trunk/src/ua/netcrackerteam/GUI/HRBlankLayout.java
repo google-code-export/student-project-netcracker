@@ -79,7 +79,9 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
         accordion = new Accordion();
         accordion.setSizeFull();
         accordion.addTab(getSearchLayout(), "Быстрый поиск");
-        accordion.addTab(getMenuLayout(), "Списки");
+        VerticalLayout menu = getMenuLayout();
+        accordion.addTab(menu, "Списки");
+        accordion.setSelectedTab(menu);
         sidebar.setContent(accordion);
     }
 
