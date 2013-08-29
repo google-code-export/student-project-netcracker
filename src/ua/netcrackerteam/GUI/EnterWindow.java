@@ -31,7 +31,7 @@ class EnterWindow extends Window implements Logable {
 
     public EnterWindow(final MainPage mainPage) {
         setModal(true);
-        setWidth("20%");
+        setWidth(300,UNITS_PIXELS);
         setResizable(false);
         center();
         setCaption("Вход");
@@ -62,12 +62,12 @@ class EnterWindow extends Window implements Logable {
                             //GeneralController.setAuditInterviews(1, "User try to login to application", userName, new Date());
                             mode = GeneralController.checkLogin(userName, event.getLoginParameter("password"));
                             mainPage.changeMode(mode, userName);
-                            form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
+                            /*form = HibernateFactory.getInstance().getStudentDAO().getFormByUserName(userName);
                             if(form != null){
                                 if(form.getInterview() == null){
                                     HibernateFactory.getInstance().getStudentDAO().romoveForm(form);
                                 }
-                            }
+                            }*/
                             loginForm.removeListener(this);
                             EnterWindow.this.close();
                         }

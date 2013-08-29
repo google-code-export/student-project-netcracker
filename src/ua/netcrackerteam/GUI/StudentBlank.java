@@ -367,7 +367,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         email2 = new TextField("Email 2",(Property) bean.getItemProperty("studentEmailSecond"));
         email2.addValidator(new EmailValidator("Email должен содержать знак '@' и полный домен."));
         telephone = new TextField("Телефон",(Property) bean.getItemProperty("studentTelephone"));
-        addAnotherContactsBut = new Button("Добавить другие");
+        addAnotherContactsBut = new Button("Добавить контакт");
+        addAnotherContactsBut.setDescription("Максимум 1 дополнительный контакт");
         addAnotherContactsBut.addListener(buttonsListener);
         glayout2.addComponent(email1);
         glayout2.addComponent(email2);
@@ -453,6 +454,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         sliderConfig(sliderJava,1);
         glayoutPrLang.addComponent(sliderJava);
         addPrLangBut = new Button("Добавить язык");
+        addPrLangBut.setDescription("Максимум 3 дополнительных языка");
         addPrLangBut.addListener(buttonsListener);
         addPrLangBut.setWidth("200");
         vlayout.addComponent(addPrLangBut);
@@ -491,6 +493,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             sliderConfig(c,0);
         }
         addKnowlegeBut = new Button("Другие разделы");
+        addKnowlegeBut.setDescription("Максимум 3 дополнительных раздела");
         addKnowlegeBut.addListener(buttonsListener);
         addKnowlegeBut.setWidth("200");
         vlayout.addComponent(addKnowlegeBut);
