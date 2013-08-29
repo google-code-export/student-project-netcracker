@@ -31,7 +31,7 @@ class EnterWindow extends Window implements Logable {
 
     public EnterWindow(final MainPage mainPage) {
         setModal(true);
-        setWidth(300,UNITS_PIXELS);
+        setWidth(200,UNITS_PIXELS);
         setResizable(false);
         center();
         setCaption("Вход");

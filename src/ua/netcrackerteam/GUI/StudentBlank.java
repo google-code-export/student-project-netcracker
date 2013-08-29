@@ -1018,8 +1018,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                             //stData.setStudentWorkTypeOther((String)anotherWorkType.getValue());
                             setEditable(false);
                             StudentPage.addNewForm(stData, username, status, editorName);
-                            confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
-                            getWindow().addWindow(confirmationToInterviewTime);
+                            if(status == 1) {
+                                confirmationToInterviewTime = new ConfirmationToInterviewTime(mainPage, username);
+                                getWindow().addWindow(confirmationToInterviewTime);
+                            }
+
                             if (!isInEditMode) {
                             	hlayout.addComponent(navigateToInterview);
                             }
