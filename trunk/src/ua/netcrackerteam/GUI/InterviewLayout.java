@@ -246,7 +246,7 @@ class InterviewLayout extends VerticalLayout {
 
     private class TimeSelector extends Table {
         public Object[] NATURAL_COL_ORDER = new Object[]{"startTime"};//, "endTime"};
-        public String[] COL_HEADERS_RUSSIAN = new String[]{"Начало собеседования"};//, "Время окончания"};
+        public String[] COL_HEADERS_RUSSIAN = new String[]{"Ориентировочное время"};//, "Время окончания"};
         private DaySelector daySelector;
 
         public TimeSelector(DaySelector daySelector) {
@@ -255,7 +255,7 @@ class InterviewLayout extends VerticalLayout {
             setVisible(true);
             List<StudentInterview> availableTimes = filterAvailableTimes();
             BeanItemContainer<StudentInterview> interviewContainer = new BeanItemContainer<StudentInterview>(StudentInterview.class, availableTimes);
-            setWidth("56%");
+            setWidth(400,UNITS_PIXELS);
             setHeight("50%");
             setSelectable(true);
             setImmediate(true);

@@ -13,20 +13,20 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
     private Button yesButton;
     private VerticalLayout layout = (VerticalLayout) getContent();
     private HorizontalLayout buttonsPanel = new HorizontalLayout();
-    private String CONFIRMATION_MESSAGE;
+    private static final String CONFIRMATION_MESSAGE ="Поздравляем, шаг 1 закончен! Перейдите к шагу 2: запись на собеседование.";
+    private static final String WARNING_MESSAGE = "Внимание! Вы не сможете пройти собеседование, предварительно не записавшись на него.";
     private Label message;
+    private Label message2;
     private TabSheet pageTabs;
 
 	public ConfirmationToInterviewTime(MainPage mainPage, String username) {
 		this.userName = username;
 		this.mainPage = mainPage;
-		// this.setIcon(new ThemeResource("icons/32/time-icon.png"));
 		setCaption("Запись на собеседование");
 		setModal(true);
-		setWidth("30%");
+		setWidth(300,UNITS_PIXELS);
 		setResizable(false);
 		center();
-		CONFIRMATION_MESSAGE = "Поздравляем, шаг 1 закончен! Перейдите к шагу 2: запись на собеседование.";
 
 		initButtons();
 		initLayouts();
@@ -36,8 +36,8 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
 		yesButton = new Button("Продолжить");
 		yesButton.setVisible(true);
 		yesButton.addListener(this);
-		message = new Label();
-		message.setValue(CONFIRMATION_MESSAGE);
+		message = new Label(CONFIRMATION_MESSAGE);
+        message2 = new Label(WARNING_MESSAGE);
 	}
 
 	private void initLayouts() {
@@ -46,6 +46,8 @@ public class ConfirmationToInterviewTime extends Window implements Button.ClickL
 		layout.setMargin(true);
 		layout.addComponent(message);
 		layout.setComponentAlignment(message, Alignment.TOP_CENTER);
+        layout.addComponent(message2);
+        layout.setComponentAlignment(message2, Alignment.TOP_CENTER);
 		layout.addComponent(buttonsPanel);
 		layout.setComponentAlignment(buttonsPanel, Alignment.BOTTOM_CENTER);
 		buttonsPanel.addComponent(yesButton);
