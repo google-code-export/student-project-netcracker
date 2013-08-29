@@ -18,7 +18,7 @@ public class GreetingsWindow extends Window {
     public GreetingsWindow(MainPage mainPage, TextField username) {
         this.mainPage = mainPage;
         this.userName = String.valueOf(username);
-        this.setIcon(new ThemeResource("icons/32/sun-icon.png"));
+        setWidth(300,UNITS_PIXELS);
         setModal(true);
         setClosable(false);
         setWidth("20%");
@@ -31,6 +31,7 @@ public class GreetingsWindow extends Window {
     private void init() {
         verticalLayout = new VerticalLayout();
         addComponent(verticalLayout);
+        verticalLayout.setSpacing(true);
         label = new Label("Поздравляем! Ты сделал первый шаг!");
         label.setWidth(null);
         continueButton = new Button("Продолжить");
