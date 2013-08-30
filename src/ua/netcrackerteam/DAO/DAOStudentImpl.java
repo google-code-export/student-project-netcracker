@@ -186,7 +186,7 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
     @Interceptors(ShowHibernateSQLInterceptor.class)
     @Override
     public void addForm(Form form) {
-        Session session = null;
+        /*Session session = null;
         Transaction transaction = null;
         try {
             Locale.setDefault(Locale.ENGLISH);
@@ -200,7 +200,10 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
             if (session != null && session.isOpen()) {
                 session.close();
             }
-        }
+        }*/
+        beginTransaction();
+        super.<Form>saveUpdatedObject(form);
+        commitTransaction();
     }
     
     /**

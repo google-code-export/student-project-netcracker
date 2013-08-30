@@ -34,7 +34,7 @@ import java.util.*;
  */
 public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
     private static final List<String> categories = Arrays.asList(new String[]{"Фамилия", "Имя", "Номер анкеты",
-            "ВУЗ", "Курс", "Факультет", "Кафедра"});
+            "ВУЗ", "Курс", "Кафедра"});
     private final MainPage mainPage;
     private final String username;
     private HRPage controller = new HRPage();
@@ -444,10 +444,10 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
             stData = HRPage.getNonVerificatedForms();
             state = FormState.NOT_CHECKED;
         }
-//        else if (selectedObject instanceof List) {
-//            stData = (List<XlsUserInfo>) selectedObject;
-//            state = FormState.SEARCHED;
-//        }
+        else if (selectedObject instanceof Collection) {
+            stData = (List<XlsUserInfo>) selectedObject;
+            state = FormState.SEARCHED;
+        }
         BeanItemContainer<XlsUserInfo> bean = new BeanItemContainer(XlsUserInfo.class, stData);
         StudentsFullTable oldTable = table;
         table = new StudentsFullTable(bean,listener,true);
@@ -498,8 +498,8 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
             if (searchField.isValid()) {
                 String filter = (String) searchFilter.getValue();
                 String value = (String) searchField.getValue();
-                //List<XlsUserInfo> stData = HRPage.searchStudents(filter, value);
-                //refreshTable(stData);
+                List<XlsUserInfo> stData = HRPage.searchStudents(filter, value);
+                refreshTable(stData);
             } else {
                 getWindow().showNotification("Введите значение для поиска!", Window.Notification.TYPE_TRAY_NOTIFICATION);
             }

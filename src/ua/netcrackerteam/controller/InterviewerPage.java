@@ -63,6 +63,7 @@ public class InterviewerPage {
     public static List<XlsUserInfo> getStudentsByInterviewID (int interviewID) {
         DAOHRImpl currDAO = new DAOHRImpl();
         List<XlsUserInfo> studentList = new ArrayList<XlsUserInfo>();
+        studentList = currDAO.getXLSStudentInfoByInterviewID(interviewID);
         return studentList;
     }
     
@@ -79,13 +80,19 @@ public class InterviewerPage {
         currDAO.saveStudentInterviewMark(userInfo);
     }
     
-    public static List<StudentDataShort> searchStudents(String searchFilter, String value) {
-        List<Form> allForms = new DAOInterviewerImpl().search(searchFilter, value);
+    public static List<XlsUserInfo> searchStudents(String searchFilter, String value) {
+        /*List<Form> allForms = new DAOInterviewerImpl().search(searchFilter, value);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
         if(allForms != null) {
             studentList = getStudentDataList(allForms);
         }
-        return studentList;
+        return studentList;*/
+        List<XlsUserInfo> allForms = new DAOHRImpl().search(searchFilter, value);
+        List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
+        /*if(allForms != null) {
+            studentList = getStudentDataList(allForms);
+        }*/
+        return allForms;
     }
     
     public static void sendLetterToStudentWithFormToReservInterview(){   

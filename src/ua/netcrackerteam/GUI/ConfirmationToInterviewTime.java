@@ -1,6 +1,5 @@
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 
 /**

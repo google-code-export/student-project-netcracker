@@ -1,6 +1,5 @@
 package ua.netcrackerteam.GUI;
 
-import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.*;
 
 /**
@@ -18,10 +17,10 @@ public class GreetingsWindow extends Window {
     public GreetingsWindow(MainPage mainPage, TextField username) {
         this.mainPage = mainPage;
         this.userName = String.valueOf(username);
-        setWidth(300,UNITS_PIXELS);
+        setWidth(400,UNITS_PIXELS);
         setModal(true);
         setClosable(false);
-        setWidth("20%");
+        //setWidth("20%");
         setResizable(false);
         center();
         setCaption("Поздравляем!");

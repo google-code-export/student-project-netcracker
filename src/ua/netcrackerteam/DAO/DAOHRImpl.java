@@ -18,29 +18,45 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     public static int ID_USER_CATEGORY_HR = 2;
 
     @Override
-    public List<Form> search(String category, String value) {
-        String query = "";
-        List listOfParam = new ArrayList();
-        value = '%'+value+'%';
+    public List<XlsUserInfo> search(String category, String value) {
+        String query = getCoreQueryText();
+        value = "%"+value+"%";
         beginTransaction();
-        if (category.equals("institute")) {
-            listOfParam.add(value);
-            query = "from Form where status = 1 and interview is not null and upper(cathedra.faculty.institute.name) like upper(:param0)";
+        if (category.equals("ВУЗ")) {
+            query = query + " and form2data.id_status = 1 and upper("+
+                        "case " +
+                        "when info.INSTITUTE_NAME is not null then institute.name || '(' || info.INSTITUTE_NAME || ')' " +
+                        "else " +
+                        "institute.name " +
+                        "end"+
+                        ") like upper('" + value + "')";
         }
-        else if (category.equals("faculty")) {
-            listOfParam.add(value);
-            query = "from Form where status = 1 and interview is not null and upper(cathedra.faculty.name) like upper(:param0)";
+        else if (category.equals("Курс")) {
+            query = query + "  and form2data.id_status = 1 and upper(form2data.institute_year) like upper('" + value + "')";
         }
-        else if (category.equals("cathedra")) {
-            listOfParam.add(value);
-            query = "from Form where status = 1 and interview is not null and upper(cathedra.name) like upper(:param0)";
+        else if (category.equals("Кафедра")) {
+            query = query +  "  and form2data.id_status = 1 and upper("+
+                    "case " +
+                    "when info.CATHEDRA_NAME is not null then cathedra.name || '(' || info.CATHEDRA_NAME || ')' " +
+                    "else " +
+                    "cathedra.name " +
+                    "end"+
+                    ") like upper('" + value + "')";
         }
-        else {
-            listOfParam.add(category);
-            listOfParam.add(value);
-            query = "from Form where status = 1 and upper(:param0) like upper(:param1)";
+        if ("Фамилия".equals(category)) {
+            query = query + "  and form2data.id_status = 1 and upper(form2data.last_name) like upper('" + value + "')";
         }
-        List<Form> formList = super.<Form>executeListGetQuery(query, listOfParam);
+        else if ("Имя".equals(category)) {
+            query = query + "  and form2data.id_status = 1 and upper(form2data.first_name) like upper('" + value + "')";
+        }
+        else if ("Отчество".equals(category)) {
+            query = query + "  and form2data.id_status = 1 and upper(form2data.middle_name) like upper('" + value + "')";
+        }
+        else if ("Номер анкеты".equals(category)) {
+            query = query + "  and form2data.id_status = 1 and upper(form2data.id_form) like upper('" + value + "')";
+        }
+        //List<Form> formList = super.<Form>executeListGetQuery(query, listOfParam);
+        List <XlsUserInfo> formList = super.<XlsUserInfo> executeListGetSQLQueryToBean(query);
         commitTransaction();
         return formList;
     }
@@ -109,7 +125,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     public Long getAllRegisteredFormsCount() {
         String query                = "";
         beginTransaction();
-        query = "select count(*) from Form where status = 1 and interview is not null";
+        //query = "select count(*) from Form where status = 1 and interview is not null";
+        query = "select count(*) from Form where status = 1";
         Long count = executeSingleGetQuery(query);
         commitTransaction();
         return count;

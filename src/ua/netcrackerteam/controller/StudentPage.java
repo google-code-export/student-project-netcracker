@@ -137,15 +137,18 @@ public class StudentPage {
     @Interceptors(ShowHibernateSQLInterceptor.class)
     public static List<Object> searchSomething (String tableForSearch, String inWhichColumn, String someThing) {
         Session session = null;
+        Transaction transaction;
         org.hibernate.Query re = null;
         List selectedSomething = Collections.EMPTY_LIST;
 
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
+            //session.beginTransaction();
+            transaction = session.beginTransaction();
             re = session.createQuery("from " + tableForSearch + " where upper(" + inWhichColumn + ") ='" + someThing.toUpperCase() + "'");
             selectedSomething = re.list();
+            transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -158,15 +161,18 @@ public class StudentPage {
 
     public static Form searchBlankByUserAndStatus (UserList currUser, Status currStatus) {
         Session session = null;
+        Transaction transaction;
         org.hibernate.Query re = null;
         Form selectedSomething = null;
 
         try {
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
-            session.beginTransaction();
+            //session.beginTransaction();
+            transaction = session.beginTransaction();
             re = session.createQuery("from Form where user =" + currUser.getIdUser() + " and status = " + currStatus.getIdStatus());
             selectedSomething = (Form)re.uniqueResult();
+            transaction.commit();
         } catch (Exception e) {
             System.out.println(e);
         } finally {

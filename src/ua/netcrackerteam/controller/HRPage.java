@@ -138,26 +138,14 @@ public class HRPage {
         new DAOHRImpl().verificateForm(formID);
     }
 
-    public static List<StudentDataShort> searchStudents(String searchFilter, String value) {
-        if ("Фамилия".equals(searchFilter)) {
-            searchFilter = "lastName";
-        }
-        else if ("Имя".equals(searchFilter)) {
-            searchFilter = "firstName";
-        }
-        else if ("Отчество".equals(searchFilter)) {
-            searchFilter = "middleName";
-        }
-        else if ("Номер анкеты".equals(searchFilter)) {
-            searchFilter = "idForm";
-        }
+    public static List<XlsUserInfo> searchStudents(String searchFilter, String value) {
 
-        List<Form> allForms = new DAOHRImpl().search(searchFilter, value);
+        List<XlsUserInfo> allForms = new DAOHRImpl().search(searchFilter, value);
         List<StudentDataShort> studentList = new ArrayList<StudentDataShort>();
-        if(allForms != null) {
+        /*if(allForms != null) {
             studentList = getStudentDataList(allForms);
-        }
-        return studentList;
+        }*/
+        return allForms;
     }
     
     /*

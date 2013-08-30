@@ -44,7 +44,7 @@ public class MainPanelInterviewer extends MainPanel implements BlanksLayoutI{
     private int height;
     private final MainPage mainPage;
     private static final List<String> categories = Arrays.asList(new String[] { "Фамилия", "Имя", "Номер анкеты",
-            "ВУЗ", "Курс", "Факультет", "Кафедра" });
+            "ВУЗ", "Курс", "Кафедра" });
 
     private Panel rightPanel;
     private StudentsFullTable table;
@@ -113,8 +113,8 @@ public class MainPanelInterviewer extends MainPanel implements BlanksLayoutI{
         sidebar.setHeight("100%");
         accordion = new Accordion();
         accordion.setSizeFull();
-        accordion.addTab(getTreeMenu(), "Списки");
         accordion.addTab(getSearchLayout(), "Быстрый поиск");
+        accordion.addTab(getTreeMenu(), "Списки");
         sidebar.setContent(accordion);
     }
 
@@ -238,8 +238,8 @@ public class MainPanelInterviewer extends MainPanel implements BlanksLayoutI{
             if(searchField.isValid()) {
                 String filter = (String) searchFilter.getValue();
                 String value = (String) searchField.getValue();
-                //List<XlsUserInfo> stData = InterviewerPage.searchStudents(filter, value);
-                //refreshTable(stData);
+                List<XlsUserInfo> stData = InterviewerPage.searchStudents(filter, value);
+                refreshTable(stData);
             } else {
                 getWindow().showNotification("Введите значение для поиска!",Window.Notification.TYPE_TRAY_NOTIFICATION);
             }
