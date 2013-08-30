@@ -4,11 +4,15 @@
  */
 package ua.netcrackerteam.controller.bean;
 
+import sunw.io.Serializable;
+
 /**
  *
  * @author Kushnirenko Anna
  */
-public class HRInterview {
+public class HRInterview implements Serializable{
+
+    private static final long serialVersionUID = 2L;
     
     private int id;
     private String date;

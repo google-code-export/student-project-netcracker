@@ -4,6 +4,8 @@
  */
 package ua.netcrackerteam.controller.bean;
 
+import sunw.io.Serializable;
+
 import java.util.Date;
 
 /**
@@ -11,7 +13,9 @@ import java.util.Date;
  *
  * @author Anna Kushnirenko
  */
-public class StudentInterview {
+public class StudentInterview implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private int studentInterviewId;
     private String interviewStartDay;
