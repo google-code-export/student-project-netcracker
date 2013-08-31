@@ -22,6 +22,7 @@ import java.io.IOException;
 public class MainPanel extends Panel {
     private final VerticalLayout layout;
     protected Label richText;
+    protected Footer footer;
     protected VerticalLayout mainPageLo;
     protected TabSheet tabSheet;
 
@@ -55,6 +56,7 @@ public class MainPanel extends Panel {
             System.out.println("File main_page_text.txt is not found");
         }
         richText = new Label(s);
+        footer = new Footer();
         richText.setContentMode(Label.CONTENT_XHTML);
         richText.setStyleName("infotext");
         Embedded img = new Embedded(null, new ThemeResource("images/main-logo.png"));
@@ -64,6 +66,7 @@ public class MainPanel extends Panel {
         wrapper.addComponent(richText);
         wrapper.setStyleName("form-info");
         layout.addComponent(wrapper);
+        layout.addComponent(footer);
         //layout.setComponentAlignment(richText,Alignment.BOTTOM_CENTER);
     }
 
@@ -73,8 +76,11 @@ public class MainPanel extends Panel {
         Embedded img = new Embedded(null, new ThemeResource("images/main-logo.png"));
         img.setStyleName("infotext");
         CssLayout wrapper = new CssLayout();
-        wrapper.addComponent(img);
-        wrapper.addComponent(richText);
+        CssLayout inner = new CssLayout();
+        inner.addComponent(img);
+        inner.addComponent(richText);
+        wrapper.addComponent(inner);
+        wrapper.addComponent(footer);
         //wrapper.setStyleName("form-info");
         tabSheet = new TabSheet();
         layout.addComponent(tabSheet);

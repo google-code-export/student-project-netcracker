@@ -9,6 +9,11 @@
 	height: 110px;
 }
 
+.footer {
+	text-align: center;
+	font-size: 9px;
+}
+
 .header .v-button span {
 	text-decoration: none;
         padding-bottom: 10px;

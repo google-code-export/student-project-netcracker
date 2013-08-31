@@ -11,6 +11,7 @@ import ua.netcrackerteam.configuration.Logable;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
 
+import java.io.Serializable;
 import java.text.DateFormatSymbols;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -20,7 +21,7 @@ import java.util.*;
  * @author Klitna Tetiana
  */
 
-public class RegistrationToInterview implements Logable {
+public class RegistrationToInterview implements Logable, Serializable {
 
     private static DateFormatSymbols myDateFormatSymbols = new DateFormatSymbols() {
         @Override
