@@ -4,7 +4,7 @@
  */
 package ua.netcrackerteam.controller.bean;
 
-import sunw.io.Serializable;
+import java.io.Serializable;
 
 /**
  *
