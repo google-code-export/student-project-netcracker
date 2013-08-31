@@ -53,7 +53,7 @@ class EnterWindow extends Window implements Logable, FieldEvents.BlurListener {
         password.addValidator(new RegexpValidator("\\w{6,}",
                 "Пароль должен содержать буквы английского алфавита и/или цифры, и быть не короче 6 символов."));
         password.setRequired(true);
-        okBut = new Button("Регистрация");
+        okBut = new Button("Войти");
         username.addListener(this);
         password.addListener(this);
         okBut.addListener(new Button.ClickListener() {
