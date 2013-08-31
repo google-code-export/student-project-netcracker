@@ -15,7 +15,7 @@ import com.vaadin.ui.VerticalLayout;
  * Panel for Student view
  * @author Anna Kushnirenko
  */
-public class MainPanelStudent extends MainPanel{
+public class MainPanelStudent extends MainPanel {
     private StudentBlank blankLayout;
     private InterviewLayout interviewLayout;
     private SettingsLayout settingsLayout;
@@ -37,12 +37,15 @@ public class MainPanelStudent extends MainPanel{
                 if(source.getSelectedTab() == c1) {
                     blankLayout = new StudentBlank(hlayout.getUserName(),mainPage,hlayout.getUserName());
                     source.replaceComponent(c1, blankLayout);
+                    blankLayout.addComponent(new Footer());
                 } else if (source.getSelectedTab() == c2) {
                     interviewLayout = new InterviewLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(c2, interviewLayout);
+                    interviewLayout.addComponent(new Footer());
                 } else if (source.getSelectedTab() == c3) {
                     settingsLayout = new SettingsLayout(hlayout.getUserName(), mainPage);
                     source.replaceComponent(c3, settingsLayout);
+                    settingsLayout.addComponent(new Footer());
                 }
             }
         });
