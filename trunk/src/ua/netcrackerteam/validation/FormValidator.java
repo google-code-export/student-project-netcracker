@@ -4,7 +4,6 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.AbstractOrderedLayout;
-import com.vaadin.ui.Label;
 import ua.netcrackerteam.GUI.MainPage;
 import ua.netcrackerteam.controller.GeneralController;
 
@@ -20,7 +19,6 @@ import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
 public class FormValidator {
     private static final String REQUIRED_MESSAGE = "Заполните пожалуйста обязательное поле(поля)";
     private MainPage mainPage;
-    private Label errorLable;
     private Validator validator;
 
     public FormValidator(MainPage mainPage) {

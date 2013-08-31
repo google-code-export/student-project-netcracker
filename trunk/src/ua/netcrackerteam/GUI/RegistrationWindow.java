@@ -9,11 +9,11 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import ua.netcrackerteam.controller.GeneralController;
 import ua.netcrackerteam.validation.FormValidator;
-import ua.netcrackerteam.validation.MessageUtil;
 
 import java.sql.SQLException;
 
-import static ua.netcrackerteam.validation.SystemMessages.*;
+import static ua.netcrackerteam.validation.SystemMessages.REGISTRATION_SUCCESSFUL_WITHOUT_USERNAME;
+import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
 
 /**
  * @author akush_000
@@ -103,16 +103,10 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener {
                 greetingsWindow = new GreetingsWindow(mainPage, username);
                 getParent().addWindow(greetingsWindow);
                 close();
-                mainPage.getMainWindow().showNotification(MessageUtil.compositeNotification(REGISTRATION_SUCCESSFUL.getNotification(), username));
+                mainPage.getMainWindow().showNotification(REGISTRATION_SUCCESSFUL_WITHOUT_USERNAME.getNotification());
             } catch (SQLException e){
                 mainPage.getMainWindow().showNotification(SQL_CONNECTION_ERROR.getNotification());
             }
-//            try {
-//                SendMails.sendMailToUserAfterReg(userEmail, userName, userPassword);
-//            } catch (EmailException e) {
-//                e.printStackTrace();
-//            }
-
         }
     }
 

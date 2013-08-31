@@ -21,8 +21,9 @@ public enum SystemMessages {
 
     REGISTRATION_SUCCESSFUL("Регистрация пользователя {0} завершена успешно!",  Notification.TYPE_TRAY_NOTIFICATION),
 
-    CHANGE_PASSWORD_SUCCESSFUL("Изменение пароля юзера завершено успешно!",  Notification.TYPE_TRAY_NOTIFICATION,
-            "На email юзера {0} выслано письмо с новым паролем. Теперь юзер может зайти под своими новыми аккаунт данными.", Notification.POSITION_CENTERED);
+    REGISTRATION_SUCCESSFUL_WITHOUT_USERNAME("Регистрация пользователя завершена успешно!",  Notification.TYPE_TRAY_NOTIFICATION),
+
+    CHANGE_PASSWORD_SUCCESSFUL("Изменение пароля юзера завершено успешно!",  Notification.TYPE_TRAY_NOTIFICATION);
 
     private String caption;
     private String description;

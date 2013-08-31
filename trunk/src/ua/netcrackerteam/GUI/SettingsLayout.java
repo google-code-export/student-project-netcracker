@@ -105,8 +105,7 @@ public class SettingsLayout extends VerticalLayout implements Button.ClickListen
                 if (!(newEmail.getValue().equals(""))){
                     if (!GeneralController.checkUserEmail(userName, String.valueOf(newEmail))){
                         GeneralController.setNewEmail(userName, String.valueOf(newEmail));
-                        getWindow().showNotification("Изменение электронной почты юзера завершено успешно! " +
-                                "На email " + newEmail + " выслано тестовое письмо.", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                        getWindow().showNotification("Изменение электронной почты юзера завершено успешно! ", Window.Notification.TYPE_TRAY_NOTIFICATION);
                         refrachTextField();
                         refreshLable();
                     } else {
