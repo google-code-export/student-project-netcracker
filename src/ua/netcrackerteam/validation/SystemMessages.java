@@ -15,6 +15,8 @@ public enum SystemMessages {
 
     LOGIN_ERROR("Логин и/или пароль не верны!", Notification.TYPE_TRAY_NOTIFICATION),
 
+    EMPTY_FIELDS("Заполните пожалуйста обязательное поле(поля)", Notification.TYPE_TRAY_NOTIFICATION),
+
     PASSWORD_ERROR("Неверный текущий пароль !", Notification.TYPE_TRAY_NOTIFICATION),
 
     REGISTRATION_SUCCESSFUL("Регистрация пользователя {0} завершена успешно!",  Notification.TYPE_TRAY_NOTIFICATION),
