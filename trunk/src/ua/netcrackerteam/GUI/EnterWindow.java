@@ -42,7 +42,7 @@ class EnterWindow extends Window implements Logable, FieldEvents.BlurListener {
         center();
         setCaption("Вход");
         init();
-
+        username.focus();
     }
 
     private void init() {
