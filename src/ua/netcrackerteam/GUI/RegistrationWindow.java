@@ -92,9 +92,6 @@ class RegistrationWindow extends Window implements FieldEvents.BlurListener {
     }
 
     public void buttonClickRegistr() {
-        if(formValidator.getErrorLable() != null) {
-            removeComponent(formValidator.getErrorLable());
-        }
         for(int i = 0; i < layout.getComponentCount(); i ++){
             if(layout.getComponent(i) instanceof AbstractField){
                 formValidator.validateTextFields((AbstractField) layout.getComponent(i), layout);
