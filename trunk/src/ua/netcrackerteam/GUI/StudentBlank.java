@@ -10,7 +10,6 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.IntegerValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.event.FieldEvents.BlurEvent;
@@ -23,21 +22,13 @@ import com.vaadin.ui.Upload.StartedEvent;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Window.Notification;
 import com.vaadin.ui.themes.Reindeer;
-
 import ua.netcrackerteam.DAO.Entities.Cathedra;
 import ua.netcrackerteam.DAO.Entities.Faculty;
 import ua.netcrackerteam.DAO.Entities.Institute;
-import ua.netcrackerteam.controller.bean.StudentData;
 import ua.netcrackerteam.controller.StudentPage;
+import ua.netcrackerteam.controller.bean.StudentData;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 /**
@@ -305,8 +296,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         faculties.addListener(facultListener);
         universityYear = new TextField("Курс",(Property) bean.getItemProperty("studentInstituteCourse"));
         universityGradYear = new TextField("Год окончания",(Property) bean.getItemProperty("studentInstituteGradYear"));
-        universityYear.addValidator(new IntegerValidator("Ошибка! Введите номер курса."));
-        universityGradYear.addValidator(new IntegerValidator("Ошибка! Введите год."));
+        universityYear.addValidator(new RegexpValidator("\\d{1,1}", "Номер курса должен быть длиной не более 1 символа"));
+        universityGradYear.addValidator(new RegexpValidator("\\d{1,4}", "Год окончания не должен быть длиной не более 4 символов"));
         glayout1.addComponent(lastName, 0, 0);
         glayout1.addComponent(firstName,1,0);
         glayout1.addComponent(middleName,0,1);
