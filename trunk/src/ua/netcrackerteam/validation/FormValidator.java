@@ -10,6 +10,7 @@ import ua.netcrackerteam.controller.GeneralController;
 
 import java.sql.SQLException;
 
+import static ua.netcrackerteam.validation.SystemMessages.EMPTY_FIELDS;
 import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
 
 /**
@@ -18,18 +19,9 @@ import static ua.netcrackerteam.validation.SystemMessages.SQL_CONNECTION_ERROR;
  */
 public class FormValidator {
     private static final String REQUIRED_MESSAGE = "Заполните пожалуйста обязательное поле(поля)";
-    private static final Integer ZERO = new Integer(0);
     private MainPage mainPage;
     private Label errorLable;
     private Validator validator;
-
-    public Label getErrorLable() {
-        return errorLable;
-    }
-
-    public void setErrorLable(Label errorLable) {
-        this.errorLable = errorLable;
-    }
 
     public FormValidator(MainPage mainPage) {
         this.mainPage = mainPage;
@@ -40,12 +32,7 @@ public class FormValidator {
             component.setRequiredError(REQUIRED_MESSAGE);
             component.validate();
         } catch (Validator.EmptyValueException e){
-            if(errorLable != null){
-                layout.removeComponent(errorLable);
-            }
-            errorLable = new Label(component.getRequiredError());
-            errorLable.setStyle("errorLable");
-            layout.addComponent(errorLable, ZERO);
+            layout.getWindow().showNotification(EMPTY_FIELDS.getNotification());
         } catch (Validator.InvalidValueException e){
 
         }
