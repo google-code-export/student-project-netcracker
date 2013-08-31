@@ -155,7 +155,7 @@ class InterviewLayout extends VerticalLayout {
     private void loadRegistrationPanelSettings() {
         Panel panel = new Panel("Запись на собеседование");
         panel.setWidth("100%");
-        addComponent(new Embedded(null, new ThemeResource("images/interview-logo.png")));
+        addComponent(new Embedded(null, new ThemeResource("images/interview-logo2.png")));
         String s = null;
         try {
             WebApplicationContext context = (WebApplicationContext) mainPage.getContext();

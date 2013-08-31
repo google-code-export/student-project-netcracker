@@ -75,7 +75,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
     private long maxSize = 300000; //300Kb
     private StudentData stData;
     private final BeanItem<StudentData> bean;
-    private static final List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе","Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
+    private static final List<String> workTypes = Arrays.asList(new String[] {"Реклама в ВУЗе", "Интернет","От знакомых","Реклама (СМИ)","Другое (уточните)"});
     
     private boolean isInEditMode = false;
     
@@ -525,10 +525,9 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             Component c = (Component) i.next();
             sliderConfig(c,1);
         }
-        advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?",workTypes);
+        advert = new OptionGroup("Откуда ты узнал о наборе в учебный центр?", workTypes);
         advert.setMultiSelect(true);
         advert.setValue(stData.getStudentHowHearAboutCentre());
-        advert.setNullSelectionAllowed(false);
         advert.setImmediate(true);
         advert.setWidth("220");
         advert.setRequired(true);
