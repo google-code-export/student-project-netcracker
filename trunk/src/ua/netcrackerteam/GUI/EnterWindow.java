@@ -37,7 +37,7 @@ class EnterWindow extends Window implements Logable, FieldEvents.BlurListener {
         formValidator = new FormValidator(this.mainPage);
         layout = new VerticalLayout();
         setModal(true);
-        setWidth(200,UNITS_PIXELS);
+        setWidth(300,UNITS_PIXELS);
         setResizable(false);
         center();
         setCaption("Вход");
@@ -48,7 +48,7 @@ class EnterWindow extends Window implements Logable, FieldEvents.BlurListener {
     private void init() {
         username = new TextField("Введите логин: ");
         username.setRequired(true);
-        username.addValidator(new RegexpValidator("\\w{3,}", "Имя должно быть не короче 3х символов латиницы."));
+        username.addValidator(new RegexpValidator("\\w{3,}", "Имя должно быть не короче 3х символов."));
         password = new PasswordField("Введите пароль: ");
         password.addValidator(new RegexpValidator("\\w{6,}",
                 "Пароль должен содержать буквы английского алфавита и/или цифры, и быть не короче 6 символов."));
