@@ -260,6 +260,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfParams.add(currUser);
         listOfParams.add(currStatus);
         Form oldForm = super.<Form>executeSingleGetQuery(query, listOfParams);
+        if (oldForm.getInterview()!=null) {
+            currForm.setInterview(oldForm.getInterview());
+        }
         super.<Form>executeDeleteQuery(oldForm);
         currForm.setStatus(currStatus);
         super.<Form>updatedObject(currForm);
