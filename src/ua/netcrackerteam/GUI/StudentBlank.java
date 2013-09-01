@@ -203,11 +203,11 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         glayout1.setMargin(true);
         persInfo.setContent(glayout1);
         firstName = new TextField("Имя", (Property) bean.getItemProperty("studentFirstName"));
-        firstName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        firstName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9]{3,50}", "Поле должно содержать хотя бы 3 символа."));
         middleName = new TextField("Отчество", (Property) bean.getItemProperty("studentMiddleName"));
-        middleName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        middleName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9]{3,50}", "Поле должно содержать хотя бы 3 символа."));
         lastName = new TextField("Фамилия", (Property) bean.getItemProperty("studentLastName"));
-        lastName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9-]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        lastName.addValidator(new RegexpValidator("[а-яА-ЯіІёЇїЁa-zA-Z0-9-]{3,50}", "Поле должно содержать хотя бы 3 символа."));
         
         newInstitute = new TextField("Ваш ВУЗ",(Property) bean.getItemProperty("studentOtherInstitute"));
         newCathedra = new TextField("Ваша кафедра",(Property) bean.getItemProperty("studentOtherCathedra"));
@@ -240,6 +240,8 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         BeanItemContainer<Faculty> objects = new BeanItemContainer<Faculty>(Faculty.class, currentFaculties);
                         faculties.setContainerDataSource(objects);
                         newInstitute.setValue("");
+                        newFaculty.setValue("");
+                        newCathedra.setValue("");
                     } 
                     if(currUniver != null && currUniver.getName().equals("Другое")) {
                         newInstitute.setVisible(true);
@@ -263,7 +265,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                         List <Cathedra> currentCathedras = StudentPage.getCathedraListByFaculty(currFaculty);
                         BeanItemContainer<Cathedra> objects = new BeanItemContainer<Cathedra>(Cathedra.class, currentCathedras);
                         cathedras.setContainerDataSource(objects);
-                        newCathedra.setValue("");
+
                     }
                     if(currFaculty != null && currFaculty.getName().equals("Другое")) {
                         newFaculty.setVisible(true);
@@ -281,10 +283,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
             public void valueChange(ValueChangeEvent event) {
                 if ( cathedras.size() > 0 ) {
                     Cathedra currCathedra = (Cathedra) cathedras.getValue();
-                    //newCathedra.setValue("");
                     if(currCathedra!= null && currCathedra.getName().equals("Другое")) {
                         newCathedra.setVisible(true);
                     } else {
+
                         newFaculty.setVisible(false);
                         newCathedra.setVisible(false);
                         newInstitute.setVisible(false);
@@ -583,7 +585,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         anotherContact = new TextField(type,value);
         textFieldConfig(anotherContact);
-        anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        anotherContact.addValidator(new RegexpValidator("[а-яА-ЯёЇїЁa-zA-Z0-9@_. -]{3,100}", "Поле должно содержать хотя бы 3 символа."));
         gl.removeComponent(addAnotherContactsBut);
         gl.addComponent(anotherContact,0,1);
         anotherContact.setWidth("220");
@@ -644,7 +646,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         final int currKnow = knowlegesList.size()+1;
         knowlName = new TextField("Раздел (в области IT или сетей)",(Property) bean.getItemProperty("studentKnowledgeOther" + currKnow));
         knowlName.setRequired(true);
-        knowlName.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,}", "Поле должно содержать хотя бы 3 символа."));
+        knowlName.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{3,100}", "Поле должно содержать хотя бы 3 символа."));
         Button okBut = new Button("Добавить");
         okBut.addListener(new Button.ClickListener() {
             @Override
