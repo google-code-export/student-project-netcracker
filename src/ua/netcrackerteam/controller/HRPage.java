@@ -210,6 +210,20 @@ public class HRPage {
            return zipContentFileList;
     }
 
+    public String getRestOfPositionsOnInterviews() {
+        DAOHRImpl currDAO = new DAOHRImpl();
+        int restOfPositions = currDAO.getRestOfPositionsOnInterviews();
+        return String.valueOf(restOfPositions);
+    }
+
+    public String getCountOfStudentsOnReservedInterview() {
+        Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
+        List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
+        int  amountStudentsToInterview = (forms == null? 0: forms.size());
+        //int restOfPositions = nullInterview.getMaxNumber() - amountStudentsToInterview;
+        return String.valueOf(amountStudentsToInterview);
+    }
+
     public class CustomComparator implements Comparator<HRInterview> {
         @Override
         public int compare(HRInterview o1, HRInterview o2) {
