@@ -115,6 +115,21 @@ public class HRInterviewsLayout extends VerticalLayout {
             }
         });
         sidebar.addComponent(deleteInterview);
+        sidebar.addComponent(getPositionsInfoLayout());
+    }
+
+    private Component getPositionsInfoLayout() {
+        VerticalLayout infoLayout = new VerticalLayout();
+        infoLayout.setSpacing(true);
+        String restOfPositionsCaption =  "Остаток мест: " + controller.getRestOfPositionsOnInterviews();
+        Label restOfPositions = new Label(restOfPositionsCaption);
+        restOfPositions.setDescription("Суммарный остаток мест на всех собеседованиях");
+        infoLayout.addComponent(restOfPositions);
+        String countOnReservedInterviewCaption =  "На резервном: " + controller.getCountOfStudentsOnReservedInterview();
+        Label countOnReservedInterview = new Label(countOnReservedInterviewCaption);
+        countOnReservedInterview.setDescription("Количество студентов, зарегистрированных на резервное собеседование");
+        infoLayout.addComponent(countOnReservedInterview);
+        return infoLayout;
     }
 
     private void fillRightPanel() {

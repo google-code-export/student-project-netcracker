@@ -5,6 +5,7 @@ import ua.netcrackerteam.controller.bean.DifferenceData;
 import ua.netcrackerteam.controller.bean.StudentsMarks;
 import ua.netcrackerteam.util.xls.entity.XlsUserInfo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -20,53 +21,48 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     @Override
     public List<XlsUserInfo> search(String category, String value) {
         String query = getCoreQueryText();
-        value = "%"+value+"%";
+        value = "%" + value + "%";
         beginTransaction();
         if (category.equals("ВУЗ")) {
-            query = query + " and form2data.id_status = 1 and upper("+
-                        "case " +
-                        "when info.INSTITUTE_NAME is not null then institute.name || '(' || info.INSTITUTE_NAME || ')' " +
-                        "else " +
-                        "institute.name " +
-                        "end"+
-                        ") like upper('" + value + "')";
-        }
-        else if (category.equals("Курс")) {
+            query = query + " and form2data.id_status = 1 and upper(" +
+                    "case " +
+                    "when info.INSTITUTE_NAME is not null then institute.name || '(' || info.INSTITUTE_NAME || ')' " +
+                    "else " +
+                    "institute.name " +
+                    "end" +
+                    ") like upper('" + value + "')";
+        } else if (category.equals("Курс")) {
             query = query + "  and form2data.id_status = 1 and upper(form2data.institute_year) like upper('" + value + "')";
-        }
-        else if (category.equals("Кафедра")) {
-            query = query +  "  and form2data.id_status = 1 and upper("+
+        } else if (category.equals("Кафедра")) {
+            query = query + "  and form2data.id_status = 1 and upper(" +
                     "case " +
                     "when info.CATHEDRA_NAME is not null then cathedra.name || '(' || info.CATHEDRA_NAME || ')' " +
                     "else " +
                     "cathedra.name " +
-                    "end"+
+                    "end" +
                     ") like upper('" + value + "')";
         }
         if ("Фамилия".equals(category)) {
             query = query + "  and form2data.id_status = 1 and upper(form2data.last_name) like upper('" + value + "')";
-        }
-        else if ("Имя".equals(category)) {
+        } else if ("Имя".equals(category)) {
             query = query + "  and form2data.id_status = 1 and upper(form2data.first_name) like upper('" + value + "')";
-        }
-        else if ("Отчество".equals(category)) {
+        } else if ("Отчество".equals(category)) {
             query = query + "  and form2data.id_status = 1 and upper(form2data.middle_name) like upper('" + value + "')";
-        }
-        else if ("Номер анкеты".equals(category)) {
+        } else if ("Номер анкеты".equals(category)) {
             query = query + "  and form2data.id_status = 1 and upper(form2data.id_form) like upper('" + value + "')";
         }
         //List<Form> formList = super.<Form>executeListGetQuery(query, listOfParam);
-        List <XlsUserInfo> formList = super.<XlsUserInfo> executeListGetSQLQueryToBean(query);
+        List<XlsUserInfo> formList = super.<XlsUserInfo>executeListGetSQLQueryToBean(query);
         commitTransaction();
         return formList;
     }
-    
+
     @Override
     public void setHRMark(int selectedFormID, String insertedMark, String userNameHR) {
-        String query                        = "";
-        InterviewRes currInterviewResult    = null;
-        Form currFormForInsertResults       = null;
-        UserList currHRUser                 = null;
+        String query = "";
+        InterviewRes currInterviewResult = null;
+        Form currFormForInsertResults = null;
+        UserList currHRUser = null;
         beginTransaction();
         List listOfParams = new ArrayList();
         listOfParams.add(selectedFormID);
@@ -77,8 +73,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         if (currInterviewResult != null) {
             currInterviewResult.setScore(insertedMark);
             super.saveUpdatedObject(currInterviewResult);
-        }
-        else {
+        } else {
             currInterviewResult = new InterviewRes();
             listOfParams.add(selectedFormID);
             query = "from Form where to_char(idForm) = to_char(:param0)";
@@ -98,10 +93,10 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     public UserList getUserDataByFormId(int formId) {
 
-        String query            = "";
-        List listOfParams       = new ArrayList();
-        Form userForm           = null;
-        UserList selectedUser   = null;
+        String query = "";
+        List listOfParams = new ArrayList();
+        Form userForm = null;
+        UserList selectedUser = null;
         beginTransaction();
         query = "from Form where to_char(idForm) = to_char(:param0)";
         listOfParams.add(formId);
@@ -110,20 +105,20 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return selectedUser;
     }
- 
+
     @Override
     public List<Form> getAllRegisteredForms() {
-        String query                = "";
-        List<Form> selectedForms    = null;
+        String query = "";
+        List<Form> selectedForms = null;
         beginTransaction();
         query = "from Form where status = 1 and interview is not null";
         selectedForms = super.<Form>executeListGetQuery(query);
         commitTransaction();
         return selectedForms;
     }
-    
+
     public Long getAllRegisteredFormsCount() {
-        String query                = "";
+        String query = "";
         beginTransaction();
         //query = "select count(*) from Form where status = 1 and interview is not null";
         query = "select count(*) from Form where status = 1";
@@ -133,8 +128,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public List<HrTempInfo> getHrTempInfo() {
-        String query                = "";
-        List<HrTempInfo> selectedInfo     = null;
+        String query = "";
+        List<HrTempInfo> selectedInfo = null;
         beginTransaction();
         query = "from HrTempInfo";
         selectedInfo = super.<HrTempInfo>executeListGetQuery(query);
@@ -142,22 +137,22 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         return selectedInfo;
     }
 
+    public void setHrTempInfo(HrTempInfo hrTempInfo) {
+        beginTransaction();
+        super.<HrTempInfo>saveUpdatedObject(hrTempInfo);
+        commitTransaction();
+    }
+
     public HrTempInfo getHrTempInfoByFormID(int formID) {
-        String query                = "";
-        HrTempInfo selectedInfo     = null;
-        List listOfParams           = new ArrayList();
+        String query = "";
+        HrTempInfo selectedInfo = null;
+        List listOfParams = new ArrayList();
         beginTransaction();
         query = "from HrTempInfo where to_char(form.idForm) = to_char(:param0)";
         listOfParams.add(formID);
         selectedInfo = super.<HrTempInfo>executeSingleGetQuery(query, listOfParams);
         commitTransaction();
         return selectedInfo;
-    }
-
-    public void setHrTempInfo(HrTempInfo hrTempInfo){
-        beginTransaction();
-        super.<HrTempInfo>saveUpdatedObject(hrTempInfo);
-        commitTransaction();
     }
 
     /*public void updateHrTempInfo(HrTempInfo hrTempInfo){
@@ -179,9 +174,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     }*/
 
-    public void deleteHrTempInfo(int tempInfoID){
-        String query        = "";
-        List listOfParam    = new ArrayList();
+    public void deleteHrTempInfo(int tempInfoID) {
+        String query = "";
+        List listOfParam = new ArrayList();
         HrTempInfo currHRInfo = null;
         beginTransaction();
         query = "from HrTempInfo where to_char(idHrTempInfo) = to_char(:param0)";
@@ -190,9 +185,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
     }
 
-    public HrTempInfo getHrTempInfoByID(int tempInfoID){
-        String query        = "";
-        List listOfParam    = new ArrayList();
+    public HrTempInfo getHrTempInfoByID(int tempInfoID) {
+        String query = "";
+        List listOfParam = new ArrayList();
         HrTempInfo currHRInfo = null;
         listOfParam.add(tempInfoID);
         beginTransaction();
@@ -203,9 +198,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public List<Form> getNonVerificatedForms() {
-        String queryForm        = "";
-        List listOfParams       = new ArrayList();
-        List<Form> listOfForms  = null;
+        String queryForm = "";
+        List listOfParams = new ArrayList();
+        List<Form> listOfForms = null;
         beginTransaction();
         listOfParams.add(5);
         queryForm = "from Form where to_char(status) = to_char(:param0)";
@@ -213,9 +208,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return listOfForms;
     }
-    
+
     public Long getNonVerificatedFormsCount() {
-        String queryForm        = "";
+        String queryForm = "";
         beginTransaction();
         queryForm = "select count(*) from Form where id_status is 5";
         Long count = executeSingleGetQuery(queryForm);
@@ -224,17 +219,17 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     public List<Form> getBlanksWithoutInterview() {
-        String queryForm        = "";
-        List<Form> listOfForms  = null;
+        String queryForm = "";
+        List<Form> listOfForms = null;
         beginTransaction();
         queryForm = "from Form where interview is null";
         listOfForms = super.<Form>executeListGetQuery(queryForm);
         commitTransaction();
         return listOfForms;
     }
-    
+
     public Long getBlanksWithoutInterviewCount() {
-        String queryForm        = "";
+        String queryForm = "";
         beginTransaction();
         queryForm = "select count(*) from Form where interview is null";
         Long count = executeSingleGetQuery(queryForm);
@@ -244,10 +239,10 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public void verificateForm(int formID) {
-        String query            = "";
-        Status currStatus       = null;
-        List listOfParams       = new ArrayList();
-        Form currForm           = null;
+        String query = "";
+        Status currStatus = null;
+        List listOfParams = new ArrayList();
+        Form currForm = null;
         beginTransaction();
         query = "from Status where idStatus = 1";
         currStatus = super.<Status>executeSingleGetQuery(query);
@@ -260,7 +255,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfParams.add(currUser);
         listOfParams.add(currStatus);
         Form oldForm = super.<Form>executeSingleGetQuery(query, listOfParams);
-        if (oldForm.getInterview()!=null) {
+        if (oldForm.getInterview() != null) {
             currForm.setInterview(oldForm.getInterview());
         }
         super.<Form>executeDeleteQuery(oldForm);
@@ -271,9 +266,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
     @Override
     public void deleteForm(int formID) {
-        String query            = "";
-        List listOfParams       = new ArrayList();
-        Form currForm           = null;
+        String query = "";
+        List listOfParams = new ArrayList();
+        Form currForm = null;
         beginTransaction();
         query = "from Form where to_char(idForm) = to_char(:param0)";
         listOfParams.add(formID);
@@ -305,8 +300,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 session.close();
             }
         }*/
-        String query            = "";
-        List listOfParams       = new ArrayList();
+        String query = "";
+        List listOfParams = new ArrayList();
         beginTransaction();
         listOfParams.add(formID);
         query = "from Form where to_char(idForm) = to_char(:param0)";
@@ -314,7 +309,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         listOfParams.clear();
         query = "from Status where to_char(idStatus) = to_char(:param0)";
         listOfParams.add(statusID);
-        Status selectedStatus = super.<Status>executeSingleGetQuery(query,listOfParams);
+        Status selectedStatus = super.<Status>executeSingleGetQuery(query, listOfParams);
         selectedForm.setStatusAttend(selectedStatus);
         super.<Form>updatedObject(selectedForm);
         commitTransaction();
@@ -342,8 +337,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             }
         }
         return marks;*/
-        String query            = "";
-        List listOfParams       = new ArrayList();
+        String query = "";
+        List listOfParams = new ArrayList();
         beginTransaction();
         listOfParams.add(selectedFormID);
         query = "from InterviewRes where to_char(form) = to_char(:param0) and user IN (select idUser from UserList where idUserCategory = 3)";
@@ -372,8 +367,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             }
         }
         return marks;*/
-        String query            = "";
-        List listOfParams       = new ArrayList();
+        String query = "";
+        List listOfParams = new ArrayList();
         beginTransaction();
         listOfParams.add(selectedFormID);
         query = "from InterviewRes where to_char(form) = to_char(:param0) and user IN (select idUser from UserList where (idUserCategory = 3) or (idUserCategory = 2))";
@@ -404,9 +399,9 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             }
         }
         return name;*/
-        String query            = "";
-        List listOfParams       = new ArrayList();
-        String name             = "";
+        String query = "";
+        List listOfParams = new ArrayList();
+        String name = "";
         beginTransaction();
         listOfParams.add(userID);
         query = "from UserList where to_char(idUser) = to_char(:param0)";
@@ -442,14 +437,14 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     public void deleteInterview(int interviewId) {
 
         String query = "";
-        List listOfParams       = new ArrayList();
+        List listOfParams = new ArrayList();
         beginTransaction();
         listOfParams.add(interviewId);
         query = "from Form where to_char(interview) = to_char(:param0)";
         List<Form> listOfForms = super.<Form>executeListGetSQLQuery(query, listOfParams);
         query = "from Interview where reserve = 1";
         Interview nullInterview = super.<Interview>executeSingleGetQuery(query);
-        for(Form currForm:listOfForms) {
+        for (Form currForm : listOfForms) {
             currForm.setInterview(nullInterview);
         }
         listOfParams.clear();
@@ -482,10 +477,10 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
 
     }
-    
-    
+
+
     //Maksym added here bellow
-    
+
     public Institute addInstitute(String instituteName) {
        /* Session session = null;
         Transaction transaction = null;
@@ -513,8 +508,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return newInstitute;
     }
-    
-    
+
     public Faculty addFaculty(Institute institute, String facultyName) {
         /*Session session = null;
         Transaction transaction = null;
@@ -545,8 +539,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         commitTransaction();
         return newFaculty;
     }
-    
-    
+
     public Cathedra addCathedra(Faculty faculty, String cathedraName) {
         /*Session session = null;
         Transaction transaction = null;
@@ -576,7 +569,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         super.<Cathedra>saveUpdatedObject(newCathedra);
         commitTransaction();
         return newCathedra;
-        
+
     }
 
     public Form getForm(int currFormId) {
@@ -586,7 +579,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         beginTransaction();
         query = "from Form where to_char(idForm) = to_char(:param0)";
         listOfParams.add(currFormId);
-        currForm = super.<Form>executeSingleGetQuery(query,listOfParams);
+        currForm = super.<Form>executeSingleGetQuery(query, listOfParams);
         return currForm;
     }
 
@@ -594,8 +587,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
         InterviewRes currInterviewRes = new InterviewRes();
         UserList currUser = new UserList();
-        String query        = "";
-        List listOfParams   = new ArrayList();
+        String query = "";
+        List listOfParams = new ArrayList();
         listOfParams.add(idForm);
         listOfParams.add(ID_USER_CATEGORY_HR);
         beginTransaction();
@@ -611,14 +604,14 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             listOfParams.clear();
             listOfParams.add(51);
             query = "from UserList where to_char(idUser) = to_char(:param0)";
-            UserList currHR = super.<UserList>executeSingleGetQuery(query,listOfParams);
+            UserList currHR = super.<UserList>executeSingleGetQuery(query, listOfParams);
             currInterviewRes.setIdUser(currHR);
         }
         currInterviewRes.setScore(currMark.getComment());
         currInterviewRes.setEnrollmentScore(currMark.getEnrollment());
         currInterviewRes.setJavaKnowledge(currMark.getJavaKnowledge());
         currInterviewRes.setSqlKnowledge(currMark.getSqlKnowledge());
-        currInterviewRes.setWorkInTeam(currMark.getGroupWork()==true ? 1:0);
+        currInterviewRes.setWorkInTeam(currMark.getGroupWork() == true ? 1 : 0);
         super.saveUpdatedObject(currInterviewRes);
         commitTransaction();
 
@@ -628,8 +621,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
         InterviewRes currInterviewRes = new InterviewRes();
         UserList currUser = new UserList();
-        String query        = "";
-        List listOfParams   = new ArrayList();
+        String query = "";
+        List listOfParams = new ArrayList();
         listOfParams.add(userInfo.getNumber2());
         listOfParams.add(ID_USER_CATEGORY_HR);
         beginTransaction();
@@ -645,14 +638,14 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
             listOfParams.clear();
             listOfParams.add(userInfo.getHr1());
             query = "from UserList where to_char(userName) = to_char(:param0)";
-            UserList currHR = super.<UserList>executeSingleGetQuery(query,listOfParams);
+            UserList currHR = super.<UserList>executeSingleGetQuery(query, listOfParams);
             currInterviewRes.setIdUser(currHR);
         }
         currInterviewRes.setScore(userInfo.getComment1());
         listOfParams.clear();
         listOfParams.add(userInfo.getResult1());
         query = "from EnrollmentScores where to_char(name) = to_char(:param0)";
-        EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query,listOfParams);
+        EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query, listOfParams);
         currInterviewRes.setEnrollmentScore(currEnr);
         currInterviewRes.setJavaKnowledge("");
         currInterviewRes.setSqlKnowledge("");
@@ -663,7 +656,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     }
 
     private String getCoreQueryText() {
-        String query        =   "with results_hr as (" +
+        String query = "with results_hr as (" +
                 "  select results.id_form, results.id_user, results.score, enr_score.name, result2user_cat.user_name, results.WORK_IN_TEAM " +
                 "  from  interview_res results," +
                 "        user_list result2user_cat," +
@@ -723,8 +716,8 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 "      form2data2.id_form = form2data3.id_form and" +
                 "      form2data2.id_form = form2data4.id_form and" +
                 "      form2data2.id_form = form2data5.id_form and" +
-                "      form2data.id_institute = institute.id_institute and"+
-                "       form2data2.id_form = form2data6.id_form and "      +
+                "      form2data.id_institute = institute.id_institute and" +
+                "       form2data2.id_form = form2data6.id_form and " +
                 "      form2data.id_cathedra = cathedra.id_cathedra";
         return query;
     }
@@ -734,8 +727,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         String query = getCoreQueryText();
         if (verificated) {
             query = query + " and form2data.id_status = 1";
-        }
-        else {
+        } else {
             query = query + " and form2data.id_status = 5";
         }
         beginTransaction();
@@ -759,36 +751,36 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
     public List<DifferenceData> getDiff(int currUserId) {
 
         Hashtable tableOfNames = new Hashtable();
-        tableOfNames.put("ID_FORM",                 "Номер анкеты");
-        tableOfNames.put("FIRST_NAME",              "Фамилия");
-        tableOfNames.put("LAST_NAME",               "Имя");
-        tableOfNames.put("MIDDLE_NAME",             "Отчество");
-        tableOfNames.put("EXEC_PROJECT",            "Выполненные проекты");
-        tableOfNames.put("REASON",                  "Причина принятия в УЦ");
-        tableOfNames.put("EXTRA_INFO",              "Доп. информация");
-        tableOfNames.put("INSTITUTE_YEAR",          "Курс");
-        tableOfNames.put("INSTITUTE_GRAD_YEAR",     "Год окончания ВУЗа");
-        tableOfNames.put("EXTRA_KNOWLEDGE",         "Доп. знания");
-        tableOfNames.put("INTEREST_STUDY",          "Заин-сть учебой");
-        tableOfNames.put("INTEREST_WORK",           "Заин-сть работой");
-        tableOfNames.put("INTEREST_BRANCH_SOFT",    "Заин-сть разработкой ПО");
-        tableOfNames.put("INTEREST_OTHER",          "Заин-сть другим");
-        tableOfNames.put("INTEREST_DEEP_SPEC",      "Заин-сть глубокой специализацией");
-        tableOfNames.put("INTEREST_VARIOUS",        "Заин-сть разнообразной работой");
-        tableOfNames.put("INTEREST_MANAGMENT",      "Заин-сть руководством");
-        tableOfNames.put("INTEREST_SALE",           "Заин-сть продажами");
+        tableOfNames.put("ID_FORM", "Номер анкеты");
+        tableOfNames.put("FIRST_NAME", "Фамилия");
+        tableOfNames.put("LAST_NAME", "Имя");
+        tableOfNames.put("MIDDLE_NAME", "Отчество");
+        tableOfNames.put("EXEC_PROJECT", "Выполненные проекты");
+        tableOfNames.put("REASON", "Причина принятия в УЦ");
+        tableOfNames.put("EXTRA_INFO", "Доп. информация");
+        tableOfNames.put("INSTITUTE_YEAR", "Курс");
+        tableOfNames.put("INSTITUTE_GRAD_YEAR", "Год окончания ВУЗа");
+        tableOfNames.put("EXTRA_KNOWLEDGE", "Доп. знания");
+        tableOfNames.put("INTEREST_STUDY", "Заин-сть учебой");
+        tableOfNames.put("INTEREST_WORK", "Заин-сть работой");
+        tableOfNames.put("INTEREST_BRANCH_SOFT", "Заин-сть разработкой ПО");
+        tableOfNames.put("INTEREST_OTHER", "Заин-сть другим");
+        tableOfNames.put("INTEREST_DEEP_SPEC", "Заин-сть глубокой специализацией");
+        tableOfNames.put("INTEREST_VARIOUS", "Заин-сть разнообразной работой");
+        tableOfNames.put("INTEREST_MANAGMENT", "Заин-сть руководством");
+        tableOfNames.put("INTEREST_SALE", "Заин-сть продажами");
 
         //currUserId = 2300;
         String query = "";
         String queryText = "";
-        List listOfParams       = new ArrayList();
+        List listOfParams = new ArrayList();
         beginTransaction();
         query = "select column_name from ALL_TAB_COLUMNS where table_name = 'FORM'";
         List<String> listOfFields = super.<String>executeListGetSQLQuery(query, listOfParams);
         Boolean first = true;
         int k = 0;
         for (String colunmName : listOfFields) {
-            if (colunmName.toLowerCase().contains("id") || colunmName.toLowerCase().contains("photo") ) {
+            if (colunmName.toLowerCase().contains("id") || colunmName.toLowerCase().contains("photo")) {
                 continue;
             }
             String currcolumnQuery = "select * from (select '" + colunmName + "', to_char(f1." + colunmName + "), to_char(f2." + colunmName + ")" +
@@ -802,13 +794,13 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
                 queryText = queryText + " union " + currcolumnQuery;
             }
         }
-        List <Object[]> columnData = super.<Object[]>executeListGetSQLQuery(queryText);
+        List<Object[]> columnData = super.<Object[]>executeListGetSQLQuery(queryText);
 
         List<DifferenceData> diffList = new LinkedList<DifferenceData>();
-        for (Object[] columnValue:columnData) {
-            String columnAlias  = (String)columnValue[0];
-            String oldValue     = (String)columnValue[1];
-            String newValue     = (String)columnValue[2];
+        for (Object[] columnValue : columnData) {
+            String columnAlias = (String) columnValue[0];
+            String oldValue = (String) columnValue[1];
+            String newValue = (String) columnValue[2];
             DifferenceData currDiffData = new DifferenceData();
             currDiffData.setFieldName((String) tableOfNames.get(columnAlias));
             currDiffData.setOldValue(oldValue);
@@ -818,6 +810,27 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
 
         commitTransaction();
         return diffList;
+    }
+
+    public int getRestOfPositionsOnInterviews() {
+        beginTransaction();
+        StringBuilder query = new StringBuilder();
+        query.append("with all_places as( ");
+        query.append("select sum(interview.max_number) count_all_places ");
+        query.append("from interview ");
+        query.append("where ");
+        query.append("interview.reserve <> 1), ");
+        query.append("places as( ");
+        query.append("select  count(1) count_places ");
+        query.append("from form inner join interview ");
+        query.append("on (form.id_interview = interview.id_interview) ");
+        query.append("where interview.reserve <> 1) ");
+        query.append("select all_places.count_all_places - places.count_places ");
+        query.append("from all_places, ");
+        query.append("places ");
+        BigDecimal count = super.executeSingleSQLGetQuery(query.toString());
+        commitTransaction();
+        return count.intValue();
     }
 
     /*public static void main (String[] arrgs) {
