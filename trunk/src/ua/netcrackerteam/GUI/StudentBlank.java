@@ -212,6 +212,10 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         newInstitute = new TextField("Ваш ВУЗ",(Property) bean.getItemProperty("studentOtherInstitute"));
         newCathedra = new TextField("Ваша кафедра",(Property) bean.getItemProperty("studentOtherCathedra"));
         newFaculty = new TextField("Ваш факультет",(Property) bean.getItemProperty("studentOtherFaculty"));
+
+        //newFaculty.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{2,200}", "Поле должно содержать хотя бы 2 и не более 200 символов."));
+        //newInstitute.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{2,200}", "Поле должно содержать хотя бы 2 и не более 200 символов."));
+        //newCathedra.addValidator(new RegexpValidator("[а-яА-ЯЇїёЁa-zA-Z0-9_. -]{2,200}", "Поле должно содержать хотя бы 2 и не более 200 символов."));
         
         List<Institute>insts = StudentPage.getUniversityList();
         BeanItemContainer<Institute> objects = new BeanItemContainer<Institute>(Institute.class, insts);

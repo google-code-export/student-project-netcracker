@@ -4,12 +4,14 @@ package ua.netcrackerteam.util.xls.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author unconsionable
  */
 @Entity(name = "XlsUserInfo")
-public class XlsUserInfo implements XlsEntity {
+public class XlsUserInfo implements XlsEntity, Serializable {
+    private static final long serialVersionUID = -3299906777751181139L;
     @Id
     @Column(name = "number2")
     protected String number2;
