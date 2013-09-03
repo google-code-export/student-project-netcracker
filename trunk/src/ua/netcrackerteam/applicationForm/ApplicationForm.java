@@ -154,7 +154,7 @@ public class ApplicationForm{
         fields.setField("interestStudy", studentData.getStudentInterestStudy());
         fields.setField("interestWork", studentData.getStudentInterestWork());
         fields.setField("tel", studentData.getStudentTelephone());
-        fields.setField("otherContacts", studentData.getStudentOtherContactType().concat(" ").concat(studentData.getStudentOtherContact()));
+        fields.setField("otherContacts", studentData.getStudentOtherContactType().concat(": ").concat(studentData.getStudentOtherContact()));
         fields.setField("typeWorkDifferent", studentData.getStudentWorkTypeVarious());
         fields.setField("typeWorkLead", studentData.getStudentWorkTypeManagement());
         fields.setField("typeWorkOther", String.valueOf((studentData.getStudentWorkTypeOther() == null? "": studentData.getStudentWorkTypeOther())));
