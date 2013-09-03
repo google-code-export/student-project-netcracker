@@ -126,10 +126,22 @@ public class ApplicationForm{
         fields.setField("info1", studentData.getStudentLastName());
         fields.setField("info2", studentData.getStudentFirstName());
         fields.setField("info3", studentData.getStudentMiddleName());
-        fields.setField("info4", String.valueOf(studentData.getStudentInstitute()));
+        if(String.valueOf(studentData.getStudentInstitute()).equals("Другое")){
+        	fields.setField("info4", String.valueOf(studentData.getStudentOtherInstitute()));
+        }else{
+        	fields.setField("info4", String.valueOf(studentData.getStudentInstitute()));
+        }        
         fields.setField("info5", String.valueOf(studentData.getStudentInstituteCourse()));
-        fields.setField("info6", String.valueOf(studentData.getStudentFaculty()));
-        fields.setField("info7", String.valueOf(studentData.getStudentCathedra()));
+        if(studentData.getStudentFaculty().equals("Другое")){
+        	 fields.setField("info6", String.valueOf(studentData.getStudentOtherFaculty()));}    
+        else{
+        	fields.setField("info6", String.valueOf(studentData.getStudentFaculty()));
+        }
+        if(studentData.getStudentCathedra().equals("Другое")){
+        	fields.setField("info7", String.valueOf(studentData.getStudentOtherCathedra()));
+        }else{
+        	fields.setField("info7", String.valueOf(studentData.getStudentCathedra()));
+        }        
         fields.setField("info8", String.valueOf(studentData.getStudentInstituteGradYear()));
         fields.setField("year1", String.valueOf(currentYear));
         fields.setField("year2", String.valueOf(currentYear));
@@ -142,7 +154,7 @@ public class ApplicationForm{
         fields.setField("interestStudy", studentData.getStudentInterestStudy());
         fields.setField("interestWork", studentData.getStudentInterestWork());
         fields.setField("tel", studentData.getStudentTelephone());
-        fields.setField("otherContacts", studentData.getStudentOtherContact());
+        fields.setField("otherContacts", studentData.getStudentOtherContactType().concat(" ").concat(studentData.getStudentOtherContact()));
         fields.setField("typeWorkDifferent", studentData.getStudentWorkTypeVarious());
         fields.setField("typeWorkLead", studentData.getStudentWorkTypeManagement());
         fields.setField("typeWorkOther", String.valueOf((studentData.getStudentWorkTypeOther() == null? "": studentData.getStudentWorkTypeOther())));
