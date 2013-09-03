@@ -132,12 +132,12 @@ public class ApplicationForm{
         	fields.setField("info4", String.valueOf(studentData.getStudentInstitute()));
         }        
         fields.setField("info5", String.valueOf(studentData.getStudentInstituteCourse()));
-        if(studentData.getStudentFaculty().equals("Другое")){
+        if(String.valueOf(studentData.getStudentFaculty()).equals("Другое")){
         	 fields.setField("info6", String.valueOf(studentData.getStudentOtherFaculty()));}    
         else{
         	fields.setField("info6", String.valueOf(studentData.getStudentFaculty()));
         }
-        if(studentData.getStudentCathedra().equals("Другое")){
+        if(String.valueOf(studentData.getStudentCathedra()).equals("Другое")){
         	fields.setField("info7", String.valueOf(studentData.getStudentOtherCathedra()));
         }else{
         	fields.setField("info7", String.valueOf(studentData.getStudentCathedra()));
