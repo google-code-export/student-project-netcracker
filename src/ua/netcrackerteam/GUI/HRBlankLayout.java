@@ -141,14 +141,14 @@ public class HRBlankLayout extends VerticalLayout implements BlanksLayoutI{
     private Component getButtonsLayout() {
         HorizontalLayout buttonsLayout = new HorizontalLayout();
         buttonsLayout.setSpacing(true);
-        buttonsLayout.addComponent(getEditFormButton());
-        buttonsLayout.addComponent(getPDFLink());
-        buttonsLayout.addComponent(getDownloadPhotoLink());
-        buttonsLayout.addComponent(getDeleteFormButton());
         if (state.equals(FormState.NOT_CHECKED)) {
             buttonsLayout.addComponent(getShowFormsDifferenceButton());
             buttonsLayout.addComponent(getAcceptButton());
         }
+        buttonsLayout.addComponent(getEditFormButton());
+        buttonsLayout.addComponent(getPDFLink());
+        buttonsLayout.addComponent(getDownloadPhotoLink());
+        buttonsLayout.addComponent(getDeleteFormButton());
         return buttonsLayout;
     }
 
