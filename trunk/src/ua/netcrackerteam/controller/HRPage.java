@@ -176,8 +176,8 @@ public class HRPage {
                 hrInterview.setInterviewersNum(interview.getInterviwerNumber());
                 hrInterview.setPositionNum(interview.getMaxNumber());
 
-                List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-                int  amountStudentsToInterview = (forms == null? 0: forms.size()); 
+                //List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+                int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
                 hrInterview.setRestOfPositions(hrInterview.getPositionNum() - amountStudentsToInterview);
                 intervList.add(hrInterview);
             }
@@ -218,8 +218,8 @@ public class HRPage {
 
     public String getCountOfStudentsOnReservedInterview() {
         Interview nullInterview = HibernateFactory.getInstance().getDAOInterview().getReserveInterview();
-        List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
-        int  amountStudentsToInterview = (forms == null? 0: forms.size());
+        //List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
+        int  amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(nullInterview.getIdInterview());
         //int restOfPositions = nullInterview.getMaxNumber() - amountStudentsToInterview;
         return String.valueOf(amountStudentsToInterview);
     }

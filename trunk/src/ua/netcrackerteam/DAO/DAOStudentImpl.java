@@ -12,7 +12,9 @@ import ua.netcrackerteam.configuration.HibernateUtil;
 import ua.netcrackerteam.configuration.ShowHibernateSQLInterceptor;
 
 import javax.interceptor.Interceptors;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -269,11 +271,12 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
     
     /**
      * Returns list of forms with id of interview specified in param
+     *
      * @param idInterview id of interview
      * @return List of forms which have id of interview equaled to param specified
      */
     @Override
-    public List<Form>getFormsByInterviewId(int idInterview) {
+    /*public List<Form>getFormsByInterviewId(int idInterview) {
         Session session = null;
         Query query;
         List<Form> forms = null;
@@ -281,8 +284,9 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
             Locale.setDefault(Locale.ENGLISH);
             session = HibernateUtil.getSessionFactory().getCurrentSession();
             session.beginTransaction();
-            query = session.createQuery("from Form "
-                    + "where interview = " + idInterview);
+            //query = session.createQuery("from Form "
+            //        + "where interview = " + idInterview);
+            query = session.createSQLQuery("");
             forms = query.list();
             
         } catch (Exception e) {
@@ -293,6 +297,14 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
             }
         }
         return forms;
+    }*/
+
+    public int getFormsByInterviewId(int idInterview) {
+        String query = "select count(id_form) from form where to_char(id_interview) = to_char(:param0)";
+        List params = new ArrayList();
+        params.add(idInterview);
+        BigDecimal result = super.<BigDecimal>executeSingleSQLGetQuery(query, params);
+        return result.intValue();
     }
     
     /**

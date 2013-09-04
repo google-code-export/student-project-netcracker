@@ -120,8 +120,8 @@ public class RegistrationToInterview implements Logable, Serializable {
     }
 
     private int getRestOfPositionsOnInterview(Interview interview) {
-        List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
-        int amountStudentsToInterview = (forms == null ? 0 : forms.size());
+        //List<Form> forms = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
+        int amountStudentsToInterview = HibernateFactory.getInstance().getStudentDAO().getFormsByInterviewId(interview.getIdInterview());
         return interview.getMaxNumber() - amountStudentsToInterview;
     }
 

@@ -58,6 +58,21 @@ public class DAOCoreObject {
         return object;
     }
 
+
+    public <T> T executeSingleSQLGetQuery(String inputQuery, List param){
+        T object = null;
+        try {
+            for (int i = 0; i < param.size(); i++) {
+                query.setParameter("param" + String.valueOf(i), param.get(i));
+            }
+            query = session.createSQLQuery(inputQuery);
+            object = (T) query.uniqueResult();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return object;
+    }
+
     public <T> T executeSingleGetQuery(String inputQuery, List param){
         T object = null;
         try {
