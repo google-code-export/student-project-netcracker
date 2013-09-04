@@ -202,6 +202,9 @@ public class HRPage {
            	Form form = it.next();
            	StudentData sd = StudentPage.getStudentDataByIdForm(form.getIdForm());
            	byte[] photo = sd.getPhoto();
+           	if(photo == null){
+           		continue;
+           	}
            	String nameFile = "Anketa_#" + form.getIdForm() + ".jpg";
            	ZipContentFile file = new ZipContentImage( nameFile, photo);
            	zipContentFileList.add(file);
