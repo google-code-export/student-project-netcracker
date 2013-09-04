@@ -226,8 +226,8 @@ class InterviewLayout extends VerticalLayout {
                 String currentDay = studentInterview.getInterviewStartDay();
                 if (!currentDay.equals(prevDay) && studentInterview.getRestOfPositions() > 0) {
                     days.add(studentInterview);
+                    prevDay = currentDay;
                 }
-                prevDay = currentDay;
             }
             return days;
         }
