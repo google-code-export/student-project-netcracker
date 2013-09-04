@@ -338,7 +338,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
         }
         glayout1.addComponent(anotherLayout,0,5,2,5);
 
-        photoUpload = new Upload("Фото*",this);
+        photoUpload = new Upload("Фото* (выберите файл и нажмите кнопку \"Загрузка\")",this);
         photoUpload.setButtonCaption("Загрузка");
         photoUpload.addListener((Upload.SucceededListener) this);
         photoUpload.addListener((Upload.StartedListener) this);
@@ -1028,7 +1028,7 @@ public class StudentBlank extends VerticalLayout implements FieldEvents.BlurList
                             }
                         } else {
                             Notification n = new Notification("Проверьте правильность заполнения полей!", Notification.TYPE_TRAY_NOTIFICATION);
-                            n.setDescription("Поля, отмеченные *, a также фото, обязательны для заполнения.");
+                            n.setDescription("Поля, отмеченные *, обязательны для заполнения. Убедитесь, что Вы загрузили фото.");
                             getWindow().showNotification(n);
                         }
                     } else {
