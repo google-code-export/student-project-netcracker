@@ -62,10 +62,10 @@ public class DAOCoreObject {
     public <T> T executeSingleSQLGetQuery(String inputQuery, List param){
         T object = null;
         try {
+            query = session.createSQLQuery(inputQuery);
             for (int i = 0; i < param.size(); i++) {
                 query.setParameter("param" + String.valueOf(i), param.get(i));
             }
-            query = session.createSQLQuery(inputQuery);
             object = (T) query.uniqueResult();
         } catch (Exception e) {
             System.out.println(e);

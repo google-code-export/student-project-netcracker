@@ -303,7 +303,10 @@ public class DAOStudentImpl extends DAOCoreObject implements DAOStudent
         String query = "select count(id_form) from form where to_char(id_interview) = to_char(:param0)";
         List params = new ArrayList();
         params.add(idInterview);
-        BigDecimal result = super.<BigDecimal>executeSingleSQLGetQuery(query, params);
+        beginTransaction();
+        BigDecimal queryResult = super.<BigDecimal>executeSingleSQLGetQuery(query, params);
+        Number result = (queryResult == null ? 0:queryResult);
+        commitTransaction();
         return result.intValue();
     }
     
