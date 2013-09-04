@@ -212,8 +212,8 @@ public class HRPage {
 
     public String getRestOfPositionsOnInterviews() {
         DAOHRImpl currDAO = new DAOHRImpl();
-        int restOfPositions = currDAO.getRestOfPositionsOnInterviews();
-        return String.valueOf(restOfPositions);
+        String restOfPositions = currDAO.getRestOfPositionsOnInterviews();
+        return restOfPositions;
     }
 
     public String getCountOfStudentsOnReservedInterview() {
