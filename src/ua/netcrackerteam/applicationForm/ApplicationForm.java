@@ -91,7 +91,11 @@ public class ApplicationForm{
     	if(interview == null){
     		return "";
     	}
-    
+    	
+        if(interview.getReserve() == 1){
+        	return "Резервное время";
+        }
+        	
     	 String[] months = {"января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"};
     	    
          DateFormatSymbols dfs = new DateFormatSymbols(new Locale("ru"));
