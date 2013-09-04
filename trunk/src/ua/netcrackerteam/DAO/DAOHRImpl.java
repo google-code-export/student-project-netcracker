@@ -812,7 +812,7 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         return diffList;
     }
 
-    public int getRestOfPositionsOnInterviews() {
+    public String getRestOfPositionsOnInterviews() {
         beginTransaction();
         StringBuilder query = new StringBuilder();
         query.append("with all_places as( ");
@@ -825,12 +825,12 @@ public class DAOHRImpl extends DAOCoreObject implements DAOHR {
         query.append("from form inner join interview ");
         query.append("on (form.id_interview = interview.id_interview) ");
         query.append("where interview.reserve <> 1) ");
-        query.append("select all_places.count_all_places - places.count_places ");
+        query.append("select (all_places.count_all_places - places.count_places)||'/'||all_places.count_all_places ");
         query.append("from all_places, ");
         query.append("places ");
-        BigDecimal count = super.executeSingleSQLGetQuery(query.toString());
+        String count = super.executeSingleSQLGetQuery(query.toString());
         commitTransaction();
-        return count.intValue();
+        return count;
     }
 
     /*public static void main (String[] arrgs) {
