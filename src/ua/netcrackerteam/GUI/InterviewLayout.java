@@ -13,6 +13,7 @@ import com.vaadin.ui.*;
 import ua.netcrackerteam.applicationForm.CreateLetterWithPDF;
 import ua.netcrackerteam.applicationForm.Letter;
 import ua.netcrackerteam.applicationForm.LetterPDF;
+import ua.netcrackerteam.applicationForm.LetterReserv;
 import ua.netcrackerteam.controller.RegistrationToInterview;
 import ua.netcrackerteam.controller.bean.StudentInterview;
 import ua.netcrackerteam.controller.exceptions.StudentInterviewException;
@@ -120,9 +121,16 @@ class InterviewLayout extends VerticalLayout {
                                     Button.ClickListener() {
                                         @Override
                                         public void buttonClick(Button.ClickEvent clickEvent) {
-                                            Letter letter = new LetterPDF(username);
-                                            CreateLetterWithPDF sender = new CreateLetterWithPDF(username, letter);
-                                            sender.sendPDFToStudent();
+                                        	Letter letter;
+                                        	if(selectedInterview.equals(nullInterview)){
+	                                       	    letter = new LetterReserv(username, "resources/ReservInterview.html");
+	                                    	    CreateLetterWithPDF sendLetter = new CreateLetterWithPDF(username, letter);
+	                                    	    sendLetter.sendPDFToStudent();
+                                        	}else {                                        	
+	                                            letter = new LetterPDF(username);
+	                                            CreateLetterWithPDF sender = new CreateLetterWithPDF(username, letter);
+	                                            sender.sendPDFToStudent();}
+                                            
                                         }
                                     });
     }
