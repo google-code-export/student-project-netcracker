@@ -104,7 +104,7 @@ public class InterviewerPage {
          while(iterator.hasNext()){
         	 Form form = iterator.next();
         	 UserList user = form.getUser(); 
-        	 Letter letter = new LetterReserv(user.getUserName());
+        	 Letter letter = new LetterReserv(user.getUserName(), "resources/Reserv.html");
         	 CreateLetterWithPDF sendLetter = new CreateLetterWithPDF(user.getUserName(), letter);
         	 sendLetter.sendPDFToStudent();
          }
