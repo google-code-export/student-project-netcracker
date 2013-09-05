@@ -9,8 +9,8 @@ public class LetterReserv extends Letter{
 	
 	private String userName;
 	
-	public LetterReserv(String userName){
-		super(ClassPath.getInstance().getWebInfPath().concat("resources/Reserv.html"));	
+	public LetterReserv(String userName, String template){
+		super(ClassPath.getInstance().getWebInfPath().concat(template));	
 		this.userName = userName;
 	}
 
