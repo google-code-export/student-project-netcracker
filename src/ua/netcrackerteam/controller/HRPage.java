@@ -245,17 +245,24 @@ public class HRPage {
         Date currentEndDate = addMinutesToDate(startDate, oneDuration);
         Date currentStartDate = startDate;
         while(currentEndDate.before(endDate)) {
-            Interview interview = new Interview();
-            interview.setEndDate(currentEndDate);
-            interview.setStartDate(currentStartDate);
-            interview.setInterviwerNumber(intervNum);
-            interview.setMaxNumber(maxStudents);
-            interview.setReserve(0);
-            dao.addNewInterview(interview);
+            addNewInterview(intervNum, maxStudents, currentEndDate, currentStartDate);
             currentStartDate = currentEndDate;
             currentEndDate = addMinutesToDate(currentStartDate,oneDuration);
         }
+        if(currentEndDate.equals(endDate)) {
+        	addNewInterview(intervNum, maxStudents, currentEndDate, currentStartDate);
+        }
     }
+
+	private void addNewInterview(int intervNum, int maxStudents, Date currentEndDate, Date currentStartDate) {
+		Interview interview = new Interview();
+		interview.setEndDate(currentEndDate);
+		interview.setStartDate(currentStartDate);
+		interview.setInterviwerNumber(intervNum);
+		interview.setMaxNumber(maxStudents);
+		interview.setReserve(0);
+		dao.addNewInterview(interview);
+	}
 
 
     

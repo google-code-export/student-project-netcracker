@@ -41,6 +41,7 @@ public class HRInterviewsLayout extends VerticalLayout {
     private HRPage controller = new HRPage();
 
     private BottomLayout bottomLayout;
+	private Component positionsInfoLayout;
 
     public HRInterviewsLayout(int height) {
         this.screenHeight = height;
@@ -115,7 +116,8 @@ public class HRInterviewsLayout extends VerticalLayout {
             }
         });
         sidebar.addComponent(deleteInterview);
-        sidebar.addComponent(getPositionsInfoLayout());
+        positionsInfoLayout = getPositionsInfoLayout();
+        sidebar.addComponent(positionsInfoLayout);
     }
 
     private Component getPositionsInfoLayout() {
@@ -130,6 +132,12 @@ public class HRInterviewsLayout extends VerticalLayout {
         countOnReservedInterview.setDescription("Количество студентов, зарегистрированных на резервное собеседование");
         infoLayout.addComponent(countOnReservedInterview);
         return infoLayout;
+    }
+    
+    private void refreshPositionsInfoLayout() {
+    	Component newPositionsLayout = getPositionsInfoLayout();
+    	sidebar.replaceComponent(positionsInfoLayout, newPositionsLayout);
+    	positionsInfoLayout = newPositionsLayout;
     }
 
     private void fillRightPanel() {
@@ -409,6 +417,7 @@ public class HRInterviewsLayout extends VerticalLayout {
                     }
                     setVisible(false);
                     refreshTable();
+                    refreshPositionsInfoLayout();
                 } catch (ParseException ex) {
                     Logger.getLogger(HRInterviewsLayout.class.getName()).log(Level.SEVERE, null, ex);
                 }
