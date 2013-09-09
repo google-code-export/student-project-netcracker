@@ -230,7 +230,7 @@ public class DAOInterviewerImpl extends DAOCoreObject implements DAOInterviewer
         }
         currInterviewRes.setScore(userInfo.getComment2());
         listOfParams.clear();
-        listOfParams.add(userInfo.getResult1());
+        listOfParams.add(userInfo.getResult2());
         query = "from EnrollmentScores where to_char(name) = to_char(:param0)";
         EnrollmentScores currEnr = super.<EnrollmentScores>executeSingleGetQuery(query,listOfParams);
         currInterviewRes.setEnrollmentScore(currEnr);
