@@ -74,10 +74,10 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
         row.createCell(3).setCellValue(rowData.getFinalResult());
         row.createCell(4).setCellValue(rowData.getHr1());
         row.createCell(5).setCellValue(rowData.getResult1());
-        row.createCell(6).setCellValue(rowData.getComment1());
+        row.createCell(6).setCellValue(rowData.getCalculableComment1());
         row.createCell(7).setCellValue(rowData.getHr2());
         row.createCell(8).setCellValue(rowData.getResult2());
-        row.createCell(9).setCellValue(rowData.getComment2());
+        row.createCell(9).setCellValue(rowData.getCalculableComment2());
         row.createCell(10).setCellValue(rowData.getCource());
         row.createCell(11).setCellValue(rowData.getAverageHighSchoolGrade());
         row.createCell(12).setCellValue(rowData.getSpeciality());

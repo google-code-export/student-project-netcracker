@@ -143,6 +143,13 @@ public class MarksLayout extends VerticalLayout {
         sqlField.setRequired(true);
         sqlField.setWidth(100, UNITS_PERCENTAGE);
         sqlField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("sqlKnowledge"));
+        StringBuilder sqlMask = new StringBuilder();
+        sqlMask.append("Принципы реляционных БД - \n");
+        sqlMask.append("ANSI SQL - \n");
+        sqlMask.append("Опыт работы с БД - ");
+        if(studentsMarks.getSqlKnowledge().equals("-")) {
+            sqlField.setValue(sqlMask.toString());
+        }
         addComponent(sqlField);
     }
 
@@ -152,6 +159,13 @@ public class MarksLayout extends VerticalLayout {
         javaField.setRequired(true);
         javaField.setWidth(100, UNITS_PERCENTAGE);
         javaField.setPropertyDataSource((Property) studentsMarksBeanItem.getItemProperty("javaKnowledge"));
+        StringBuilder javaMask = new StringBuilder();
+        javaMask.append("Принципы ООП - \n");
+        javaMask.append("Java SE - \n");
+        javaMask.append("Опыт разработки на Java - ");
+        if(studentsMarks.getJavaKnowledge().equals("-")) {
+            javaField.setValue(javaMask.toString());
+        }
         addComponent(javaField);
     }
 

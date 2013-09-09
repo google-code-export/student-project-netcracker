@@ -175,10 +175,10 @@ public class XlsUserInfo implements XlsEntity, Serializable {
     }
 
     public String getCalculableComment1() {
-        if (!comment1.equals("-")) {
+        if (!result1.equals("-")) {
             StringBuilder comment = new StringBuilder();
-            comment.append(comment1 + ". ");
-            comment.append("Работа в комманде: " + getWorkInTeam1Str() + ". ");
+            comment.append(comment1 + ".\n");
+            comment.append("Работа в комманде: " + getWorkInTeam1Str() + ".");
             return comment.toString();
         }
         return "-";
@@ -209,12 +209,12 @@ public class XlsUserInfo implements XlsEntity, Serializable {
     }
 
     public String getCalculableComment2() {
-        if (!comment2.equals("-")) {
+        if (!result2.equals("-")) {
             StringBuilder comment = new StringBuilder();
             comment.append(comment2 + ". ");
-            comment.append("Работа в комманде: " + getWorkInTeam2Str() + ". ");
-            comment.append("Java: " + javaKnowledge + ". ");
-            comment.append("SQL: " + sqlKnowledge + ".");
+            comment.append("Работа в комманде: " + getWorkInTeam2Str() + ".\n");
+            comment.append(javaKnowledge + ".\n");
+            comment.append(sqlKnowledge + ".");
             return comment.toString();
         }
         return "-";
