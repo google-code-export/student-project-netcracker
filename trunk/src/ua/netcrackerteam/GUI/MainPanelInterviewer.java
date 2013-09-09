@@ -136,9 +136,9 @@ public class MainPanelInterviewer extends MainPanel implements BlanksLayoutI{
     private Component getInterviewerMarkLayout() {
         selectedStudent.setHr2(username);
         MarksLayout markLayout = new MarksLayout(selectedStudent, MarksLayout.MarksMode.INTERVIEWER, this);
-        if (!selectedStudent.getComment1().equals("-")) {
+        //if (!selectedStudent.getComment1().equals("-")) {
             markLayout.setReadOnly(true);
-        }
+        //}
         return markLayout;
     }
 
