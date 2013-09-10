@@ -61,6 +61,7 @@ public class UserInfoXlsSource extends XlsSourceAbstract<XlsUserInfo> {
         style.setBorderTop(CellStyle.BORDER_THIN);
         style.setBorderRight(CellStyle.BORDER_THIN);
         style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setWrapText(true);
 
         for (int i = 0; i < SHEET_COLUMN_WIDTH.length; i++) {
             sh.getRow(0).getCell(i).setCellStyle(style);
