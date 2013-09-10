@@ -221,7 +221,7 @@ public class MainPanelInterviewer extends MainPanel implements BlanksLayoutI{
 
     @Override
     public void refreshTableAfterMarksSave() {
-        //refreshTable();
+        table.updateItem();
     }
 
     private class PdfStreamSource implements StreamResource.StreamSource {

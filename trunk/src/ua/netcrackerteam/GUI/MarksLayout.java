@@ -81,7 +81,7 @@ public class MarksLayout extends VerticalLayout {
        }
     }
 
-    private boolean isAllValid() {
+	private boolean isAllValid() {
         boolean isValid = true;
         Iterator<Component> i = getComponentIterator();
         while (i.hasNext()) {
