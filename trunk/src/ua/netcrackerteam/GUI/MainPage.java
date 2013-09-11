@@ -41,6 +41,7 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
     private Panel layoutfull = null;
     private RegistrationWindow regWindow = null;
     private String userName;
+    private boolean stopRegistrationFlag = true;
 
     public MainPanel getPanel() {
         return panel;
@@ -82,25 +83,36 @@ public class MainPage extends Application implements Button.ClickListener, HttpS
 
     public void buttonClick(Button.ClickEvent event) {
         Button source = event.getButton();
-        if(source == enter) {
-            enterWindow = new EnterWindow(this);
-            getMainWindow().addWindow(enterWindow);
-        } else if (source == exit) {
-            getMainWindow().getApplication().close();
-            GeneralController.setAuditInterviews(3, "User logoff from application", getUserName(), new Date());
-        } else if (source == registr) {
-            if (regWindow == null) {
-                registr.removeListener(this);
-                regWindow = new RegistrationWindow(this);
-            }
-            getMainWindow().addWindow(regWindow);
-            regWindow.addListener(new Window.CloseListener() {
-                public void windowClose(CloseEvent e) {
-                    addRegListener();
-                    regWindow = null;
-                }
-            });
-        }
+		if (source == enter) {
+			enterWindow = new EnterWindow(this);
+			getMainWindow().addWindow(enterWindow);
+		}
+		else
+			if (source == exit) {
+				getMainWindow().getApplication().close();
+				GeneralController.setAuditInterviews(3, "User logoff from application", getUserName(), new Date());
+			}
+			else
+				if (source == registr) {
+					if (!stopRegistrationFlag) {
+						if (regWindow == null) {
+							registr.removeListener(this);
+							regWindow = new RegistrationWindow(this);
+						}
+						getMainWindow().addWindow(regWindow);
+						regWindow.addListener(new Window.CloseListener() {
+							public void windowClose(CloseEvent e) {
+								addRegListener();
+								regWindow = null;
+							}
+						});
+					}
+					else {
+						final StopRegistrationWindow stopRegistrationWindow = new StopRegistrationWindow();
+						getMainWindow().addWindow(stopRegistrationWindow);
+					}
+
+				}
     }
     
     private void addRegListener() {
