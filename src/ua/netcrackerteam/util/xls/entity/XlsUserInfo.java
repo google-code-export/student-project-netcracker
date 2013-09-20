@@ -178,7 +178,7 @@ public class XlsUserInfo implements XlsEntity, Serializable {
         if (!result1.equals("-")) {
             StringBuilder comment = new StringBuilder();
             comment.append(comment1 + ".\n");
-            comment.append("Работа в комманде: " + getWorkInTeam1Str() + ".");
+            comment.append("Работа в команде: " + getWorkInTeam1Str() + ".");
             return comment.toString();
         }
         return "-";
@@ -212,7 +212,7 @@ public class XlsUserInfo implements XlsEntity, Serializable {
         if (!result2.equals("-")) {
             StringBuilder comment = new StringBuilder();
             comment.append(comment2 + ". ");
-            comment.append("Работа в комманде: " + getWorkInTeam2Str() + ".\n");
+            comment.append("Работа в команде: " + getWorkInTeam2Str() + ".\n");
             comment.append(javaKnowledge + ".\n");
             comment.append(sqlKnowledge + ".");
             return comment.toString();
